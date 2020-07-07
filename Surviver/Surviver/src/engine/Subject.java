@@ -1,0 +1,67 @@
+package engine;
+
+import java.awt.Color;
+
+public enum Subject{
+	CHI, MAT, ENG;
+	public Subject valueOf(int i) {
+		switch(i) {
+		case 0:
+			return CHI;
+		case 1:
+			return MAT;
+		case 2:
+			return ENG;
+		default:
+			return null;
+		}
+	}
+	public int id() {
+		switch(this) {
+		case CHI:
+			return 0;
+		case MAT:
+			return 1;
+		case ENG:
+			return 2;
+		default:
+			return -1;
+		}
+	}
+	public String toCHIString() {
+		switch(this) {
+		case CHI:
+			return "Chinese";
+		case MAT:
+			return "Mathematics";
+		case ENG:
+			return "English";
+		default:
+			return "";
+		}
+	}
+	public Color color() {
+		switch(this) {
+		case CHI:
+			return Color.RED;
+		case MAT:
+			return Color.GREEN;
+		case ENG:
+			return Color.BLUE;
+		default:
+			return null;
+		}
+	}
+	public String imageURL() {
+		switch(this) {
+		case CHI:
+			return "image/CHI_BET.png";
+		case MAT:
+			return "image/MAT_BET.png";
+		case ENG:
+			return "image/ENG_BET.png";
+		default:
+			return null;
+		}
+	}
+}
