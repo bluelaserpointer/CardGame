@@ -1,4 +1,4 @@
-package com.cardgame.cardgamebackend;
+package com.cardgame.cardgame;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

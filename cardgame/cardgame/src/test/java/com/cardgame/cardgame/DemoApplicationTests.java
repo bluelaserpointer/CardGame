@@ -1,4 +1,4 @@
-package com.cardgame.cardgamebackend;
+package com.cardgame.cardgame;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
