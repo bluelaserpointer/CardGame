@@ -101,7 +101,7 @@ public class Engine_Surviver extends Game {
 		backToMenuButton = new BasicButton() {
 			{
 				this.setName("backButton");
-				this.setBGPaint(ImageFrame.create("image/backButton.png"));
+				this.setBGImage("image/backButton.png");
 				this.setBounds(0, 0, 100, 50);
 			}
 			@Override
@@ -334,7 +334,7 @@ public class Engine_Surviver extends Game {
 			private final ImageFrame[] anime = new ImageFrame[ANM_SIZE];
 			{
 				this.setName("lotteScreen");
-				this.setBGPaint(ImageFrame.create("image/lotteBG.jpeg"));
+				this.setBGImage("image/lotteBG.jpeg");
 				for(int i = 0;i < ANM_SIZE;++i)
 					anime[i] = ImageFrame.create("image/lotte/" + (i + 1) + ".png");
 			}
@@ -450,7 +450,7 @@ public class Engine_Surviver extends Game {
 		lotteScreen.addFirst(new GUIParts() {
 			{
 				this.setName("startLotte");
-				this.setBGImage("picture/GrayButton.png");
+				this.setBGImage("image/ui/GrayButton.png");
 				this.setBounds(350, 450, 300, 150);
 			}
 			@Override
@@ -486,10 +486,9 @@ public class Engine_Surviver extends Game {
 		formationScreen.addFirst(new TableStorageViewer<Knowledge>() {
 			{
 				this.setName("formation");
-				this.setCellImage("picture/gui/slot.png");
 				this.setCellSize(100);
 				this.setTableStorage(formationTS);
-				this.setBoundsSize(100, 100);
+				this.setXY(100, 100);
 			}
 			@Override
 			public void idle() {
@@ -518,7 +517,7 @@ public class Engine_Surviver extends Game {
 				g2.setColor(Color.WHITE);
 				GHQ.drawStringGHQ("已编队知识总数: " + formationCount, 110, 80, g2.getFont().deriveFont(Font.BOLD, 20F));
 			}
-			private final RectPaint cellRectPaint = ImageFrame.create("picture/gui/slot.png");
+			private final RectPaint cellRectPaint = ImageFrame.create("image/ui/slot.png");
 			@Override
 			protected void paintOfCell(int index, HasDotPaint object, int x,int y) {
 				cellRectPaint.rectPaint(x, y, cellSize);
@@ -565,12 +564,12 @@ public class Engine_Surviver extends Game {
 		GHQ.addGUIParts(garrageScreen = new GUIParts() {
 			{
 				this.setName("garrageScreen");
-				this.setBGPaint(ImageFrame.create("image/garrageBG.png"));
+				this.setBGImage("image/garrageBG.png");
 			}
 		}).addFirst(new BasicButton() {
 				{
 					this.setName("cancel");
-					this.setBGPaint(ImageFrame.create("image/backButton.png"));
+					this.setBGImage("image/backButton.png");
 					this.setBounds(0, 0, 100, 50);
 				}
 				@Override
@@ -585,10 +584,9 @@ public class Engine_Surviver extends Game {
 		garrageScreen.addFirst(new TableStorageViewer<Knowledge>() {
 			{
 				this.setName("knowledgeStorage");
-				this.setCellPaint(ImageFrame.create("picture/gui/slot.png"));
 				this.setTableStorage(garrageTS);
 				this.setCellSize(100);
-				this.setBoundsSize(100, 100);
+				this.setXY(100, 100);
 			}
 			@Override
 			public void idle() {
@@ -597,7 +595,7 @@ public class Engine_Surviver extends Game {
 				g2.setColor(Color.WHITE);
 				GHQ.drawStringGHQ("现有知识总数: " + garrageCount, 110, 80, g2.getFont().deriveFont(Font.BOLD, 20F));
 			}
-			private final RectPaint cellRectPaint = ImageFrame.create("picture/gui/slot.png");
+			private final RectPaint cellRectPaint = ImageFrame.create("image/ui/slot.png");
 			@Override
 			protected void paintOfCell(int id, HasDotPaint object, int x, int y) {
 				cellRectPaint.rectPaint(x, y, cellSize);
@@ -661,11 +659,11 @@ public class Engine_Surviver extends Game {
 				for(Unit unit : GHQ.stage().units) {
 					if(!isGameClear && !isGameOver)
 						break;
-					if(isGameClear && unit.hitGroup().get() == MyUnit.ENEMY) {
+					if(isGameClear && unit instanceof Enemy) {
 						isGameClear = false;
 					}
-					if(isGameOver && unit.hitGroup().get() == MyUnit.FRIEND) {
-						isGameClear = false;
+					if(isGameOver && unit instanceof Knowledge) {
+						isGameOver = false;
 					}
 				}
 				//count lest enemy
@@ -729,7 +727,7 @@ public class Engine_Surviver extends Game {
 				new BasicButton() {
 					{
 						this.setName("backToMenu");
-						this.setBGPaint(ImageFrame.create("image/backButton.png"));
+						this.setBGImage("image/backButton.png");
 						this.setBounds(0, 0, 100, 50);
 					}
 					@Override

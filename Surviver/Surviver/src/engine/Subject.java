@@ -16,18 +16,6 @@ public enum Subject{
 			return null;
 		}
 	}
-	public int id() {
-		switch(this) {
-		case CHI:
-			return 0;
-		case MAT:
-			return 1;
-		case ENG:
-			return 2;
-		default:
-			return -1;
-		}
-	}
 	public String toCHIString() {
 		switch(this) {
 		case CHI:

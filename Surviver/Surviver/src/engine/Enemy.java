@@ -56,7 +56,7 @@ public class Enemy extends MyUnit {
 		double distance = GHQ.MAX;
 		final boolean IS_DMG = atk > 0;
 		for(Unit unit : GHQ.stage().units) {
-			if(IS_DMG ? unit instanceof Knowledge : unit instanceof Enemy) {
+			if(unit != this && (IS_DMG ? unit instanceof Knowledge : unit instanceof Enemy)) {
 				final double DISTANCE = unit.point().distance(this);
 				if(DISTANCE < distance) {
 					distance = DISTANCE;

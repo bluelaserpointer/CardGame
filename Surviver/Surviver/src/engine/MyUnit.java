@@ -11,7 +11,7 @@ import physics.hitShape.Square;
 import paint.dot.DotPaint;
 import paint.dot.HasDotPaint;
 import paint.ImageFrame;
-import bullet.BulletLibrary;
+import bullet.Bullets;
 import calculate.IntDamage;
 import unit.Unit;
 import weapon.Weapon;
@@ -83,7 +83,7 @@ public abstract class MyUnit extends Unit implements HasDotPaint {
 			}
 			@Override
 			public List<Bullet> setBullets(GHQObject shooter, HitRule standpoint) {
-				final Bullet bullet = GHQ.stage().addBullet(new BulletLibrary.BaseBullet(this, shooter, new HitRule((shooter instanceof Knowledge) ^ atk < 0 ? FRIEND : ENEMY)));
+				final Bullet bullet = GHQ.stage().addBullet(new Bullets.Laser(this, shooter, new HitRule((shooter instanceof Knowledge) ^ atk < 0 ? FRIEND : ENEMY)));
 				bullet.setDamage(new IntDamage(atk) {
 					@Override
 					public void doDamage(GHQObject target) {

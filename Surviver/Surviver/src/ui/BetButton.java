@@ -25,9 +25,9 @@ public class BetButton extends GUIParts {
 	}
 	@Override
 	public boolean clicked(MouseEvent e) {
-		if(Engine_Surviver.resourceAmount[subject.id()] >= betValue && Engine_Surviver.getTotalBet() + betValue <= 100) {
-			Engine_Surviver.lotteAdded[subject.id()] += betValue;
-			Engine_Surviver.resourceAmount[subject.id()] -= betValue;
+		if(Engine_Surviver.resourceAmount[subject.ordinal()] >= betValue && Engine_Surviver.getTotalBet() + betValue <= 100) {
+			Engine_Surviver.lotteAdded[subject.ordinal()] += betValue;
+			Engine_Surviver.resourceAmount[subject.ordinal()] -= betValue;
 		}
 		return super.clicked(e);
 	}

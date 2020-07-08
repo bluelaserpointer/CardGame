@@ -43,7 +43,7 @@ public class Knowledge extends MyUnit {
 		double distance = GHQ.MAX;
 		final boolean IS_DMG = atk > 0;
 		for(Unit unit : GHQ.stage().units) {
-			if(IS_DMG ? unit instanceof Enemy : unit instanceof Knowledge) {
+			if(unit != this && (IS_DMG ? unit instanceof Enemy : unit instanceof Knowledge)) {
 				final double DISTANCE = unit.point().distance(this);
 				if(DISTANCE < distance) {
 					distance = DISTANCE;
@@ -124,7 +124,7 @@ public class Knowledge extends MyUnit {
 		}
 		
 		static final KnowledgeParameter[][][] lotteSpring
-			= new KnowledgeParameter[3][5][]; //subject, rarity
+			= new KnowledgeParameter[Subject.values().length][5][]; //subject, rarity
 		private static final void setMember(Subject subject, int rarity, KnowledgeParameter... members)
 		{
 			lotteSpring[subject.ordinal()][rarity] = members;
@@ -177,7 +177,7 @@ public class Knowledge extends MyUnit {
 				subject = Subject.ENG.ordinal();
 			final KnowledgeParameter[] group = lotteSpring[subject][rarity];
 			Engine_Surviver.lottedRarity = rarity;
-			return group[GHQ.random2(0, group.length)].generate();
+			return group[GHQ.random2(0, group.length - 1)].generate();
 		}
 		static {
 			setMember(Subject.CHI, 0, CHI_N1, CHI_N2, CHI_N3);
