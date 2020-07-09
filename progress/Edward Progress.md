@@ -26,3 +26,16 @@ Edward Raymond He 518030990022
 
 1. 前后端请求发送与接受的交互环节测试
 
+### 2020.07.09
+
+#### Finished: 
+
+1. 完善了更多的基本实体集的增删改查功能
+2. 在测试前后端交互阶段时完善了后端的部分bug (与非结构化数据相关的 repository class)
+3. 完善了 Activity和Mail (游戏活动与游戏邮件) 的发布与展示，OwnItem和OwnCard的展示
+
+#### Currently working on:
+
+1. Activity、Mail、OwnCard、OwnItem 的更新与删除
+2. 游戏关卡设计模块更人性化的可视化 (目前能从数据库变化与 console.log 等观察到具体的数据，虽然是正确的，但对后期复杂的关卡维护更新等不友好)
+3. 登录登出时的数据库校验 (目前前端安全性已提升，待与后端进行进一步交互)
