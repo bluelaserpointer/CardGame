@@ -3,7 +3,7 @@ package engine;
 import core.GHQ;
 import paint.dot.DotPaint;
 import paint.animation.SerialImageFrame;
-import unit.Unit;
+import preset.unit.Unit;
 
 public class Enemy extends MyUnit {
 

@@ -2,13 +2,13 @@ package engine;
 
 import java.util.List;
 
-import bullet.Bullet;
+import preset.bullet.Bullet;
 import core.GHQ;
 import core.GHQObject;
 import physics.HitRule;
 import paint.dot.DotPaint;
 import paint.ImageFrame;
-import unit.Unit;
+import preset.unit.Unit;
 import weapon.Weapon;
 
 public class Knowledge extends MyUnit {

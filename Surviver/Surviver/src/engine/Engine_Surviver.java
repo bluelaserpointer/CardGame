@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.Stack;
 
 import core.GHQ;
-import stage.GHQStage;
+import physics.stage.GHQStage;
 import core.Game;
 import gui.AutoResizeMenu;
 import gui.BasicButton;
@@ -21,7 +21,7 @@ import paint.rect.RectPaint;
 import paint.animation.SerialImageFrameAlpha;
 import storage.TableStorage;
 import ui.BetButton;
-import unit.Unit;
+import preset.unit.Unit;
 
 public class Engine_Surviver extends Game {
 	

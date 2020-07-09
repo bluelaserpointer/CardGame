@@ -10,6 +10,7 @@ import core.GHQObject;
 import paint.animation.SerialImageFrame;
 import paint.dot.DotPaint;
 import paint.text.StringPaint;
+import preset.effect.Effect;
 
 public class Effects extends Effect {
 	public Effects(GHQObject source) {

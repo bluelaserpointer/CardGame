@@ -3,7 +3,7 @@ package engine;
 import java.util.LinkedList;
 import java.util.List;
 
-import bullet.Bullet;
+import preset.bullet.Bullet;
 import core.GHQ;
 import core.GHQObject;
 import physics.HitRule;
@@ -13,7 +13,7 @@ import paint.dot.HasDotPaint;
 import paint.ImageFrame;
 import bullet.Bullets;
 import calculate.IntDamage;
-import unit.Unit;
+import preset.unit.Unit;
 import weapon.Weapon;
 
 public abstract class MyUnit extends Unit implements HasDotPaint {

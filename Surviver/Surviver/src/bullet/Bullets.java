@@ -6,6 +6,7 @@ import effect.Effects;
 import paint.ImageFrame;
 import physics.HitRule;
 import physics.hitShape.Circle;
+import preset.bullet.Bullet;
 import weapon.Weapon;
 
 public class Bullets extends Bullet {
