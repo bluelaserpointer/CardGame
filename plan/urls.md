@@ -36,26 +36,30 @@
 
   - 更新操作：
 
-    Update: /update{var1}{var2}{var3}...
-
-  - 添加操作：
-
-    Add: /add{var1}{var2}{var3}...
+    Update: /update{entityName}
+  param: {entityName}Id
+  
+- 添加操作：
+  
+  Add: /add{entityName}
+    param: {entityName}Name, {entityName}Img, {entityName}......, 
 
   - 删除操作：
 
-    Delete: /delete{Id}
-
-  - 删除所有：
-
-    Delete: /delete/all
-
-  - 获取操作：
-
-    Get: /get{Id}
+    Delete: /delete{entityName}
+  param: {entityName}Id
+  
+- 删除所有：
+  
+  Delete: /deleteAll{entityName}s
+  
+- 获取操作：
+  
+  Get: /get{entityName}
+    param: {entityName}Id
 
   - 获取所有：
-
-    Get: /get/all
-
+  
+    Get: /getAll{entityName}s
+  
   部分实体集可能有部分操作缺失。
