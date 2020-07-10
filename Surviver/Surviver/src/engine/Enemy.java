@@ -30,6 +30,7 @@ public class Enemy extends MyUnit {
 			def += def*0.5;
 		}
 		maxHP = hp;
+		angle().set(-Math.PI);
 		return this;
 	}
 	private static final int drops[] = {

@@ -1,11 +1,16 @@
 package bullet;
 
+import java.awt.Color;
+
 import core.GHQ;
 import core.GHQObject;
 import effect.Effects;
+import engine.MyUnit;
+import engine.SurDamage;
 import paint.ImageFrame;
 import physics.HitRule;
 import physics.hitShape.Circle;
+import physics.hitShape.Square;
 import preset.bullet.Bullet;
 import weapon.Weapon;
 
@@ -21,10 +26,10 @@ public class Bullets extends Bullet {
 			super(shooter);
 			this.originWeapon = originWeapon;
 			physics().setHitRule(hitGroup);
-			physics().setHitShape(new Circle(this, 3));
-			point().setSpeed(2);
-			point().setMoveAngle(point().moveAngle() - 0.05 + Math.random()*0.1);
-			name = "Laser";
+			physics().setHitShape(new Square(this, 10));
+			point().setMoveAngle(point().moveAngle()/* + Math.random()*0.1*/);
+			point().setSpeed(10);
+			name = "SurBullet";
 			limitFrame = 50;
 			paintScript = ImageFrame.create(this, "image/animations/1_fire.png");
 		}
@@ -32,11 +37,11 @@ public class Bullets extends Bullet {
 			super(shooter);
 			this.originWeapon = originWeapon;
 			physics().setHitRule(hitGroup);
-			physics().setHitShape(new Circle(this, 3));
-			point().setSpeed(2);
-			point().setMoveAngle(point().moveAngle() - 0.05 + Math.random()*0.1);
+			physics().setHitShape(new Square(this, 10));
+			point().setMoveAngle(point().moveAngle()/* + Math.random()*0.1*/);
+			point().setSpeed(10);
 			setDamage(sample.damage);
-			name = "ACCAR";
+			name = "SurBullet";
 			limitFrame = 50;
 			paintScript = ImageFrame.create(this, "image/animations/1_fire.png");
 		}
@@ -45,29 +50,30 @@ public class Bullets extends Bullet {
 		}
 		@Override
 		public void idle() {
-			if(checkIsOutofLifeSpan()) {
-				claimDeleteFromStage();
-				return;
-			}
-			boolean alive;
-			int loops = 50;
-			while(point().inStage() && --loops > 0) {
-				alive = dynamIdle();
-//				if(loops > 5) {
-//					GHQ.getG2D(Color.RED).fillRect(point().intX(), point().intY(), 1, 1);
-//				} else {
-//					paint();
-//				}
-				if(!alive)
-					return;
-			}
-			paint();
+			super.idle();
 		}
 		@Override
 		public final void hitObject(GHQObject object) {
 			super.hitObject(object);
 			GHQ.stage().addEffect(new Effects.SparkHitEF(this));
 		}
+		@Override
+		public final void paint() {
+			Color color;
+			if(this.hitGroup().get() == MyUnit.ENEMY) {
+				if(((SurDamage)damage).value() > 0) {
+					color = Color.BLACK;
+				} else {
+					color = Color.GREEN;
+				}
+			} else {
+				if(((SurDamage)damage).value() > 0) {
+					color = Color.RED;
+				} else {
+					color = Color.WHITE;
+				}
+			}
+			this.hitShape().draw(color, GHQ.stroke1);
+		}
 	}
-	
 }

@@ -89,17 +89,16 @@ public class FullscreenActivity extends AppCompatActivity {
                     break;
                 case MotionEvent.ACTION_UP:
                     view.performClick();
-                    final View helloLayout = findViewById(R.id.helloLayout);
                     setContentView(R.layout.home);
-
-                    final View ball = findViewById(R.id.mgv_ball);
-                    new Timer().schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-                            if(ball != null)
-                                ball.invalidate();
-                        }
-                    },200,50);
+                    findViewById(R.id.toBattle_button).setOnTouchListener(toBattleTouchListener);
+//                    final View ball = findViewById(R.id.mgv_ball);
+//                    new Timer().schedule(new TimerTask() {
+//                        @Override
+//                        public void run() {
+//                            if(ball != null)
+//                                ball.invalidate();
+//                        }
+//                    },200,50);
 //                    if(helloLayout.isShown())
 //                        helloLayout.setVisibility(View.INVISIBLE);
 //                    else {
@@ -107,7 +106,18 @@ public class FullscreenActivity extends AppCompatActivity {
 //                    }
                     //System.out.println(HttpClient.doGet("http://192.168.254.1:8080/user/findAll"));
                 break;
-                default:
+            }
+            return false;
+        }
+    };
+
+    private final View.OnTouchListener toBattleTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            switch (motionEvent.getAction()) {
+                case MotionEvent.ACTION_UP:
+                    view.performClick();
+                    setContentView(R.layout.map);
                     break;
             }
             return false;
@@ -136,7 +146,6 @@ public class FullscreenActivity extends AppCompatActivity {
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
         findViewById(R.id.login_button).setOnTouchListener(mDelayHideTouchListener);
-
     }
 
     @Override

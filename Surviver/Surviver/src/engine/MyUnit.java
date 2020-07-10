@@ -12,13 +12,12 @@ import paint.dot.DotPaint;
 import paint.dot.HasDotPaint;
 import paint.ImageFrame;
 import bullet.Bullets;
-import calculate.IntDamage;
 import preset.unit.Unit;
 import weapon.Weapon;
 
 public abstract class MyUnit extends Unit implements HasDotPaint {
 
-	static final int FRIEND = 0, ENEMY = 1;
+	public static final int FRIEND = 0, ENEMY = 1;
 	
 	final String NAME;
 	int maxHP, hp, def, atk, cd;
@@ -31,13 +30,13 @@ public abstract class MyUnit extends Unit implements HasDotPaint {
 
 	protected MyUnit(String name, String image, int hitRule) {
 		super.physics().setHitRule(new HitRule(hitRule));
-		super.physics().setHitShape(new Square(25));
+		super.physics().setHitShape(new Square(this, 75));
 		NAME = name;
 		dotPaint = ImageFrame.create(image);
 	}
 	protected MyUnit(String name, DotPaint dotPaint, int hitRule) {
 		super.physics().setHitRule(new HitRule(hitRule));
-		super.physics().setHitShape(new Square(25));
+		super.physics().setHitShape(new Square(this, 75));
 		NAME = name;
 		this.dotPaint = dotPaint;
 	}
@@ -83,20 +82,9 @@ public abstract class MyUnit extends Unit implements HasDotPaint {
 			}
 			@Override
 			public List<Bullet> setBullets(GHQObject shooter, HitRule standpoint) {
-				final Bullet bullet = GHQ.stage().addBullet(new Bullets.Laser(this, shooter, new HitRule((shooter instanceof Knowledge) ^ atk < 0 ? FRIEND : ENEMY)));
-				bullet.setDamage(new IntDamage(atk) {
-					@Override
-					public void doDamage(GHQObject target) {
-						((MyUnit)target).damage_amount(this.damageValue);
-					}
-					@Override
-					public IntDamage clone() {
-						return this;
-					}
-				});
+				final Bullet bullet = GHQ.stage().addBullet(new Bullets.Laser(this, shooter, new HitRule((shooter instanceof Knowledge) == atk > 0 ? FRIEND : ENEMY)));
+				bullet.setDamage(new SurDamage(atk));
 				bullet.limitRange = atkRange;
-				bullet.point().setSpeed(10);
-				bullet.point().addXY_allowsMoveAngle(0, 18);
 				final LinkedList<Bullet> bulletList = new LinkedList<>();
 				bulletList.add(bullet);
 				return bulletList;
@@ -111,15 +99,12 @@ public abstract class MyUnit extends Unit implements HasDotPaint {
 		////////////
 		mainWeapon.idle();
 		////////////
-		//paint
-		////////////
-		dotPaint.dotPaint_capSize(point(), 100);
-		GHQ.paintHPArc(point(), 70, hp, maxHP);
-		////////////
 		//dynam
 		////////////
 		point().moveIfNoObstacles(this);
 		point().mulSpeed(0.9);
+		dotPaint.dotPaint(point());
+		GHQ.paintHPArc(point(), 70, hp, maxHP);
 	}
 	@Override
 	public DotPaint getDotPaint() {
