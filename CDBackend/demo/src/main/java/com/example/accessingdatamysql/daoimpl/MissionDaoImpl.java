@@ -44,12 +44,7 @@ public class MissionDaoImpl implements MissionDao {
             List<Integer> awardItemIds) {
         // System.out.println(MissionDescription);
         Mission Mission = new Mission(type, MissionName);
-        List<Item> awardItems = new ArrayList<Item>();
-        for (int i = 0; i < awardItemIds.size(); i++) {
-            Item Item = ItemDao.getOneItem(awardItemIds.get(i));
-            awardItems.add(Item);
-        }
-        Mission.setAwardItems(awardItems);
+        Mission.setAwardItems(awardItemIds);
         // System.out.println("new Mission has an Id of : " + n.getMissionId());
         MissionRepository.save(Mission);
         MissionDetails MissionDetails = new MissionDetails(Mission.getMissionId(), MissionDescription);
@@ -64,12 +59,7 @@ public class MissionDaoImpl implements MissionDao {
         Mission Mission = MissionRepository.getOne(MissionId);
         // System.out.println("old Mission has an Id of : " + n.getMissionId());
         Mission.setMission(type, MissionName);
-        List<Item> awardItems = new ArrayList<Item>();
-        for (int i = 0; i < awardItemIds.size(); i++) {
-            Item Item = ItemDao.getOneItem(awardItemIds.get(i));
-            awardItems.add(Item);
-        }
-        Mission.setAwardItems(awardItems);
+        Mission.setAwardItems(awardItemIds);
 
         MissionRepository.updateMissionStatus(Mission, MissionId);
 

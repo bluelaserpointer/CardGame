@@ -21,7 +21,9 @@ public class Mission {
 
     private String type;
 
-    private List<Item> awardItems;
+    @Column
+    @ElementCollection(targetClass = Integer.class)
+    private List<Integer> awardItems;
 
     @Transient
     private MissionDetails MissionDetails;
@@ -71,11 +73,11 @@ public class Mission {
         this.MissionDetails = MissionDetails;
     }
 
-    public List<Item> getAwardItems() {
+    public List<Integer> getAwardItems() {
         return this.awardItems;
     }
 
-    public void setAwardItems(List<Item> awardItems) {
+    public void setAwardItems(List<Integer> awardItems) {
         this.awardItems = awardItems;
     }
 
