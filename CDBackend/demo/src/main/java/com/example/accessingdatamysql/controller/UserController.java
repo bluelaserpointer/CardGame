@@ -36,8 +36,11 @@ public class UserController {
       @RequestParam("userName") String userName, @RequestParam("email") String email,
       @RequestParam("password") String password, @RequestParam("phoneNumber") String phoneNumber,
       @RequestParam("credits") Integer credits, @RequestParam("access") Boolean access,
-      @RequestParam("level") Integer level) {
-    return userService.updateUser(userId, userName, email, password, phoneNumber, credits, access, level);
+      @RequestParam("level") Integer level, @RequestParam("stamina") Integer stamina,
+      @RequestParam("money") Integer money, @RequestParam("engKnowledge") Integer engKnowledge,
+      @RequestParam("mathKnowledge") Integer mathKnowledge, @RequestParam("chiKnowledge") Integer chiKnowledge) {
+    return userService.updateUser(userId, userName, email, password, phoneNumber, credits, access, level, stamina,
+        money, engKnowledge, mathKnowledge, chiKnowledge);
   }
 
   @RequestMapping(value = "/getAllUsers")
@@ -56,14 +59,12 @@ public class UserController {
   }
 
   @RequestMapping(value = "/identifyUser")
-  public boolean identifyUser(@RequestParam("userName") String userName, @RequestParam("password") String password)
-  {
+  public boolean identifyUser(@RequestParam("userName") String userName, @RequestParam("password") String password) {
     return userService.identifyUser(userName, password);
   }
 
   @RequestMapping(value = "/deleteUser")
-  public List<User> deleteUser(@RequestParam("userId") Integer userId)
-  {
+  public List<User> deleteUser(@RequestParam("userId") Integer userId) {
     return userService.deleteUser(userId);
   }
 }

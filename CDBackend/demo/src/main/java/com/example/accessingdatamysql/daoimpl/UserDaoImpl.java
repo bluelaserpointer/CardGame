@@ -29,11 +29,13 @@ public class UserDaoImpl implements UserDao {
     }
 
     public String updateUser(Integer UserId, String userName, String email, String password, String phoneNumber,
-            Integer credits, Boolean access, Integer level) {
+            Integer credits, Boolean access, Integer level, Integer stamina, Integer money, Integer engKnowledge,
+            Integer mathKnowledge, Integer chiKnowledge) {
 
         User User = UserRepository.getOne(UserId);
         // System.out.println("old User has an Id of : " + n.getUserId());
-        User.updateUser(userName, email, password, phoneNumber, credits, access, level);
+        User.updateUser(userName, email, password, phoneNumber, credits, access, level, stamina, money, engKnowledge,
+                mathKnowledge, chiKnowledge);
 
         UserRepository.updateUserStatus(User, UserId);
         // return "Modified User";
@@ -58,11 +60,11 @@ public class UserDaoImpl implements UserDao {
         return "Deleted All Users";
     }
 
-    public User getOneUserByUserName(String userName){
+    public User getOneUserByUserName(String userName) {
         return UserRepository.findUserByUserNameEquals(userName);
     }
 
-    public List<User> deleteUser(Integer userId){
+    public List<User> deleteUser(Integer userId) {
         UserRepository.deleteById(userId);
         return getAllUsers();
     }

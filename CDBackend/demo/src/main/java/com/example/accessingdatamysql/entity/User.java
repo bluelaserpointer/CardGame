@@ -29,6 +29,16 @@ public class User {
     private Boolean access;
 
     private Integer level;
+    // 体力值
+    private Integer stamina;
+    // 氪金金币
+    private Integer money;
+
+    private Integer engKnowledge;
+
+    private Integer mathKnowledge;
+
+    private Integer chiKnowledge;
 
     public User() {
         this.credits = 0;
@@ -44,11 +54,15 @@ public class User {
         this.credits = 0;
         this.access = true;
         this.level = 1;
-
+        this.money = 0;
+        this.engKnowledge = 0;
+        this.mathKnowledge = 0;
+        this.chiKnowledge = 0;
     }
 
     public void updateUser(String userName, String email, String password, String phoneNumber, Integer credits,
-            Boolean access, Integer level) {
+            Boolean access, Integer level, Integer stamina, Integer money, Integer engKnowledge, Integer mathKnowledge,
+            Integer chiKnowledge) {
         this.userName = userName;
         this.email = email;
         this.password = password;
@@ -56,6 +70,11 @@ public class User {
         this.credits = credits;
         this.access = access;
         this.level = level;
+        this.stamina = stamina;
+        this.money = money;
+        this.engKnowledge = engKnowledge;
+        this.mathKnowledge = mathKnowledge;
+        this.chiKnowledge = chiKnowledge;
     }
 
     public Integer getUserId() {
@@ -120,6 +139,46 @@ public class User {
 
     public void setLevel(Integer level) {
         this.level = level;
+    }
+
+    public Integer getStamina() {
+        return stamina;
+    }
+
+    public void setStamina(Integer stamina) {
+        this.stamina = stamina;
+    }
+
+    public Integer getMoney() {
+        return money;
+    }
+
+    public void setMoney(Integer money) {
+        this.money = money;
+    }
+
+    public Integer getEngKnowledge() {
+        return engKnowledge;
+    }
+
+    public void setEngKnowledge(Integer engKnowledge) {
+        this.engKnowledge = engKnowledge;
+    }
+
+    public Integer getMathKnowledge() {
+        return mathKnowledge;
+    }
+
+    public void setMathKnowledge(Integer mathKnowledge) {
+        this.mathKnowledge = mathKnowledge;
+    }
+
+    public Integer getChiKnowledge() {
+        return chiKnowledge;
+    }
+
+    public void setChiKnowledge(Integer chiKnowledge) {
+        this.chiKnowledge = chiKnowledge;
     }
 
     // public MailBox getMailBox() {

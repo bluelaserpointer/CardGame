@@ -24,8 +24,10 @@ public class UserServiceImpl implements UserService {
     }
 
     public String updateUser(Integer UserId, String userName, String email, String password, String phoneNumber,
-            Integer credits, Boolean access, Integer level) {
-        return userDao.updateUser(UserId, userName, email, password, phoneNumber, credits, access, level);
+            Integer credits, Boolean access, Integer level, Integer stamina, Integer money, Integer engKnowledge,
+            Integer mathKnowledge, Integer chiKnowledge) {
+        return userDao.updateUser(UserId, userName, email, password, phoneNumber, credits, access, level, stamina,
+                money, engKnowledge, mathKnowledge, chiKnowledge);
     }
 
     public List<User> getAllUsers() {
@@ -40,10 +42,9 @@ public class UserServiceImpl implements UserService {
         return userDao.deleteAll();
     }
 
-    public boolean identifyUser(String userName, String password){
+    public boolean identifyUser(String userName, String password) {
         User fetchUser = userDao.getOneUserByUserName(userName);
-        if(fetchUser != null)
-        {
+        if (fetchUser != null) {
             return password.equals(fetchUser.getPassword());
         }
         return false;
