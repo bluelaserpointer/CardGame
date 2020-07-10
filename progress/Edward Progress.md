@@ -39,3 +39,16 @@ Edward Raymond He 518030990022
 1. Activity、Mail、OwnCard、OwnItem 的更新与删除
 2. 游戏关卡设计模块更人性化的可视化 (目前能从数据库变化与 console.log 等观察到具体的数据，虽然是正确的，但对后期复杂的关卡维护更新等不友好)
 3. 登录登出时的数据库校验 (目前前端安全性已提升，待与后端进行进一步交互)
+
+### 2020.07.10
+
+#### Finished: 
+
+1. 游戏关卡设计模块可视化及完善与相应后端的更改调试
+2. 实体集表格管理中的搜索功能
+3. 登录登出相关的校验与相应后端的更改调试
+
+#### Currently working on:
+
+1. Activity、Mail、OwnCard、OwnItem 的更新与删除
+2. Android Studio的安装和Gradle问题，准备加入手游UI的布局工作
