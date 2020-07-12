@@ -21,18 +21,18 @@ public class AdminDaoImpl implements AdminDao {
         return AdminRepository.getOne(AdminId);
     }
 
-    public String addNewAdmin(String adminName, String password) {
-        Admin Admin = new Admin(adminName, password);
+    public String addNewAdmin(String adminName, String password, Integer role) {
+        Admin Admin = new Admin(adminName, password, role);
         // System.out.println("new Admin has an Id of : " + n.getAdminId());
         AdminRepository.save(Admin);
         return "Saved Admin";
     }
 
-    public String updateAdmin(Integer AdminId, String adminName, String password) {
+    public String updateAdmin(Integer AdminId, String adminName, String password, Integer role) {
 
         Admin Admin = AdminRepository.getOne(AdminId);
         // System.out.println("old Admin has an Id of : " + n.getAdminId());
-        Admin.setAdmin(adminName, password);
+        Admin.setAdmin(adminName, password, role);
 
         AdminRepository.updateAdminStatus(Admin, AdminId);
         // return "Modified Admin";
@@ -68,4 +68,19 @@ public class AdminDaoImpl implements AdminDao {
         return getAllAdmins();
     }
 
+    public List<String> getAllAdminNames(){
+        List<Admin> adminList = AdminRepository.findAll();
+        List<String> nameList = new LinkedList<>();;
+        for(int i = 0; i < adminList.size(); i++)
+        {
+            nameList.add(adminList.get(i).getAdminName());
+        }
+        System.out.println(nameList);
+        return nameList;
+    };
+
+    public Integer getAdminRole(String adminName)
+    {
+        return AdminRepository.findAdminByAdminNameEquals(adminName).getRole();
+    }
 }
