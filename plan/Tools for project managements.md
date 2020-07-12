@@ -14,3 +14,6 @@ https://github.com/checkstyle/checkstyle
 
 Code Review：
 https://google.github.io/eng-practices/review/
+
+Github commit 规范：
+https://www.conventionalcommits.org/en/v1.0.0/#summary
