@@ -27,14 +27,14 @@ public class AdminController {
 
   @RequestMapping(value = "/addAdmin")
   public @ResponseBody String addNewAdmin(@RequestParam("adminName") String adminName,
-      @RequestParam("password") String password, @RequestParam("role") Integer role) {
-    return AdminService.addNewAdmin(adminName, password, role);
+      @RequestParam("password") String password) {
+    return AdminService.addNewAdmin(adminName, password);
   }
 
   @RequestMapping(value = "/updateAdmin")
   public @ResponseBody String updateAdmin(@RequestParam("adminId") Integer adminId,
-      @RequestParam("adminName") String adminName, @RequestParam("password") String password, @RequestParam("role") Integer role) {
-    return AdminService.updateAdmin(adminId, adminName, password, role);
+      @RequestParam("adminName") String adminName, @RequestParam("password") String password) {
+    return AdminService.updateAdmin(adminId, adminName, password);
   }
 
   @RequestMapping(value = "/getAllAdmins")
@@ -59,18 +59,6 @@ public class AdminController {
     System.out.println(password);
     return AdminService.identifyAdmin(adminName, password);
   }
-
-  @RequestMapping(value = "/getAdminName")
-  public List<String> getAdminNames()
-  {
-    return AdminService.getAllAdminNames();
-  };
-
-  @RequestMapping(value = "/getAdminRole")
-  public Integer getAdminRole(@RequestParam("adminName") String adminName)
-  {
-    return AdminService.getAdminRole(adminName);
-  };
 
   @RequestMapping(value = "/deleteAdmin")
   public List<Admin> deleteAdmin(@RequestParam("adminId") Integer adminId)

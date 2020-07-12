@@ -11,7 +11,5 @@ public interface ChapterDao {
     List<Chapter> getAllChapters();
 
     List<Chapter> deleteChapter(Integer chapterId);
-    List<ChapterDetails> getChapterDetailsByChapterAndByPhase(Integer chapterId, Integer phaseId);
-    List<ChapterDetails> getChapterDetailsByChapter(Integer chapterId);
-    List<ChapterDetails> getAllChapterDetails();
+
 }

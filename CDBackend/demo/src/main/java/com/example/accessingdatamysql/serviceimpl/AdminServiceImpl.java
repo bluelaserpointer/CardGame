@@ -19,12 +19,12 @@ public class AdminServiceImpl implements AdminService {
         return AdminDao.getOneAdmin(AdminId);
     }
 
-    public String addNewAdmin(String adminName, String password, Integer role) {
-        return AdminDao.addNewAdmin(adminName, password, role);
+    public String addNewAdmin(String adminName, String password) {
+        return AdminDao.addNewAdmin(adminName, password);
     }
 
-    public String updateAdmin(Integer AdminId, String adminName, String password, Integer role) {
-        return AdminDao.updateAdmin(AdminId, adminName, password, role);
+    public String updateAdmin(Integer AdminId, String adminName, String password) {
+        return AdminDao.updateAdmin(AdminId, adminName, password);
     }
 
     public List<Admin> getAllAdmins() {
@@ -49,13 +49,5 @@ public class AdminServiceImpl implements AdminService {
 
     public List<Admin> deleteAdmin(Integer adminId) {
         return AdminDao.deleteAdmin(adminId);
-    }
-
-    public List<String> getAllAdminNames(){
-        return AdminDao.getAllAdminNames();
-    };
-
-    public Integer getAdminRole(String adminName) {
-        return AdminDao.getAdminRole(adminName);
     }
 }

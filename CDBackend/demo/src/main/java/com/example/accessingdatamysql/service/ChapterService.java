@@ -11,8 +11,5 @@ public interface ChapterService {
     List<ChapterDetails> updateChapterByPhase(Integer chapterId, Integer phaseId, String phaseData) throws JsonProcessingException;
     List<Chapter> getAllChapters();
     List<Chapter> deleteChapter(Integer chapterId);
-    List<ChapterDetails> getChapterDetailsByChapterAndByPhase(Integer chapterId, Integer phaseId);
-    List<ChapterDetails> getChapterDetailsByChapter(Integer chapterId);
-    List<ChapterDetails> getAllChapterDetails();
 
 }

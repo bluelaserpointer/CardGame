@@ -25,19 +25,38 @@ public class ChapterDaoImpl implements ChapterDao {
         TypeFactory typeFactory = objectMapper.getTypeFactory();
         List<List<Integer>> mappedPhaseData = objectMapper.readValue(phaseData, typeFactory.constructCollectionType(List.class, List.class));
         System.out.println(mappedPhaseData);
-        Integer posCount = mappedPhaseData.size();
-        for (List<Integer> currPos : mappedPhaseData) {
-            ChapterDetails chapterDetails = new ChapterDetails();
-            chapterDetails.setChapterId(chapterId);
-            chapterDetails.setPhaseId(phaseId);
-            chapterDetails.setPositionId(currPos.get(0));
-            chapterDetails.setCardId(currPos.get(1));
-            chapterDetailsRepository.save(chapterDetails);
+        int row = mappedPhaseData.size();
+        int col = mappedPhaseData.get(0).size();
+        int pos = 0;
+        Integer card = 0;
+        for(int i = 0; i < row; i++)
+        {
+            System.out.println("Row " + i);
+            List<Integer> currRow = mappedPhaseData.get(i);
+            for(int j = 0; j < col; j++)
+            {
+                System.out.println("Col " + j);
+                card = currRow.get(j);
+                System.out.println(card);
+                if(card == -1)
+                    continue;
+                pos = i * row + j;
+                ChapterDetails chapterDetails = new ChapterDetails();
+                chapterDetails.setChapterId(chapterId);
+                chapterDetails.setPhaseId(phaseId);
+                chapterDetails.setCardId(card);
+                chapterDetails.setPositionId(pos);
+                chapterDetailsRepository.save(chapterDetails);
+            }
+
         }
-        return getChapterDetailsByChapter(chapterId);
+        System.out.println("Finished loop");
+        System.out.println(chapterDetailsRepository.findAll());
+        return chapterDetailsRepository.findAll();
     };
 
     public List<Chapter> getAllChapters(){
+        System.out.println("In dao");
         System.out.println(chapterRepository.findAll());
         return chapterRepository.findAll();
     }
@@ -46,17 +65,5 @@ public class ChapterDaoImpl implements ChapterDao {
         chapterRepository.deleteChapterByChapterIdEquals(chapterId);
         chapterDetailsRepository.deleteChapterDetailsByCardIdEquals(chapterId);
         return getAllChapters();
-    }
-
-    public List<ChapterDetails> getChapterDetailsByChapterAndByPhase(Integer chapterId, Integer phaseId) {
-        return chapterDetailsRepository.getChapterDetailsByChapterIdEqualsAndPhaseIdEquals(chapterId, phaseId);
-    }
-
-    public List<ChapterDetails> getChapterDetailsByChapter(Integer chapterId) {
-        return chapterDetailsRepository.getChapterDetailsByChapterIdEquals(chapterId);
-    }
-
-    public List<ChapterDetails> getAllChapterDetails() {
-        return chapterDetailsRepository.findAll();
     }
 }

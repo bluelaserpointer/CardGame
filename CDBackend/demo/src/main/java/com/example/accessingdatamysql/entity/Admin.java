@@ -20,17 +20,15 @@ public class Admin {
 
     private String password;
 
-    private Integer role;
-
     public Admin() {
     };
 
-    public Admin(String adminName, String password, Integer role) {
+    public Admin(String adminName, String password) {
         this.adminName = adminName;
         this.password = password;
     }
 
-    public void setAdmin(String adminName, String password, Integer role) {
+    public void setAdmin(String adminName, String password) {
         this.adminName = adminName;
         this.password = password;
     }
@@ -57,13 +55,5 @@ public class Admin {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Integer getRole() {
-        return role;
-    }
-
-    public void setRole(Integer role) {
-        this.role = role;
     }
 }

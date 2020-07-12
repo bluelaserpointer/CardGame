@@ -46,21 +46,6 @@ public class ChapterController {
         return chapterService.getAllChapters();
     }
 
-    @RequestMapping(value = "/getChapterDetailsByChapterAndByPhase")
-    public List<ChapterDetails> getChapterDetailsByChapterAndByPhase(@RequestParam("chapterId") Integer chapterId, @RequestParam("phaseId") Integer phaseId) {
-        return chapterService.getChapterDetailsByChapterAndByPhase(chapterId, phaseId);
-    }
-
-    @RequestMapping(value = "/getChapterDetailsByChapter")
-    public List<ChapterDetails> getChapterDetailsByChapter(@RequestParam("chapterId") Integer chapterId) {
-        return chapterService.getChapterDetailsByChapter(chapterId);
-    }
-
-    @RequestMapping(value = "/getAllChapterDetails")
-    public List<ChapterDetails> getAllChapterDetails() {
-        return chapterService.getAllChapterDetails();
-    }
-
 //    @RequestMapping(value = "/deleteChapter")
 //    public List<Chapter> deleteChapter(@RequestParam("chapterId") Integer chapterId)
 //    {

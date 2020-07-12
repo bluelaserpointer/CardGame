@@ -8,8 +8,6 @@ import com.example.accessingdatamysql.service.ChapterService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -30,17 +28,5 @@ public class ChapterServiceImpl implements ChapterService {
 
     public List<Chapter> deleteChapter(Integer chapterId) {
         return chapterDao.deleteChapter(chapterId);
-    }
-
-    public List<ChapterDetails> getChapterDetailsByChapterAndByPhase(Integer chapterId, Integer phaseId) {
-        return chapterDao.getChapterDetailsByChapterAndByPhase(chapterId, phaseId);
-    }
-
-    public List<ChapterDetails> getChapterDetailsByChapter(Integer chapterId) {
-        return chapterDao.getChapterDetailsByChapter(chapterId);
-    }
-
-    public List<ChapterDetails> getAllChapterDetails() {
-        return chapterDao.getAllChapterDetails();
     }
 }

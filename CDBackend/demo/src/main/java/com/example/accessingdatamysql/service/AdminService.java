@@ -8,9 +8,9 @@ import java.util.List;
 public interface AdminService {
         Admin getOneAdmin(Integer AdminId);
 
-        String addNewAdmin(String adminName, String password, Integer role);
+        String addNewAdmin(String adminName, String password);
 
-        String updateAdmin(Integer AdminId, String adminName, String password, Integer role);
+        String updateAdmin(Integer AdminId, String adminName, String password);
 
         List<Admin> getAllAdmins();
 
@@ -21,8 +21,4 @@ public interface AdminService {
         boolean identifyAdmin(String adminName, String password);
 
         List<Admin> deleteAdmin(Integer adminId);
-
-        List<String> getAllAdminNames();
-
-        Integer getAdminRole(String adminName);
 }
