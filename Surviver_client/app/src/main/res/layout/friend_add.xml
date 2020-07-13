@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/friendPanel"
+    android:id="@+id/friendPanelAdd"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/cover2"
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/topBar"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2"
@@ -20,27 +21,20 @@
             android:background="@drawable/map_bigtag"
             android:text="返回" />
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tab"
+        <Button
+            android:id="@+id/friendList_button"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="7"
-            android:background="#4DFFFFFF"
-            android:layoutDirection="ltr">
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:text="好友列表" />
 
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/friendTab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="好友" />
+        <Button
+            android:id="@+id/friendAdd_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:text="添加好友" />
 
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/addTab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="添加" />
-
-        </com.google.android.material.tabs.TabLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -51,14 +45,14 @@
         android:orientation="horizontal">
 
         <LinearLayout
-            android:id="@+id/friendListPanel"
+            android:id="@+id/friendRecommondPanel"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
             android:orientation="horizontal">
 
             <ListView
-                android:id="@+id/friendList"
+                android:id="@+id/friendRecommondList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#80FFFFFF"
@@ -66,54 +60,54 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/chatPanel"
+            android:id="@+id/friendRequestPanel"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="7"
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/chatHistoryPanel"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="8"
-                android:background="#80FFFFFF"
-                android:dividerPadding="8dp"
-                android:orientation="vertical">
-
-                <ListView
-                    android:id="@+id/chatHistoryBubble"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/chatInputPanel"
+                android:id="@+id/searchInputPanel"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/chatInputTextWrapper"
+                    android:id="@+id/searchInputTextWrapper"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="8">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/chatInputText"
+                        android:id="@+id/searchInputText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:backgroundTint="#9AFFFFFF" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <Button
-                    android:id="@+id/send_button"
+                    android:id="@+id/search_button"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="2"
-                    android:text="发送" />
+                    android:text="搜索玩家" />
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/friendRequestHistoryPanel"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="9"
+                android:background="#80FFFFFF"
+                android:dividerPadding="8dp"
+                android:orientation="vertical">
+
+                <ListView
+                    android:id="@+id/friendRequestHistoryBubble"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
             </LinearLayout>
 
         </LinearLayout>
