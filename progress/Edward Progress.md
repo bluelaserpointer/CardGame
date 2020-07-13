@@ -52,3 +52,11 @@ Edward Raymond He 518030990022
 
 1. Activity、Mail、OwnCard、OwnItem 的更新与删除
 2. Android Studio的安装和Gradle问题，准备加入手游UI的布局工作
+
+### 2020.07.13
+
+#### Finished: 
+
+1. 进行了Android Studio的UI布局学习
+2. 设计了好友列表及添加好友相关的UI界面与页面跳转逻辑
+3. 进行了游戏机制的进一步讨论与更改
