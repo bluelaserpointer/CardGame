@@ -103,6 +103,7 @@ public class FullscreenActivity extends AppCompatActivity {
                 case MotionEvent.ACTION_UP:
                     setContentView(R.layout.home);
                     findViewById(R.id.toBattle_button).setOnTouchListener(toBattleTouchListener);
+                    findViewById(R.id.toOption_button).setOnTouchListener(toOptionTouchListener);
                     findViewById(R.id.toShop_button).setOnTouchListener(toShopTouchListener);
                     break;
             }
@@ -128,6 +129,38 @@ public class FullscreenActivity extends AppCompatActivity {
                 case MotionEvent.ACTION_UP:
                     setContentView(R.layout.shop);
                     findViewById(R.id.return_button).setOnTouchListener(toHomeTouchListener);
+                    break;
+            }
+            return false;
+        }
+    };
+
+    // TODO: Waiting to turn it to "toFriendTouchListener"
+    private final View.OnTouchListener toOptionTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            switch (motionEvent.getAction()) {
+                case MotionEvent.ACTION_UP:
+                    setContentView(R.layout.friend_list);
+                    findViewById(R.id.return_button).setOnTouchListener(toHomeTouchListener);
+                    findViewById(R.id.friendList_button).setOnTouchListener(toOptionTouchListener);
+                    findViewById(R.id.friendAdd_button).setOnTouchListener(toFriendAddTouchListener);
+                    break;
+            }
+            return false;
+        }
+    };
+
+
+    private final View.OnTouchListener toFriendAddTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            switch (motionEvent.getAction()) {
+                case MotionEvent.ACTION_UP:
+                    setContentView(R.layout.friend_add);
+                    findViewById(R.id.return_button).setOnTouchListener(toHomeTouchListener);
+                    findViewById(R.id.friendList_button).setOnTouchListener(toOptionTouchListener);
+                    findViewById(R.id.friendAdd_button).setOnTouchListener(toFriendAddTouchListener);
                     break;
             }
             return false;
