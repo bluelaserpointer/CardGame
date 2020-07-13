@@ -5,7 +5,7 @@ import java.util.List;
 import preset.bullet.Bullet;
 import core.GHQ;
 import core.GHQObject;
-import physics.HitRule;
+import physics.HitGroup;
 import paint.dot.DotPaint;
 import paint.ImageFrame;
 import preset.unit.Unit;
@@ -232,7 +232,7 @@ public class Knowledge extends MyUnit {
 						this.setReloadSpeed(UNIT.cd);
 					}
 					@Override
-					public List<Bullet> setBullets(GHQObject shooter, HitRule standpoint) {
+					public List<Bullet> setBullets(GHQObject shooter, HitGroup standpoint) {
 						MAT_N2_IF.dotPaint_capSize(shooter.point(), 200);
 						for(Unit unit : GHQ.stage().units) {
 							if(unit instanceof Enemy)
@@ -248,7 +248,7 @@ public class Knowledge extends MyUnit {
 						this.setCoolTime(UNIT.cd);
 					}
 					@Override
-					public List<Bullet> setBullets(GHQObject shooter, HitRule standpoint) {
+					public List<Bullet> setBullets(GHQObject shooter, HitGroup standpoint) {
 						MAT_N2_IF.dotPaint_capSize(shooter.point(), 200);
 						double distance1 = GHQ.MAX, distance2 = GHQ.MAX;
 						MyUnit assume1 = null, assume2 = null;
@@ -301,7 +301,7 @@ public class Knowledge extends MyUnit {
 						this.setCoolTime(UNIT.cd);
 					}
 					@Override
-					public List<Bullet> setBullets(GHQObject shooter, HitRule standpoint) {
+					public List<Bullet> setBullets(GHQObject shooter, HitGroup standpoint) {
 						final MyUnit TARGET = (MyUnit)GHQ.stage().getNearstEnemy(UNIT);
 						if(TARGET != null && UNIT.point().distance(TARGET) < UNIT.atkRange) {
 							final int DMG = TARGET.damage_amount(UNIT.atk);
@@ -309,7 +309,7 @@ public class Knowledge extends MyUnit {
 							TARGET.atk -= ATK_DRAIN;
 							final int HP_DRAIN = TARGET.drain_maxHP(UNIT.atk);
 							if(DMG > 0) {
-								final MyUnit HEAL_TARGET = (MyUnit)GHQ.stage().getNearstEnemy(new HitRule(ENEMY), UNIT.point());
+								final MyUnit HEAL_TARGET = (MyUnit)GHQ.stage().getNearstEnemy(new HitGroup(ENEMY), UNIT.point());
 								if(HEAL_TARGET != null && UNIT.point().distance(HEAL_TARGET) < UNIT.atkRange) {
 									HEAL_TARGET.atk += ATK_DRAIN;
 									HEAL_TARGET.maxHP += HP_DRAIN;

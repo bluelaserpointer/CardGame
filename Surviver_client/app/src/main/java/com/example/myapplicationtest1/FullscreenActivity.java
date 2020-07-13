@@ -10,9 +10,6 @@ import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
@@ -78,19 +75,7 @@ public class FullscreenActivity extends AppCompatActivity {
      * system UI. This is to prevent the jarring behavior of controls going away
      * while interacting with activity UI.
      */
-    private final View.OnTouchListener mDelayHideTouchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            switch (motionEvent.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    if (AUTO_HIDE) {
-                        delayedHide(AUTO_HIDE_DELAY_MILLIS);
-                    }
-                    break;
-                case MotionEvent.ACTION_UP:
-                    view.performClick();
-                    setContentView(R.layout.home);
-                    findViewById(R.id.toBattle_button).setOnTouchListener(toBattleTouchListener);
+
 //                    final View ball = findViewById(R.id.mgv_ball);
 //                    new Timer().schedule(new TimerTask() {
 //                        @Override
@@ -104,20 +89,44 @@ public class FullscreenActivity extends AppCompatActivity {
 //                    else {
 //                        helloLayout.setVisibility(View.VISIBLE);
 //                    }
-                    //System.out.println(HttpClient.doGet("http://192.168.254.1:8080/user/findAll"));
+    //System.out.println(HttpClient.doGet("http://192.168.254.1:8080/user/findAll"));
+    private final View.OnTouchListener loginHideTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            switch (motionEvent.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    if (AUTO_HIDE) {
+                        hide();
+                    }
+                    break;
+                case MotionEvent.ACTION_UP:
+                    setContentView(R.layout.home);
+                    findViewById(R.id.toBattle_button).setOnTouchListener(toBattleTouchListener);
                 break;
             }
             return false;
         }
     };
 
+    private final View.OnTouchListener toHomeTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            switch (motionEvent.getAction()) {
+                case MotionEvent.ACTION_UP:
+                    setContentView(R.layout.home);
+                    findViewById(R.id.toBattle_button).setOnTouchListener(toBattleTouchListener);
+                    break;
+            }
+            return false;
+        }
+    };
     private final View.OnTouchListener toBattleTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
             switch (motionEvent.getAction()) {
                 case MotionEvent.ACTION_UP:
-                    view.performClick();
                     setContentView(R.layout.map);
+                    findViewById(R.id.return_button).setOnTouchListener(toHomeTouchListener);
                     break;
             }
             return false;
@@ -145,7 +154,7 @@ public class FullscreenActivity extends AppCompatActivity {
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
-        findViewById(R.id.login_button).setOnTouchListener(mDelayHideTouchListener);
+        findViewById(R.id.login_button).setOnTouchListener(loginHideTouchListener);
     }
 
     @Override

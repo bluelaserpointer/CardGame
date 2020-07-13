@@ -4,4 +4,8 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="Login">Login</string>
     <string name="hello">Hello</string>
+    <string name="toBattle">出战</string>
+    <string name="toBag">背包</string>
+    <string name="toLibrary">图书馆</string>
+    <string name="toMission">任务</string>
 </resources>

@@ -8,7 +8,7 @@ import effect.Effects;
 import engine.MyUnit;
 import engine.SurDamage;
 import paint.ImageFrame;
-import physics.HitRule;
+import physics.HitGroup;
 import physics.hitShape.Circle;
 import physics.hitShape.Square;
 import preset.bullet.Bullet;
@@ -22,7 +22,7 @@ public class Bullets extends Bullet {
 	//LASER
 	/////////////////
 	public static class Laser extends Bullets {
-		public Laser(Weapon originWeapon, GHQObject shooter, HitRule hitGroup) {
+		public Laser(Weapon originWeapon, GHQObject shooter, HitGroup hitGroup) {
 			super(shooter);
 			this.originWeapon = originWeapon;
 			physics().setHitRule(hitGroup);
@@ -33,7 +33,7 @@ public class Bullets extends Bullet {
 			limitFrame = 50;
 			paintScript = ImageFrame.create(this, "image/animations/1_fire.png");
 		}
-		public Laser(Weapon originWeapon, GHQObject shooter, HitRule hitGroup, Laser sample) {
+		public Laser(Weapon originWeapon, GHQObject shooter, HitGroup hitGroup, Laser sample) {
 			super(shooter);
 			this.originWeapon = originWeapon;
 			physics().setHitRule(hitGroup);

@@ -6,7 +6,7 @@ import java.util.List;
 import preset.bullet.Bullet;
 import core.GHQ;
 import core.GHQObject;
-import physics.HitRule;
+import physics.HitGroup;
 import physics.hitShape.Square;
 import paint.dot.DotPaint;
 import paint.dot.HasDotPaint;
@@ -29,13 +29,13 @@ public abstract class MyUnit extends Unit implements HasDotPaint {
 	public Weapon mainWeapon = setDegaultWeapon();
 
 	protected MyUnit(String name, String image, int hitRule) {
-		super.physics().setHitRule(new HitRule(hitRule));
+		super.physics().setHitRule(new HitGroup(hitRule));
 		super.physics().setHitShape(new Square(this, 75));
 		NAME = name;
 		dotPaint = ImageFrame.create(image);
 	}
 	protected MyUnit(String name, DotPaint dotPaint, int hitRule) {
-		super.physics().setHitRule(new HitRule(hitRule));
+		super.physics().setHitRule(new HitGroup(hitRule));
 		super.physics().setHitShape(new Square(this, 75));
 		NAME = name;
 		this.dotPaint = dotPaint;
@@ -81,8 +81,8 @@ public abstract class MyUnit extends Unit implements HasDotPaint {
 				this.setCoolTime(cd);
 			}
 			@Override
-			public List<Bullet> setBullets(GHQObject shooter, HitRule standpoint) {
-				final Bullet bullet = GHQ.stage().addBullet(new Bullets.Laser(this, shooter, new HitRule((shooter instanceof Knowledge) == atk > 0 ? FRIEND : ENEMY)));
+			public List<Bullet> setBullets(GHQObject shooter, HitGroup standpoint) {
+				final Bullet bullet = GHQ.stage().addBullet(new Bullets.Laser(this, shooter, new HitGroup((shooter instanceof Knowledge) == atk > 0 ? FRIEND : ENEMY)));
 				bullet.setDamage(new SurDamage(atk));
 				bullet.limitRange = atkRange;
 				final LinkedList<Bullet> bulletList = new LinkedList<>();
