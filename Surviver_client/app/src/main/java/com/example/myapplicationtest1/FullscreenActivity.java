@@ -105,11 +105,42 @@ public class FullscreenActivity extends AppCompatActivity {
                     findViewById(R.id.toBattle_button).setOnTouchListener(toBattleTouchListener);
                     findViewById(R.id.toOption_button).setOnTouchListener(toOptionTouchListener);
                     findViewById(R.id.toShop_button).setOnTouchListener(toShopTouchListener);
+                    findViewById(R.id.toMail_button).setOnTouchListener(toMailTouchListener);
+                    findViewById(R.id.toAnnounce_button).setOnTouchListener(toAnnounceTouchListener);
+
+
                     break;
             }
             return false;
         }
     };
+
+    private final View.OnTouchListener toMailTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            switch (motionEvent.getAction()) {
+                case MotionEvent.ACTION_UP:
+                    setContentView(R.layout.mail);
+                    findViewById(R.id.return_button).setOnTouchListener(toHomeTouchListener);
+                    break;
+            }
+            return false;
+        }
+    };
+
+    private final View.OnTouchListener toAnnounceTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            switch (motionEvent.getAction()) {
+                case MotionEvent.ACTION_UP:
+                    setContentView(R.layout.announce);
+                    findViewById(R.id.return_button).setOnTouchListener(toHomeTouchListener);
+                    break;
+            }
+            return false;
+        }
+    };
+    
     private final View.OnTouchListener toBattleTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
