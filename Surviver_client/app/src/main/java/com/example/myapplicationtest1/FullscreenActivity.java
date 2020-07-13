@@ -74,22 +74,11 @@ public class FullscreenActivity extends AppCompatActivity {
      * Touch listener to use for in-layout UI controls to delay hiding the
      * system UI. This is to prevent the jarring behavior of controls going away
      * while interacting with activity UI.
+     *
+     * 该位置就是写跳转逻辑的部分。
+     * 当完成一个按钮的制作时，设置适当的ID名，这样即可在findViewById(R.id.XXX)里找到该按钮控件。
+     * 之后按照已写好的代码指定跳转目标(layout)即可。
      */
-
-//                    final View ball = findViewById(R.id.mgv_ball);
-//                    new Timer().schedule(new TimerTask() {
-//                        @Override
-//                        public void run() {
-//                            if(ball != null)
-//                                ball.invalidate();
-//                        }
-//                    },200,50);
-//                    if(helloLayout.isShown())
-//                        helloLayout.setVisibility(View.INVISIBLE);
-//                    else {
-//                        helloLayout.setVisibility(View.VISIBLE);
-//                    }
-    //System.out.println(HttpClient.doGet("http://192.168.254.1:8080/user/findAll"));
     private final View.OnTouchListener loginHideTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -100,8 +89,7 @@ public class FullscreenActivity extends AppCompatActivity {
                     }
                     break;
                 case MotionEvent.ACTION_UP:
-                    setContentView(R.layout.home);
-                    findViewById(R.id.toBattle_button).setOnTouchListener(toBattleTouchListener);
+                    toHomeTouchListener.onTouch(view, motionEvent); //防止相同内容重写
                 break;
             }
             return false;
@@ -116,6 +104,7 @@ public class FullscreenActivity extends AppCompatActivity {
                     setContentView(R.layout.home);
                     findViewById(R.id.toBattle_button).setOnTouchListener(toBattleTouchListener);
                     findViewById(R.id.toOption_button).setOnTouchListener(toOptionTouchListener);
+                    findViewById(R.id.toShop_button).setOnTouchListener(toShopTouchListener);
                     break;
             }
             return false;
@@ -127,6 +116,18 @@ public class FullscreenActivity extends AppCompatActivity {
             switch (motionEvent.getAction()) {
                 case MotionEvent.ACTION_UP:
                     setContentView(R.layout.map);
+                    findViewById(R.id.return_button).setOnTouchListener(toHomeTouchListener);
+                    break;
+            }
+            return false;
+        }
+    };
+    private final View.OnTouchListener toShopTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            switch (motionEvent.getAction()) {
+                case MotionEvent.ACTION_UP:
+                    setContentView(R.layout.shop);
                     findViewById(R.id.return_button).setOnTouchListener(toHomeTouchListener);
                     break;
             }
