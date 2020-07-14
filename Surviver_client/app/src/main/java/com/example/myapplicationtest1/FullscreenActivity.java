@@ -157,11 +157,29 @@ public class FullscreenActivity extends AppCompatActivity {
                     findViewById(R.id.toCardStorage_Button).setOnTouchListener(toCardStorageTouchListener);
                     findViewById(R.id.toGallery_Button).setOnTouchListener(toGalleryTouchListener);
                     findViewById(R.id.return_button).setOnTouchListener(toHomeTouchListener);
+
+                    //Test routing for selectedcard view
+                    findViewById(R.id.button1_1).setOnTouchListener(toSelectCardTouchListener);
                     break;
             }
             return false;
         }
     };
+
+    private final View.OnTouchListener toSelectCardTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            switch (motionEvent.getAction()) {
+                case MotionEvent.ACTION_UP:
+                    setContentView(R.layout.selectcard);
+                    findViewById(R.id.return_button).setOnTouchListener(toHomeTouchListener);
+                    break;
+            }
+            return false;
+        }
+    };
+
+
 
     private final View.OnTouchListener toGalleryTouchListener = new View.OnTouchListener() {
         @Override
