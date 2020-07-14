@@ -37,10 +37,10 @@ public class UserController {
       @RequestParam("password") String password, @RequestParam("phoneNumber") String phoneNumber,
       @RequestParam("credits") Integer credits, @RequestParam("access") Boolean access,
       @RequestParam("level") Integer level, @RequestParam("stamina") Integer stamina,
-      @RequestParam("money") Integer money, @RequestParam("engKnowledge") Integer engKnowledge,
+      @RequestParam("money") Integer money, @RequestParam("grade") Double grade, @RequestParam("engKnowledge") Integer engKnowledge,
       @RequestParam("mathKnowledge") Integer mathKnowledge, @RequestParam("chiKnowledge") Integer chiKnowledge) {
     return userService.updateUser(userId, userName, email, password, phoneNumber, credits, access, level, stamina,
-        money, engKnowledge, mathKnowledge, chiKnowledge);
+        money, grade, engKnowledge, mathKnowledge, chiKnowledge);
   }
 
   @RequestMapping(value = "/getAllUsers")

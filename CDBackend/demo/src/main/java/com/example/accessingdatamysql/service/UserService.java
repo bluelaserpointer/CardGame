@@ -11,7 +11,7 @@ public interface UserService {
     String addNewUser(String userName, String email, String password, String phoneNumber);
 
     String updateUser(Integer UserId, String userName, String email, String password, String phoneNumber,
-            Integer credits, Boolean access, Integer level, Integer stamina, Integer money, Integer engKnowledge,
+            Integer credits, Boolean access, Integer level, Integer stamina, Integer money, Double grade, Integer engKnowledge,
             Integer mathKnowledge, Integer chiKnowledge);
 
     List<User> getAllUsers();

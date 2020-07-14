@@ -33,6 +33,8 @@ public class User {
     private Integer stamina;
     // 氪金金币
     private Integer money;
+    // 学生绩点
+    private Double grade;
 
     private Integer engKnowledge;
 
@@ -61,7 +63,7 @@ public class User {
     }
 
     public void updateUser(String userName, String email, String password, String phoneNumber, Integer credits,
-            Boolean access, Integer level, Integer stamina, Integer money, Integer engKnowledge, Integer mathKnowledge,
+            Boolean access, Integer level, Integer stamina, Integer money, Double grade, Integer engKnowledge, Integer mathKnowledge,
             Integer chiKnowledge) {
         this.userName = userName;
         this.email = email;
@@ -72,6 +74,7 @@ public class User {
         this.level = level;
         this.stamina = stamina;
         this.money = money;
+        this.grade = grade;
         this.engKnowledge = engKnowledge;
         this.mathKnowledge = mathKnowledge;
         this.chiKnowledge = chiKnowledge;
@@ -179,6 +182,14 @@ public class User {
 
     public void setChiKnowledge(Integer chiKnowledge) {
         this.chiKnowledge = chiKnowledge;
+    }
+
+    public Double getGrade() {
+        return grade;
+    }
+
+    public void setGrade(Double grade) {
+        this.grade = grade;
     }
 
     // public MailBox getMailBox() {
