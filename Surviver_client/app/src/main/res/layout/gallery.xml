@@ -121,7 +121,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:background="@drawable/unselectedTab"
+                android:background="@drawable/selectedtab"
                 android:text="图鉴" />
 
             <Button
@@ -129,7 +129,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:background="@drawable/unselectedTab"
+                android:background="@drawable/unselectedtab"
                 android:text="角色编队" />
 
             <Button
@@ -137,7 +137,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:background="@drawable/selectedTab"
+                android:background="@drawable/unselectedtab"
                 android:text="角色仓库" />
 
             <Button
@@ -145,7 +145,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:background="@drawable/unselectedTab"
+                android:background="@drawable/unselectedtab"
                 android:text="道具仓库" />
         </LinearLayout>
 
@@ -166,7 +166,7 @@
                     android:layout_height="match_parent"
                     android:ems="10"
                     android:inputType="textPersonName"
-                    android:text="角色仓库界面"
+                    android:text="角色图鉴界面"
                     android:textColor="#FFFFFF" />
             </FrameLayout>
 

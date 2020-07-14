@@ -107,6 +107,7 @@ public class FullscreenActivity extends AppCompatActivity {
                     findViewById(R.id.toShop_button).setOnTouchListener(toShopTouchListener);
                     findViewById(R.id.toMail_button).setOnTouchListener(toMailTouchListener);
                     findViewById(R.id.toAnnounce_button).setOnTouchListener(toAnnounceTouchListener);
+                    findViewById(R.id.toBag_button).setOnTouchListener(toTeamTouchListener);
 
 
                     break;
@@ -134,6 +135,70 @@ public class FullscreenActivity extends AppCompatActivity {
             switch (motionEvent.getAction()) {
                 case MotionEvent.ACTION_UP:
                     setContentView(R.layout.announce);
+                    findViewById(R.id.return_button).setOnTouchListener(toHomeTouchListener);
+                    break;
+            }
+            return false;
+        }
+    };
+
+    private final View.OnTouchListener toTeamTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            switch (motionEvent.getAction()) {
+                case MotionEvent.ACTION_UP:
+                    setContentView(R.layout.team);
+                    findViewById(R.id.toItemStorage_Button).setOnTouchListener(toItemStorageTouchListener);
+                    findViewById(R.id.toCardStorage_Button).setOnTouchListener(toCardStorageTouchListener);
+                    findViewById(R.id.toGallery_Button).setOnTouchListener(toGalleryTouchListener);
+                    findViewById(R.id.return_button).setOnTouchListener(toHomeTouchListener);
+                    break;
+            }
+            return false;
+        }
+    };
+
+    private final View.OnTouchListener toGalleryTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            switch (motionEvent.getAction()) {
+                case MotionEvent.ACTION_UP:
+                    setContentView(R.layout.gallery);
+                    findViewById(R.id.toTeam_Button).setOnTouchListener(toTeamTouchListener);
+                    findViewById(R.id.toItemStorage_Button).setOnTouchListener(toItemStorageTouchListener);
+                    findViewById(R.id.toCardStorage_Button).setOnTouchListener(toCardStorageTouchListener);
+                    findViewById(R.id.return_button).setOnTouchListener(toHomeTouchListener);
+                    break;
+            }
+            return false;
+        }
+    };
+
+    private final View.OnTouchListener toItemStorageTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            switch (motionEvent.getAction()) {
+                case MotionEvent.ACTION_UP:
+                    setContentView(R.layout.itemstorage);
+                    findViewById(R.id.toTeam_Button).setOnTouchListener(toTeamTouchListener);
+                    findViewById(R.id.toCardStorage_Button).setOnTouchListener(toCardStorageTouchListener);
+                    findViewById(R.id.toGallery_Button).setOnTouchListener(toGalleryTouchListener);
+                    findViewById(R.id.return_button).setOnTouchListener(toHomeTouchListener);
+                    break;
+            }
+            return false;
+        }
+    };
+
+    private final View.OnTouchListener toCardStorageTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            switch (motionEvent.getAction()) {
+                case MotionEvent.ACTION_UP:
+                    setContentView(R.layout.cardstorage);
+                    findViewById(R.id.toTeam_Button).setOnTouchListener(toTeamTouchListener);
+                    findViewById(R.id.toItemStorage_Button).setOnTouchListener(toItemStorageTouchListener);
+                    findViewById(R.id.toGallery_Button).setOnTouchListener(toGalleryTouchListener);
                     findViewById(R.id.return_button).setOnTouchListener(toHomeTouchListener);
                     break;
             }
