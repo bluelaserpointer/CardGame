@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:textAlignment="center">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="7"
+        android:background="@drawable/cover2"
+        android:orientation="horizontal">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/cardExpList"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
+            android:background="#59FFFFFF"
+            android:orientation="horizontal">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <LinearLayout
+            android:id="@+id/userBattleResultView"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/userExpView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="5">
+
+                <TextView
+                    android:id="@+id/userExpText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#59FFFFFF"
+                    android:text="用户升级"
+                    android:textAlignment="center"
+                    android:textSize="30sp" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/battleResultView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="5">
+
+
+                <TextView
+                    android:id="@+id/battleResultText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#59FFFFFF"
+                    android:text="战斗结果"
+                    android:textAlignment="center"
+                    android:textSize="30sp" />
+            </FrameLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

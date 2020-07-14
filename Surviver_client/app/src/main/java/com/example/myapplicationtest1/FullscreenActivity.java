@@ -4,11 +4,15 @@ import android.annotation.SuppressLint;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
+
+import java.util.ArrayList;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -273,4 +277,81 @@ public class FullscreenActivity extends AppCompatActivity {
         mHideHandler.removeCallbacks(mHideRunnable);
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
     }
+
+
+
+    /**
+     * These are for further implementations of methods for calculating the data
+     * and initializing specific listViewers...for horizontal scrolling
+     * Usage:
+     * Call calculate......() in onTouch functions
+     */
+
+    private ArrayList<String> mTexts = new ArrayList<>();
+    private ArrayList<String> mImages = new ArrayList<>();
+
+    private void calculateBasicExp(){
+        /**
+         * Calculations here
+         * Usage:
+         * for(...)
+         *  {
+         *      mImages.add("http://apple.jpg");
+         *      mTexts.add("+1exp");
+         *  }
+         */
+
+        initRecyclerView(mTexts, mImages, R.id.cardExpList);
+    }
+
+    private void calculateBasicItem(){
+        /**
+         * Calculations here
+         * Usage:
+         * for(...)
+         *  {
+         *      mImages.add("http://apple.jpg");
+         *      mTexts.add("+1exp");
+         *  }
+         */
+
+        initRecyclerView(mTexts, mImages, R.id.basicItemList);
+    }
+
+    private void calculateFallenItem(){
+        /**
+         * Calculations here
+         * Usage:
+         * for(...)
+         *  {
+         *      mImages.add("http://apple.jpg");
+         *      mTexts.add("+1exp");
+         *  }
+         */
+
+        initRecyclerView(mTexts, mImages, R.id.fallenItemList);
+    }
+
+    private void initRecyclerView(ArrayList<String> mTexts, ArrayList<String> mImages, int id){
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        RecyclerView recyclerView = findViewById(id);
+        recyclerView.setLayoutManager(layoutManager);
+        RecyclerView.Adapter adapter;
+        switch(id)
+        {
+            case R.id.cardExpList:
+                adapter = new ExpListViewAdapter(this, mTexts, mImages);
+                break;
+            case R.id.basicItemList:
+                adapter = new BasicItemListViewAdapter(this, mTexts, mImages);
+                break;
+            case R.id.fallenItemList:
+                adapter = new FallenItemListViewAdapter(this, mTexts, mImages);
+                break;
+            default:
+                adapter = null;
+        }
+        recyclerView.setAdapter(adapter);
+    }
+
 }
