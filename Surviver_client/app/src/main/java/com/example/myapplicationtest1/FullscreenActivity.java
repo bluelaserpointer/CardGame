@@ -142,6 +142,7 @@ public class FullscreenActivity extends AppCompatActivity {
         }
     };
 
+    //可能后期可以优化
     private final View.OnTouchListener toTeamTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
