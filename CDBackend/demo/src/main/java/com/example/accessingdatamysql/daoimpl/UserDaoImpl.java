@@ -29,12 +29,12 @@ public class UserDaoImpl implements UserDao {
     }
 
     public String updateUser(Integer UserId, String userName, String email, String password, String phoneNumber,
-            Integer credits, Boolean access, Integer level, Integer stamina, Integer money, Integer engKnowledge,
+            Integer credits, Boolean access, Integer level, Integer stamina, Integer money, Double grade, Integer engKnowledge,
             Integer mathKnowledge, Integer chiKnowledge) {
 
         User User = UserRepository.getOne(UserId);
         // System.out.println("old User has an Id of : " + n.getUserId());
-        User.updateUser(userName, email, password, phoneNumber, credits, access, level, stamina, money, engKnowledge,
+        User.updateUser(userName, email, password, phoneNumber, credits, access, level, stamina, money, grade, engKnowledge,
                 mathKnowledge, chiKnowledge);
 
         UserRepository.updateUserStatus(User, UserId);

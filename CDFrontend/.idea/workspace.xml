@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="35df111e-b5d8-4c05-89a3-469c1fb14108" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/card_front/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/card_front/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/card_front/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/card_front/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/card_front/public/favicon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/card_front/public/favicon.ico" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/card_front/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/card_front/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/card_front/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/card_front/src/App.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/card_front/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/card_front/src/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,7 +11,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/card_front" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="ProjectId" id="1ePHYtr5OocRaL1Ha6uulq8wmFq" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -28,7 +24,21 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Study/Coding/SE_summer_project/CardGameFrontend" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+  </component>
+  <component name="RunManager">
+    <configuration name="dev" type="js.build_tools.npm" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/card_front/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="dev" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -41,16 +51,46 @@
       <option name="presentableId" value="Default" />
       <updated>1594216358949</updated>
       <workItem from="1594216360277" duration="32000" />
+      <workItem from="1594707181248" duration="571000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$/card_front" />
+    </ignored-roots>
+  </component>
   <component name="WindowStateProjectService">
+    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1594707301921">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1594707301921" />
     <state x="867" y="301" key="FileChooserDialogImpl" timestamp="1594216390893">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="867" y="301" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1594216390893" />
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1594707761807">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1594707761807" />
+    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1594707761807">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1594707761807" />
+    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1594707761807">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1594707761807" />
+    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1594707761807">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1594707761807" />
+    <state x="588" y="189" key="SettingsEditor" timestamp="1594707245230">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="588" y="189" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1594707245230" />
   </component>
 </project>
