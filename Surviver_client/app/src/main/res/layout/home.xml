@@ -128,21 +128,21 @@
                     </FrameLayout>
 
                     <Button
-                        android:id="@+id/button15"
+                        android:id="@+id/stamina_button"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="20"
                         android:background="@drawable/top_label" />
 
                     <Button
-                        android:id="@+id/button18"
+                        android:id="@+id/money_button"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="20"
                         android:background="@drawable/top_label" />
 
                     <Button
-                        android:id="@+id/button19"
+                        android:id="@+id/grade_button"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="20"

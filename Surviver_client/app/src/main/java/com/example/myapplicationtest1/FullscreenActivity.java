@@ -12,6 +12,10 @@ import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.example.myapplicationtest1.page.homePage;
+
+import org.json.JSONException;
+
 import java.util.ArrayList;
 
 /**
@@ -103,17 +107,21 @@ public class FullscreenActivity extends AppCompatActivity {
     private final View.OnTouchListener toHomeTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
+
             switch (motionEvent.getAction()) {
                 case MotionEvent.ACTION_UP:
                     setContentView(R.layout.home);
+                    try {
+                        homePage.homePageInit(FullscreenActivity.this);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     findViewById(R.id.toBattle_button).setOnTouchListener(toBattleTouchListener);
                     findViewById(R.id.toOption_button).setOnTouchListener(toOptionTouchListener);
                     findViewById(R.id.toShop_button).setOnTouchListener(toShopTouchListener);
                     findViewById(R.id.toMail_button).setOnTouchListener(toMailTouchListener);
                     findViewById(R.id.toAnnounce_button).setOnTouchListener(toAnnounceTouchListener);
                     findViewById(R.id.toBag_button).setOnTouchListener(toTeamTouchListener);
-
-
                     break;
             }
             return false;
@@ -271,7 +279,6 @@ public class FullscreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.login);
 
         mVisible = true;
