@@ -140,7 +140,7 @@ public class FullscreenActivity extends AppCompatActivity {
             return false;
         }
     };
-    
+
     private final View.OnTouchListener toBattleTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
