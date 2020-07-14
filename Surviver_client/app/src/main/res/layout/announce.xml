@@ -8,7 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#4A58B4"
+        android:background="@drawable/cover2"
         android:orientation="vertical"
         tools:layout_editor_absoluteX="1dp"
         tools:layout_editor_absoluteY="1dp">
@@ -39,6 +39,13 @@
                         android:layout_weight="1"
                         android:background="@drawable/abc_vector_test" />
 
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                    </FrameLayout>
+
                 </LinearLayout>
 
             </LinearLayout>
@@ -53,7 +60,8 @@
                     android:id="@+id/textView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="公告内容" />
+                    android:text="公告内容"
+                    android:textColor="#FFFFFF" />
 
             </LinearLayout>
 
@@ -69,6 +77,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="8.5"
+                android:background="@drawable/mag_bg"
                 android:orientation="horizontal">
 
                 <ListView
