@@ -121,7 +121,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:background="@drawable/unselectedtab"
+                android:background="@drawable/unselected_tab"
                 android:text="图鉴" />
 
             <Button
@@ -129,7 +129,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:background="@drawable/unselectedtab"
+                android:background="@drawable/unselected_tab"
                 android:text="角色编队" />
 
             <Button
@@ -137,7 +137,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:background="@drawable/unselectedtab"
+                android:background="@drawable/unselected_tab"
                 android:text="角色仓库" />
 
             <Button
@@ -145,7 +145,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:background="@drawable/selectedtab"
+                android:background="@drawable/selected_tab"
                 android:text="道具仓库" />
         </LinearLayout>
 
