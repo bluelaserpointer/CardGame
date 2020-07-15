@@ -77,7 +77,7 @@
 import { validUsername } from '@/utils/validate'
 import { validPassword } from '@/utils/validate'
 import SocialSign from './components/SocialSignin'
-import axios from "axios";
+import axios from 'axios'
 
 export default {
   name: 'Login',
@@ -91,28 +91,27 @@ export default {
       } else {
         callback()
       }
-    };
+    }
     const validatePassword = (rule, value, callback) => {
       // console.log("!validPassword");
       // console.log(!validPassword(value));
-      let valid = false;
-      let postData = new FormData();
-      postData.append('adminName', this.loginForm.username);
-      postData.append('password', this.loginForm.password);
-      axios.post(`http://localhost:8080/admin/identifyAdmin`, postData).then(res=>{
-          if(res.data) {
-            valid = true;
-            if (!validPassword(value) || !valid) {
-              callback(new Error('Please enter Passwords that meet the standard.'))
-            } else {
-              callback()
-            }
-          }else{
+      let valid = false
+      const postData = new FormData()
+      postData.append('adminName', this.loginForm.username)
+      postData.append('password', this.loginForm.password)
+      axios.post(`http://localhost:8080/admin/identifyAdmin`, postData).then(res => {
+        if (res.data) {
+          valid = true
+          if (!validPassword(value) || !valid) {
             callback(new Error('Please enter Passwords that meet the standard.'))
+          } else {
+            callback()
           }
-      });
-
-    };
+        } else {
+          callback(new Error('Please enter Passwords that meet the standard.'))
+        }
+      })
+    }
     return {
       loginForm: {
         username: '',
@@ -133,9 +132,9 @@ export default {
   watch: {
     $route: {
       handler: function(route) {
-        const query = route.query;
+        const query = route.query
         if (query) {
-          this.redirect = query.redirect;
+          this.redirect = query.redirect
           this.otherQuery = this.getOtherQuery(query)
         }
       },
@@ -145,9 +144,9 @@ export default {
   created() {
     axios.get(`http://localhost:8080/admin/getAdminName`).then(response => {
       if (response.data) {
-        localStorage.setItem('AdminNames', JSON.stringify(response.data));
+        localStorage.setItem('AdminNames', JSON.stringify(response.data))
       }
-    });
+    })
   },
   mounted() {
     if (this.loginForm.username === '') {
@@ -161,7 +160,7 @@ export default {
   },
   methods: {
     checkCapslock(e) {
-      const { key } = e;
+      const { key } = e
       this.capsTooltip = key && key.length === 1 && (key >= 'A' && key <= 'Z')
     },
     showPwd() {
@@ -182,18 +181,18 @@ export default {
       // });
       this.$refs.loginForm.validate(async valid => {
         if (valid) {
-          this.loading = true;
+          this.loading = true
           this.$store.dispatch('user/login', this.loginForm)
             .then(() => {
-              this.$router.push({path: this.redirect || '/', query: this.otherQuery});
-              localStorage.setItem('AdminName', this.loginForm.username);
-              this.loading = false;
+              this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
+              localStorage.setItem('AdminName', this.loginForm.username)
+              this.loading = false
             })
             .catch(() => {
-              this.loading = false;
+              this.loading = false
             })
         } else {
-          console.log('Error submit!');
+          console.log('Error submit!')
           return false
         }
       })

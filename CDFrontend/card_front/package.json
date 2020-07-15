@@ -3,14 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "vue-cli-service serve",
+    "test:cov": "vue-cli-service test:unit --coverage",
+    "test:unit": "vue-cli-service test:unit --watch",
     "lint": "eslint --ext .js,.vue src",
     "build:prod": "vue-cli-service build",
     "build:stage": "vue-cli-service build --mode staging",
-    "preview": "node build/index.js --preview",
+    "dev": "vue-cli-service serve",
     "new": "plop",
+    "preview": "node build/index.js --preview",
     "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.yml",
-    "test:unit": "jest --clearCache && vue-cli-service test:unit",
     "test:ci": "npm run lint && npm run test:unit"
   },
   "dependencies": {
@@ -47,12 +48,12 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "4.4.4",
     "@vue/cli-plugin-eslint": "4.4.4",
-    "@vue/cli-plugin-unit-jest": "4.4.4",
+    "@vue/cli-plugin-unit-jest": "^4.4.6",
     "@vue/cli-service": "4.4.4",
-    "@vue/test-utils": "1.0.0-beta.29",
+    "@vue/test-utils": "^1.0.3",
     "autoprefixer": "9.5.1",
     "babel-eslint": "10.1.0",
-    "babel-jest": "23.6.0",
+    "babel-jest": "^26.1.0",
     "babel-plugin-dynamic-import-node": "2.3.3",
     "chalk": "2.4.2",
     "chokidar": "2.1.5",
@@ -85,7 +86,18 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {}
+    "rules": {},
+    "overrides": [
+      {
+        "files": [
+          "**/__tests__/*.{j,t}s?(x)",
+          "**/tests/unit/**/*.spec.{j,t}s?(x)"
+        ],
+        "env": {
+          "jest": true
+        }
+      }
+    ]
   },
   "browserslist": [
     "> 1%",

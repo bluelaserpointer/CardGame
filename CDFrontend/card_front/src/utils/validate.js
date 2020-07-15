@@ -2,7 +2,7 @@
  * Created by PanJiaChen on 16/11/18.
  */
 
-import axios from "axios";
+import axios from 'axios'
 
 /**
  * @param {string} path
@@ -23,16 +23,15 @@ export function validUsername(str) {
   // let postData = new FormData();
   // postData.append('adminName', this.loginForm.username);
   // postData.append('password', this.loginForm.password);
-  let fetchAdmin = JSON.parse(localStorage.getItem('AdminNames'));
-  return fetchAdmin.indexOf(str.trim()) >= 0;
-
+  const fetchAdmin = JSON.parse(localStorage.getItem('AdminNames'))
+  return fetchAdmin.indexOf(str.trim()) >= 0
 }
 
 export function validPassword(str) {
   // TODO: GET PASSWORDs HERE
   // console.log("Valid Password");
   // TODO: VALIDATING STANDARD PASSWORDs HERE
-  return str.length >= 6;
+  return str.length >= 6
 }
 
 /**

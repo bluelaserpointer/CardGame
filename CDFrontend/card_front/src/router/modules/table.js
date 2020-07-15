@@ -14,28 +14,28 @@ const tableRouter = {
   children: [
     {
       path: 'phase-entity-table',
-      component: () => import('@/views/table/phaseEntityPanel'),
+      component: () => import('@/components/table/phaseEntityPanel'),
       name: 'PhaseEntityPanel',
       meta: { title: 'Phase Entity Panel' }
     },
     {
       path: 'item-entity-table',
-      component: () => import('@/views/table/itemEntityPanel'),
+      component: () => import('@/components/table/itemEntityPanel'),
       name: 'ItemEntityPanel',
       meta: { title: 'Item Entity Panel' }
     },
     {
       path: 'card-entity-table',
-      component: () => import('@/views/table/cardEntityPanel'),
+      component: () => import('@/components/table/cardEntityPanel'),
       name: 'CardEntityPanel',
       meta: { title: 'Card Entity Panel' }
     },
     {
       path: 'player-panel',
-      component: () => import('@/views/table/playerPanel'),
+      component: () => import('@/components/table/playerPanel'),
       name: 'PlayerPanel',
       meta: { title: 'Player Panel' }
-    },
+    }
   ]
-};
+}
 export default tableRouter

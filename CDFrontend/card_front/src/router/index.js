@@ -202,13 +202,13 @@ export const asyncRoutes = [
     children: [
       {
         path: 'activity',
-        component: () => import('@/views/example/components/ActivityPanel'),
+        component: () => import('@/components/edit/ActivityPanel'),
         name: 'Activity Panel',
         meta: { title: 'Activity Panel', icon: 'edit' }
       },
       {
         path: 'mail',
-        component: () => import('@/views/example/components/MailPanel'),
+        component: () => import('@/components/edit/MailPanel'),
         name: 'Mail Panel',
         meta: { title: 'Mail Panel', icon: 'edit' }
       },
@@ -218,7 +218,7 @@ export const asyncRoutes = [
         name: 'EditArticle',
         meta: { title: 'Edit Article', noCache: true, activeMenu: '/example/list' },
         hidden: true
-      },
+      }
       // {
       //   path: 'list',
       //   component: () => import('@/views/example/list'),
@@ -227,7 +227,6 @@ export const asyncRoutes = [
       // }
     ]
   },
-
 
   //
   // {
