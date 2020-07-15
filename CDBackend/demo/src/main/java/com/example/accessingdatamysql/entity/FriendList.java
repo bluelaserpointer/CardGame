@@ -11,10 +11,11 @@ import com.fasterxml.jackson.annotation.*;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "friendListId")
 
 public class FriendList {
+    // 好友名单Id（应该跟用户的userId保持一致）
     @Id
     @Column(name = "friendListId", nullable = false)
     private Integer friendListId;
-
+    // 好友的userIds
     @Column
     @ElementCollection(targetClass = Integer.class)
     private List<Integer> friendIds;

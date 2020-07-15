@@ -11,13 +11,14 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @JsonIgnoreProperties(value = { "handler", "hibernateLazyInitializer", "fieldHandler" })
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "itemId")
 public class Item {
+    // 道具Id（PK）
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer itemId;
-
+    // 道具名称
     @Column(unique = true)
     private String itemName;
-
+    // 道具价格
     private Integer price;
 
     public Item() {

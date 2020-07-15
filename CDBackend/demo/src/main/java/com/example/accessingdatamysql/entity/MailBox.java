@@ -11,10 +11,11 @@ import com.fasterxml.jackson.annotation.*;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "mailBoxId")
 
 public class MailBox {
+    // 邮箱Id（应该保持跟用户的userId一样）
     @Id
     @Column(name = "mailBoxId", nullable = false)
     private Integer mailBoxId;
-
+    // 邮箱内村的邮箱
     @ManyToMany
     @JoinColumn(name = "mails", unique = false)
     private List<Mail> mails;

@@ -11,15 +11,16 @@ import com.fasterxml.jackson.annotation.*;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "blackListId")
 
 public class BlackList {
+    // 黑名单Id（应该保持跟相对应的用户的userId相同）
     @Id
     @Column(name = "blackListId", nullable = false)
     private Integer blackListId;
-
+    // 在此用户的黑名单内的其他用户的userId
     @Column
     @ElementCollection(targetClass = Integer.class)
     private List<Integer> blockIds;
 
-    // friendListId应该要等于userId（一对一关系，（不用自动生成的方法了））
+    // blackListId应该要等于userId（一对一关系，（不用自动生成的方法了））
     public BlackList(Integer userId) {
         this.blackListId = userId;
     }
@@ -29,7 +30,7 @@ public class BlackList {
 
     }
 
-    // 应该不会更改friendListid
+    // 应该不会更改blackListid
     public void setBlackListId(Integer BlackListId) {
         this.blackListId = BlackListId;
     }

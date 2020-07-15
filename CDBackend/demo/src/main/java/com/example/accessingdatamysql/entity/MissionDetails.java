@@ -9,8 +9,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "MissionDetails")
 public class MissionDetails {
+    // 任务Id
     private Integer MissionId;
-
+    // 任务描述
     private String MissionDescription;
 
     public MissionDetails(Integer MissionId, String MissionDescription) {

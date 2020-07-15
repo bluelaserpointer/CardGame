@@ -13,18 +13,19 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @JsonIgnoreProperties(value = { "handler", "hibernateLazyInitializer", "fieldHandler" })
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "missionId")
 public class Mission {
+    // 任务Id
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer missionId;
-
+    // 任务名称
     private String MissionName;
-
+    // 任务类型（日常，后面的需要讨论）
     private String type;
-
+    // 完成任务奖励的道具
     @Column
     @ElementCollection(targetClass = Integer.class)
     private List<Integer> awardItems;
-
+    // 任务详情（描述）
     @Transient
     private MissionDetails MissionDetails;
 

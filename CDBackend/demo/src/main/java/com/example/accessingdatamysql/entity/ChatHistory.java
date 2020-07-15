@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "ChatHistory")
 public class ChatHistory {
+    // 这里应该需要进行大量修改，首先要考虑到发送次序问题，需要记录用户发出每一条信息的时间，可能需要再建立一个实体集
     private Integer fromId;
 
     private Integer toId;

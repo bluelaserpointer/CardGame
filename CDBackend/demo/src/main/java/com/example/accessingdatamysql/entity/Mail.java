@@ -9,16 +9,18 @@ import com.fasterxml.jackson.annotation.*;
 @JsonIgnoreProperties(value = { "handler", "hibernateLazyInitializer", "fieldHandler" })
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "mailId")
 public class Mail {
+    // 邮件Id
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer mailId;
-
+    // 邮件标题
     private String mailName;
-
+    // 邮件详情（包括描述，图片等）
     @Transient
     private MailDetails mailDetails;
 
-    public Mail(){}
+    public Mail() {
+    }
 
     public Mail(String mailName) {
         this.mailName = mailName;

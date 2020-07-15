@@ -21,17 +21,22 @@ public interface OwnCardDao {
         // 用户拥有的某张卡牌升级
         OwnCard cardLevelUp(Integer userId, Integer cardId);
 
-        // 用户重复拥有一个
+        // 用户再一次拥有已经拥有的卡牌
         OwnCard ownAnotherCard(Integer userId, Integer cardId);
 
+        // 获取所有的用户拥有卡牌记录
         List<OwnCard> getAllOwnCards();
 
+        // 获取指定用户的所有拥有卡牌记录
         List<OwnCard> getAllOwnCardsByUserId(Integer userId);
 
+        // 用ownCardIds来删除拥有卡牌关系
         String deleteOwnCards(List<Integer> OwncardIds);
 
+        // 删除所有拥有卡牌关系
         String deleteAll();
 
+        // 删除单个拥有卡牌关系
         List<OwnCard> deleteOwnCard(Integer userId, Integer cardId);
 
 }

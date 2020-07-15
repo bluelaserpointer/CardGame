@@ -6,12 +6,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "CardDetails")
 public class CardDetails {
+    // 卡牌Id
     private Integer cardId;
-
+    // 卡牌图片
     private String cardImg;
-
+    // 卡牌全描述
     private String cardDescription;
-
+    // 卡牌短描述
     private String shortDescription;
 
     public CardDetails(Integer cardId, String cardImg, String shortDescription, String cardDescription) {

@@ -14,24 +14,25 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "EnemyId")
 
 public class Enemy {
+    // 敌人Id（PK）
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer enemyId;
-
+    // 敌人名称
     private String enemyName;
-
+    // 敌人被击败时提供的经验值点数
     private Integer expPoint;
-
+    // 敌人的hp属性
     private Integer healthPoint;
-
+    // 敌人攻击属性
     private Integer attack;
-
+    // 敌人防御属性
     private Integer defense;
-
+    // 敌人攻击范围
     private Integer attackRange;
-
+    // 敌人冷却时间（可能不需要）
     private Double cd;
-
+    // 敌人速度属性
     private Integer speed;
 
     public Enemy() {

@@ -6,10 +6,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "MailDetails")
 public class MailDetails {
+    // 邮件Id
     private Integer mailId;
-
+    // 邮件图片
     private String mailImg;
-
+    // 邮件描述
     private String mailDescription;
 
     public MailDetails(Integer mailId, String mailImg, String mailDescription) {

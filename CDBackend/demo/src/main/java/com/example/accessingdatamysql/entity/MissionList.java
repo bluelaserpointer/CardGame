@@ -11,10 +11,11 @@ import com.fasterxml.jackson.annotation.*;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "missionListId")
 
 public class MissionList {
+    // 任务清单Id（应该保持跟用户的userId一样）
     @Id
     @Column(name = "missionListId", nullable = false)
     private Integer missionListId;
-
+    // 任务清单内还未完成的任务（如果完成了直接从这里删除）
     @ManyToMany
     @JoinColumn(name = "missions", unique = false)
     private List<Mission> missions;
