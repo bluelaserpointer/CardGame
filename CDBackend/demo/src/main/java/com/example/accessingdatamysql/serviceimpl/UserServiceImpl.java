@@ -24,10 +24,10 @@ public class UserServiceImpl implements UserService {
     }
 
     public String updateUser(Integer UserId, String userName, String email, String password, String phoneNumber,
-            Integer credits, Boolean access, Integer level, Integer stamina, Integer money, Double grade, Integer engKnowledge,
-            Integer mathKnowledge, Integer chiKnowledge) {
-        return userDao.updateUser(UserId, userName, email, password, phoneNumber, credits, access, level, stamina,
-                money, grade, engKnowledge, mathKnowledge, chiKnowledge);
+            Integer credits, Boolean access, Integer level, Integer curExpPoint, Integer stamina, Integer money,
+            Double grade, Integer engKnowledge, Integer mathKnowledge, Integer chiKnowledge) {
+        return userDao.updateUser(UserId, userName, email, password, phoneNumber, credits, access, level, curExpPoint,
+                stamina, money, grade, engKnowledge, mathKnowledge, chiKnowledge);
     }
 
     public List<User> getAllUsers() {
