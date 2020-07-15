@@ -15,7 +15,7 @@ public class HomePage {
         // Fetching data of the current logged in user
         String data = HttpClient.doGet("http://192.168.175.1:8080/user/getAllUsers");
         JSONArray arr = new JSONArray(data);
-        System.out.println("Hi");
+
         // Sets the text of corresponding values
         final Button grade_button = screen.findViewById(R.id.grade_button);
         grade_button.setText(arr.getJSONObject(0).get("grade").toString());
