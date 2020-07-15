@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
@@ -96,34 +97,15 @@ public class FullscreenActivity extends AppCompatActivity {
      * 当完成一个按钮的制作时，设置适当的ID名，这样即可在findViewById(R.id.XXX)里找到该按钮控件。
      * 之后按照已写好的代码指定跳转目标(layout)即可。
      */
-    private final View.OnTouchListener loginHideTouchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            switch (motionEvent.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    if (AUTO_HIDE) {
-                        hide();
-                    }
-                    break;
-                case MotionEvent.ACTION_UP:
-                    try {
-                        if(LoginPage.identifyUser(FullscreenActivity.this))
-                        {
-                            System.out.println("Identification succeeded!!!!!!!!!!!!!!!!");
-                            toHomeTouchListener.onTouch(view, motionEvent); //防止相同内容重写
-                        }else{
-                            System.out.println("Identification failed!!!!!!!!!!!!!!!");
-                            loginInputHideTouchListener.onTouch(view, motionEvent);
-                            System.out.println("Identification done!!!!!!!!!!!!!!!");
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                break;
+    private final View.OnTouchListener loginHideTouchListener = (view, motionEvent) -> {
+        view.performClick();
+        if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
+            if (AUTO_HIDE) {
+                hide();
             }
-            return false;
+            startActivity(new Intent(FullscreenActivity.this, LoginPage.class));
         }
+        return false;
     };
 
     public void onLoginInputClick(View view) throws JSONException {
@@ -147,196 +129,6 @@ public class FullscreenActivity extends AppCompatActivity {
             System.out.println("InputIdentification failed!!!!!!!!!!!!!!!!");
         }
     }
-
-    private final View.OnTouchListener loginInputHideTouchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            motionEventTemp = motionEvent;
-            switch (motionEvent.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    if (AUTO_HIDE) {
-                        hide();
-                    }
-                    break;
-                case MotionEvent.ACTION_UP:
-                    setContentView(R.layout.login_input);
-            }
-            return false;
-        }
-    };
-
-
-    private final View.OnTouchListener toHomeTouchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-
-            switch (motionEvent.getAction()) {
-                case MotionEvent.ACTION_UP:
-                    setContentView(R.layout.home);
-                    try {
-                        HomePage.homePageInit(FullscreenActivity.this);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    findViewById(R.id.toBattle_button).setOnTouchListener(toBattleTouchListener);
-                    findViewById(R.id.toOption_button).setOnTouchListener(toOptionTouchListener);
-                    findViewById(R.id.toShop_button).setOnTouchListener(toShopTouchListener);
-                    findViewById(R.id.toMail_button).setOnTouchListener(toMailTouchListener);
-                    findViewById(R.id.toAnnounce_button).setOnTouchListener(toAnnounceTouchListener);
-                    findViewById(R.id.toBag_button).setOnTouchListener(toTeamTouchListener);
-                    break;
-            }
-            return false;
-        }
-    };
-
-    private final View.OnTouchListener toMailTouchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            switch (motionEvent.getAction()) {
-                case MotionEvent.ACTION_UP:
-                    setContentView(R.layout.mail);
-                    findViewById(R.id.return_button).setOnTouchListener(toHomeTouchListener);
-                    break;
-            }
-            return false;
-        }
-    };
-
-    private final View.OnTouchListener toAnnounceTouchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            switch (motionEvent.getAction()) {
-                case MotionEvent.ACTION_UP:
-                    setContentView(R.layout.announce);
-                    findViewById(R.id.return_button).setOnTouchListener(toHomeTouchListener);
-                    break;
-            }
-            return false;
-        }
-    };
-
-    //可能后期可以优化
-    private final View.OnTouchListener toTeamTouchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            switch (motionEvent.getAction()) {
-                case MotionEvent.ACTION_UP:
-                    setContentView(R.layout.team);
-                    findViewById(R.id.toItemStorage_Button).setOnTouchListener(toItemStorageTouchListener);
-                    findViewById(R.id.toCardStorage_Button).setOnTouchListener(toCardStorageTouchListener);
-                    findViewById(R.id.toGallery_Button).setOnTouchListener(toGalleryTouchListener);
-                    findViewById(R.id.return_button).setOnTouchListener(toHomeTouchListener);
-                    break;
-            }
-            return false;
-        }
-    };
-
-    private final View.OnTouchListener toGalleryTouchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            switch (motionEvent.getAction()) {
-                case MotionEvent.ACTION_UP:
-                    setContentView(R.layout.gallery);
-                    findViewById(R.id.toTeam_Button).setOnTouchListener(toTeamTouchListener);
-                    findViewById(R.id.toItemStorage_Button).setOnTouchListener(toItemStorageTouchListener);
-                    findViewById(R.id.toCardStorage_Button).setOnTouchListener(toCardStorageTouchListener);
-                    findViewById(R.id.return_button).setOnTouchListener(toHomeTouchListener);
-                    break;
-            }
-            return false;
-        }
-    };
-
-    private final View.OnTouchListener toItemStorageTouchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            switch (motionEvent.getAction()) {
-                case MotionEvent.ACTION_UP:
-                    setContentView(R.layout.itemstorage);
-                    findViewById(R.id.toTeam_Button).setOnTouchListener(toTeamTouchListener);
-                    findViewById(R.id.toCardStorage_Button).setOnTouchListener(toCardStorageTouchListener);
-                    findViewById(R.id.toGallery_Button).setOnTouchListener(toGalleryTouchListener);
-                    findViewById(R.id.return_button).setOnTouchListener(toHomeTouchListener);
-                    break;
-            }
-            return false;
-        }
-    };
-
-    private final View.OnTouchListener toCardStorageTouchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            switch (motionEvent.getAction()) {
-                case MotionEvent.ACTION_UP:
-                    setContentView(R.layout.cardstorage);
-                    findViewById(R.id.toTeam_Button).setOnTouchListener(toTeamTouchListener);
-                    findViewById(R.id.toItemStorage_Button).setOnTouchListener(toItemStorageTouchListener);
-                    findViewById(R.id.toGallery_Button).setOnTouchListener(toGalleryTouchListener);
-                    findViewById(R.id.return_button).setOnTouchListener(toHomeTouchListener);
-                    break;
-            }
-            return false;
-        }
-    };
-
-    private final View.OnTouchListener toBattleTouchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            switch (motionEvent.getAction()) {
-                case MotionEvent.ACTION_UP:
-                    setContentView(R.layout.map);
-                    findViewById(R.id.return_button).setOnTouchListener(toHomeTouchListener);
-                    break;
-            }
-            return false;
-        }
-    };
-    private final View.OnTouchListener toShopTouchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            switch (motionEvent.getAction()) {
-                case MotionEvent.ACTION_UP:
-                    setContentView(R.layout.shop);
-                    findViewById(R.id.return_button).setOnTouchListener(toHomeTouchListener);
-                    break;
-            }
-            return false;
-        }
-    };
-
-    // TODO: Waiting to turn it to "toFriendTouchListener"
-    private final View.OnTouchListener toOptionTouchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            switch (motionEvent.getAction()) {
-                case MotionEvent.ACTION_UP:
-                    setContentView(R.layout.friend_list);
-                    findViewById(R.id.return_button).setOnTouchListener(toHomeTouchListener);
-                    findViewById(R.id.friendList_button).setOnTouchListener(toOptionTouchListener);
-                    findViewById(R.id.friendAdd_button).setOnTouchListener(toFriendAddTouchListener);
-                    break;
-            }
-            return false;
-        }
-    };
-
-
-    private final View.OnTouchListener toFriendAddTouchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            switch (motionEvent.getAction()) {
-                case MotionEvent.ACTION_UP:
-                    setContentView(R.layout.friend_add);
-                    findViewById(R.id.return_button).setOnTouchListener(toHomeTouchListener);
-                    findViewById(R.id.friendList_button).setOnTouchListener(toOptionTouchListener);
-                    findViewById(R.id.friendAdd_button).setOnTouchListener(toFriendAddTouchListener);
-                    break;
-            }
-            return false;
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

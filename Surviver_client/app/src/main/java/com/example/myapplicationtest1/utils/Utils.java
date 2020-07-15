@@ -1,7 +1,13 @@
 package com.example.myapplicationtest1.utils;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.view.MotionEvent;
+import android.view.View;
+
+import androidx.core.content.ContextCompat;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +29,7 @@ public class Utils {
 
         String userName = sp.getString("userName", null);
         String password = sp.getString("password", null);
-        Map<String,String> userMap = new HashMap<String, String>();
+        Map<String,String> userMap = new HashMap<>();
         userMap.put("userName", userName);
         userMap.put("password", password);
 

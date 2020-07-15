@@ -1,35 +1,45 @@
 package com.example.myapplicationtest1.page;
 
-import android.content.SharedPreferences;
-import android.text.TextUtils;
-import android.util.Log;
-import android.widget.Button;
+import android.os.Bundle;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.myapplicationtest1.FullscreenActivity;
 import com.example.myapplicationtest1.HttpClient;
 import com.example.myapplicationtest1.R;
 import com.example.myapplicationtest1.utils.Utils;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.Map;
 
-import static android.content.Context.MODE_PRIVATE;
-
-public class LoginPage{
+public class LoginPage extends Page {
     private EditText etNumber;
     private EditText etPassword;
 
-    public static boolean identifyUser(FullscreenActivity screen) throws JSONException {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        try {
+            if(identifyUser())
+            {
+                System.out.println("Identification succeeded!!!!!!!!!!!!!!!!");
+                Page.jump(this, HomePage.class);
+            }else{
+                System.out.println("Identification failed!!!!!!!!!!!!!!!");
+                setContentView(R.layout.login_input);
+                System.out.println("Identification done!!!!!!!!!!!!!!!");
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    public boolean identifyUser() throws JSONException {
         System.out.println("Inside identifyUser");
 //        EditText etUsername = screen.findViewById(R.id.usernameText);
 //        EditText etPassword = screen.findViewById(R.id.passwordText);
 //        System.out.println(etUsername);
 //        System.out.println(etPassword);
-        Map<String,String> userInfo= Utils.getUserInfo(screen);
+        Map<String,String> userInfo= Utils.getUserInfo(this);
         String getUserName = userInfo.get("userName");
         String getPassword = userInfo.get("password");
         if (getUserName != null && getPassword != null){
@@ -68,7 +78,7 @@ public class LoginPage{
 //        }
     }
 
-    public static boolean identifyUserInput(FullscreenActivity screen, String getUserName, String getPassword) throws  JSONException{
+    public boolean identifyUserInput(String getUserName, String getPassword) throws JSONException {
         String userName = "userName=" + getUserName;
         String password = "password=" + getPassword;
         String url = "http://192.168.175.1:8080/user/identifyUser?" + userName + "&" + password;
