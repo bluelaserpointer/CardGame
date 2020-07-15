@@ -144,7 +144,7 @@ public class FullscreenActivity extends AppCompatActivity {
             System.out.println(getPassword);
             toHomeTouchListener.onTouch(view, motionEventTemp); //防止相同内容重写
         }else{
-            System.out.println("InputIdentification failed!!!!!!!!!!!!!!!");
+            System.out.println("InputIdentification failed!!!!!!!!!!!!!!!!");
         }
     }
 
