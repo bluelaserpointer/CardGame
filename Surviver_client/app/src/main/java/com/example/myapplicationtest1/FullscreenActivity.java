@@ -16,7 +16,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.myapplicationtest1.page.HomePage;
-import com.example.myapplicationtest1.page.LoginPage;
+import com.example.myapplicationtest1.page.LoginInputPage;
+import com.example.myapplicationtest1.page.Page;
 import com.example.myapplicationtest1.utils.Utils;
 
 
@@ -103,7 +104,19 @@ public class FullscreenActivity extends AppCompatActivity {
             if (AUTO_HIDE) {
                 hide();
             }
-            startActivity(new Intent(FullscreenActivity.this, LoginPage.class));
+            try {
+                if(Utils.identifyUser(this))
+                {
+                    System.out.println("Identification succeeded!!!!!!!!!!!!!!!!");
+                    Page.jump(this, HomePage.class);
+                }else{
+                    System.out.println("Identification failed!!!!!!!!!!!!!!!");
+                    Page.jump(this, LoginInputPage.class);
+                    System.out.println("Identification done!!!!!!!!!!!!!!!");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
         return false;
     };
@@ -115,7 +128,7 @@ public class FullscreenActivity extends AppCompatActivity {
         String password = passwordText.getText().toString();
         System.out.println(userName);
         System.out.println(password);
-        if(LoginPage.identifyUserInput(FullscreenActivity.this, userName, password))
+        if(Utils.identifyUserInput(userName, password))
         {
             System.out.println("InputIdentification succeeded!!!!!!!!!!!!!!!!");
             Utils.saveUserInfo(this, userName, password);
@@ -124,7 +137,7 @@ public class FullscreenActivity extends AppCompatActivity {
             String getPassword = userInfo.get("password");
             System.out.println(getUserName);
             System.out.println(getPassword);
-            toHomeTouchListener.onTouch(view, motionEventTemp); //防止相同内容重写
+            Page.jump(this, HomePage.class);
         }else{
             System.out.println("InputIdentification failed!!!!!!!!!!!!!!!!");
         }
