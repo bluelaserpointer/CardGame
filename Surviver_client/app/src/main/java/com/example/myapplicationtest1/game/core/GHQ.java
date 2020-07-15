@@ -133,13 +133,13 @@ public final class GHQ implements Runnable{
 			targetCanvas.translate(tx, ty);
 			targetCanvas.scale(zoomRate, zoomRate);
 			targetCanvas.translate(-tx, -ty);
-			engine.idle(targetCanvas, stopEventKind);
+			engine.idle(stopEventKind);
 			targetCanvas.translate(tx, ty);
 			final float _zoomRate = 1F/zoomRate;
 			targetCanvas.scale(_zoomRate, _zoomRate);
 			targetCanvas.translate(-tx, -ty);
 		} else
-			engine.idle(targetCanvas, stopEventKind);
+			engine.idle(stopEventKind);
 		////////////////////////////////////////////////////////////////////////
 		//GUIIdle
 		targetCanvas.translate(-TRANSLATE_X, -TRANSLATE_Y);

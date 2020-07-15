@@ -2,6 +2,7 @@ package com.example.myapplicationtest1.game.contents.effect;
 
 import android.graphics.Color;
 
+import com.example.myapplicationtest1.R;
 import com.example.myapplicationtest1.game.core.GHQ;
 import com.example.myapplicationtest1.game.core.GHQObject;
 import com.example.myapplicationtest1.game.paint.animation.SerialImageFrame;
@@ -19,16 +20,15 @@ public class Effects extends Effect {
 	//SparkHitEF
 	/////////////////
 	public static class SparkHitEF extends Effects {
-		private final DotPaint paint = new SerialImageFrame(this, 1,
-			"image/animations/1_hit.png",
-			"image/animations/2_hit.png",
-			"image/animations/3_hit.png",
-			"image/animations/4_hit.png");
 		public SparkHitEF(GHQObject source) {
 			super(source);
 			name = "SparkHitEF";
 			limitFrame = 3;
-			paintScript = paint;
+			paintScript = new SerialImageFrame(this, 1,
+					R.drawable.a1_hit,
+					R.drawable.a2_hit,
+					R.drawable.a3_hit,
+					R.drawable.a4_hit);
 			point().stop();
 			point().setMoveAngle(GHQ.random2(0, 2*PI));
 		}

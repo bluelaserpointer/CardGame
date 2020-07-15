@@ -3,6 +3,7 @@ package com.example.myapplicationtest1.game.contents.bullet;
 import android.graphics.Color;
 import android.graphics.Paint;
 
+import com.example.myapplicationtest1.R;
 import com.example.myapplicationtest1.game.contents.effect.Effects;
 import com.example.myapplicationtest1.game.contents.engine.MyUnit;
 import com.example.myapplicationtest1.game.contents.engine.SurDamage;
@@ -31,7 +32,7 @@ public class Bullets extends Bullet {
 			point().setSpeed(10);
 			name = "SurBullet";
 			limitFrame = 50;
-			paintScript = ImageFrame.create(this, "image/animations/1_fire.png");
+			paintScript = ImageFrame.create(this, R.drawable.a1_fire);
 		}
 		public Laser(Weapon originWeapon, GHQObject shooter, HitGroup hitGroup, Laser sample) {
 			super(shooter);
@@ -43,7 +44,7 @@ public class Bullets extends Bullet {
 			setDamage(sample.damage);
 			name = "SurBullet";
 			limitFrame = 50;
-			paintScript = ImageFrame.create(this, "image/animations/1_fire.png");
+			paintScript = ImageFrame.create(this, R.drawable.a1_fire);
 		}
 		public Laser getOriginal() {
 			return new Laser(originWeapon, shooter, hitGroup(), this);

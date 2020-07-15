@@ -50,7 +50,7 @@ public final class Lotte {
 		else
 			subject = Subject.ENG.ordinal();
 		final int[] group = lotteSpring[subject][rarity];
-		Engine_Surviver.lottedRarity = rarity;
+		Engine_Survivor.lottedRarity = rarity;
 		return group[(int)(Math.random()*group.length)];
 	}
 }

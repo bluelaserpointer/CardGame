@@ -1,8 +1,7 @@
 package com.example.myapplicationtest1.game.contents.ui;
 
-import com.example.myapplicationtest1.game.contents.engine.Engine_Surviver;
+import com.example.myapplicationtest1.game.contents.engine.Engine_Survivor;
 import com.example.myapplicationtest1.game.contents.engine.Subject;
-import com.example.myapplicationtest1.game.core.GHQ;
 
 public class BetButton {
 	private final Subject subject;
@@ -15,9 +14,9 @@ public class BetButton {
 		//GHQ.drawStringGHQ("BET+" + betValue, point().intX(), point().intY() + 90, GHQ.basicFont.deriveFont(Font.BOLD));
 	}
 	public void clicked() {
-		if(Engine_Surviver.resourceAmount[subject.ordinal()] >= betValue && Engine_Surviver.getTotalBet() + betValue <= 100) {
-			Engine_Surviver.lotteAdded[subject.ordinal()] += betValue;
-			Engine_Surviver.resourceAmount[subject.ordinal()] -= betValue;
+		if(Engine_Survivor.resourceAmount[subject.ordinal()] >= betValue && Engine_Survivor.getTotalBet() + betValue <= 100) {
+			Engine_Survivor.lotteAdded[subject.ordinal()] += betValue;
+			Engine_Survivor.resourceAmount[subject.ordinal()] -= betValue;
 		}
 	}
 }

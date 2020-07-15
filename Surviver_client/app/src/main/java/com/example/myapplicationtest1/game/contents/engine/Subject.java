@@ -4,26 +4,14 @@ import android.graphics.Color;
 
 public enum Subject{
 	CHI, MAT, ENG;
-	public Subject valueOf(int i) {
-		switch(i) {
-		case 0:
-			return CHI;
-		case 1:
-			return MAT;
-		case 2:
-			return ENG;
-		default:
-			return null;
-		}
-	}
 	public String toCHIString() {
 		switch(this) {
 		case CHI:
-			return "Chinese";
+			return "语文";
 		case MAT:
-			return "Mathematics";
+			return "数学";
 		case ENG:
-			return "English";
+			return "英语";
 		default:
 			return "";
 		}
@@ -38,18 +26,6 @@ public enum Subject{
 			return Color.BLUE;
 		default:
 			return -1;
-		}
-	}
-	public String imageURL() {
-		switch(this) {
-		case CHI:
-			return "image/CHI_BET.png";
-		case MAT:
-			return "image/MAT_BET.png";
-		case ENG:
-			return "image/ENG_BET.png";
-		default:
-			return null;
 		}
 	}
 }

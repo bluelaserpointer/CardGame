@@ -1,5 +1,6 @@
 package com.example.myapplicationtest1.game.contents.engine;
 
+import com.example.myapplicationtest1.R;
 import com.example.myapplicationtest1.game.core.GHQ;
 import com.example.myapplicationtest1.game.paint.animation.SerialImageFrame;
 import com.example.myapplicationtest1.game.paint.dot.DotPaint;
@@ -24,7 +25,7 @@ public class Enemy extends MyUnit {
 		atkRange = PARAM.iniATKRange;
 		cd = PARAM.iniCD;
 		spd = PARAM.iniSPD;
-		for(int i = 0;i < Engine_Surviver.stage;++i) {
+		for(int i = 0; i < Engine_Survivor.stage; ++i) {
 			hp += hp*0.5;
 			atk += atk*0.5;
 			def += def*0.5;
@@ -43,11 +44,11 @@ public class Enemy extends MyUnit {
 	public void claimDeleteFromStage() {
 		final int RAND = GHQ.random2(0, chiCount + matCount + engCount - 1);
 		if(RAND < chiCount) {
-			Engine_Surviver.resourceAmount[0] += drops[Engine_Surviver.stage];
+			Engine_Survivor.resourceAmount[0] += drops[Engine_Survivor.stage];
 		}else if(RAND < chiCount + matCount) {
-			Engine_Surviver.resourceAmount[1] += drops[Engine_Surviver.stage];
+			Engine_Survivor.resourceAmount[1] += drops[Engine_Survivor.stage];
 		}else
-			Engine_Surviver.resourceAmount[2] += drops[Engine_Surviver.stage];
+			Engine_Survivor.resourceAmount[2] += drops[Engine_Survivor.stage];
 		super.claimDeleteFromStage();
 	}
 	@Override
@@ -76,9 +77,9 @@ public class Enemy extends MyUnit {
 	}
 	enum EnemyParameter{
 		//name , paint , hp , atk , def , range, CD , speed, description
-		CHI_QZ("�������п���", new SerialImageFrame(5, "image/ChineseQZ1_1.png", "image/ChineseQZ1_2.png"), 400, 20, 40, 100.0, 60, 3.3, ""),
-		MAT_QZ("��ѧ���п���", new SerialImageFrame(5, "image/MathQZ1_1.png", "image/MathQZ1_2.png"), 200, 60, 15, 80, 20, 3.3, ""),
-		ENG_QZ("Ӣ�����п���", new SerialImageFrame(5, "image/EnglishQZ1_1.png", "image/EnglishQZ1_2.png"), 200, -40, 15, 300.0, 30, 3.3, "");
+		CHI_QZ("CHI_QZ", new SerialImageFrame(5, R.drawable.chineseqz1_1, R.drawable.chineseqz1_2), 400, 20, 40, 100.0, 60, 3.3, ""),
+		MAT_QZ("MAT_QZ", new SerialImageFrame(5, R.drawable.mathqz1_1, R.drawable.mathqz1_2), 200, 60, 15, 80, 20, 3.3, ""),
+		ENG_QZ("ENG_QZ", new SerialImageFrame(5, R.drawable.englishqz1_1, R.drawable.englishqz1_2), 200, -40, 15, 300.0, 30, 3.3, "");
 		
 		final String NAME;
 		final DotPaint PAINT;
