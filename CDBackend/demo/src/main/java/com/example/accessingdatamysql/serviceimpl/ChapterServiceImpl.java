@@ -4,6 +4,7 @@ import com.example.accessingdatamysql.dao.ChapterDao;
 import com.example.accessingdatamysql.entity.Chapter;
 import com.example.accessingdatamysql.entity.Chapter;
 import com.example.accessingdatamysql.entity.ChapterDetails;
+import com.example.accessingdatamysql.entity.ChapterPhase;
 import com.example.accessingdatamysql.service.ChapterService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +20,17 @@ public class ChapterServiceImpl implements ChapterService {
     ChapterDao chapterDao;
 
     @Override
-    public List<ChapterDetails> updateChapterByPhase(Integer chapterId, Integer phaseId, String phaseData) throws JsonProcessingException {
-        return chapterDao.updateChapterByPhase(chapterId, phaseId, phaseData);
+    public List<ChapterDetails> updateChapterPhaseStrategy(Integer chapterId, Integer phaseId, String phaseData) throws JsonProcessingException {
+        return chapterDao.updateChapterPhaseStrategy(chapterId, phaseId, phaseData);
     };
+
+    public List<ChapterPhase> updateChapterPhaseAwards(Integer chapterId, Integer phaseId, String awardItems, String awardCards) throws JsonProcessingException {
+        return chapterDao.updateChapterPhaseAwards(chapterId, phaseId, awardItems, awardCards);
+    }
+
+    public List<Chapter> updateChapterAwards(Integer chapterId, String awardItems, String awardCards) throws JsonProcessingException {
+        return chapterDao.updateChapterAwards(chapterId, awardItems, awardCards);
+    }
 
     public List<Chapter> getAllChapters(){
         System.out.println("In service");
