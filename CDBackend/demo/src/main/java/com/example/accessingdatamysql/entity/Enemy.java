@@ -20,8 +20,6 @@ public class Enemy {
     private Integer enemyId;
     // 敌人名称
     private String enemyName;
-    // 敌人被击败时提供的经验值点数
-    private Integer expPoint;
     // 敌人的hp属性
     private Integer healthPoint;
     // 敌人攻击属性
@@ -38,10 +36,9 @@ public class Enemy {
     public Enemy() {
     };
 
-    public Enemy(String enemyName, Integer expPoint, Integer healthPoint, Integer attack, Integer defense,
-            Integer attackRange, Double cd, Integer speed) {
+    public Enemy(String enemyName, Integer healthPoint, Integer attack, Integer defense, Integer attackRange, Double cd,
+            Integer speed) {
         this.enemyName = enemyName;
-        this.expPoint = expPoint;
         this.healthPoint = healthPoint;
         this.attack = attack;
         this.defense = defense;
@@ -51,10 +48,9 @@ public class Enemy {
     }
 
     // When modifying enemy
-    public void setEnemy(String enemyName, Integer expPoint, Integer healthPoint, Integer attack, Integer defense,
-            Integer attackRange, Double cd, Integer speed) {
+    public void setEnemy(String enemyName, Integer healthPoint, Integer attack, Integer defense, Integer attackRange,
+            Double cd, Integer speed) {
         this.enemyName = enemyName;
-        this.expPoint = expPoint;
         this.healthPoint = healthPoint;
         this.attack = attack;
         this.defense = defense;
@@ -69,14 +65,6 @@ public class Enemy {
 
     public void setEnemyId(Integer enemyId) {
         this.enemyId = enemyId;
-    }
-
-    public Integer getExpPoint() {
-        return expPoint;
-    }
-
-    public void setExpPoint(Integer expPoint) {
-        this.expPoint = expPoint;
     }
 
     public Integer getAttack() {
