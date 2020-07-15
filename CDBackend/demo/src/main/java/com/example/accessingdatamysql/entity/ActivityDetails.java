@@ -8,12 +8,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "ActivityDetails")
 public class ActivityDetails {
+    // 活动Id
     private Integer activityId;
-
+    // 活动图片（可能没有）
     private String activityImg;
-
+    // 活动描述
     private String activityDescription;
-
+    // 活动开始的时间
     private Timestamp start;
 
     public ActivityDetails(Integer activityId, String activityImg, String activityDescription, Timestamp start) {
@@ -22,7 +23,6 @@ public class ActivityDetails {
         this.activityDescription = activityDescription;
         this.start = start;
     }
-
 
     public Integer getActivityId() {
         return activityId;

@@ -14,25 +14,28 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "cardId")
 
 public class Card {
+    // 卡牌Id（PK）
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer cardId;
-
+    // 卡牌名称
     private String cardName;
-
+    // 卡牌稀有度
     private String rarity;
-
+    // 卡牌hp属性
     private Integer healthPoint;
-
+    // 卡牌攻击属性
     private Integer attack;
-
+    // 卡牌防御属性
     private Integer defense;
-
+    // 卡牌攻击范围
     private Integer attackRange;
-
+    // 卡牌冷却时间
     private Double cd;
-
+    // 卡牌速度属性
     private Integer speed;
+
+    // 可能需要添加技能相关的attributes
 
     public Card() {
     };

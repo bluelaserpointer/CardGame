@@ -11,18 +11,19 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @JsonIgnoreProperties(value = { "handler", "hibernateLazyInitializer", "fieldHandler" })
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "activityId")
 public class Activity {
+    // 活动Id（PK）
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer activityId;
-
+    // 活动名称
     private String activityName;
-
+    // 活动类型（分为定期或限定）
     private String type;
-
+    // 活动细节，包括描述与图片等
     @Transient
     private ActivityDetails activityDetails;
 
-    public Activity(){
+    public Activity() {
     }
 
     public Activity(String type, String activityName) {

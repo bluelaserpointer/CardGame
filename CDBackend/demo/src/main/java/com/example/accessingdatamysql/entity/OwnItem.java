@@ -17,16 +17,17 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "ownItemId")
 
 public class OwnItem {
+    // 拥有道具关系Id（PK）
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer ownItemId;
-
+    // 拥有道具的用户的userId
     private Integer userId;
-
+    // 用户拥有的道具的itemId
     private Integer itemId;
-
+    // 用户拥有道具的数量
     private Integer ItemCount;
-
+    // 用户（首次）拥有道具的时间（也可以修改成最新一次重复拥有的时间）
     private Timestamp accquireDate;
 
     public OwnItem() {

@@ -11,35 +11,38 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @JsonIgnoreProperties(value = { "handler", "hibernateLazyInitializer", "fieldHandler" })
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userId")
 public class User {
+    // 用户Id
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer userId;
-
+    // 用户名
     @Column(unique = true)
     private String userName;
-
+    // 用户邮箱地址
     private String email;
-
+    // 用户密码
     private String password;
-
+    // 用户手机号码
     private String phoneNumber;
-
+    // 用户信用（可删）
     private Integer credits;
-
+    // 用户权限
     private Boolean access;
-
+    // 用户等级
     private Integer level;
+    // 用户目前经验值（每升一级清零【理论上来说】）
+    private Integer curExpPoint;
     // 体力值
     private Integer stamina;
     // 氪金金币
     private Integer money;
-    // 学生绩点
+    // 学生绩点（普通货币）
     private Double grade;
-
+    // 英语知识点
     private Integer engKnowledge;
-
+    // 数学知识点
     private Integer mathKnowledge;
-
+    // 中文知识点
     private Integer chiKnowledge;
 
     public User() {
@@ -56,15 +59,18 @@ public class User {
         this.credits = 0;
         this.access = true;
         this.level = 1;
+        this.curExpPoint = 0; // 初始时应该等级为1且经验值为0
+        // 这里需要确定一下每个等级的stamina是多少来确定初始化时的stamina值
         this.money = 0;
+        this.grade = 0.0;
         this.engKnowledge = 0;
         this.mathKnowledge = 0;
         this.chiKnowledge = 0;
     }
 
     public void updateUser(String userName, String email, String password, String phoneNumber, Integer credits,
-            Boolean access, Integer level, Integer stamina, Integer money, Double grade, Integer engKnowledge, Integer mathKnowledge,
-            Integer chiKnowledge) {
+            Boolean access, Integer level, Integer curExpPoint, Integer stamina, Integer money, Double grade,
+            Integer engKnowledge, Integer mathKnowledge, Integer chiKnowledge) {
         this.userName = userName;
         this.email = email;
         this.password = password;
@@ -72,6 +78,7 @@ public class User {
         this.credits = credits;
         this.access = access;
         this.level = level;
+        this.curExpPoint = curExpPoint;
         this.stamina = stamina;
         this.money = money;
         this.grade = grade;
@@ -142,6 +149,14 @@ public class User {
 
     public void setLevel(Integer level) {
         this.level = level;
+    }
+
+    public Integer getCurExpPoint() {
+        return curExpPoint;
+    }
+
+    public void setCurExpPoint(Integer curExpPoint) {
+        this.curExpPoint = curExpPoint;
     }
 
     public Integer getStamina() {
