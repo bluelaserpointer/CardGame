@@ -7,12 +7,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.myapplicationtest1.page.HomePage;
@@ -31,20 +29,10 @@ import java.util.Map;
  * status bar and navigation/system bar) with user interaction.
  */
 public class FullscreenActivity extends AppCompatActivity {
-    private static MotionEvent motionEventTemp;
-
-
     /**
-     * Whether or not the system UI should be auto-hidden after
-     * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
+     * Whether or not the system UI should be auto-hidden
      */
     private static final boolean AUTO_HIDE = true;
-
-    /**
-     * If {@link #AUTO_HIDE} is set, the number of milliseconds to wait after
-     * user interaction before hiding the system UI.
-     */
-    private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
 
     /**
      * Some older devices needs a small delay between UI widget updates
@@ -71,24 +59,16 @@ public class FullscreenActivity extends AppCompatActivity {
         }
     };
     private View mControlsView;
-    private final Runnable mShowPart2Runnable = new Runnable() {
-        @Override
-        public void run() {
-            // Delayed display of UI elements
-            ActionBar actionBar = getSupportActionBar();
-            if (actionBar != null) {
-                actionBar.show();
-            }
-            mControlsView.setVisibility(View.VISIBLE);
+    private final Runnable mShowPart2Runnable = () -> {
+        // Delayed display of UI elements
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.show();
         }
+        mControlsView.setVisibility(View.VISIBLE);
     };
     private boolean mVisible;
-    private final Runnable mHideRunnable = new Runnable() {
-        @Override
-        public void run() {
-            hide();
-        }
-    };
+    private final Runnable mHideRunnable = () -> hide();
     /**
      * Touch listener to use for in-layout UI controls to delay hiding the
      * system UI. This is to prevent the jarring behavior of controls going away
@@ -120,28 +100,6 @@ public class FullscreenActivity extends AppCompatActivity {
         }
         return false;
     };
-
-    public void onLoginInputClick(View view) throws JSONException {
-        EditText userNameText = findViewById(R.id.usernameText);
-        String userName = userNameText.getText().toString();
-        EditText passwordText = findViewById(R.id.passwordText);
-        String password = passwordText.getText().toString();
-        System.out.println(userName);
-        System.out.println(password);
-        if(Utils.identifyUserInput(userName, password))
-        {
-            System.out.println("InputIdentification succeeded!!!!!!!!!!!!!!!!");
-            Utils.saveUserInfo(this, userName, password);
-            Map<String,String> userInfo= Utils.getUserInfo(this);
-            String getUserName = userInfo.get("userName");
-            String getPassword = userInfo.get("password");
-            System.out.println(getUserName);
-            System.out.println(getPassword);
-            Page.jump(this, HomePage.class);
-        }else{
-            System.out.println("InputIdentification failed!!!!!!!!!!!!!!!!");
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
