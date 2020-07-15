@@ -16,11 +16,14 @@ public class UserDaoImpl implements UserDao {
     @Autowired
     private UserRepository UserRepository;
 
+    // 获取一个用户信息
     @Override
     public User getOneUser(Integer UserId) {
         return UserRepository.getOne(UserId);
     }
 
+    // 添加一个新用户
+    @Override
     public String addNewUser(String userName, String email, String password, String phoneNumber) {
         User User = new User(userName, email, password, phoneNumber);
         // System.out.println("new User has an Id of : " + n.getUserId());
@@ -28,6 +31,8 @@ public class UserDaoImpl implements UserDao {
         return "Saved User";
     }
 
+    // 更新一个用户信息
+    @Override
     public String updateUser(Integer UserId, String userName, String email, String password, String phoneNumber,
             Integer credits, Boolean access, Integer level, Integer curExpPoint, Integer stamina, Integer money,
             Double grade, Integer engKnowledge, Integer mathKnowledge, Integer chiKnowledge) {
@@ -43,11 +48,15 @@ public class UserDaoImpl implements UserDao {
 
     }
 
+    // 获取所有用户信息
+    @Override
     public List<User> getAllUsers() {
         List<User> Users = UserRepository.findAll();
         return Users;
     }
 
+    // 删除部分用户
+    @Override
     public String deleteUsers(List<Integer> UserIds) {
         for (int i = 0; i < UserIds.size(); i++) {
             UserRepository.deleteById(UserIds.get(i));
@@ -55,15 +64,21 @@ public class UserDaoImpl implements UserDao {
         return "Deleted Users by id";
     }
 
+    // 删除所有用户
+    @Override
     public String deleteAll() {
         UserRepository.deleteAll();
         return "Deleted All Users";
     }
 
+    // 使用用户名查询用户
+    @Override
     public User getOneUserByUserName(String userName) {
         return UserRepository.findUserByUserNameEquals(userName);
     }
 
+    // 删除一个指定用户
+    @Override
     public List<User> deleteUser(Integer userId) {
         UserRepository.deleteById(userId);
         return getAllUsers();
