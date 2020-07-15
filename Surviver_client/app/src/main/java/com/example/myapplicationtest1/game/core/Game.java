@@ -15,7 +15,7 @@ public abstract class Game {
 	public abstract GHQStage loadStage();
 	
 	//idle
-	public abstract void idle(Canvas canvas, int stopEventKind);
+	public abstract void idle(int stopEventKind);
 	
 	//information
 	public String getTitleName(){
