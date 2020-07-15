@@ -11,18 +11,27 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
-import com.example.myapplicationtest1.page.homePage;
+import com.example.myapplicationtest1.page.HomePage;
+import com.example.myapplicationtest1.page.LoginPage;
+import com.example.myapplicationtest1.utils.Utils;
+
 
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
 public class FullscreenActivity extends AppCompatActivity {
+    private static MotionEvent motionEventTemp;
+
+
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -97,12 +106,65 @@ public class FullscreenActivity extends AppCompatActivity {
                     }
                     break;
                 case MotionEvent.ACTION_UP:
-                    toHomeTouchListener.onTouch(view, motionEvent); //防止相同内容重写
+                    try {
+                        if(LoginPage.identifyUser(FullscreenActivity.this))
+                        {
+                            System.out.println("Identification succeeded!!!!!!!!!!!!!!!!");
+                            toHomeTouchListener.onTouch(view, motionEvent); //防止相同内容重写
+                        }else{
+                            System.out.println("Identification failed!!!!!!!!!!!!!!!");
+                            loginInputHideTouchListener.onTouch(view, motionEvent);
+                            System.out.println("Identification done!!!!!!!!!!!!!!!");
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
                 break;
             }
             return false;
         }
     };
+
+    public void onLoginInputClick(View view) throws JSONException {
+        EditText userNameText = findViewById(R.id.usernameText);
+        String userName = userNameText.getText().toString();
+        EditText passwordText = findViewById(R.id.passwordText);
+        String password = passwordText.getText().toString();
+        System.out.println(userName);
+        System.out.println(password);
+        if(LoginPage.identifyUserInput(FullscreenActivity.this, userName, password))
+        {
+            System.out.println("InputIdentification succeeded!!!!!!!!!!!!!!!!");
+            Utils.saveUserInfo(this, userName, password);
+            Map<String,String> userInfo= Utils.getUserInfo(this);
+            String getUserName = userInfo.get("userName");
+            String getPassword = userInfo.get("password");
+            System.out.println(getUserName);
+            System.out.println(getPassword);
+            toHomeTouchListener.onTouch(view, motionEventTemp); //防止相同内容重写
+        }else{
+            System.out.println("InputIdentification failed!!!!!!!!!!!!!!!");
+        }
+    }
+
+    private final View.OnTouchListener loginInputHideTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            motionEventTemp = motionEvent;
+            switch (motionEvent.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    if (AUTO_HIDE) {
+                        hide();
+                    }
+                    break;
+                case MotionEvent.ACTION_UP:
+                    setContentView(R.layout.login_input);
+            }
+            return false;
+        }
+    };
+
 
     private final View.OnTouchListener toHomeTouchListener = new View.OnTouchListener() {
         @Override
@@ -112,7 +174,7 @@ public class FullscreenActivity extends AppCompatActivity {
                 case MotionEvent.ACTION_UP:
                     setContentView(R.layout.home);
                     try {
-                        homePage.homePageInit(FullscreenActivity.this);
+                        HomePage.homePageInit(FullscreenActivity.this);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
