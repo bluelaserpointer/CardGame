@@ -31,13 +31,23 @@ public class ChapterController {
 //
 //    }
 
-    @RequestMapping(value = "/updateChapter")
-    public @ResponseBody List<ChapterDetails> updateChapterByPhase(@RequestParam("chapterId") Integer chapterId, @RequestParam("phaseId") Integer phaseId, @RequestParam("phaseData") String phaseData) throws JsonProcessingException {
+    @RequestMapping(value = "/updateChapterPhaseStrategy")
+    public @ResponseBody List<ChapterDetails> updateChapterPhaseStrategy(@RequestParam("chapterId") Integer chapterId, @RequestParam("phaseId") Integer phaseId, @RequestParam("phaseData") String phaseData) throws JsonProcessingException {
         System.out.println("ChapterId: " + chapterId);
         System.out.println("PhaseId: " + phaseId);
         System.out.println("PhaseData: " + phaseData);
 
-        return chapterService.updateChapterByPhase(chapterId, phaseId, phaseData);
+        return chapterService.updateChapterPhaseStrategy(chapterId, phaseId, phaseData);
+    }
+
+    @RequestMapping(value = "/updateChapterPhaseAwards")
+    public @ResponseBody List<ChapterPhase> updateChapterPhaseAwards(@RequestParam("chapterId") Integer chapterId, @RequestParam("phaseId") Integer phaseId, @RequestParam("awardItems") String awardItems,  @RequestParam("awardCards") String awardCards) throws JsonProcessingException {
+        return chapterService.updateChapterPhaseAwards(chapterId, phaseId, awardItems, awardCards);
+    }
+
+    @RequestMapping(value = "/updateChapterAwards")
+    public @ResponseBody List<Chapter> updateChapterAwards(@RequestParam("chapterId") Integer chapterId, @RequestParam("awardItems") String awardItems,  @RequestParam("awardCards") String awardCards) throws JsonProcessingException {
+        return chapterService.updateChapterAwards(chapterId, awardItems, awardCards);
     }
 
     @RequestMapping(value = "/getAllChapters")

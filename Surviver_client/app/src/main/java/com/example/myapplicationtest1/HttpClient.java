@@ -12,6 +12,12 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 public class HttpClient {
+    //Edward: 192.168.175.1
+    //Jun: 192.168.254.1
+    public static final String URLHead = "http://192.168.254.1:8080/";
+    public static String doGetShort(String url) {
+        return doGet(URLHead + url);
+    }
     public static String doGet(String httpurl) {
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
         HttpURLConnection connection = null;
@@ -20,9 +26,8 @@ public class HttpClient {
         String result = null;// 返回结果字符串
         try {
             // 创建远程url连接对象
-            URL url = new URL(httpurl);
             // 通过远程url连接对象打开一个连接，强转成httpURLConnection类
-            connection = (HttpURLConnection) url.openConnection();
+            connection = (HttpURLConnection) new URL(httpurl).openConnection();
             // 设置连接方式：get
             connection.setRequestMethod("GET");
             // 设置连接主机服务器的超时时间：15000毫秒
@@ -37,7 +42,7 @@ public class HttpClient {
                 // 封装输入流is，并指定字符集
                 br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
                 // 存放数据
-                StringBuilder sbf = new StringBuilder();
+                final StringBuilder sbf = new StringBuilder();
                 String temp;
                 while ((temp = br.readLine()) != null) {
                     sbf.append(temp);
@@ -64,16 +69,13 @@ public class HttpClient {
                     e.printStackTrace();
                 }
             }
-
             if(connection != null)
                 connection.disconnect();// 关闭远程连接
         }
-
         return result;
     }
 
     public static String doPost(String httpUrl, String param) {
-
         HttpURLConnection connection = null;
         InputStream is = null;
         OutputStream os = null;
@@ -109,7 +111,7 @@ public class HttpClient {
                 // 对输入流对象进行包装:charset根据工作项目组的要求来设置
                 br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
 
-                StringBuilder sbf = new StringBuilder();
+                final StringBuilder sbf = new StringBuilder();
                 String temp;
                 // 循环遍历一行一行读取数据
                 while ((temp = br.readLine()) != null) {

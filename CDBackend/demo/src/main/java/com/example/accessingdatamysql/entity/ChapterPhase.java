@@ -5,10 +5,15 @@ import java.util.List;
 import java.util.Map;
 
 @Entity // This tells Hibernate to make a table out of this class
-public class Chapter {
+@IdClass(ChapterPhaseEntityId.class)
+public class ChapterPhase {
     @Id
     @Column(name = "chapter_id")
     private Integer chapterId;
+
+    @Id
+    @Column(name = "phase_id")
+    private Integer phaseId;
 
     @Column
     @ElementCollection(targetClass = Integer.class)
@@ -18,8 +23,6 @@ public class Chapter {
     @ElementCollection(targetClass = Integer.class)
     private List<Integer> awardCards;
 
-    private Integer phaseNo;
-
     public Integer getChapterId() {
         return chapterId;
     }
@@ -28,12 +31,12 @@ public class Chapter {
         this.chapterId = chapterId;
     }
 
-    public Map<Integer, Integer> getAwardItems() {
-        return awardItems;
+    public Integer getPhaseId() {
+        return phaseId;
     }
 
-    public void setAwardItems(Map<Integer, Integer> awardItems) {
-        this.awardItems = awardItems;
+    public void setPhaseId(Integer phaseId) {
+        this.phaseId = phaseId;
     }
 
     public List<Integer> getAwardCards() {
@@ -44,22 +47,12 @@ public class Chapter {
         this.awardCards = awardCards;
     }
 
-    public Integer getPhaseNo() {
-        return phaseNo;
+    public Map<Integer, Integer> getAwardItems() {
+        return awardItems;
     }
 
-    public void setPhaseNo(Integer phaseNo) {
-        this.phaseNo = phaseNo;
+    public void setAwardItems(Map<Integer, Integer> awardItems) {
+        this.awardItems = awardItems;
     }
-
-    public Integer getPhaseType() {
-        return phaseType;
-    }
-
-    public void setPhaseType(Integer phaseType) {
-        this.phaseType = phaseType;
-    }
-
-    private Integer phaseType;
 
 }
