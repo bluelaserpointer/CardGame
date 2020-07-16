@@ -97,6 +97,6 @@ const componentsRouter = {
   //     meta: { title: 'Drag Kanban' }
   //   }
   // ]
-}
+};
 
 export default componentsRouter

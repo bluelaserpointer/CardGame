@@ -170,7 +170,7 @@ export default {
         published: 'success',
         draft: 'info',
         deleted: 'danger'
-      }
+      };
       return statusMap[status]
     }
     // typeFilter(type) {
@@ -227,26 +227,26 @@ export default {
   },
   methods: {
     getList() {
-      this.listLoading = true
+      this.listLoading = true;
       axios.get('http://localhost:8080/user/getAllUsers')
-        .then(response => this.list = response.data)
+        .then(response => this.list = response.data);
       setTimeout(() => {
         this.listLoading = false
       }, 1.5 * 10)
     },
     handleFilter() {
-      this.listQuery.page = 1
+      this.listQuery.page = 1;
       this.getList()
     },
     handleModifyStatus(row, status) {
       this.$message({
         message: '操作Success',
         type: 'success'
-      })
+      });
       row.status = status
     },
     sortChange(data) {
-      const { prop, order } = data
+      const { prop, order } = data;
       if (prop === 'id') {
         this.sortByID(order)
       }
@@ -272,23 +272,23 @@ export default {
       }
     },
     handleCreate() {
-      this.resetTemp()
-      this.dialogStatus = 'create'
-      this.panelVisible = true
+      this.resetTemp();
+      this.dialogStatus = 'create';
+      this.panelVisible = true;
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
     },
     createData() {
-      const postData = new FormData()
-      const _this = this
-      postData.append('userName', this.temp.userName)
-      postData.append('password', this.temp.password)
-      postData.append('phoneNumber', this.temp.phoneNumber)
-      postData.append('credits', this.temp.credits)
-      postData.append('access', this.temp.access)
-      postData.append('level', this.temp.level)
-      postData.append('email', this.temp.email)
+      const postData = new FormData();
+      const _this = this;
+      postData.append('userName', this.temp.userName);
+      postData.append('password', this.temp.password);
+      postData.append('phoneNumber', this.temp.phoneNumber);
+      postData.append('credits', this.temp.credits);
+      postData.append('access', this.temp.access);
+      postData.append('level', this.temp.level);
+      postData.append('email', this.temp.email);
 
       axios.post(`http://localhost:8080/user/addUser`, postData).then(response => {
         if (response.data) {
@@ -297,30 +297,30 @@ export default {
           //
         }
         axios.get('http://localhost:8080/user/getAllUsers')
-          .then(response => this.list = response.data)
+          .then(response => this.list = response.data);
         _this.panelVisible = false
       })
     },
     handleUpdate(row) {
-      this.temp = Object.assign({}, row) // copy obj
-      this.temp.timestamp = new Date(this.temp.timestamp)
-      this.dialogStatus = 'update'
-      this.panelVisible = true
+      this.temp = Object.assign({}, row); // copy obj
+      this.temp.timestamp = new Date(this.temp.timestamp);
+      this.dialogStatus = 'update';
+      this.panelVisible = true;
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
     },
     updateData() {
-      const postData = new FormData()
-      const _this = this
-      postData.append('userId', this.temp.userId)
-      postData.append('userName', this.temp.userName)
-      postData.append('password', this.temp.password)
-      postData.append('phoneNumber', this.temp.phoneNumber)
-      postData.append('credits', this.temp.credits)
-      postData.append('access', this.temp.access)
-      postData.append('level', this.temp.level)
-      postData.append('email', this.temp.email)
+      const postData = new FormData();
+      const _this = this;
+      postData.append('userId', this.temp.userId);
+      postData.append('userName', this.temp.userName);
+      postData.append('password', this.temp.password);
+      postData.append('phoneNumber', this.temp.phoneNumber);
+      postData.append('credits', this.temp.credits);
+      postData.append('access', this.temp.access);
+      postData.append('level', this.temp.level);
+      postData.append('email', this.temp.email);
 
       axios.post(`http://localhost:8080/user/updateUser`, postData).then(response => {
         if (response.data) {
@@ -329,7 +329,7 @@ export default {
           //
         }
         axios.get('http://localhost:8080/user/getAllUsers')
-          .then(response => this.list = response.data)
+          .then(response => this.list = response.data);
         _this.panelVisible = false
       })
 
@@ -357,16 +357,16 @@ export default {
         message: 'Delete Successfully',
         type: 'success',
         duration: 2000
-      })
+      });
       this.list.splice(index, 1)
     },
     getSortClass: function(key) {
-      const sort = this.listQuery.sort
+      const sort = this.listQuery.sort;
       return sort === `+${key}` ? 'ascending' : 'descending'
     },
     handleFetchPv(pv) {
       fetchPv(pv).then(response => {
-        this.pvData = response.data.pvData
+        this.pvData = response.data.pvData;
         this.dialogPvVisible = true
       })
     }

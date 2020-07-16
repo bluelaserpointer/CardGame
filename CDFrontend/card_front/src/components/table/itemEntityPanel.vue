@@ -22,10 +22,12 @@
       <!--      </el-checkbox>-->
     </div>
 
+
+<!--    :data="list.filter(data => !search || data.itemName.toLowerCase().includes(search.toLowerCase()))"-->
     <el-table
       :key="tableKey"
       v-loading="listLoading"
-      :data="list.filter(data => !search || data.itemName.toLowerCase().includes(search.toLowerCase()))"
+      :data="list"
       border
       fit
       highlight-current-row
@@ -133,7 +135,6 @@
 </template>
 
 <script>
-import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
 import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination/index' // secondary package based on el-pagination
 import axios from 'axios'
@@ -148,7 +149,7 @@ export default {
         published: 'success',
         draft: 'info',
         deleted: 'danger'
-      }
+      };
       return statusMap[status]
     }
 
@@ -199,7 +200,7 @@ export default {
   },
   watch: {
     deleteVisible() {
-      this.confirmDelete = false
+      this.confirmDelete = false;
       this.confirmPassword = ''
     }
   },
@@ -208,22 +209,22 @@ export default {
   },
   methods: {
     watchList() {
-      const list = this.list
+      const list = this.list;
       for (const i in list) {
-        const details = list[i].itemDetails
-        list[i].itemImg = details.itemImg
+        const details = list[i].itemDetails;
+        list[i].itemImg = details.itemImg;
         list[i].itemDescription = details.itemDescription
       }
       this.list = list
     },
     confirmIdentity() {
       // TODO: REQUEST --- PWD USR MATCH
-      const postData = new FormData()
-      const _this = this
-      postData.append('adminName', localStorage.getItem('AdminName'))
-      postData.append('password', this.confirmPassword)
+      const postData = new FormData();
+      const _this = this;
+      postData.append('adminName', localStorage.getItem('AdminName'));
+      postData.append('password', this.confirmPassword);
       axios.post('http://localhost:8080/admin/identifyAdmin', postData).then(response => {
-        console.log(response)
+        console.log(response);
         if (response.data) {
           _this.confirmDelete = true
         } else {
@@ -232,13 +233,13 @@ export default {
       })
     },
     deleteData() {
-      const postData = new FormData()
-      const _this = this
-      postData.append('itemId', this.temp.itemId)
+      const postData = new FormData();
+      const _this = this;
+      postData.append('itemId', this.temp.itemId);
       axios.post('http://localhost:8080/item/deleteItem', postData).then(response => {
         if (response.data) {
-          _this.panelVisible = false
-          _this.deleteVisible = false
+          _this.panelVisible = false;
+          _this.deleteVisible = false;
           _this.getList()
         } else {
           this.$message.error('Identification failed!')
@@ -246,43 +247,39 @@ export default {
       })
     },
     uploadCover() {
-      const _this = this
+      const _this = this;
       // 根据ref得到图片文件
-      var file = this.$refs.img
+      var file = this.$refs.img;
       // 使用h5的读取文件api
-      var reader = new FileReader()
-      reader.readAsDataURL(file.files[0])
+      var reader = new FileReader();
+      reader.readAsDataURL(file.files[0]);
       // 读取完成后触发
       reader.onload = function() {
         // 改变img的路径
-        _this.temp.itemImg = this.result
+        _this.temp.itemImg = this.result;
         console.log('In onload')
       }
     },
     getList() {
-      this.listLoading = true
       axios.get('http://localhost:8080/item/getAllItems')
         .then(response => {
-          this.list = response.data
+          this.list = response.data;
           this.watchList()
-        })
-      setTimeout(() => {
-        this.listLoading = false
-      }, 1.5 * 10)
+        });
     },
     handleFilter() {
-      this.listQuery.page = 1
+      this.listQuery.page = 1;
       this.getList()
     },
     handleModifyStatus(row, status) {
       this.$message({
         message: '操作Success',
         type: 'success'
-      })
+      });
       row.status = status
     },
     sortChange(data) {
-      const { prop, order } = data
+      const { prop, order } = data;
       if (prop === 'id') {
         this.sortByID(order)
       }
@@ -305,25 +302,25 @@ export default {
       }
     },
     handleCreate() {
-      this.resetTemp()
-      this.dialogStatus = 'create'
-      this.panelVisible = true
+      this.resetTemp();
+      this.dialogStatus = 'create';
+      this.panelVisible = true;
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
     },
     createData() {
-      const postData = new FormData()
-      const _this = this
-      postData.append('itemName', this.temp.itemName)
-      postData.append('price', this.temp.price)
-      postData.append('itemImg', this.temp.itemImg)
-      postData.append('itemDescription', this.temp.itemDescription)
+      const postData = new FormData();
+      const _this = this;
+      postData.append('itemName', this.temp.itemName);
+      postData.append('price', this.temp.price);
+      postData.append('itemImg', this.temp.itemImg);
+      postData.append('itemDescription', this.temp.itemDescription);
 
       axios.post(`http://localhost:8080/item/addItem`, postData).then(response => {
         if (response.data) {
           // TODO: SHORTEN THE REQUESTS
-          this.getList()
+          this.getList();
           _this.panelVisible = false
         } else {
           //
@@ -331,77 +328,37 @@ export default {
       })
     },
     handleUpdate(row) {
-      this.temp = Object.assign({}, row) // copy obj
+      this.temp = Object.assign({}, row); // copy obj
       // this.temp.timestamp = new Date(this.temp.timestamp)
-      this.dialogStatus = 'update'
-      this.panelVisible = true
+      this.dialogStatus = 'update';
+      this.panelVisible = true;
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
     },
     updateData() {
-      const postData = new FormData()
-      const _this = this
-      postData.append('itemId', this.temp.itemId)
-      postData.append('itemName', this.temp.itemName)
-      postData.append('price', this.temp.price)
-      postData.append('itemImg', this.temp.itemImg)
-      postData.append('itemDescription', this.temp.itemDescription)
-      console.log(postData)
+      const postData = new FormData();
+      const _this = this;
+      postData.append('itemId', this.temp.itemId);
+      postData.append('itemName', this.temp.itemName);
+      postData.append('price', this.temp.price);
+      postData.append('itemImg', this.temp.itemImg);
+      postData.append('itemDescription', this.temp.itemDescription);
+      console.log(postData);
       axios.post(`http://localhost:8080/item/updateItem`, postData).then(response => {
         if (response.data) {
           //
-          this.getList()
+          this.getList();
           _this.panelVisible = false
         } else {
           //
         }
       })
     },
-    handleDelete(row, index) {
-      this.$notify({
-        title: 'Success',
-        message: 'Delete Successfully',
-        type: 'success',
-        duration: 2000
-      })
-      this.list.splice(index, 1)
-    },
     getSortClass: function(key) {
-      const sort = this.listQuery.sort
+      const sort = this.listQuery.sort;
       return sort === `+${key}` ? 'ascending' : 'descending'
     },
-    handleFetchPv(pv) {
-      fetchPv(pv).then(response => {
-        this.pvData = response.data.pvData
-        this.dialogPvVisible = true
-      })
-    }
-
-    // handleDownload() {
-    //   this.downloadLoading = true
-    //   import('@/vendor/Export2Excel').then(excel => {
-    //     const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
-    //     const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
-    //     const data = this.formatJson(filterVal)
-    //     excel.export_json_to_excel({
-    //       header: tHeader,
-    //       data,
-    //       filename: 'table-list'
-    //     })
-    //     this.downloadLoading = false
-    //   })
-    // },
-    // formatJson(filterVal) {
-    //   return this.list.map(v => filterVal.map(j => {
-    //     if (j === 'timestamp') {
-    //       return parseTime(v[j])
-    //     } else {
-    //       return v[j]
-    //     }
-    //   }))
-    // },
-
   }
 }
 </script>

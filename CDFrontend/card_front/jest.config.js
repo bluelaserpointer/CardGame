@@ -31,4 +31,4 @@ module.exports = {
 
   testURL: 'http://localhost/',
   preset: '@vue/cli-plugin-unit-jest'
-}
+};

@@ -60,7 +60,7 @@ export default {
         published: 'success',
         draft: 'info',
         deleted: 'danger'
-      }
+      };
       return statusMap[status]
     }
   },
@@ -110,12 +110,12 @@ export default {
   },
   methods: {
     watchList() {
-      console.log('In watchList')
-      const list = this.list
+      console.log('In watchList');
+      const list = this.list;
       for (const i in list) {
-        const details = list[i].mailDetails
+        const details = list[i].mailDetails;
         if (details === null) { continue }
-        list[i].mailImg = details.mailImg
+        list[i].mailImg = details.mailImg;
         list[i].mailDescription = details.mailDescription
       }
       this.list = list
@@ -131,40 +131,40 @@ export default {
       // TODO: REQUEST --- DELETE THE DATA
     },
     uploadCover() {
-      const _this = this
-      var file = this.$refs.img
-      var reader = new FileReader()
-      reader.readAsDataURL(file.files[0])
+      const _this = this;
+      var file = this.$refs.img;
+      var reader = new FileReader();
+      reader.readAsDataURL(file.files[0]);
       reader.onload = function() {
         _this.temp.mailImg = this.result
       }
     },
     getList() {
-      this.listLoading = true
+      this.listLoading = true;
       axios.get('http://localhost:8080/mail/getAllMails')
         .then(response => {
-          this.list = response.data
-          console.log(response.data)
+          this.list = response.data;
+          console.log(response.data);
           this.watchList()
-        })
+        });
       // Just to simulate the time of the request
       setTimeout(() => {
         this.listLoading = false
       }, 1.5 * 10)
     },
     handleFilter() {
-      this.listQuery.page = 1
+      this.listQuery.page = 1;
       this.getList()
     },
     handleModifyStatus(row, status) {
       this.$message({
         message: '操作Success',
         type: 'success'
-      })
+      });
       row.status = status
     },
     sortChange(data) {
-      const { prop, order } = data
+      const { prop, order } = data;
       if (prop === 'id') {
         this.sortByID(order)
       }
@@ -186,9 +186,9 @@ export default {
       }
     },
     handleCreate() {
-      this.resetTemp()
-      this.dialogStatus = 'create'
-      this.panelVisible = true
+      this.resetTemp();
+      this.dialogStatus = 'create';
+      this.panelVisible = true;
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
@@ -196,21 +196,21 @@ export default {
     createData() {
     },
     handleUpdate(row) {
-      this.temp = Object.assign({}, row) // copy obj
+      this.temp = Object.assign({}, row); // copy obj
       // this.temp.timestamp = new Date(this.temp.timestamp)
-      this.dialogStatus = 'update'
-      this.panelVisible = true
+      this.dialogStatus = 'update';
+      this.panelVisible = true;
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
     },
     updateData() {
-      const postData = new FormData()
-      postData.append('mailId', this.temp.id)
-      postData.append('mailName', this.temp.mailName)
+      const postData = new FormData();
+      postData.append('mailId', this.temp.id);
+      postData.append('mailName', this.temp.mailName);
 
-      postData.append('mailImg', this.temp.mailImg)
-      postData.append('mailDescription', this.temp.mailDescription)
+      postData.append('mailImg', this.temp.mailImg);
+      postData.append('mailDescription', this.temp.mailDescription);
 
       axios.post(`http://localhost:8080/mail/update`, postData).then(response => {
         if (response.data) {
@@ -232,12 +232,12 @@ export default {
       // this.list.splice(index, 1)
     },
     getSortClass: function(key) {
-      const sort = this.listQuery.sort
+      const sort = this.listQuery.sort;
       return sort === `+${key}` ? 'ascending' : 'descending'
     },
     handleFetchPv(pv) {
       fetchPv(pv).then(response => {
-        this.pvData = response.data.pvData
+        this.pvData = response.data.pvData;
         this.dialogPvVisible = true
       })
     }

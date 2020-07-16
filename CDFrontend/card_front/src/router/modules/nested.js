@@ -61,6 +61,6 @@ const nestedRouter = {
   //     meta: { title: 'Menu 2' }
   //   }
   // ]
-}
+};
 
 export default nestedRouter

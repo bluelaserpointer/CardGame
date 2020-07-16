@@ -91,17 +91,17 @@ export default {
       } else {
         callback()
       }
-    }
+    };
     const validatePassword = (rule, value, callback) => {
       // console.log("!validPassword");
       // console.log(!validPassword(value));
-      let valid = false
-      const postData = new FormData()
-      postData.append('adminName', this.loginForm.username)
-      postData.append('password', this.loginForm.password)
+      let valid = false;
+      const postData = new FormData();
+      postData.append('adminName', this.loginForm.username);
+      postData.append('password', this.loginForm.password);
       axios.post(`http://localhost:8080/admin/identifyAdmin`, postData).then(res => {
         if (res.data) {
-          valid = true
+          valid = true;
           if (!validPassword(value) || !valid) {
             callback(new Error('Please enter Passwords that meet the standard.'))
           } else {
@@ -111,7 +111,7 @@ export default {
           callback(new Error('Please enter Passwords that meet the standard.'))
         }
       })
-    }
+    };
     return {
       loginForm: {
         username: '',
@@ -132,9 +132,9 @@ export default {
   watch: {
     $route: {
       handler: function(route) {
-        const query = route.query
+        const query = route.query;
         if (query) {
-          this.redirect = query.redirect
+          this.redirect = query.redirect;
           this.otherQuery = this.getOtherQuery(query)
         }
       },
@@ -160,7 +160,7 @@ export default {
   },
   methods: {
     checkCapslock(e) {
-      const { key } = e
+      const { key } = e;
       this.capsTooltip = key && key.length === 1 && (key >= 'A' && key <= 'Z')
     },
     showPwd() {
@@ -181,18 +181,18 @@ export default {
       // });
       this.$refs.loginForm.validate(async valid => {
         if (valid) {
-          this.loading = true
+          this.loading = true;
           this.$store.dispatch('user/login', this.loginForm)
             .then(() => {
-              this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
-              localStorage.setItem('AdminName', this.loginForm.username)
+              this.$router.push({ path: this.redirect || '/', query: this.otherQuery });
+              localStorage.setItem('AdminName', this.loginForm.username);
               this.loading = false
             })
             .catch(() => {
               this.loading = false
             })
         } else {
-          console.log('Error submit!')
+          console.log('Error submit!');
           return false
         }
       })

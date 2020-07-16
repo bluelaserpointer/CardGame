@@ -163,8 +163,4 @@ describe('CardEntityPanel.vue', () => {
     expect(wrapper.vm.panelVisible).toBeFalsy();
   });
 
-
-
-
-
 });

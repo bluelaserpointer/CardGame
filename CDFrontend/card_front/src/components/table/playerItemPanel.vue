@@ -89,7 +89,6 @@
 </template>
 
 <script>
-import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination/index'
@@ -105,7 +104,7 @@ export default {
         published: 'success',
         draft: 'info',
         deleted: 'danger'
-      }
+      };
       return statusMap[status]
     }
   },
@@ -152,7 +151,7 @@ export default {
   },
   watch: {
     deleteVisible() {
-      this.confirmDelete = false
+      this.confirmDelete = false;
       this.confirmPassword = ''
     }
   },
@@ -161,23 +160,23 @@ export default {
   },
   methods: {
     watchList() {
-      const list = this.list
+      const list = this.list;
       for (const i in list) {
-        const details = list[i].cardDetails
-        list.cardImg = details.cardImg
-        list.cardDescription = details.cardDescription
+        const details = list[i].cardDetails;
+        list.cardImg = details.cardImg;
+        list.cardDescription = details.cardDescription;
         list.shortDescription = details.shortDescription
       }
       this.list = list
     },
     confirmIdentity() {
       // TODO: REQUEST --- PWD USR MATCH
-      const postData = new FormData()
-      const _this = this
-      postData.append('adminName', localStorage.getItem('AdminName'))
-      postData.append('password', this.confirmPassword)
+      const postData = new FormData();
+      const _this = this;
+      postData.append('adminName', localStorage.getItem('AdminName'));
+      postData.append('password', this.confirmPassword);
       axios.post('http://localhost:8080/admin/identifyAdmin', postData).then(response => {
-        console.log(response)
+        console.log(response);
         if (response.data) {
           _this.confirmDelete = true
         } else {
@@ -186,14 +185,14 @@ export default {
       })
     },
     deleteData() {
-      const postData = new FormData()
-      const _this = this
-      postData.append('userId', this.temp.userId)
-      postData.append('itemId', this.temp.itemId)
+      const postData = new FormData();
+      const _this = this;
+      postData.append('userId', this.temp.userId);
+      postData.append('itemId', this.temp.itemId);
       axios.post('http://localhost:8080/ownItem/deleteOwnItem', postData).then(response => {
         if (response.data) {
-          _this.panelVisible = false
-          _this.deleteVisible = false
+          _this.panelVisible = false;
+          _this.deleteVisible = false;
           _this.getList()
         } else {
           this.$message.error('Identification failed!')
@@ -201,39 +200,39 @@ export default {
       })
     },
     uploadCover() {
-      const _this = this
-      var file = this.$refs.img
-      var reader = new FileReader()
-      reader.readAsDataURL(file.files[0])
+      const _this = this;
+      var file = this.$refs.img;
+      var reader = new FileReader();
+      reader.readAsDataURL(file.files[0]);
       reader.onload = function() {
         _this.temp.cardImg = this.result
       }
     },
     getList() {
-      this.listLoading = true
+      this.listLoading = true;
       axios.get('http://localhost:8080/ownItem/getAllOwnItems')
         .then(response => {
           this.list = response.data
           // this.watchList();
-        })
+        });
 
       setTimeout(() => {
         this.listLoading = false
       }, 1.5 * 10)
     },
     handleFilter() {
-      this.listQuery.page = 1
+      this.listQuery.page = 1;
       this.getList()
     },
     handleModifyStatus(row, status) {
       this.$message({
         message: '操作Success',
         type: 'success'
-      })
+      });
       row.status = status
     },
     sortChange(data) {
-      const { prop, order } = data
+      const { prop, order } = data;
       if (prop === 'id') {
         this.sortByID(order)
       }
@@ -256,19 +255,19 @@ export default {
       }
     },
     handleCreate() {
-      this.resetTemp()
-      this.dialogStatus = 'create'
-      this.panelVisible = true
+      this.resetTemp();
+      this.dialogStatus = 'create';
+      this.panelVisible = true;
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
     },
     createData() {
-      console.log('Inside CreateData')
-      const postData = new FormData()
-      postData.append('itemId', this.temp.itemId)
-      postData.append('userId', this.temp.userId)
-      postData.append('itemCount', this.temp.itemCount)
+      console.log('Inside CreateData');
+      const postData = new FormData();
+      postData.append('itemId', this.temp.itemId);
+      postData.append('userId', this.temp.userId);
+      postData.append('itemCount', this.temp.itemCount);
 
       axios.post(`http://localhost:8080/ownItem/addOwnItem`, postData).then(response => {
         if (response.data) {
@@ -280,10 +279,10 @@ export default {
       })
     },
     handleUpdate(row) {
-      this.temp = Object.assign({}, row) // copy obj
+      this.temp = Object.assign({}, row); // copy obj
       // this.temp.timestamp = new Date(this.temp.timestamp)
-      this.dialogStatus = 'update'
-      this.panelVisible = true
+      this.dialogStatus = 'update';
+      this.panelVisible = true;
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
@@ -307,15 +306,9 @@ export default {
 
     },
     getSortClass: function(key) {
-      const sort = this.listQuery.sort
+      const sort = this.listQuery.sort;
       return sort === `+${key}` ? 'ascending' : 'descending'
     },
-    handleFetchPv(pv) {
-      fetchPv(pv).then(response => {
-        this.pvData = response.data.pvData
-        this.dialogPvVisible = true
-      })
-    }
   }
 }
 </script>

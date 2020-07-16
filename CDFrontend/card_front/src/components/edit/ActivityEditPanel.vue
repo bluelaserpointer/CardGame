@@ -85,7 +85,7 @@ const defaultForm = {
   platforms: ['a-platform'],
   comment_disabled: false
   // importance: 0
-}
+};
 
 export default {
   name: 'ActivityEditPanel',
@@ -102,12 +102,12 @@ export default {
         this.$message({
           message: rule.field + '为必传项',
           type: 'error'
-        })
+        });
         callback(new Error(rule.field + '为必传项'))
       } else {
         callback()
       }
-    }
+    };
     const validateSourceUri = (rule, value, callback) => {
       if (value) {
         if (validURL(value)) {
@@ -116,13 +116,13 @@ export default {
           this.$message({
             message: '外链url填写不正确',
             type: 'error'
-          })
+          });
           callback(new Error('外链url填写不正确'))
         }
       } else {
         callback()
       }
-    }
+    };
     return {
       limit: false,
       postForm: Object.assign({}, defaultForm),
@@ -157,7 +157,7 @@ export default {
   },
   created() {
     if (this.isEdit) {
-      const id = this.$route.params && this.$route.params.id
+      const id = this.$route.params && this.$route.params.id;
       this.fetchData(id)
     }
 
@@ -169,14 +169,14 @@ export default {
   methods: {
     fetchData(id) {
       fetchArticle(id).then(response => {
-        this.postForm = response.data
+        this.postForm = response.data;
 
         // just for test
-        this.postForm.title += `   Article Id:${this.postForm.id}`
-        this.postForm.content_short += `   Article Id:${this.postForm.id}`
+        this.postForm.title += `   Article Id:${this.postForm.id}`;
+        this.postForm.content_short += `   Article Id:${this.postForm.id}`;
 
         // set tagsview title
-        this.setTagsViewTitle()
+        this.setTagsViewTitle();
 
         // set page title
         this.setPageTitle()
@@ -185,21 +185,21 @@ export default {
       })
     },
     setTagsViewTitle() {
-      const title = 'Edit Activity'
-      const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` })
+      const title = 'Edit Activity';
+      const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` });
       this.$store.dispatch('tagsView/updateVisitedView', route)
     },
     setPageTitle() {
-      const title = 'Edit Activity'
+      const title = 'Edit Activity';
       document.title = `${title} - ${this.postForm.id}`
     },
     submitForm() {
-      const postData = new FormData()
-      postData.append('activityImg', this.postForm.image_uri)
-      postData.append('activityName', this.postForm.title)
-      postData.append('activityDescription', this.postForm.content)
+      const postData = new FormData();
+      postData.append('activityImg', this.postForm.image_uri);
+      postData.append('activityName', this.postForm.title);
+      postData.append('activityDescription', this.postForm.content);
       if (this.limit === 1) { postData.append('start', '2020-01-01 00:00:00') } else { postData.append('start', this.displayTime) }
-      postData.append('type', this.limit)
+      postData.append('type', this.limit);
 
       axios.post(`http://localhost:8080/activity/addActivity`, postData).then(response => {
         if (response.data) {
@@ -214,7 +214,7 @@ export default {
         this.$message({
           message: '请填写必要的标题和内容',
           type: 'warning'
-        })
+        });
         return
       }
       this.$message({
@@ -222,12 +222,12 @@ export default {
         type: 'success',
         showClose: true,
         duration: 1000
-      })
+      });
       this.postForm.status = 'draft'
     },
     getRemoteUserList(query) {
       searchUser(query).then(response => {
-        if (!response.data.items) return
+        if (!response.data.items) return;
         this.userListOptions = response.data.items.map(v => v.name)
       })
     }

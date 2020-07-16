@@ -125,7 +125,7 @@ export default {
         published: 'success',
         draft: 'info',
         deleted: 'danger'
-      }
+      };
       return statusMap[status]
     }
   },
@@ -135,8 +135,8 @@ export default {
       cardList: null,
       chapterList: null,
       posMap: new Map(),
-      posList: new Array(),
-      prevList: new Array(),
+      posList: [],
+      prevList: [],
       currChapter: undefined,
       currPhase: undefined,
       prevChapter: undefined,
@@ -178,7 +178,7 @@ export default {
   },
   watch: {
     currPhase(val) {
-      this.prevPhase = val
+      this.prevPhase = val;
       this.handleRefreshPhase(val)
       // this.prevList = this.posList;
     },
@@ -192,24 +192,24 @@ export default {
   },
   methods: {
     watchList() {
-      const list = this.cardList
+      const list = this.cardList;
       for (const i in list) {
-        const details = list[i].cardDetails
-        list[i].cardImg = details.cardImg
-        list[i].cardDescription = details.cardDescription
+        const details = list[i].cardDetails;
+        list[i].cardImg = details.cardImg;
+        list[i].cardDescription = details.cardDescription;
         list[i].shortDescription = details.shortDescription
       }
-      console.log(list)
+      console.log(list);
       this.cardList = list
     },
     handleRefreshPhase(val) {
-      this.confirmed = true
-      this.placedCard = false
-      this.posList = new Array()
-      const chapterData = this.chapterData
+      this.confirmed = true;
+      this.placedCard = false;
+      this.posList = [];
+      const chapterData = this.chapterData;
       for (const i in chapterData) {
         if (chapterData[i].phaseId === val) {
-          this.posList.push(chapterData[i].positionId)
+          this.posList.push(chapterData[i].positionId);
           this.posMap.set(chapterData[i].positionId, chapterData[i].cardId)
         }
       }
@@ -218,12 +218,12 @@ export default {
       // TODO: Popup
       // TODO: Send Request
       // TODO: Clear all the necessary attributes & Able to select another phase/chapter without asking
-      const chapterPhaseData = Array.from(this.posMap)
-      const postData = new FormData()
-      const _this = this
-      postData.append('chapterId', this.currChapter)
-      postData.append('phaseId', this.currPhase)
-      postData.append('phaseData', JSON.stringify(chapterPhaseData))
+      const chapterPhaseData = Array.from(this.posMap);
+      const postData = new FormData();
+      const _this = this;
+      postData.append('chapterId', this.currChapter);
+      postData.append('phaseId', this.currPhase);
+      postData.append('phaseData', JSON.stringify(chapterPhaseData));
       axios.post(`http://localhost:8080/chapter/updateChapter`, postData).then(response => {
         if (response.data) {
           _this.chapterData = response.data
@@ -236,15 +236,15 @@ export default {
       // TODO: GET PHASE
     },
     handleChangeChapter() {
-      this.handleChange()
+      this.handleChange();
 
       // TODO: GET CHAPTER
-      const postData = new FormData()
-      const _this = this
-      postData.append('chapterId', this.currChapter)
+      const postData = new FormData();
+      const _this = this;
+      postData.append('chapterId', this.currChapter);
       axios.post('http://localhost:8080/chapter/getChapterDetailsByChapter', postData).then(response => {
         if (response.data) {
-          _this.chapterData = response.data
+          _this.chapterData = response.data;
           _this.handleRefreshPhase(1)
         }
       })
@@ -259,71 +259,71 @@ export default {
           type: 'success'
         })
       } else {
-        this.currPhase = this.prevPhase
-        this.currChapter = this.prevChapter
-        this.$message.error('Choices not yet confirmed!')
+        this.currPhase = this.prevPhase;
+        this.currChapter = this.prevChapter;
+        this.$message.error('Choices not yet confirmed!');
         return
       }
       if (this.currPhase !== undefined && this.posList.length > 0) { this.confirmed = false }
     },
     placeCard(pos) {
       if (this.currChapter === undefined || this.currPhase === undefined || this.currCard === undefined) {
-        this.$message.error('Choices unspecified!')
+        this.$message.error('Choices unspecified!');
         return
       }
-      this.confirmed = false
-      this.placedCard = true
-      const currCard = parseInt(this.currCard)
-      const index = this.posList.indexOf(pos)
+      this.confirmed = false;
+      this.placedCard = true;
+      const currCard = parseInt(this.currCard);
+      const index = this.posList.indexOf(pos);
       if (this.posList.indexOf(pos) >= 0) {
-        this.posMap.delete(pos)
+        this.posMap.delete(pos);
         this.posList.splice(index, 1)
       } else {
-        this.posMap.set(pos, currCard)
+        this.posMap.set(pos, currCard);
         this.posList.push(pos)
       }
     },
     uploadCover() {
-      const _this = this
+      const _this = this;
       // 根据ref得到图片文件
-      var file = this.$refs.img
+      var file = this.$refs.img;
       // 使用h5的读取文件api
-      var reader = new FileReader()
-      reader.readAsDataURL(file.files[0])
+      var reader = new FileReader();
+      reader.readAsDataURL(file.files[0]);
       // 读取完成后触发
       reader.onload = function() {
         // 改变img的路径
-        _this.temp.cardImg = this.result
+        _this.temp.cardImg = this.result;
         console.log('In onload')
       }
     },
     getList() {
-      this.listLoading = true
+      this.listLoading = true;
       axios.get('http://localhost:8080/chapter/getAllChapters').then(response => {
-        this.chapterList = response.data
+        this.chapterList = response.data;
         axios.get('http://localhost:8080/card/getAllCards')
           .then(res => {
-            this.cardList = res.data
+            this.cardList = res.data;
             this.watchList()
           })
-      })
+      });
       setTimeout(() => {
         this.listLoading = false
       }, 1.5 * 10)
     },
     handleFilter() {
-      this.listQuery.page = 1
+      this.listQuery.page = 1;
       this.getList()
     },
     handleModifyStatus(row, status) {
       this.$message({
         message: '操作Success',
         type: 'success'
-      })
+      });
       row.status = status
     },
     sortChange(data) {
-      const { prop, order } = data
+      const { prop, order } = data;
       if (prop === 'id') {
         this.sortByID(order)
       }
@@ -402,16 +402,16 @@ export default {
         message: 'Delete Successfully',
         type: 'success',
         duration: 2000
-      })
+      });
       this.cardList.splice(index, 1)
     },
     getSortClass: function(key) {
-      const sort = this.listQuery.sort
+      const sort = this.listQuery.sort;
       return sort === `+${key}` ? 'ascending' : 'descending'
     },
     handleFetchPv(pv) {
       fetchPv(pv).then(response => {
-        this.pvData = response.data.pvData
+        this.pvData = response.data.pvData;
         this.dialogPvVisible = true
       })
     }

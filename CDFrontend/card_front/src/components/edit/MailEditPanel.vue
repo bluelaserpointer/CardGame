@@ -75,7 +75,7 @@ const defaultForm = {
   platforms: ['a-platform'],
   comment_disabled: false
   // importance: 0
-}
+};
 
 export default {
   name: 'ActivityEditPanel',
@@ -92,12 +92,12 @@ export default {
         this.$message({
           message: rule.field + '为必传项',
           type: 'error'
-        })
+        });
         callback(new Error(rule.field + '为必传项'))
       } else {
         callback()
       }
-    }
+    };
     const validateSourceUri = (rule, value, callback) => {
       if (value) {
         if (validURL(value)) {
@@ -106,13 +106,13 @@ export default {
           this.$message({
             message: '外链url填写不正确',
             type: 'error'
-          })
+          });
           callback(new Error('外链url填写不正确'))
         }
       } else {
         callback()
       }
-    }
+    };
     return {
       limit: false,
       postForm: Object.assign({}, defaultForm),
@@ -146,7 +146,7 @@ export default {
   },
   created() {
     if (this.isEdit) {
-      const id = this.$route.params && this.$route.params.id
+      const id = this.$route.params && this.$route.params.id;
       this.fetchData(id)
     }
 
@@ -158,14 +158,14 @@ export default {
   methods: {
     fetchData(id) {
       fetchArticle(id).then(response => {
-        this.postForm = response.data
+        this.postForm = response.data;
 
         // just for test
-        this.postForm.title += `   Article Id:${this.postForm.id}`
-        this.postForm.content_short += `   Article Id:${this.postForm.id}`
+        this.postForm.title += `   Article Id:${this.postForm.id}`;
+        this.postForm.content_short += `   Article Id:${this.postForm.id}`;
 
         // set tagsview title
-        this.setTagsViewTitle()
+        this.setTagsViewTitle();
 
         // set page title
         this.setPageTitle()
@@ -174,20 +174,20 @@ export default {
       })
     },
     setTagsViewTitle() {
-      const title = 'Edit Mail'
-      const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` })
+      const title = 'Edit Mail';
+      const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` });
       this.$store.dispatch('tagsView/updateVisitedView', route)
     },
     setPageTitle() {
-      const title = 'Edit Mail'
+      const title = 'Edit Mail';
       document.title = `${title} - ${this.postForm.id}`
     },
     submitForm() {
-      const postData = new FormData()
+      const postData = new FormData();
       // postData.append('userId', this.temp.id);
-      postData.append('mailImg', this.postForm.image_uri)
-      postData.append('mailName', this.postForm.title)
-      postData.append('mailDescription', this.postForm.content)
+      postData.append('mailImg', this.postForm.image_uri);
+      postData.append('mailName', this.postForm.title);
+      postData.append('mailDescription', this.postForm.content);
 
       axios.post(`http://localhost:8080/mail/addMail`, postData).then(response => {
         if (response.data) {
@@ -202,7 +202,7 @@ export default {
         this.$message({
           message: '请填写必要的标题和内容',
           type: 'warning'
-        })
+        });
         return
       }
       this.$message({
@@ -210,12 +210,12 @@ export default {
         type: 'success',
         showClose: true,
         duration: 1000
-      })
+      });
       this.postForm.status = 'draft'
     },
     getRemoteUserList(query) {
       searchUser(query).then(response => {
-        if (!response.data.items) return
+        if (!response.data.items) return;
         this.userListOptions = response.data.items.map(v => v.name)
       })
     }

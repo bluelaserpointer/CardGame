@@ -37,5 +37,5 @@ const tableRouter = {
       meta: { title: 'Player Panel' }
     }
   ]
-}
+};
 export default tableRouter

@@ -65,7 +65,7 @@ export default {
         published: 'success',
         draft: 'info',
         deleted: 'danger'
-      }
+      };
       return statusMap[status]
     }
   },
@@ -117,14 +117,14 @@ export default {
   },
   methods: {
     watchList() {
-      console.log('In watchList')
-      const list = this.list
+      console.log('In watchList');
+      const list = this.list;
       for (const i in list) {
-        const details = list[i].activityDetails
-        console.log(details)
+        const details = list[i].activityDetails;
+        console.log(details);
         if (details === null) { continue }
-        list[i].activityImg = details.activityImg
-        list[i].activityDescription = details.activityDescription
+        list[i].activityImg = details.activityImg;
+        list[i].activityDescription = details.activityDescription;
         console.log(list[i])
       }
       this.list = list
@@ -140,41 +140,41 @@ export default {
       // TODO: REQUEST --- DELETE THE DATA
     },
     uploadCover() {
-      const _this = this
-      var file = this.$refs.img
-      var reader = new FileReader()
-      reader.readAsDataURL(file.files[0])
+      const _this = this;
+      var file = this.$refs.img;
+      var reader = new FileReader();
+      reader.readAsDataURL(file.files[0]);
       reader.onload = function() {
         _this.temp.activityImg = this.result
       }
     },
     getList() {
-      console.log('In getList')
-      this.listLoading = true
+      console.log('In getList');
+      this.listLoading = true;
       axios.get('http://localhost:8080/activity/getAllActivities')
         .then(response => {
-          console.log(response.data)
-          this.list = response.data
+          console.log(response.data);
+          this.list = response.data;
           this.watchList()
-        })
+        });
       // Just to simulate the time of the request
       setTimeout(() => {
         this.listLoading = false
       }, 1.5 * 10)
     },
     handleFilter() {
-      this.listQuery.page = 1
+      this.listQuery.page = 1;
       this.getList()
     },
     handleModifyStatus(row, status) {
       this.$message({
         message: '操作Success',
         type: 'success'
-      })
+      });
       row.status = status
     },
     sortChange(data) {
-      const { prop, order } = data
+      const { prop, order } = data;
       if (prop === 'id') {
         this.sortByID(order)
       }
@@ -197,9 +197,9 @@ export default {
       }
     },
     handleCreate() {
-      this.resetTemp()
-      this.dialogStatus = 'create'
-      this.panelVisible = true
+      this.resetTemp();
+      this.dialogStatus = 'create';
+      this.panelVisible = true;
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
@@ -207,20 +207,20 @@ export default {
     createData() {
     },
     handleUpdate(row) {
-      this.temp = Object.assign({}, row) // copy obj
-      this.dialogStatus = 'update'
-      this.panelVisible = true
+      this.temp = Object.assign({}, row); // copy obj
+      this.dialogStatus = 'update';
+      this.panelVisible = true;
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
     },
     updateData() {
-      const postData = new FormData()
-      postData.append('activityId', this.temp.activityId)
-      postData.append('activityName', this.temp.activityName)
-      postData.append('activityImg', this.temp.activityImg)
-      postData.append('activityDescription', this.temp.activityDescription)
-      postData.append('start', this.temp.start)
+      const postData = new FormData();
+      postData.append('activityId', this.temp.activityId);
+      postData.append('activityName', this.temp.activityName);
+      postData.append('activityImg', this.temp.activityImg);
+      postData.append('activityDescription', this.temp.activityDescription);
+      postData.append('start', this.temp.start);
 
       axios.post(`http://localhost:8080/activity/updateActivity`, postData).then(response => {
         if (response.data) {
@@ -259,12 +259,12 @@ export default {
       // this.list.splice(index, 1)
     },
     getSortClass: function(key) {
-      const sort = this.listQuery.sort
+      const sort = this.listQuery.sort;
       return sort === `+${key}` ? 'ascending' : 'descending'
     },
     handleFetchPv(pv) {
       fetchPv(pv).then(response => {
-        this.pvData = response.data.pvData
+        this.pvData = response.data.pvData;
         this.dialogPvVisible = true
       })
     }

@@ -16,6 +16,8 @@
       </el-button>
     </div>
 
+
+    <!--    :data="list.filter(data => !search || data.itemName.toLowerCase().includes(search.toLowerCase()))"-->
     <el-table
       :key="tableKey"
       v-loading="listLoading"
@@ -238,7 +240,7 @@ export default {
     deleteVisible() {
       this.confirmDelete = false;
       this.confirmPassword = '';
-    }
+    } // untested
   },
   created() {
     this.getList()
@@ -376,34 +378,24 @@ export default {
       .catch(error => console.log(error));
 
     },
+
+
+
     uploadCover() {
       const _this = this;
       var file = this.$refs.img;
       var reader = new FileReader();
       reader.readAsDataURL(file.files[0]);
       reader.onload = function() {
-        _this.temp.cardImg = this.result
+        _this.temp.cardImg = this.result;
       }
-    },
-
-
-    handleFilter() {
-      this.listQuery.page = 1;
-      this.getList()
-    },
-    handleModifyStatus(row, status) {
-      this.$message({
-        message: '操作Success',
-        type: 'success'
-      });
-      row.status = status
-    },
+    },  // untested
     sortChange(data) {
       const { prop, order } = data;
       if (prop === 'id') {
         this.sortByID(order)
       }
-    },
+    },  // untested
     sortByID(order) {
       if (order === 'ascending') {
         this.listQuery.sort = '+id'
@@ -411,11 +403,24 @@ export default {
         this.listQuery.sort = '-id'
       }
       this.handleFilter()
-    },
+    },  // untested
     getSortClass: function(key) {
       const sort = this.listQuery.sort;
       return sort === `+${key}` ? 'ascending' : 'descending'
-    }
+    } // untested
+
+    // handleFilter() {
+    //   this.listQuery.page = 1;
+    //   this.getList()
+    // },  // untested
+    // handleModifyStatus(row, status) {
+    //   this.$message({
+    //     message: '操作Success',
+    //     type: 'success'
+    //   });
+    //   row.status = status
+    // },  // untested
+
   }
 }
 </script>
