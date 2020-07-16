@@ -22,13 +22,13 @@ public class UserServiceImpl implements UserService {
 
     // 添加一个新用户
     @Override
-    public String addNewUser(String userName, String email, String password, String phoneNumber) {
+    public User addNewUser(String userName, String email, String password, String phoneNumber) {
         return userDao.addNewUser(userName, email, password, phoneNumber);
     }
 
     // 更新一个用户信息
     @Override
-    public String updateUser(Integer UserId, String userName, String email, String password, String phoneNumber,
+    public User updateUser(Integer UserId, String userName, String email, String password, String phoneNumber,
             Integer credits, Boolean access, Integer level, Integer curExpPoint, Integer stamina, Integer money,
             Double grade, Integer engKnowledge, Integer mathKnowledge, Integer chiKnowledge) {
         return userDao.updateUser(UserId, userName, email, password, phoneNumber, credits, access, level, curExpPoint,

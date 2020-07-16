@@ -9,12 +9,12 @@ public interface UserService {
     User getOneUser(Integer UserId);
 
     // 添加一个新用户
-    String addNewUser(String userName, String email, String password, String phoneNumber);
+    User addNewUser(String userName, String email, String password, String phoneNumber);
 
     // 更新一个用户信息
-    String updateUser(Integer UserId, String userName, String email, String password, String phoneNumber,
-            Integer credits, Boolean access, Integer level, Integer curExpPoint, Integer stamina, Integer money,
-            Double grade, Integer engKnowledge, Integer mathKnowledge, Integer chiKnowledge);
+    User updateUser(Integer UserId, String userName, String email, String password, String phoneNumber, Integer credits,
+            Boolean access, Integer level, Integer curExpPoint, Integer stamina, Integer money, Double grade,
+            Integer engKnowledge, Integer mathKnowledge, Integer chiKnowledge);
 
     // 只是一个更新的wrapper
     User updateUserByUser(Integer userId, User user);

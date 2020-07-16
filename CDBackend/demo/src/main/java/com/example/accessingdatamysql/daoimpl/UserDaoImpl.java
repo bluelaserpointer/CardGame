@@ -24,16 +24,16 @@ public class UserDaoImpl implements UserDao {
 
     // 添加一个新用户
     @Override
-    public String addNewUser(String userName, String email, String password, String phoneNumber) {
+    public User addNewUser(String userName, String email, String password, String phoneNumber) {
         User User = new User(userName, email, password, phoneNumber);
         // System.out.println("new User has an Id of : " + n.getUserId());
         UserRepository.save(User);
-        return "Saved User";
+        return User;
     }
 
     // 更新一个用户信息
     @Override
-    public String updateUser(Integer UserId, String userName, String email, String password, String phoneNumber,
+    public User updateUser(Integer UserId, String userName, String email, String password, String phoneNumber,
             Integer credits, Boolean access, Integer level, Integer curExpPoint, Integer stamina, Integer money,
             Double grade, Integer engKnowledge, Integer mathKnowledge, Integer chiKnowledge) {
 
@@ -44,7 +44,7 @@ public class UserDaoImpl implements UserDao {
 
         UserRepository.updateUserStatus(User, UserId);
         // return "Modified User";
-        return "modified User: " + User.getUserName();
+        return User;
 
     }
 

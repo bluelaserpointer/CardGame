@@ -27,14 +27,14 @@ public class UserController {
 
   // 添加一个新用户
   @RequestMapping(value = "/addUser")
-  public @ResponseBody String addNewUser(@RequestParam("userName") String userName, @RequestParam("email") String email,
+  public @ResponseBody User addNewUser(@RequestParam("userName") String userName, @RequestParam("email") String email,
       @RequestParam("password") String password, @RequestParam("phoneNumber") String phoneNumber) {
     return userService.addNewUser(userName, email, password, phoneNumber);
   }
 
   // 更新一个用户信息
   @RequestMapping(value = "/updateUser")
-  public @ResponseBody String updateUser(@RequestParam("userId") Integer userId,
+  public @ResponseBody User updateUser(@RequestParam("userId") Integer userId,
       @RequestParam("userName") String userName, @RequestParam("email") String email,
       @RequestParam("password") String password, @RequestParam("phoneNumber") String phoneNumber,
       @RequestParam("credits") Integer credits, @RequestParam("access") Boolean access,
