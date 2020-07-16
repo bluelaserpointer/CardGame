@@ -25,11 +25,12 @@ public class Enemy extends MyUnit {
 		atkRange = PARAM.iniATKRange;
 		cd = PARAM.iniCD;
 		spd = PARAM.iniSPD;
-		for(int i = 0; i < Engine_Survivor.stage; ++i) {
-			hp += hp*0.5;
-			atk += atk*0.5;
-			def += def*0.5;
-		}
+		//TODO: client&server-side enemy enhancement
+//		for(int i = 0; i < Engine_Survivor.stage; ++i) {
+//			hp += hp*0.5;
+//			atk += atk*0.5;
+//			def += def*0.5;
+//		}
 		maxHP = hp;
 		angle().set(-Math.PI);
 		return this;
@@ -43,12 +44,13 @@ public class Enemy extends MyUnit {
 	@Override
 	public void claimDeleteFromStage() {
 		final int RAND = GHQ.random2(0, chiCount + matCount + engCount - 1);
-		if(RAND < chiCount) {
-			Engine_Survivor.resourceAmount[0] += drops[Engine_Survivor.stage];
-		}else if(RAND < chiCount + matCount) {
-			Engine_Survivor.resourceAmount[1] += drops[Engine_Survivor.stage];
-		}else
-			Engine_Survivor.resourceAmount[2] += drops[Engine_Survivor.stage];
+		//TODO: server_side enemyDrop calculation
+//		if(RAND < chiCount) {
+//			Engine_Survivor.resourceAmount[0] += drops[Engine_Survivor.stage];
+//		}else if(RAND < chiCount + matCount) {
+//			Engine_Survivor.resourceAmount[1] += drops[Engine_Survivor.stage];
+//		}else
+//			Engine_Survivor.resourceAmount[2] += drops[Engine_Survivor.stage];
 		super.claimDeleteFromStage();
 	}
 	@Override

@@ -61,14 +61,6 @@ public class Knowledge extends MyUnit {
 			}
 		}
 	}
-	@Override
-	public void claimDeleteFromStage() {
-		--Engine_Survivor.garrageCount;
-		--Engine_Survivor.formationCount;
-		Engine_Survivor.formationTS.remove(this);
-		Engine_Survivor.garrageTS.remove(this);
-		super.claimDeleteFromStage();
-	}
 	static enum KnowledgeParameter{
 		//name , paint , hp , atk , def , range, CD, speed, description
 		MAT_N1(Subject.MAT, "九九乘法表", ImageFrame.create(R.drawable.tongyongm), 60,60, 10,400,20,3.3,"希望九九八十一次的战斗之后,还能为你效力！","作为进入乘除法世界大门的钥匙,九九乘法表既是你进入小学要面临的几座大山,却也会是陪伴你走过千山万水的可靠的队友。它虽然简单,却是基础中的基础。如果想成就一番事业,九九乘法表就会是你新手期最好的伙伴。"),
