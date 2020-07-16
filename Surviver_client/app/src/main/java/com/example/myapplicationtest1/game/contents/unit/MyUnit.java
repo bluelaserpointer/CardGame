@@ -1,6 +1,7 @@
-package com.example.myapplicationtest1.game.contents.engine;
+package com.example.myapplicationtest1.game.contents.unit;
 
 import com.example.myapplicationtest1.game.contents.bullet.Bullets;
+import com.example.myapplicationtest1.game.contents.engine.SurDamage;
 import com.example.myapplicationtest1.game.core.GHQ;
 import com.example.myapplicationtest1.game.core.GHQObject;
 import com.example.myapplicationtest1.game.paint.ImageFrame;

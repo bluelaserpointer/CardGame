@@ -51,7 +51,7 @@ public class Utils {
         final String getPassword = userInfo.get("password");
         if (getUserName != null && getPassword != null){
             //点击登陆时，获取QQ号和密码
-            String data = HttpClient.doGetShort("user/identifyUser?"
+            final String data = HttpClient.doGetShort("user/identifyUser?"
                     + "userName=" + getUserName + "&"
                     + "password=" + getPassword);
             System.out.println("identifyUserInput's data: " + data);
@@ -84,7 +84,7 @@ public class Utils {
 
     public static boolean identifyUserInput(String getUserName, String getPassword) throws JSONException {
         //判断你输入的QQ号和密码是否正确
-        String data = HttpClient.doGetShort("user/identifyUser?"
+        final String data = HttpClient.doGetShort("user/identifyUser?"
                 + "userName=" + getUserName + "&"
                 + "password=" + getPassword);
         System.out.println("identifyUserInput's data: " + data);

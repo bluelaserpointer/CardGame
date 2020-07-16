@@ -1,8 +1,9 @@
-package com.example.myapplicationtest1.game.contents.engine;
+package com.example.myapplicationtest1.game.contents.unit;
 
-import com.example.myapplicationtest1.R;
+import android.graphics.Color;
+import android.graphics.Paint;
+
 import com.example.myapplicationtest1.game.core.GHQ;
-import com.example.myapplicationtest1.game.paint.animation.SerialImageFrame;
 import com.example.myapplicationtest1.game.paint.dot.DotPaint;
 import com.example.myapplicationtest1.game.preset.unit.Unit;
 
@@ -10,16 +11,16 @@ public class Enemy extends MyUnit {
 
 	final EnemyParameter PARAM;
 
-	static int chiCount, matCount, engCount;
+	public static int chiCount, matCount, engCount;
 	
-	private Enemy(EnemyParameter param) {
+	public Enemy(EnemyParameter param) {
 		super(param.NAME, param.PAINT, ENEMY);
 		PARAM = param;
 	}
 	@Override
 	public Enemy respawn(int x, int y) {
 		super.respawn(x, y);
-		hp = PARAM.iniHP;
+		maxHP = hp = PARAM.iniHP;
 		atk = PARAM.iniATK;
 		def = PARAM.iniDEF;
 		atkRange = PARAM.iniATKRange;
@@ -31,7 +32,6 @@ public class Enemy extends MyUnit {
 //			atk += atk*0.5;
 //			def += def*0.5;
 //		}
-		maxHP = hp;
 		angle().set(-Math.PI);
 		return this;
 	}
@@ -77,19 +77,14 @@ public class Enemy extends MyUnit {
 			}
 		}
 	}
-	enum EnemyParameter{
-		//name , paint , hp , atk , def , range, CD , speed, description
-		CHI_QZ("CHI_QZ", new SerialImageFrame(5, R.drawable.chineseqz1_1, R.drawable.chineseqz1_2), 400, 20, 40, 100.0, 60, 3.3, ""),
-		MAT_QZ("MAT_QZ", new SerialImageFrame(5, R.drawable.mathqz1_1, R.drawable.mathqz1_2), 200, 60, 15, 80, 20, 3.3, ""),
-		ENG_QZ("ENG_QZ", new SerialImageFrame(5, R.drawable.englishqz1_1, R.drawable.englishqz1_2), 200, -40, 15, 300.0, 30, 3.3, "");
-		
-		final String NAME;
-		final DotPaint PAINT;
-		final int iniHP, iniATK, iniDEF, iniCD;
-		final double iniATKRange, iniSPD;
-		final String description;
-		
-		private EnemyParameter(String name, DotPaint paint, int hp, int atk, int def, double atkRange, int cd, double spd, String description) {
+	public static class EnemyParameter{
+		public String NAME;
+		public DotPaint PAINT;
+		public int iniHP, iniATK, iniDEF, iniCD;
+		public double iniATKRange, iniSPD;
+		public String description;
+
+		public EnemyParameter(String name, DotPaint paint, int hp, int atk, int def, double atkRange, int cd, double spd, String description) {
 			NAME = name;
 			PAINT = paint;
 			iniHP = hp;
@@ -98,7 +93,8 @@ public class Enemy extends MyUnit {
 			iniATKRange = atkRange;
 			iniCD = cd;
 			iniSPD = spd;
-			this.description = description;
+			if((this.description = description) == null)
+				this.description = "No description data found.";
 		}
 		Enemy generate() {
 			return new Enemy(this);

@@ -1,10 +1,9 @@
 package com.example.myapplicationtest1.game.contents.engine;
 
 import com.example.myapplicationtest1.R;
+import com.example.myapplicationtest1.game.contents.unit.Knowledge;
 import com.example.myapplicationtest1.game.core.GHQ;
 import com.example.myapplicationtest1.game.paint.ImageFrame;
-
-import java.util.Arrays;
 
 public class LotteAnimator {
     private final int ANM_SIZE = 89;

@@ -5,7 +5,7 @@ import android.graphics.Paint;
 
 import com.example.myapplicationtest1.R;
 import com.example.myapplicationtest1.game.contents.effect.Effects;
-import com.example.myapplicationtest1.game.contents.engine.MyUnit;
+import com.example.myapplicationtest1.game.contents.unit.MyUnit;
 import com.example.myapplicationtest1.game.contents.engine.SurDamage;
 import com.example.myapplicationtest1.game.core.GHQ;
 import com.example.myapplicationtest1.game.core.GHQObject;

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/battle_finish_exp_base"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -40,7 +41,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="#59FFFFFF"
-                    android:text="用户升级"
+                    android:text="@string/userLvUp"
                     android:textAlignment="center"
                     android:textSize="30sp" />
             </FrameLayout>
@@ -57,7 +58,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="#59FFFFFF"
-                    android:text="战斗结果"
+                    android:text="@string/battleResult"
                     android:textAlignment="center"
                     android:textSize="30sp" />
             </FrameLayout>
