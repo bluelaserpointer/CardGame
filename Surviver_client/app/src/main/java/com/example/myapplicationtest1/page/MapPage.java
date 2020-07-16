@@ -22,11 +22,11 @@ public class MapPage extends Page {
         chapterRecyclerView.setLayoutManager(new LinearLayoutManager(MapPage.this));
         chapterRecyclerView.setAdapter(new ChapterListAdapter(MapPage.this));
 
-        final View mapSelecter = findViewById(R.id.mapSelector);
+        final View mapSelector = findViewById(R.id.mapSelector);
         new Timer().schedule(new TimerTask() {
             public void run() {
-                if(mapSelecter != null)
-                    mapSelecter.invalidate();
+                if(mapSelector != null)
+                    mapSelector.invalidate();
             }
         },200,50);
     }

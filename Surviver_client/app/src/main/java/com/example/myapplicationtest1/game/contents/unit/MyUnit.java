@@ -1,6 +1,9 @@
 package com.example.myapplicationtest1.game.contents.unit;
 
+import com.example.myapplicationtest1.HttpClient;
+import com.example.myapplicationtest1.R;
 import com.example.myapplicationtest1.game.contents.bullet.Bullets;
+import com.example.myapplicationtest1.game.contents.engine.Subject;
 import com.example.myapplicationtest1.game.contents.engine.SurDamage;
 import com.example.myapplicationtest1.game.core.GHQ;
 import com.example.myapplicationtest1.game.core.GHQObject;
@@ -12,6 +15,9 @@ import com.example.myapplicationtest1.game.physics.hitShape.Square;
 import com.example.myapplicationtest1.game.preset.bullet.Bullet;
 import com.example.myapplicationtest1.game.preset.unit.Unit;
 import com.example.myapplicationtest1.game.weapon.Weapon;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -110,5 +116,48 @@ public abstract class MyUnit extends Unit implements HasDotPaint {
 	@Override
 	public DotPaint getDotPaint() {
 		return dotPaint;
+	}
+	public static Enemy.EnemyParameter loadAsEnemy(String fetchURL) {
+		Enemy.EnemyParameter enemyParameter = null;
+		try {
+			final JSONObject enemyInfo = new JSONObject(HttpClient.doGetShort(fetchURL));
+			enemyParameter = new Enemy.EnemyParameter(
+					enemyInfo.getString("cardName"),
+					ImageFrame.create(R.drawable.tongyongc),
+					enemyInfo.getInt("healthPoint"),
+					enemyInfo.getInt("attack"),
+					enemyInfo.getInt("defense"),
+					enemyInfo.getInt("attackRange"),
+					enemyInfo.getInt("cd"),
+					enemyInfo.getInt("speed"),
+					enemyInfo.getString("cardDetails")
+			);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return enemyParameter;
+	}
+
+	public static Knowledge.KnowledgeParameter loadAsKnowledge(String fetchURL) {
+		Knowledge.KnowledgeParameter enemyParameter = null;
+		try {
+			final JSONObject enemyInfo = new JSONObject(HttpClient.doGetShort(fetchURL));
+			enemyParameter = new Knowledge.KnowledgeParameter(
+					Subject.CHI, //Subject.valueOf(enemyInfo.getString("subject")),
+					enemyInfo.getString("cardName"),
+					ImageFrame.create(R.drawable.tongyongc),
+					enemyInfo.getInt("healthPoint"),
+					enemyInfo.getInt("attack"),
+					enemyInfo.getInt("defense"),
+					enemyInfo.getInt("attackRange"),
+					enemyInfo.getInt("cd"),
+					enemyInfo.getInt("speed"),
+					"appendTalk not found.", //enemyInfo.getString("appendTalk"),
+					enemyInfo.getString("cardDetails")
+			);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return enemyParameter;
 	}
 }

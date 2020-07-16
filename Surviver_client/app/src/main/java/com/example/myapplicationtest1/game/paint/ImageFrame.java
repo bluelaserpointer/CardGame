@@ -28,7 +28,7 @@ public class ImageFrame extends DotPaint {
 	/////////////
 	private ImageFrame(GHQObject owner, int drawableId) {
 		super(owner);
-		IMAGE = BitmapFactory.decodeResource(GHQ.resourceProvider.getResources(), drawableId);
+		IMAGE = BitmapFactory.decodeResource(GHQ.resources, drawableId);
 	}
 	private ImageFrame(GHQObject owner) {
 		super(owner);
@@ -42,7 +42,7 @@ public class ImageFrame extends DotPaint {
 	public static Bitmap loadImage(int drawableId) {
 		if(preloadedImageMap.containsKey(drawableId))
 			return preloadedImageMap.get(drawableId);
-		return BitmapFactory.decodeResource(GHQ.resourceProvider.getResources(), drawableId);
+		return BitmapFactory.decodeResource(GHQ.resources, drawableId);
 	}
 	public static ImageFrame create(int drawableId) {
 		return create(GHQObject.NULL_GHQ_OBJECT, drawableId);

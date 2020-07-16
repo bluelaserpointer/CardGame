@@ -1,18 +1,11 @@
 package com.example.myapplicationtest1.page;
 
-import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.View;
 
-import com.example.myapplicationtest1.HttpClient;
 import com.example.myapplicationtest1.R;
 import com.example.myapplicationtest1.game.contents.engine.MyStage;
 import com.example.myapplicationtest1.game.core.GHQ;
-import com.example.myapplicationtest1.pageParts.ChapterListAdapter;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.Timer;
 import java.util.TimerTask;

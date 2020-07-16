@@ -5,6 +5,7 @@ import android.widget.Button;
 
 import com.example.myapplicationtest1.HttpClient;
 import com.example.myapplicationtest1.R;
+import com.example.myapplicationtest1.game.core.GHQ;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,6 +22,7 @@ public class HomePage extends Page {
         super.setJump(R.id.toMail_button, MailPage.class);
         super.setJump(R.id.toAnnounce_button, AnnouncePage.class);
         super.setJump(R.id.toBag_button, TeamPage.class);
+        GHQ.setResource(getResources());
         //data fetch
         try {
             fetchData();
