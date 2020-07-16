@@ -27,10 +27,12 @@ public class ChapterDaoImpl implements ChapterDao {
     @Autowired
     private ChapterDetailsRepository chapterDetailsRepository;
 
-    public List<ChapterDetails> updateChapterPhaseStrategy(Integer chapterId, Integer phaseId, String phaseData) throws JsonProcessingException {
+    public List<ChapterDetails> updateChapterPhaseStrategy(Integer chapterId, Integer phaseId, String phaseData)
+            throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         TypeFactory typeFactory = objectMapper.getTypeFactory();
-        List<List<Integer>> mappedPhaseData = objectMapper.readValue(phaseData, typeFactory.constructCollectionType(List.class, List.class));
+        List<List<Integer>> mappedPhaseData = objectMapper.readValue(phaseData,
+                typeFactory.constructCollectionType(List.class, List.class));
         for (List<Integer> currPos : mappedPhaseData) {
             ChapterDetails chapterDetails = new ChapterDetails();
             chapterDetails.setChapterId(chapterId);
@@ -42,13 +44,14 @@ public class ChapterDaoImpl implements ChapterDao {
         return getChapterDetailsByChapter(chapterId);
     };
 
-    public List<ChapterPhase> updateChapterPhaseAwards(Integer chapterId, Integer phaseId, String awardItems, String awardCards) throws JsonProcessingException {
+    public List<ChapterPhase> updateChapterPhaseAwards(Integer chapterId, Integer phaseId, String awardItems,
+            String awardCards) throws JsonProcessingException {
         Map<Integer, Integer> mappedAwardItems = parseAwardItems(awardItems);
         List<Integer> mappedAwardCards = parseAwardCards(awardCards);
 
-        Optional<ChapterPhase> optChapterPhase = chapterPhaseRepository.findChapterPhaseByChapterIdEqualsAndPhaseIdEquals(chapterId, phaseId);
-        if (optChapterPhase.isPresent())
-        {
+        Optional<ChapterPhase> optChapterPhase = chapterPhaseRepository
+                .findChapterPhaseByChapterIdEqualsAndPhaseIdEquals(chapterId, phaseId);
+        if (optChapterPhase.isPresent()) {
             ChapterPhase chapterPhase = optChapterPhase.get();
             chapterPhase.setAwardItems(mappedAwardItems);
             chapterPhase.setAwardCards(mappedAwardCards);
@@ -57,12 +60,11 @@ public class ChapterDaoImpl implements ChapterDao {
         return getAllChapterPhases();
     }
 
-    public List<ChapterPhase> getAllChapterPhases(){
+    public List<ChapterPhase> getAllChapterPhases() {
         return chapterPhaseRepository.findAll();
     }
 
-    public Map<Integer, Integer> parseAwardItems(String awardItems)
-    {
+    public Map<Integer, Integer> parseAwardItems(String awardItems) {
         String testItems = "{1:2, 2:3, 3:4, 4:5, 5:6}";
         JSONObject parseObject = JSONArray.parseObject(awardItems);
         Map<Integer, Integer> parseMap = parseObject.toJavaObject(Map.class);
@@ -70,7 +72,8 @@ public class ChapterDaoImpl implements ChapterDao {
         Map<Integer, Integer> transMap = new HashMap<>();
         Set<Map.Entry<Integer, Integer>> entrySet = parseMap.entrySet();
         for (Map.Entry<Integer, Integer> entry : entrySet) {
-            transMap.put(Integer.parseInt(String.valueOf(entry.getKey())), Integer.parseInt(String.valueOf(entry.getValue())));
+            transMap.put(Integer.parseInt(String.valueOf(entry.getKey())),
+                    Integer.parseInt(String.valueOf(entry.getValue())));
         }
         System.out.println(transMap);
         return transMap;
@@ -82,12 +85,12 @@ public class ChapterDaoImpl implements ChapterDao {
         return objectMapper.readValue(awardCards, typeFactory.constructCollectionType(List.class, Integer.class));
     }
 
-    public List<Chapter> updateChapterAwards(Integer chapterId, String awardItems, String awardCards) throws JsonProcessingException {
+    public List<Chapter> updateChapterAwards(Integer chapterId, String awardItems, String awardCards)
+            throws JsonProcessingException {
         Map<Integer, Integer> mappedAwardItems = parseAwardItems(awardItems);
         List<Integer> mappedAwardCards = parseAwardCards(awardCards);
         Optional<Chapter> optChapter = chapterRepository.findById(chapterId);
-        if(optChapter.isPresent())
-        {
+        if (optChapter.isPresent()) {
             Chapter chapter = optChapter.get();
             chapter.setAwardCards(mappedAwardCards);
             chapter.setAwardItems(mappedAwardItems);
@@ -96,11 +99,11 @@ public class ChapterDaoImpl implements ChapterDao {
         return getAllChapters();
     }
 
-    public List<Chapter> getAllChapters(){
+    public List<Chapter> getAllChapters() {
         return chapterRepository.findAll();
     }
 
-    public List<Chapter> deleteChapter(Integer chapterId){
+    public List<Chapter> deleteChapter(Integer chapterId) {
         chapterRepository.deleteChapterByChapterIdEquals(chapterId);
         chapterDetailsRepository.deleteChapterDetailsByCardIdEquals(chapterId);
         return getAllChapters();
