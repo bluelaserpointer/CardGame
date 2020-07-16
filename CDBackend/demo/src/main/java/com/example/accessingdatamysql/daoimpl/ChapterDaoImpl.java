@@ -1,5 +1,7 @@
 package com.example.accessingdatamysql.daoimpl;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.dao.ChapterDao;
 import com.example.accessingdatamysql.entity.Chapter;
 import com.example.accessingdatamysql.entity.ChapterDetails;
@@ -11,14 +13,10 @@ import com.example.accessingdatamysql.repository.ChapterRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public class ChapterDaoImpl implements ChapterDao {
@@ -54,7 +52,7 @@ public class ChapterDaoImpl implements ChapterDao {
             ChapterPhase chapterPhase = optChapterPhase.get();
             chapterPhase.setAwardItems(mappedAwardItems);
             chapterPhase.setAwardCards(mappedAwardCards);
-            chapterPhaseRepository.save(chapterPhase);
+            chapterPhaseRepository.updateChapterPhaseStatus(chapterPhase, chapterId, phaseId);
         }
         return getAllChapterPhases();
     }
@@ -65,9 +63,17 @@ public class ChapterDaoImpl implements ChapterDao {
 
     public Map<Integer, Integer> parseAwardItems(String awardItems)
     {
-        Gson gson = new Gson();
-        Map<Integer, Integer> mappedAwardItems = new HashMap<Integer, Integer>();
-        return gson.fromJson(awardItems, mappedAwardItems.getClass());
+        String testItems = "{1:2, 2:3, 3:4, 4:5, 5:6}";
+        JSONObject parseObject = JSONArray.parseObject(awardItems);
+        Map<Integer, Integer> parseMap = parseObject.toJavaObject(Map.class);
+        System.out.println(parseMap);
+        Map<Integer, Integer> transMap = new HashMap<>();
+        Set<Map.Entry<Integer, Integer>> entrySet = parseMap.entrySet();
+        for (Map.Entry<Integer, Integer> entry : entrySet) {
+            transMap.put(Integer.parseInt(String.valueOf(entry.getKey())), Integer.parseInt(String.valueOf(entry.getValue())));
+        }
+        System.out.println(transMap);
+        return transMap;
     }
 
     public List<Integer> parseAwardCards(String awardCards) throws JsonProcessingException {
@@ -85,7 +91,7 @@ public class ChapterDaoImpl implements ChapterDao {
             Chapter chapter = optChapter.get();
             chapter.setAwardCards(mappedAwardCards);
             chapter.setAwardItems(mappedAwardItems);
-            chapterRepository.save(chapter);
+            chapterRepository.updateChapterStatus(chapter, chapterId);
         }
         return getAllChapters();
     }
