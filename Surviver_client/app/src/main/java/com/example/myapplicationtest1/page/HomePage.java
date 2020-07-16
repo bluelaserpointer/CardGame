@@ -29,16 +29,11 @@ public class HomePage extends Page {
     }
     public void fetchData() throws JSONException {
         // Fetching data of the current logged in user
-        String data = HttpClient.doGet("http://192.168.175.1:8080/user/getAllUsers");
-        JSONArray arr = new JSONArray(data);
-        System.out.println("Hi");
+        final JSONArray arr = new JSONArray(HttpClient.doGetShort("user/getAllUsers"));
         // Sets the text of corresponding values
-        final Button grade_button = findViewById(R.id.grade_button);
-        grade_button.setText(arr.getJSONObject(0).get("grade").toString());
-        final Button stamina_button = findViewById(R.id.stamina_button);
-        stamina_button.setText(arr.getJSONObject(0).get("stamina").toString());
-        final Button money_button = findViewById(R.id.money_button);
-        money_button.setText(arr.getJSONObject(0).get("money").toString());
+        ((Button)findViewById(R.id.grade_button).findViewById(R.id.grade_button)).setText(arr.getJSONObject(0).get("grade").toString());
+        ((Button)findViewById(R.id.stamina_button)).setText(arr.getJSONObject(0).get("stamina").toString());
+        ((Button)findViewById(R.id.money_button)).setText(arr.getJSONObject(0).get("money").toString());
 
     }
 }

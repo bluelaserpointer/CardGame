@@ -18,21 +18,19 @@ public class LoginInputPage extends Page {
         setContentView(R.layout.login_input);
     }
     public void onLoginInputClick(View view) throws JSONException {
-        EditText userNameText = findViewById(R.id.usernameText);
-        String userName = userNameText.getText().toString();
+        final String userName = ((EditText)findViewById(R.id.usernameText)).getText().toString();
         EditText passwordText = findViewById(R.id.passwordText);
-        String password = passwordText.getText().toString();
+        final String password = ((EditText)passwordText.getText()).toString();
         System.out.println(userName);
         System.out.println(password);
-        if(Utils.identifyUserInput(userName, password))
-        {
+        if(Utils.identifyUserInput(userName, password)) {
             System.out.println("InputIdentification succeeded!!!!!!!!!!!!!!!!");
             Utils.saveUserInfo(this, userName, password);
-            Map<String,String> userInfo= Utils.getUserInfo(this);
-            String getUserName = userInfo.get("userName");
-            String getPassword = userInfo.get("password");
-            System.out.println(getUserName);
-            System.out.println(getPassword);
+//            Map<String,String> userInfo = Utils.getUserInfo(this);
+//            String getUserName = userInfo.get("userName");
+//            String getPassword = userInfo.get("password");
+//            System.out.println(getUserName);
+//            System.out.println(getPassword);
             Page.jump(this, HomePage.class);
         }else{
             System.out.println("InputIdentification failed!!!!!!!!!!!!!!!!");
