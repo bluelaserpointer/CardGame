@@ -11,7 +11,7 @@
       <!--      <el-select v-model="listQuery.sort" style="width: 140px" class="filter-card" @change="handleFilter">-->
       <!--        <el-option v-for="card in sortOptions" :key="card.key" :label="card.label" :value="card.key" />-->
       <!--      </el-select>-->
-      <el-button class="filter-card" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
+      <el-button class="filter-card createButton" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         Add
       </el-button>
     </div>
@@ -23,7 +23,7 @@
       fit
       highlight-current-row
       style="width: 100%;"
-      :data="list.filter(data => !search || data.cardName.toLowerCase().includes(search.toLowerCase()))"
+      :data="list"
       @sort-change="sortChange"
     >
       <el-table-column label="ID" prop="cardId" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
@@ -33,7 +33,7 @@
       </el-table-column>
       <el-table-column label="CardName" width="150px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.cardName }}</span>
+          <span class="link-type" @click="handleUpdate()">{{ row.cardName }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Rarity" min-width="150px">
@@ -81,12 +81,7 @@
           <span>{{ row.shortDescription }}</span>
         </template>
       </el-table-column>
-      <!--      <el-table-column label="Cover" min-width="150px">-->
-      <!--        <template slot-scope="{row}">-->
-      <!--          <span>{{ row.cardImg }}</span>-->
-      <!--        </template>-->
-      <!--      </el-table-column>-->
-      <el-table-column label="Image" min-width="150px">
+      <el-table-column label="Cover" min-width="150px">
         <template slot-scope="{row}">
           <el-image
             style="width: 100px; height: 100px"
@@ -149,22 +144,22 @@
           append-to-body
         >
           <el-input v-model="confirmPassword" placeholder="Identification" show-password width="60%" />
-          <el-button @click="confirmIdentity">Confirm Identity</el-button>
+          <el-button class="confirmButton" @click="confirmIdentity">Confirm Identity</el-button>
 
           <span slot="footer" class="dialog-footer">
-            <el-button @click="deleteVisible = false">Cancel</el-button>
+            <el-button class="cancelInnerButton" @click="deleteVisible = false">Cancel</el-button>
             <el-button v-if="confirmDelete === false" type="danger" disabled>Delete</el-button>
-            <el-button v-else type="danger" @click="deleteData">Delete</el-button>
+            <el-button class="deleteInnerButton" v-else type="danger" @click="deleteData">Delete</el-button>
           </span>
         </el-dialog>
 
-        <el-button type="danger" @click="deleteVisible = true">
+        <el-button class="deleteOuterButton" type="danger" @click="deleteVisible = true">
           Delete
         </el-button>
-        <el-button @click="panelVisible = false">
+        <el-button class="cancelOuterButton" @click="panelVisible = false">
           Cancel
         </el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
+        <el-button class="confirmOuterButton" type="primary" @click="dialogStatus==='create'?createData():updateData()">
           Confirm
         </el-button>
       </div>
@@ -174,9 +169,8 @@
 </template>
 
 <script>
-import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
 import waves from '@/directive/waves' // waves directive
-import { parseTime } from '@/utils'
+// import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination/index'
 import axios from 'axios' // secondary package based on el-pagination
 
@@ -184,16 +178,16 @@ export default {
   name: 'CardEntityPanel',
   components: { Pagination },
   directives: { waves },
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        published: 'success',
-        draft: 'info',
-        deleted: 'danger'
-      };
-      return statusMap[status]
-    }
-  },
+  // filters: {
+  //   statusFilter(status) {
+  //     const statusMap = {
+  //       published: 'success',
+  //       draft: 'info',
+  //       deleted: 'danger'
+  //     };
+  //     return statusMap[status]
+  //   }
+  // },
   data() {
     return {
       search: '',
@@ -226,8 +220,6 @@ export default {
         sort: '+id'
       },
       sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
-      // statusOptions: ['published', 'draft', 'deleted'],
-      // showReviewer: false,
       panelVisible: false,
       dialogStatus: '',
       textMap: {
@@ -235,9 +227,9 @@ export default {
         create: 'Create'
       },
       rules: {
-        // type: [{ required: true, message: 'type is required', trigger: 'change' }],
-        // timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
-        // title: [{ required: true, message: 'title is required', trigger: 'blur' }]
+        // cardId: [{ required: true, message: 'type is required', trigger: 'change' }],
+        // cardName: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
+        // rarity: [{ required: true, message: 'title is required', trigger: 'blur' }]
       },
       downloadLoading: false
     }
@@ -245,13 +237,24 @@ export default {
   watch: {
     deleteVisible() {
       this.confirmDelete = false;
-      this.confirmPassword = ''
+      this.confirmPassword = '';
     }
   },
   created() {
     this.getList()
   },
   methods: {
+    getList() {
+      let _this = this;
+      // _this.listLoading = true;
+      axios.get('http://localhost:8080/card/getAllCards')
+      .then(response => {
+          _this.list = response.data;
+          _this.watchList();
+          // _this.listLoading = false
+        })
+        .catch(error => console.log(error));
+    },
     watchList() {
       const list = this.list;
       for (const i in list) {
@@ -261,22 +264,21 @@ export default {
         list[i].shortDescription = details.shortDescription
       }
       this.list = list;
-      console.log(this.list)
     },
     confirmIdentity() {
-      // TODO: REQUEST --- PWD USR MATCH
       const postData = new FormData();
       const _this = this;
       postData.append('adminName', localStorage.getItem('AdminName'));
       postData.append('password', this.confirmPassword);
-      axios.post('http://localhost:8080/admin/identifyAdmin', postData).then(response => {
-        console.log(response);
+      axios.post('http://localhost:8080/admin/identifyAdmin', postData)
+      .then(response => {
         if (response.data) {
           _this.confirmDelete = true
         } else {
           this.$message.error('Identification failed!')
         }
       })
+      .catch(error => console.log(error));
     },
     deleteData() {
       const postData = new FormData();
@@ -291,51 +293,7 @@ export default {
           this.$message.error('Identification failed!')
         }
       })
-    },
-    uploadCover() {
-      const _this = this;
-      var file = this.$refs.img;
-      var reader = new FileReader();
-      reader.readAsDataURL(file.files[0]);
-      reader.onload = function() {
-        _this.temp.cardImg = this.result
-      }
-    },
-    getList() {
-      this.listLoading = true;
-      axios.get('http://localhost:8080/card/getAllCards')
-        .then(response => {
-          this.list = response.data;
-          this.watchList()
-        });
-      setTimeout(() => {
-        this.listLoading = false
-      }, 1.5 * 10)
-    },
-    handleFilter() {
-      this.listQuery.page = 1;
-      this.getList()
-    },
-    handleModifyStatus(row, status) {
-      this.$message({
-        message: '操作Success',
-        type: 'success'
-      });
-      row.status = status
-    },
-    sortChange(data) {
-      const { prop, order } = data;
-      if (prop === 'id') {
-        this.sortByID(order)
-      }
-    },
-    sortByID(order) {
-      if (order === 'ascending') {
-        this.listQuery.sort = '+id'
-      } else {
-        this.listQuery.sort = '-id'
-      }
-      this.handleFilter()
+      .catch(error => console.log(error));
     },
     resetTemp() {
       this.temp = {
@@ -362,7 +320,6 @@ export default {
       })
     },
     createData() {
-      console.log('Inside CreateData');
       const postData = new FormData();
       const _this = this;
       postData.append('cardName', this.temp.cardName);
@@ -381,14 +338,14 @@ export default {
       axios.post(`http://localhost:8080/card/addCard`, postData).then(response => {
         if (response.data) {
           // TODO: SHORTEN THE REQUESTS
-          this.getList();
-          _this.panelVisible = false
-        } else {
+          _this.getList();
+          _this.panelVisible = false;
+          _this.resetTemp();
         }
       })
+      .catch(error => console.log(error));
     },
-    handleUpdate(row) {
-      this.temp = Object.assign({}, row); // copy obj
+    handleUpdate() {
       this.dialogStatus = 'update';
       this.panelVisible = true;
       this.$nextTick(() => {
@@ -412,15 +369,48 @@ export default {
       postData.append('shortDescription', this.temp.shortDescription);
 
       axios.post(`http://localhost:8080/card/updateCard`, postData).then(response => {
-        if (response.data) {
-          this.getList();
-          _this.panelVisible = false
-        } else {
-          //
-        }
+          _this.getList();
+          _this.panelVisible = false;
+          _this.resetTemp();
       })
+      .catch(error => console.log(error));
+
     },
-    handleDelete(row, index) {
+    uploadCover() {
+      const _this = this;
+      var file = this.$refs.img;
+      var reader = new FileReader();
+      reader.readAsDataURL(file.files[0]);
+      reader.onload = function() {
+        _this.temp.cardImg = this.result
+      }
+    },
+
+
+    handleFilter() {
+      this.listQuery.page = 1;
+      this.getList()
+    },
+    handleModifyStatus(row, status) {
+      this.$message({
+        message: '操作Success',
+        type: 'success'
+      });
+      row.status = status
+    },
+    sortChange(data) {
+      const { prop, order } = data;
+      if (prop === 'id') {
+        this.sortByID(order)
+      }
+    },
+    sortByID(order) {
+      if (order === 'ascending') {
+        this.listQuery.sort = '+id'
+      } else {
+        this.listQuery.sort = '-id'
+      }
+      this.handleFilter()
     },
     getSortClass: function(key) {
       const sort = this.listQuery.sort;
