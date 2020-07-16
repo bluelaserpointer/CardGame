@@ -84,9 +84,10 @@ Edward Raymond He 518030990022
 
 #### Finished: 
 
-1. 针对了Card实体类的操作面板进行了基本的单元测试
+1. 针对了 Card, Item 实体类的操作面板进行了基本的单元测试
 2. 针对后端关卡设计环节 Chapter, ChapterPhase 的奖励设置进行了调试
 
 #### Currently working on:
 
 1. 正在编写更多的单元测试代码
+2. Player相关的操作模板需要针对后端改动进行跟进之后再做相关单元测试代码
