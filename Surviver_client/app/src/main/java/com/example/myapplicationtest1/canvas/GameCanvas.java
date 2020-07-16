@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.media.Image;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,6 +18,7 @@ import com.example.myapplicationtest1.game.contents.engine.Subject;
 import com.example.myapplicationtest1.game.contents.unit.Enemy;
 import com.example.myapplicationtest1.game.contents.engine.MyStage;
 import com.example.myapplicationtest1.game.contents.unit.Knowledge;
+import com.example.myapplicationtest1.game.contents.unit.MyUnit;
 import com.example.myapplicationtest1.game.core.GHQ;
 import com.example.myapplicationtest1.game.paint.ImageFrame;
 import com.example.myapplicationtest1.pageParts.ChapterListAdapter;
@@ -77,7 +77,6 @@ public class GameCanvas extends View {
                 return false;
             }
         });
-        GHQ.setResourceProvider(this);
         GHQ.setStage(stage = new MyStage(getWidth(), getHeight()));
         stage.init();
         //load stage data
@@ -92,18 +91,7 @@ public class GameCanvas extends View {
                 final int pos = posInfo.getInt("positionId");
                 final int x = 500 + pos%5*100;
                 final int y = 100 + pos/5*100;
-                final JSONObject enemyInfo = new JSONObject(HttpClient.doGetShort("card/getCard?cardId=" + posInfo.getInt("cardId")));
-                stage.addUnit(new Enemy(new Enemy.EnemyParameter(
-                        enemyInfo.getString("cardName"),
-                        ImageFrame.create(R.drawable.tongyongc),
-                        enemyInfo.getInt("healthPoint"),
-                        enemyInfo.getInt("attack"),
-                        enemyInfo.getInt("defense"),
-                        enemyInfo.getInt("attackRange"),
-                        enemyInfo.getInt("cd"),
-                        enemyInfo.getInt("speed"),
-                        enemyInfo.getString("cardDetails")
-                )).respawn(x, y));
+                stage.addUnit(new Enemy(MyUnit.loadAsEnemy("card/getCard?cardId=" + posInfo.getInt("cardId"))).respawn(x, y));
             }
             //load friend formation
             //TODO: this is dummy!

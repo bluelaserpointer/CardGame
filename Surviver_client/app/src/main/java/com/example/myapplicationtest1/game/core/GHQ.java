@@ -1,5 +1,6 @@
 package com.example.myapplicationtest1.game.core;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -66,7 +67,7 @@ public final class GHQ implements Runnable{
 
 	//graphic
 	public static Canvas targetCanvas;
-	public static View resourceProvider;
+	public static Resources resources;
 
 	//frame
 	private static int systemFrame;
@@ -96,7 +97,12 @@ public final class GHQ implements Runnable{
 	private static long mili1000Stamp;
 	private static int framesCount;
 	private static double nowFPS;
-	public final void run(){
+
+    public static void setResource(Resources resources) {
+    	GHQ.resources = resources;
+    }
+
+    public final void run(){
 		mili1000Stamp = GHQ.nowTime();
 		while(true){
 			//fps
@@ -616,7 +622,6 @@ public final class GHQ implements Runnable{
 	public static void setTargetCanvas(Canvas canvas) {
 		targetCanvas = canvas;
 	}
-	public static void setResourceProvider(View view) { resourceProvider = view; }
 	
 	//math & string
 	public static int toStageX(int screenX) {
