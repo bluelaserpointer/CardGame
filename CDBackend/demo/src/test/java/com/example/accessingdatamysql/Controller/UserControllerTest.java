@@ -1,13 +1,13 @@
 package com.example.accessingdatamysql.Controller;
 
-import com.example.accessingdatamysql.AccessingDataMysqlApplicationTest;
+import com.example.accessingdatamysql.UnitTestDemoApplicationTests;
 import com.example.accessingdatamysql.controller.UserController;
 import com.example.accessingdatamysql.service.UserService;
 import com.example.accessingdatamysql.entity.*;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -20,7 +20,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -46,7 +45,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 // @WebMvcTest(UserController.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-public class UserControllerTest extends AccessingDataMysqlApplicationTest {
+@AutoConfigureMockMvc
+public class UserControllerTest extends UnitTestDemoApplicationTests {
 
         @Test
         public void contextLoads() {
@@ -67,6 +67,11 @@ public class UserControllerTest extends AccessingDataMysqlApplicationTest {
                 assertThat(userController).isNotNull();
         }
 
+        @Test
+        public void testA() {
+                System.out.println("Hello");
+        }
+
         @Autowired
         private UserService userService;
 
@@ -74,7 +79,7 @@ public class UserControllerTest extends AccessingDataMysqlApplicationTest {
 
         @Before
         public void setUp() {
-                userService.addNewUser("test", "test", "test", "test");
+                // userService.addNewUser("test", "test", "test", "test");
                 mockMvc = MockMvcBuilders.standaloneSetup(context).build();
         }
 
@@ -91,8 +96,7 @@ public class UserControllerTest extends AccessingDataMysqlApplicationTest {
         @Test
         @DisplayName("File: UserController Method: findUserByUserId")
         public void findUserByUserId() throws Exception {
-                MvcResult result = mockMvc
-                                .perform(get("/user/getUser?userId=1").contentType(MediaType.APPLICATION_JSON_VALUE))
+                MvcResult result = mockMvc.perform(get("/user/getUser?userId=1"))
                                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
                                 .andReturn();
                 System.out.println(result.getResponse().getContentAsString());

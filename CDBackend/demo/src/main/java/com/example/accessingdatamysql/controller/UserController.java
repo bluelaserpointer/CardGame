@@ -12,15 +12,15 @@ import java.util.*;
 import com.example.accessingdatamysql.service.UserService;
 
 @CrossOrigin(origins = "*")
-@RestController // This means that this class is a Controller
-@RequestMapping(path = "/user") // This means URL's start with /demo (after Application path)
+@RestController() // This means that this class is a Controller
+@RequestMapping(value = "/user") // This means URL's start with /demo (after Application path)
 public class UserController {
 
   @Autowired
   private UserService userService;
 
   // 获取一个用户信息
-  @RequestMapping(value = "/getUser")
+  @GetMapping(value = "/getUser")
   public User findUserByUserId(@RequestParam("userId") Integer userId) {
     return userService.getOneUser(userId);
   }
