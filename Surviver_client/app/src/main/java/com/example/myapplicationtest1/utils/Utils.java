@@ -46,18 +46,15 @@ public class Utils {
 //        EditText etPassword = screen.findViewById(R.id.passwordText);
 //        System.out.println(etUsername);
 //        System.out.println(etPassword);
-        Map<String,String> userInfo= Utils.getUserInfo(context);
-        String getUserName = userInfo.get("userName");
-        String getPassword = userInfo.get("password");
+        final Map<String,String> userInfo= Utils.getUserInfo(context);
+        final String getUserName = userInfo.get("userName");
+        final String getPassword = userInfo.get("password");
         if (getUserName != null && getPassword != null){
             //点击登陆时，获取QQ号和密码
-            String userName = "userName=" + getUserName;
-            String password = "password=" + getPassword;
-            String url = "http://192.168.175.1:8080/user/identifyUser?" + userName + "&" + password;
-
-            //判断你输入的QQ号和密码是否正确
-            String data = HttpClient.doGet(url);
-
+            String data = HttpClient.doGetShort("user/identifyUser?"
+                    + "userName=" + getUserName + "&"
+                    + "password=" + getPassword);
+            System.out.println("identifyUserInput's data: " + data);
             return !data.equals("false");
         }else{
             return false;
@@ -86,12 +83,11 @@ public class Utils {
     }
 
     public static boolean identifyUserInput(String getUserName, String getPassword) throws JSONException {
-        String userName = "userName=" + getUserName;
-        String password = "password=" + getPassword;
-        String url = "http://192.168.175.1:8080/user/identifyUser?" + userName + "&" + password;
-        System.out.println(url);
         //判断你输入的QQ号和密码是否正确
-        String data = HttpClient.doGet(url);
+        String data = HttpClient.doGetShort("user/identifyUser?"
+                + "userName=" + getUserName + "&"
+                + "password=" + getPassword);
+        System.out.println("identifyUserInput's data: " + data);
         return data.charAt(0)==('t');
 //        return true;
     }
