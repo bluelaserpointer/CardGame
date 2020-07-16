@@ -8,6 +8,7 @@ import com.example.myapplicationtest1.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 public class HomePage extends Page {
     @Override
@@ -30,10 +31,11 @@ public class HomePage extends Page {
     public void fetchData() throws JSONException {
         // Fetching data of the current logged in user
         final JSONArray arr = new JSONArray(HttpClient.doGetShort("user/getAllUsers"));
+        final JSONObject userInfo = arr.getJSONObject(0);
         // Sets the text of corresponding values
-        ((Button)findViewById(R.id.grade_button).findViewById(R.id.grade_button)).setText(arr.getJSONObject(0).get("grade").toString());
-        ((Button)findViewById(R.id.stamina_button)).setText(arr.getJSONObject(0).get("stamina").toString());
-        ((Button)findViewById(R.id.money_button)).setText(arr.getJSONObject(0).get("money").toString());
+        ((Button)findViewById(R.id.grade_button)).setText(userInfo.get("grade").toString());
+        ((Button)findViewById(R.id.stamina_button)).setText(userInfo.get("stamina").toString());
+        ((Button)findViewById(R.id.money_button)).setText(userInfo.get("money").toString());
 
     }
 }

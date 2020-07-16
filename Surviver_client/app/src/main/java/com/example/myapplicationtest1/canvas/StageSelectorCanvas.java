@@ -8,15 +8,22 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.text.Layout;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import androidx.annotation.Nullable;
 
 import com.example.myapplicationtest1.R;
 
+/**
+ * 负责关卡地图的显示与触碰判定
+ */
+
 public class StageSelectorCanvas extends View {
+    public static int currentStage = 0;
     /*小球的位置*/
     private int x, y;
     /*小球的半径*/
@@ -27,10 +34,9 @@ public class StageSelectorCanvas extends View {
     /*stage data*/
     private static final Point stageSpotPoints[][] =
             {
-                    {new Point(10,200), new Point(400,50)},
+                    {new Point(10,200), new Point(800,50)},
                     {new Point(70,100), new Point(100,500)},
             };
-    private int currentStage = 0;
     /*小球移动的方向*/
     private boolean direction;
     private Paint paint;
@@ -40,35 +46,30 @@ public class StageSelectorCanvas extends View {
         super(context);
         init();
     }
-
     public StageSelectorCanvas(Context context, @Nullable AttributeSet attrs) {//在xml 用到;
         super(context, attrs);
+        init();
+    }
+    public StageSelectorCanvas(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {//不会被系统默认调用，需要自己去显示的调用;
+        super(context, attrs, defStyleAttr);
+        init();
+    }
+    public void init() {
         //初始化画笔 参数表示去锯齿
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(COLOR);
         whitePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         whitePaint.setColor(Color.WHITE);
         x = RADIUS;
-        init();
-    }
-
-    public StageSelectorCanvas(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {//不会被系统默认调用，需要自己去显示的调用;
-        super(context, attrs, defStyleAttr);
-        init();
-    }
-
-    public void init() {
         //bm = BitmapFactory.decodeFile("../res/image/Card0.png");
         touchNotationBM = BitmapFactory.decodeResource(getResources(), R.drawable.titlecover);
         stageSpotBM = BitmapFactory.decodeResource(getResources(), R.drawable.map_site);
-        super.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                x = (int)event.getX();
-                y = (int)event.getY();
-
-                return false;
-            }
+        super.setOnTouchListener((v, event) -> {
+            v.performClick();
+            x = (int)event.getX();
+            y = (int)event.getY();
+            System.out.println("StageSelectorCanvas: " + x + ", " + y);
+            return false;
         });
     }
     @Override
@@ -84,6 +85,7 @@ public class StageSelectorCanvas extends View {
         }
         //根据x,y 坐标画一个小球
         canvas.drawCircle(x, y, RADIUS, paint);
+        x += 10;
         //获取组件的宽度
         int measuredWidth = this.getMeasuredWidth();
 

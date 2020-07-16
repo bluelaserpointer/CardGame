@@ -8,4 +8,6 @@
     <string name="toBag">背包</string>
     <string name="toLibrary">图书馆</string>
     <string name="toMission">任务</string>
+    <string name="userLvUp">用户升级</string>
+    <string name="battleResult">战斗结果</string>
 </resources>

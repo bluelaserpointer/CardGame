@@ -35,7 +35,7 @@ public class ImageFrame extends DotPaint {
 	}
 	/**
 	* Load the image file.
-	* @param url 
+	* @param drawableId
 	* @return ImageFrame
 	* @since alpha1.0
 	*/
