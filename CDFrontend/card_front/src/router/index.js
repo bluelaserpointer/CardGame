@@ -1,16 +1,16 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-Vue.use(Router)
+Vue.use(Router);
 
 /* Layout */
 import Layout from '@/layout'
 
 /* Router Modules */
-import componentsRouter from './modules/components'
-import chartsRouter from './modules/charts'
+// import componentsRouter from './modules/components'
+// import chartsRouter from './modules/charts'
 import tableRouter from './modules/table'
-import nestedRouter from './modules/nested'
+// import nestedRouter from './modules/nested'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -122,7 +122,7 @@ export const constantRoutes = [
       }
     ]
   }
-]
+];
 
 /**
  * asyncRoutes
@@ -202,22 +202,15 @@ export const asyncRoutes = [
     children: [
       {
         path: 'activity',
-        component: () => import('@/views/example/components/ActivityPanel'),
+        component: () => import('@/components/edit/ActivityPanel'),
         name: 'Activity Panel',
         meta: { title: 'Activity Panel', icon: 'edit' }
       },
       {
         path: 'mail',
-        component: () => import('@/views/example/components/MailPanel'),
+        component: () => import('@/components/edit/MailPanel'),
         name: 'Mail Panel',
         meta: { title: 'Mail Panel', icon: 'edit' }
-      },
-      {
-        path: 'edit/:id(\\d+)',
-        component: () => import('@/views/example/edit'),
-        name: 'EditArticle',
-        meta: { title: 'Edit Article', noCache: true, activeMenu: '/example/list' },
-        hidden: true
       },
       // {
       //   path: 'list',
@@ -227,7 +220,6 @@ export const asyncRoutes = [
       // }
     ]
   },
-
 
   //
   // {
@@ -393,19 +385,19 @@ export const asyncRoutes = [
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
-]
+];
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
-})
+});
 
-const router = createRouter()
+const router = createRouter();
 
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {
-  const newRouter = createRouter()
+  const newRouter = createRouter();
   router.matcher = newRouter.matcher // reset router
 }
 

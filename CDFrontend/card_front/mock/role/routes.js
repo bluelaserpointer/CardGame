@@ -70,7 +70,7 @@ const constantRoutes = [
       }
     ]
   }
-]
+];
 
 const asyncRoutes = [
   {
@@ -522,9 +522,9 @@ const asyncRoutes = [
   },
 
   { path: '*', redirect: '/404', hidden: true }
-]
+];
 
 module.exports = {
   constantRoutes,
   asyncRoutes
-}
+};
