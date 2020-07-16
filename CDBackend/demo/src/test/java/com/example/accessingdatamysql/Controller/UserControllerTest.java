@@ -79,8 +79,7 @@ public class UserControllerTest extends UnitTestDemoApplicationTests {
 
         @Before
         public void setUp() {
-                // userService.addNewUser("test", "test", "test", "test");
-                mockMvc = MockMvcBuilders.standaloneSetup(context).build();
+                mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
         }
 
         @AfterEach
@@ -96,7 +95,8 @@ public class UserControllerTest extends UnitTestDemoApplicationTests {
         @Test
         @DisplayName("File: UserController Method: findUserByUserId")
         public void findUserByUserId() throws Exception {
-                MvcResult result = mockMvc.perform(get("/user/getUser?userId=1"))
+                MvcResult result = mockMvc
+                                .perform(get("/user/getUser?userId=1").contentType(MediaType.APPLICATION_JSON_VALUE))
                                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
                                 .andReturn();
                 System.out.println(result.getResponse().getContentAsString());

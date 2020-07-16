@@ -21,7 +21,8 @@ public class UserController {
 
   // 获取一个用户信息
   @GetMapping(value = "/getUser")
-  public User findUserByUserId(@RequestParam("userId") Integer userId) {
+  public @ResponseBody User findUserByUserId(@RequestParam("userId") Integer userId) {
+    System.out.println("Class: UserController Method:finduserByUserId Param:" + userId);
     return userService.getOneUser(userId);
   }
 
