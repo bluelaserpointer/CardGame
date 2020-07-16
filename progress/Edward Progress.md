@@ -79,3 +79,14 @@ Edward Raymond He 518030990022
 #### Currently working on:
 
 1. 对目前在运维端的部分进行单元测试
+
+### 2020.07.16
+
+#### Finished: 
+
+1. 针对了Card实体类的操作面板进行了基本的单元测试
+2. 针对后端关卡设计环节 Chapter, ChapterPhase 的奖励设置进行了调试
+
+#### Currently working on:
+
+1. 正在编写更多的单元测试代码
