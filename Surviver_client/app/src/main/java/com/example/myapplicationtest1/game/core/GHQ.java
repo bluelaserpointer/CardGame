@@ -1,9 +1,12 @@
 package com.example.myapplicationtest1.game.core;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.fonts.Font;
 import android.view.View;
@@ -64,7 +67,7 @@ public final class GHQ implements Runnable{
 
 	//graphic
 	public static Canvas targetCanvas;
-	public static View resourceProvider;
+	public static Resources resources;
 
 	//frame
 	private static int systemFrame;
@@ -94,7 +97,12 @@ public final class GHQ implements Runnable{
 	private static long mili1000Stamp;
 	private static int framesCount;
 	private static double nowFPS;
-	public final void run(){
+
+    public static void setResource(Resources resources) {
+    	GHQ.resources = resources;
+    }
+
+    public final void run(){
 		mili1000Stamp = GHQ.nowTime();
 		while(true){
 			//fps
@@ -307,11 +315,14 @@ public final class GHQ implements Runnable{
 			color = Color.RED;
 		final Paint paint = new Paint();
 		paint.setColor(color);
+		paint.setStrokeWidth(5);
+		paint.setStyle(Paint.Style.STROKE);
 		targetCanvas.drawText(String.valueOf(hp), x + (int)(radius*1.1) + (hp >= 10 ? 0 : 6), y + (int)(radius*1.1), paint);
 		//TODO: Antialiasing
 		//TODO: arcPaint
-		targetCanvas.drawCircle(x, y, radius, paint);
-		//targetCanvas.drawArc(x - radius, y - radius, radius*2, radius*2, 90, (int)((double)hp/(double)maxHP*360), paint);
+
+		//开始画
+		targetCanvas.drawArc(new RectF(x - radius, y - radius, x + radius, y + radius), -90, (int)((double)hp/(double)maxHP*360), true, paint);
 	}
 	public static void paintHPArc(int x, int y, int radius, Consumables hp) {
 		paintHPArc(x, y, radius, hp.intValue(), hp.max().intValue());
@@ -370,6 +381,9 @@ public final class GHQ implements Runnable{
 	 */
 	public static int nowFrame() {
 		return gameFrame;
+	}
+	public static void progressGameFrame() {
+		++gameFrame;
 	}
 	/**
 	 * Returns passed frame that independents from game pause.
@@ -555,17 +569,18 @@ public final class GHQ implements Runnable{
 	public static void drawLine(int x1, int y1, int x2, int y2) {
 		targetCanvas.drawLine(x1, y1, x2, y2, new Paint());
 	}
-	public static void drawImageGHQ(Bitmap bm, int x, int y, int w, int h){
+	public static void drawImageGHQ(Bitmap bm, int x, int y, int w, int h) {
 		final int tx = x + w/2, ty = y + h/2;
+		final Rect bmRect = new Rect(0, 0, bm.getWidth(), bm.getHeight());
 		targetCanvas.translate(tx, ty);
 		if(doXFlip || doYFlip) {
 			final float xs = doXFlip ? -1 : 1;
 			final float ys = doYFlip ? -1 : 1;
 			targetCanvas.scale(xs, ys);
-			targetCanvas.drawBitmap(bm, -w/2F, -h/2F, new Paint());
+			targetCanvas.drawBitmap(bm, bmRect, new Rect(-w/2, -h/2, w/2, h/2), new Paint());
 			targetCanvas.scale(xs, ys);
 		} else {
-			targetCanvas.drawBitmap(bm, -w/2F, -h/2F, new Paint());
+			targetCanvas.drawBitmap(bm, bmRect, new Rect(-w/2, -h/2, w/2, h/2), new Paint());
 		}
 		targetCanvas.translate(-tx, -ty);
 	}
@@ -584,10 +599,10 @@ public final class GHQ implements Runnable{
 		final int w = bm.getWidth(), h = bm.getHeight();
 		if(angle != 0F) {
 			targetCanvas.rotate((float)angle, x, y);
-			targetCanvas.drawBitmap(bm, -w/2F, -h/2F, new Paint());
+			targetCanvas.drawBitmap(bm, x - w/2, y - h/2, new Paint());
 			targetCanvas.rotate(-(float)angle, x, y);
 		} else
-			targetCanvas.drawBitmap(bm, -w/2F, -h/2F, new Paint());
+			targetCanvas.drawBitmap(bm, x - w/2, y - h/2, new Paint());
 	}
 	public static void drawImageGHQ_center(Bitmap bm, int x, int y){
 		drawImageGHQ_center(bm, x, y, 0.0);
@@ -607,7 +622,6 @@ public final class GHQ implements Runnable{
 	public static void setTargetCanvas(Canvas canvas) {
 		targetCanvas = canvas;
 	}
-	public static void setResourceProvider(View view) { resourceProvider = view; }
 	
 	//math & string
 	public static int toStageX(int screenX) {

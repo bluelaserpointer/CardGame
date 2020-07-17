@@ -2,10 +2,8 @@ package com.example.myapplicationtest1.canvas;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.util.AttributeSet;
@@ -14,9 +12,20 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import com.example.myapplicationtest1.HttpClient;
 import com.example.myapplicationtest1.R;
+import com.example.myapplicationtest1.game.contents.engine.Subject;
+import com.example.myapplicationtest1.game.contents.unit.Enemy;
 import com.example.myapplicationtest1.game.contents.engine.MyStage;
+import com.example.myapplicationtest1.game.contents.unit.Knowledge;
+import com.example.myapplicationtest1.game.contents.unit.MyUnit;
 import com.example.myapplicationtest1.game.core.GHQ;
+import com.example.myapplicationtest1.game.paint.ImageFrame;
+import com.example.myapplicationtest1.pageParts.ChapterListAdapter;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class GameCanvas extends View {
     /*小球的位置*/
@@ -68,14 +77,49 @@ public class GameCanvas extends View {
                 return false;
             }
         });
-        stage = new MyStage(getWidth(), getHeight());
+        GHQ.setStage(stage = new MyStage(getWidth(), getHeight()));
+        stage.init();
+        //load stage data
+        fetch();
+    }
+    public void fetch() {
+        try {
+            //load enemy formation
+            final JSONArray arr = new JSONArray(HttpClient.doGetShort("chapter/getChapterDetailsByChapter?chapterId=" + ChapterListAdapter.selectedPhase));
+            for(int i = 0; i < arr.length(); ++i) {
+                final JSONObject posInfo = arr.getJSONObject(i);
+                final int pos = posInfo.getInt("positionId");
+                final int x = 500 + pos%5*100;
+                final int y = 100 + pos/5*100;
+                stage.addUnit(new Enemy(MyUnit.loadAsEnemy("card/getCard?cardId=" + posInfo.getInt("cardId"))).respawn(x, y));
+            }
+            //load friend formation
+            //TODO: this is dummy!
+            stage.addUnit(new Knowledge(new Knowledge.KnowledgeParameter(
+                            Subject.MAT,
+                    "testFriendUnit",
+                    ImageFrame.create(R.drawable.tongyongm),
+                    100,
+                    100,
+                    100,
+                    100,
+                    100,
+                    100,
+                    "",
+                    ""
+            )).respawn(100, 800));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        stage.setSize(canvas.getWidth(), canvas.getHeight());
         GHQ.setTargetCanvas(canvas);
-        //canvas.rotate(90, canvas.getWidth()/2, canvas.getWidth()/2);
         stage.idle();
-        //canvas.rotate(-90, canvas.getWidth()/2, canvas.getWidth()/2);
+        GHQ.progressGameFrame();
+        GHQ.fillCircle(canvas.getWidth(), canvas.getHeight(), 100, GHQ.generatePaint(Color.WHITE));
     }
 }

@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import ArticleDetail from './components/MailEditPanel'
+import ArticleDetail from '../../components/edit/MailEditPanel'
 
 export default {
   name: 'EditForm',

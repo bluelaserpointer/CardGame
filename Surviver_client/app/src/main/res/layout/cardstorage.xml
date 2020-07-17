@@ -183,17 +183,11 @@
 
                 </FrameLayout>
 
-                <LinearLayout
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/cardStorageContent"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="8"
-                    android:orientation="horizontal">
-
-                    <ListView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scrollbars="horizontal" />
-                </LinearLayout>
+                    android:layout_weight="8" />
 
                 <FrameLayout
                     android:layout_width="0dp"

@@ -20,17 +20,22 @@ public class Effects extends Effect {
 	//SparkHitEF
 	/////////////////
 	public static class SparkHitEF extends Effects {
+
 		public SparkHitEF(GHQObject source) {
 			super(source);
 			name = "SparkHitEF";
-			limitFrame = 3;
+			limitFrame = 10;
 			paintScript = new SerialImageFrame(this, 1,
 					R.drawable.a1_hit,
 					R.drawable.a2_hit,
 					R.drawable.a3_hit,
 					R.drawable.a4_hit);
 			point().stop();
-			point().setMoveAngle(GHQ.random2(0, 2*PI));
+			angle().set(source.point().moveAngle());
+		}
+		@Override
+		public void paint() {
+			getDotPaint().dotPaint_turn(point(), angle().get());
 		}
 		@Override
 		public SparkHitEF getOriginal() {

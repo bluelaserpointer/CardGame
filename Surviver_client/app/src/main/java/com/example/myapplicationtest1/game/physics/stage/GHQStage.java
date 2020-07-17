@@ -26,7 +26,7 @@ import java.util.LinkedList;
 public class GHQStage implements HasBoundingBox {
 	
 	public final Point point = new Point.IntPoint();
-	protected final int width, height;
+	protected int width, height;
 	public final GHQObjectList<Unit> units = new GHQObjectList<Unit>();
 	public final GHQObjectList<Bullet> bullets = new GHQObjectList<Bullet>();
 	public final GHQObjectList<Effect> effects = new GHQObjectList<Effect>();
