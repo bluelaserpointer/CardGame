@@ -147,7 +147,7 @@ export default {
       placedCard: false,
       tableKey: 0,
       total: 0,
-      listLoading: true,
+      listLoading: false,
       listQuery: {
         page: 1,
         limit: 20,

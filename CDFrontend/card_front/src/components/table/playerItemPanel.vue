@@ -17,6 +17,11 @@
       style="width: 100%;"
       @sort-change="sortChange"
     >
+      <el-table-column label="ID" prop="ownItemId" sortable="custom" align="center" width="80" :class-name="getSortClass('id')" >
+        <template slot-scope="{row}">
+          <span class="link-type" @click="handleUpdate(row)">{{ row.ownItemId }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="UserId" prop="userId" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
         <template slot-scope="{row}">
           <span>{{ row.userId }}</span>
@@ -24,7 +29,7 @@
       </el-table-column>
       <el-table-column label="ItemId" width="150px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.itemId }}</span>
+          <span>{{ row.itemId }}</span>
         </template>
       </el-table-column>
       <el-table-column label="ItemCount" min-width="150px">
@@ -34,7 +39,7 @@
       </el-table-column>
       <el-table-column label="AccquireDate" min-width="150px">
         <template slot-scope="{row}">
-          <span>{{ row.accquireDate }}</span>
+          <span>{{ formatDate(row.accquireDate) }}</span>
         </template>
       </el-table-column>
 
@@ -42,6 +47,9 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="panelVisible" top="5vh">
       <el-form ref="dataForm" :rules="rules" :model="temp" style="margin: auto 50px auto 50px; display:grid; grid-template-columns: 50% 50%; grid-column-gap: 10px" class="demo-form-inline">
+        <el-form-item label="ID" prop="ownItemId" v-if="dialogStatus==='update' ">
+          <el-input v-model="temp.ownItemId" disabled/>
+        </el-form-item>
         <el-form-item label="UserId" prop="userId">
           <el-input v-model="temp.userId" />
         </el-form-item>
@@ -51,8 +59,8 @@
         <el-form-item label="ItemCount" prop="itemCount">
           <el-input v-model="temp.itemCount" />
         </el-form-item>
-        <el-form-item label="AccquireDate" prop="accquireDate">
-          <el-input v-model="temp.accquireDate" />
+        <el-form-item label-width="120px" label="AccquireDate" class="postInfo-container-item" v-if="dialogStatus==='update'">
+          <el-date-picker v-model="temp.accquireDate" type="datetime" value-format="yyyy-MM-dd hh:mm:ss" placeholder="Select date and time" />
         </el-form-item>
       </el-form>
 
@@ -92,7 +100,8 @@
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination/index'
-import axios from 'axios' // secondary package based on el-pagination
+import axios from 'axios'
+import moment from "moment"; // secondary package based on el-pagination
 
 export default {
   name: 'PlayerItemPanel',
@@ -123,7 +132,7 @@ export default {
       deleteVisible: false,
       tableKey: 0,
       list: null,
-      listLoading: true,
+      listLoading: false,
       listQuery: {
         page: 1,
         limit: 20,
@@ -142,9 +151,18 @@ export default {
       dialogPvVisible: false,
       pvData: [],
       rules: {
-        // type: [{ required: true, message: 'type is required', trigger: 'change' }],
+        ownItemId: [{ required: true, message: 'OwnItemId is required', trigger: 'change' }],
+        userId: [{ required: true, message: 'UserId is required', trigger: 'change' }],
+        itemId: [{ required: true, message: 'ItemId is required', trigger: 'change' }],
+        itemCount: [{ required: true, message: 'ItemCount is required', trigger: 'change' }],
+        accquireDate: [{ required: true, message: 'AccquireDate is required', trigger: 'change' }],
         // timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
         // title: [{ required: true, message: 'title is required', trigger: 'blur' }]
+        ownItemId: undefined,
+        userId: undefined,
+        itemId: undefined,
+        itemCount: undefined,
+        accquireDate: undefined
       },
       downloadLoading: false
     }
@@ -159,34 +177,119 @@ export default {
     this.getList()
   },
   methods: {
-    watchList() {
-      const list = this.list;
-      for (const i in list) {
-        const details = list[i].cardDetails;
-        list.cardImg = details.cardImg;
-        list.cardDescription = details.cardDescription;
-        list.shortDescription = details.shortDescription
+    // watchList() {
+    //   const list = this.list;
+    //   for (const i in list) {
+    //     const details = list[i].cardDetails;
+    //     list.cardImg = details.cardImg;
+    //     list.cardDescription = details.cardDescription;
+    //     list.shortDescription = details.shortDescription
+    //   }
+    //   this.list = list
+    // },
+    formatDate(date){
+      return moment(new Date(date)).format('YYYY-MM-DD HH:mm:ss');
+    },
+    getList() {
+      axios.get('http://localhost:8080/ownItem/getAllOwnItems')
+        .then(response => {
+          this.list = response.data
+        })
+        .catch(error =>
+        {
+          this.$message.error('Fetching Data Failed!');
+        });
+    },
+    resetTemp() {
+      this.temp = {
+        ownItemId: undefined,
+        userId: undefined,
+        itemId: undefined,
+        itemCount: undefined,
+        accquireDate: undefined
       }
-      this.list = list
+    },
+    handleCreate() {
+      this.resetTemp();
+      this.dialogStatus = 'create';
+      this.panelVisible = true;
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
+      })
+    },
+    createData() {
+      let postData = new FormData();
+      postData.append('itemId', this.temp.itemId);
+      postData.append('userId', this.temp.userId);
+      postData.append('itemCount', this.temp.itemCount);
+
+      axios.post(`http://localhost:8080/ownItem/addOwnItem`, postData).then(response => {
+        if (response.data) {
+          // TODO: SHORTEN THE REQUESTS
+          this.getList();
+          this.panelVisible = false;
+        } else {
+          this.$message.error('Creating Data failed!');
+        }
+      })
+      .catch(error =>
+        {
+          this.$message.error('Creating Data failed!');
+        }
+      );
+    },
+    handleUpdate(row) {
+      this.temp = Object.assign({}, row); // copy obj
+      this.dialogStatus = 'update';
+      this.panelVisible = true;
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
+      })
+    },
+    updateData() {
+      let postData = new FormData();
+      postData.append('ownItemId', this.temp.ownItemId);
+      postData.append('itemId', this.temp.itemId);
+      postData.append('userId', this.temp.userId);
+      postData.append('itemCount', this.temp.itemCount);
+
+      axios.post(`http://localhost:8080/ownItem/updateOwnItem`, postData).then(response => {
+        if (response.data) {
+          // TODO: SHORTEN THE REQUESTS
+          this.getList();
+          this.panelVisible = false;
+          this.resetTemp();
+        } else {
+          this.$message.error('Updating Data failed!');
+        }
+      })
+        .catch(error =>
+          {
+            this.$message.error('Updating Data failed!');
+          }
+        );
     },
     confirmIdentity() {
-      // TODO: REQUEST --- PWD USR MATCH
-      const postData = new FormData();
-      const _this = this;
+      let postData = new FormData();
+      let _this = this;
       postData.append('adminName', localStorage.getItem('AdminName'));
       postData.append('password', this.confirmPassword);
       axios.post('http://localhost:8080/admin/identifyAdmin', postData).then(response => {
-        console.log(response);
         if (response.data) {
           _this.confirmDelete = true
         } else {
-          this.$message.error('Identification failed!')
+          this.$message.error('Identification failed!');
         }
       })
+        .catch(error =>
+          {
+            this.$message.error('Identification failed!');
+          }
+        );
     },
     deleteData() {
-      const postData = new FormData();
-      const _this = this;
+      let postData = new FormData();
+      let _this = this;
       postData.append('userId', this.temp.userId);
       postData.append('itemId', this.temp.itemId);
       axios.post('http://localhost:8080/ownItem/deleteOwnItem', postData).then(response => {
@@ -195,31 +298,16 @@ export default {
           _this.deleteVisible = false;
           _this.getList()
         } else {
-          this.$message.error('Identification failed!')
+          this.$message.error('Deleting Data failed!');
         }
       })
+        .catch(error =>
+          {
+            this.$message.error('Deleting Data failed!');
+          }
+        );
     },
-    uploadCover() {
-      const _this = this;
-      var file = this.$refs.img;
-      var reader = new FileReader();
-      reader.readAsDataURL(file.files[0]);
-      reader.onload = function() {
-        _this.temp.cardImg = this.result
-      }
-    },
-    getList() {
-      this.listLoading = true;
-      axios.get('http://localhost:8080/ownItem/getAllOwnItems')
-        .then(response => {
-          this.list = response.data
-          // this.watchList();
-        });
 
-      setTimeout(() => {
-        this.listLoading = false
-      }, 1.5 * 10)
-    },
     handleFilter() {
       this.listQuery.page = 1;
       this.getList()
@@ -244,66 +332,6 @@ export default {
         this.listQuery.sort = '-id'
       }
       this.handleFilter()
-    },
-    resetTemp() {
-      this.temp = {
-        ownItemId: undefined,
-        userId: undefined,
-        itemId: undefined,
-        itemCount: undefined,
-        accquireDate: undefined
-      }
-    },
-    handleCreate() {
-      this.resetTemp();
-      this.dialogStatus = 'create';
-      this.panelVisible = true;
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
-    },
-    createData() {
-      console.log('Inside CreateData');
-      const postData = new FormData();
-      postData.append('itemId', this.temp.itemId);
-      postData.append('userId', this.temp.userId);
-      postData.append('itemCount', this.temp.itemCount);
-
-      axios.post(`http://localhost:8080/ownItem/addOwnItem`, postData).then(response => {
-        if (response.data) {
-          // TODO: SHORTEN THE REQUESTS
-          this.getList()
-        } else {
-          //
-        }
-      })
-    },
-    handleUpdate(row) {
-      this.temp = Object.assign({}, row); // copy obj
-      // this.temp.timestamp = new Date(this.temp.timestamp)
-      this.dialogStatus = 'update';
-      this.panelVisible = true;
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
-    },
-    updateData() {
-      // let postData = new FormData();
-      // postData.append('cardId', this.temp.cardId);
-      // postData.append('userId', this.temp.userId);
-      //
-      // axios.post(`http://localhost:8080/ownCard/addOwnCard`, postData).then(response => {
-      //   if(response.data) {
-      //     // TODO: SHORTEN THE REQUESTS
-      //     this.getList();
-      //   }
-      //   else {
-      //     //
-      //   }
-      // });
-    },
-    handleDelete(row, index) {
-
     },
     getSortClass: function(key) {
       const sort = this.listQuery.sort;
