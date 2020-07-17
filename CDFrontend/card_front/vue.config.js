@@ -1,19 +1,19 @@
-'use strict'
-const path = require('path')
-const defaultSettings = require('./src/settings.js')
+'use strict';
+const path = require('path');
+const defaultSettings = require('./src/settings.js');
 
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-const name = defaultSettings.title || 'SE Card Control Panel' // page title
+const name = defaultSettings.title || 'SE Card Control Panel'; // page title
 
 // If your port is set to 80,
 // use administrator privileges to execute the command line.
 // For example, Mac: sudo npm run
 // You can change the port by the following method:
 // port = 9527 npm run dev OR npm run dev --port = 9527
-const port = process.env.port || process.env.npm_config_port || 9527 // dev port
+const port = process.env.port || process.env.npm_config_port || 9527; // dev port
 
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
@@ -59,16 +59,16 @@ module.exports = {
         fileBlacklist: [/\.map$/, /hot-update\.js$/, /runtime\..*\.js$/],
         include: 'initial'
       }
-    ])
+    ]);
 
     // when there are many pages, it will cause too many meaningless requests
-    config.plugins.delete('prefetch')
+    config.plugins.delete('prefetch');
 
     // set svg-sprite-loader
     config.module
       .rule('svg')
       .exclude.add(resolve('src/icons'))
-      .end()
+      .end();
     config.module
       .rule('icons')
       .test(/\.svg$/)
@@ -79,7 +79,7 @@ module.exports = {
       .options({
         symbolId: 'icon-[name]'
       })
-      .end()
+      .end();
 
     config
       .when(process.env.NODE_ENV !== 'development',
@@ -91,7 +91,7 @@ module.exports = {
             // `runtime` must same as runtimeChunk name. default is `runtime`
               inline: /runtime\..*\.js$/
             }])
-            .end()
+            .end();
           config
             .optimization.splitChunks({
               chunks: 'all',
@@ -115,10 +115,10 @@ module.exports = {
                   reuseExistingChunk: true
                 }
               }
-            })
+            });
           // https:// webpack.js.org/configuration/optimization/#optimizationruntimechunk
           config.optimization.runtimeChunk('single')
         }
       )
   }
-}
+};
