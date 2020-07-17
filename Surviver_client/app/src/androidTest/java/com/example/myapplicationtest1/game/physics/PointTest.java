@@ -8,7 +8,7 @@ public class PointTest {
     private double randomSmallDouble() {
         return 999*(Math.random() - 0.5);
     }
-    private final double PRECISION = 5.0;
+    private final double PRECISION = 2.0;
     @Test
     public void testSetterGetter() {
         double x = randomSmallDouble(), y = randomSmallDouble();
@@ -53,13 +53,13 @@ public class PointTest {
         xAdd = randomSmallDouble(); yAdd = randomSmallDouble();
         //int add
         Point point = new Point.IntPoint((int)x, (int)y);
-        point.addXY(xAdd, yAdd);
+        point.addXY((int)xAdd, (int)yAdd);
         assertEquals((int)x + (int)xAdd, point.intX());
         assertEquals((int)y + (int)yAdd, point.intY());
         //double add
         point = new Point.DoublePoint(x, y);
         point.addXY(xAdd, yAdd);
-        assertEquals(x + xAdd, point.doubleX(), 0.0);
-        assertEquals(y + yAdd, point.doubleY(), 0.0);
+        assertEquals(x + xAdd, point.doubleX(), PRECISION);
+        assertEquals(y + yAdd, point.doubleY(), PRECISION);
     }
 }
