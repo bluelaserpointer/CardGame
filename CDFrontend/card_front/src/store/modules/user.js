@@ -33,8 +33,16 @@ const actions = {
   login({ commit }, userInfo) {
     const { username, password } = userInfo;
     return new Promise((resolve, reject) => {
+      console.log("Within login inside modules/usr.js");
+      console.log(commit);
+      console.log(userInfo);
       login({ username: username.trim(), password: password }).then(response => {
         const { data } = response;
+        console.log("response");
+        console.log(response);
+        console.log("data");
+        console.log(data);
+        console.log(data.token);
         commit('SET_TOKEN', data.token);
         setToken(data.token);
         resolve()
@@ -46,8 +54,14 @@ const actions = {
 
   // get user info
   getInfo({ commit, state }) {
+    console.log("Within getInfo inside modules/usr.js");
+    console.log(commit);
+    console.log(state);
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
+        console.log("Within promise");
+        console.log(response);
+
         const { data } = response;
 
         if (!data) {
@@ -55,6 +69,8 @@ const actions = {
         }
 
         const { roles, name, avatar, introduction } = data;
+        console.log("roles " + roles);
+        console.log("name " + name);
 
         // roles must be a non-empty array
         if (!roles || roles.length <= 0) {
