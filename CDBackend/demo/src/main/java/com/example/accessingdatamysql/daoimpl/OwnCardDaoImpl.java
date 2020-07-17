@@ -17,9 +17,9 @@ public class OwnCardDaoImpl implements OwnCardDao {
 
     // 用ownCardId找某一个用户拥有卡牌的关系
     @Override
-    public OwnCard getOneOwnCard(Integer OwncardId) {
-        OwnCard Owncard = OwnCardRepository.getOne(OwncardId);
-        return Owncard;
+    public OwnCard getOneOwnCard(Integer OwnCardId) {
+        OwnCard ownCard = OwnCardRepository.getOne(OwnCardId);
+        return ownCard;
     }
 
     // 增加一个用户拥有某张卡牌的关系
@@ -34,28 +34,40 @@ public class OwnCardDaoImpl implements OwnCardDao {
     // 更新一个用户拥有某张卡牌的所有信息
     public OwnCard updateOwnCard(Integer userId, Integer cardId, Integer cardLevel, Integer cardCurExp,
             Integer cardLevelLimit, Integer repetitiveOwns, Timestamp accquireDate) {
-        OwnCard ownCard = OwnCardRepository.findByUserIdCardId(userId, cardId);
-        ownCard.setOwnCard(userId, cardId, cardLevel, cardCurExp, cardLevelLimit, repetitiveOwns, accquireDate);
-        OwnCardRepository.updateOwnCardStatus(ownCard, ownCard.getOwnCardId());
-        return ownCard;
+        Optional<OwnCard> optOwnCard = OwnCardRepository.findOwnCardByUserIdEqualsAndCardIdEquals(userId, cardId);
+        if(optOwnCard.isPresent()) {
+            OwnCard ownCard = optOwnCard.get();
+            ownCard.setOwnCard(userId, cardId, cardLevel, cardCurExp, cardLevelLimit, repetitiveOwns, accquireDate);
+            OwnCardRepository.updateOwnCardStatus(ownCard, ownCard.getOwnCardId());
+            return ownCard;
+        }
+        return null;
     }
 
     // 用户拥有的某张卡牌升级
     public OwnCard cardLevelUp(Integer userId, Integer cardId) {
-        OwnCard ownCard = OwnCardRepository.findByUserIdCardId(userId, cardId);
-        ownCard.setCardLevel(ownCard.getCardLevel() + 1);
-        ownCard.setCardCurExp(0);
-        OwnCardRepository.updateOwnCardStatus(ownCard, ownCard.getOwnCardId());
-        return ownCard;
+        Optional<OwnCard> optOwnCard = OwnCardRepository.findOwnCardByUserIdEqualsAndCardIdEquals(userId, cardId);
+        if(optOwnCard.isPresent()) {
+            OwnCard ownCard = optOwnCard.get();
+            ownCard.setCardLevel(ownCard.getCardLevel() + 1);
+            ownCard.setCardCurExp(0);
+            OwnCardRepository.updateOwnCardStatus(ownCard, ownCard.getOwnCardId());
+            return ownCard;
+        }
+        return null;
     }
 
     // 用户再一次拥有已经拥有的卡牌
     public OwnCard ownAnotherCard(Integer userId, Integer cardId) {
-        OwnCard ownCard = OwnCardRepository.findByUserIdCardId(userId, cardId);
-        ownCard.setRepetitiveOwns(ownCard.getRepetitiveOwns() + 1);
-        // 这里还需要增加cardlevellimit的更新
-        OwnCardRepository.updateOwnCardStatus(ownCard, ownCard.getOwnCardId());
-        return ownCard;
+        Optional<OwnCard> optOwnCard = OwnCardRepository.findOwnCardByUserIdEqualsAndCardIdEquals(userId, cardId);
+        if(optOwnCard.isPresent()) {
+            OwnCard ownCard = optOwnCard.get();
+            ownCard.setRepetitiveOwns(ownCard.getRepetitiveOwns() + 1);
+            // 这里还需要增加cardlevellimit的更新
+            OwnCardRepository.updateOwnCardStatus(ownCard, ownCard.getOwnCardId());
+            return ownCard;
+        }
+        return null;
     }
 
     // 获取所有的用户拥有卡牌记录
