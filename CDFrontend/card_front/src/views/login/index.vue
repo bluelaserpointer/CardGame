@@ -78,6 +78,8 @@ import { validUsername } from '@/utils/validate'
 import { validPassword } from '@/utils/validate'
 import SocialSign from './components/SocialSignin'
 import axios from 'axios'
+import { removeToken } from '@/utils/auth'
+
 
 export default {
   name: 'Login',
@@ -179,6 +181,8 @@ export default {
       // axios.post(`http://localhost:8080/admin/getAdminRole`, postData).then(res=>{
       //   localStorage.setItem('AdminRole', res.data);
       // });
+      removeToken();
+      console.log("Right before removing Token");
       this.$refs.loginForm.validate(async valid => {
         if (valid) {
           this.loading = true;

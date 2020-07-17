@@ -1028,7 +1028,7 @@ export default {
         published: 'success',
         draft: 'info',
         deleted: 'danger'
-      }
+      };
 <span class="cstat-no" title="statement not covered" >      return statusMap[status]</span>
     }
     // typeFilter(type) {
@@ -1041,7 +1041,7 @@ export default {
       tableKey: 0,
       list: null,
       total: 0,
-      listLoading: true,
+      listLoading: false,
       listQuery: {
         page: 1,
         limit: 20,
@@ -1085,26 +1085,26 @@ export default {
   },
   methods: {
 <span class="fstat-no" title="function not covered" >    getList() {</span>
-<span class="cstat-no" title="statement not covered" >      this.listLoading = true</span>
+<span class="cstat-no" title="statement not covered" >      this.listLoading = true;</span>
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      axios.get('http://localhost:8080/user/getAllUsers')</span></span>
-        .then(response =&gt; this.list = response.data)
+        .then(response =&gt; this.list = response.data);
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      setTimeout(() =&gt; {</span></span>
 <span class="cstat-no" title="statement not covered" >        this.listLoading = false</span>
       }, 1.5 * 10)
     },
 <span class="fstat-no" title="function not covered" >    handleFilter() {</span>
-<span class="cstat-no" title="statement not covered" >      this.listQuery.page = 1</span>
+<span class="cstat-no" title="statement not covered" >      this.listQuery.page = 1;</span>
 <span class="cstat-no" title="statement not covered" >      this.getList()</span>
     },
 <span class="fstat-no" title="function not covered" >    handleModifyStatus(row, status) {</span>
 <span class="cstat-no" title="statement not covered" >      this.$message({</span>
         message: '操作Success',
         type: 'success'
-      })
+      });
 <span class="cstat-no" title="statement not covered" >      row.status = status</span>
     },
 <span class="fstat-no" title="function not covered" >    sortChange(data) {</span>
-<span class="cstat-no" title="statement not covered" >      const { prop, order } = data</span>
+<span class="cstat-no" title="statement not covered" >      const { prop, order } = data;</span>
 <span class="cstat-no" title="statement not covered" >      if (prop === 'id') {</span>
 <span class="cstat-no" title="statement not covered" >        this.sortByID(order)</span>
       }
@@ -1130,23 +1130,23 @@ export default {
       }
     },
 <span class="fstat-no" title="function not covered" >    handleCreate() {</span>
-<span class="cstat-no" title="statement not covered" >      this.resetTemp()</span>
-<span class="cstat-no" title="statement not covered" >      this.dialogStatus = 'create'</span>
-<span class="cstat-no" title="statement not covered" >      this.panelVisible = true</span>
+<span class="cstat-no" title="statement not covered" >      this.resetTemp();</span>
+<span class="cstat-no" title="statement not covered" >      this.dialogStatus = 'create';</span>
+<span class="cstat-no" title="statement not covered" >      this.panelVisible = true;</span>
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      this.$nextTick(() =&gt; {</span></span>
 <span class="cstat-no" title="statement not covered" >        this.$refs['dataForm'].clearValidate()</span>
       })
     },
 <span class="fstat-no" title="function not covered" >    createData() {</span>
-<span class="cstat-no" title="statement not covered" >      const postData = new FormData()</span>
-<span class="cstat-no" title="statement not covered" >      const _this = this</span>
-<span class="cstat-no" title="statement not covered" >      postData.append('userName', this.temp.userName)</span>
-<span class="cstat-no" title="statement not covered" >      postData.append('password', this.temp.password)</span>
-<span class="cstat-no" title="statement not covered" >      postData.append('phoneNumber', this.temp.phoneNumber)</span>
-<span class="cstat-no" title="statement not covered" >      postData.append('credits', this.temp.credits)</span>
-<span class="cstat-no" title="statement not covered" >      postData.append('access', this.temp.access)</span>
-<span class="cstat-no" title="statement not covered" >      postData.append('level', this.temp.level)</span>
-<span class="cstat-no" title="statement not covered" >      postData.append('email', this.temp.email)</span>
+<span class="cstat-no" title="statement not covered" >      const postData = new FormData();</span>
+<span class="cstat-no" title="statement not covered" >      const _this = this;</span>
+<span class="cstat-no" title="statement not covered" >      postData.append('userName', this.temp.userName);</span>
+<span class="cstat-no" title="statement not covered" >      postData.append('password', this.temp.password);</span>
+<span class="cstat-no" title="statement not covered" >      postData.append('phoneNumber', this.temp.phoneNumber);</span>
+<span class="cstat-no" title="statement not covered" >      postData.append('credits', this.temp.credits);</span>
+<span class="cstat-no" title="statement not covered" >      postData.append('access', this.temp.access);</span>
+<span class="cstat-no" title="statement not covered" >      postData.append('level', this.temp.level);</span>
+<span class="cstat-no" title="statement not covered" >      postData.append('email', this.temp.email);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      axios.post(`http://localhost:8080/user/addUser`, postData).then(response =&gt; {</span></span>
 <span class="cstat-no" title="statement not covered" >        if (response.data) {</span>
@@ -1155,30 +1155,30 @@ export default {
           //
         }
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >        axios.get('http://localhost:8080/user/getAllUsers')</span></span>
-          .then(response =&gt; this.list = response.data)
+          .then(response =&gt; this.list = response.data);
 <span class="cstat-no" title="statement not covered" >        _this.panelVisible = false</span>
       })
     },
 <span class="fstat-no" title="function not covered" >    handleUpdate(row) {</span>
-<span class="cstat-no" title="statement not covered" >      this.temp = Object.assign({}, row) // copy obj</span>
-<span class="cstat-no" title="statement not covered" >      this.temp.timestamp = new Date(this.temp.timestamp)</span>
-<span class="cstat-no" title="statement not covered" >      this.dialogStatus = 'update'</span>
-<span class="cstat-no" title="statement not covered" >      this.panelVisible = true</span>
+<span class="cstat-no" title="statement not covered" >      this.temp = Object.assign({}, row); // copy obj</span>
+<span class="cstat-no" title="statement not covered" >      this.temp.timestamp = new Date(this.temp.timestamp);</span>
+<span class="cstat-no" title="statement not covered" >      this.dialogStatus = 'update';</span>
+<span class="cstat-no" title="statement not covered" >      this.panelVisible = true;</span>
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      this.$nextTick(() =&gt; {</span></span>
 <span class="cstat-no" title="statement not covered" >        this.$refs['dataForm'].clearValidate()</span>
       })
     },
 <span class="fstat-no" title="function not covered" >    updateData() {</span>
-<span class="cstat-no" title="statement not covered" >      const postData = new FormData()</span>
-<span class="cstat-no" title="statement not covered" >      const _this = this</span>
-<span class="cstat-no" title="statement not covered" >      postData.append('userId', this.temp.userId)</span>
-<span class="cstat-no" title="statement not covered" >      postData.append('userName', this.temp.userName)</span>
-<span class="cstat-no" title="statement not covered" >      postData.append('password', this.temp.password)</span>
-<span class="cstat-no" title="statement not covered" >      postData.append('phoneNumber', this.temp.phoneNumber)</span>
-<span class="cstat-no" title="statement not covered" >      postData.append('credits', this.temp.credits)</span>
-<span class="cstat-no" title="statement not covered" >      postData.append('access', this.temp.access)</span>
-<span class="cstat-no" title="statement not covered" >      postData.append('level', this.temp.level)</span>
-<span class="cstat-no" title="statement not covered" >      postData.append('email', this.temp.email)</span>
+<span class="cstat-no" title="statement not covered" >      const postData = new FormData();</span>
+<span class="cstat-no" title="statement not covered" >      const _this = this;</span>
+<span class="cstat-no" title="statement not covered" >      postData.append('userId', this.temp.userId);</span>
+<span class="cstat-no" title="statement not covered" >      postData.append('userName', this.temp.userName);</span>
+<span class="cstat-no" title="statement not covered" >      postData.append('password', this.temp.password);</span>
+<span class="cstat-no" title="statement not covered" >      postData.append('phoneNumber', this.temp.phoneNumber);</span>
+<span class="cstat-no" title="statement not covered" >      postData.append('credits', this.temp.credits);</span>
+<span class="cstat-no" title="statement not covered" >      postData.append('access', this.temp.access);</span>
+<span class="cstat-no" title="statement not covered" >      postData.append('level', this.temp.level);</span>
+<span class="cstat-no" title="statement not covered" >      postData.append('email', this.temp.email);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      axios.post(`http://localhost:8080/user/updateUser`, postData).then(response =&gt; {</span></span>
 <span class="cstat-no" title="statement not covered" >        if (response.data) {</span>
@@ -1187,7 +1187,7 @@ export default {
           //
         }
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >        axios.get('http://localhost:8080/user/getAllUsers')</span></span>
-          .then(response =&gt; this.list = response.data)
+          .then(response =&gt; this.list = response.data);
 <span class="cstat-no" title="statement not covered" >        _this.panelVisible = false</span>
       })
 &nbsp;
@@ -1215,16 +1215,16 @@ export default {
         message: 'Delete Successfully',
         type: 'success',
         duration: 2000
-      })
+      });
 <span class="cstat-no" title="statement not covered" >      this.list.splice(index, 1)</span>
     },
 <span class="fstat-no" title="function not covered" >    getSortClass: function(key) {</span>
-<span class="cstat-no" title="statement not covered" >      const sort = this.listQuery.sort</span>
+<span class="cstat-no" title="statement not covered" >      const sort = this.listQuery.sort;</span>
 <span class="cstat-no" title="statement not covered" >      return sort === `+${key}` ? 'ascending' : 'descending'</span>
     },
 <span class="fstat-no" title="function not covered" >    handleFetchPv(pv) {</span>
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      fetchPv(pv).then(response =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >        this.pvData = response.data.pvData</span>
+<span class="cstat-no" title="statement not covered" >        this.pvData = response.data.pvData;</span>
 <span class="cstat-no" title="statement not covered" >        this.dialogPvVisible = true</span>
       })
     }
@@ -1263,7 +1263,7 @@ export default {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu Jul 16 2020 17:42:19 GMT+0800 (China Standard Time)
+                at Fri Jul 17 2020 21:31:36 GMT+0800 (China Standard Time)
             </div>
         </div>
         <script src="..\..\prettify.js"></script>

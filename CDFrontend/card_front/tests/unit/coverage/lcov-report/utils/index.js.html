@@ -784,8 +784,8 @@ export function <span class="fstat-no" title="function not covered" >parseTime(<
 <span class="cstat-no" title="statement not covered" >  if (arguments.length === 0 || !time) {</span>
 <span class="cstat-no" title="statement not covered" >    return null</span>
   }
-  const format = <span class="cstat-no" title="statement not covered" >cFormat || '{y}-{m}-{d} {h}:{i}:{s}'</span>
-  let date
+  const format = <span class="cstat-no" title="statement not covered" >cFormat || '{y}-{m}-{d} {h}:{i}:{s}';</span>
+  let date;
 <span class="cstat-no" title="statement not covered" >  if (typeof time === 'object') {</span>
 <span class="cstat-no" title="statement not covered" >    date = time</span>
   } else {
@@ -813,13 +813,13 @@ export function <span class="fstat-no" title="function not covered" >parseTime(<
     i: date.getMinutes(),
     s: date.getSeconds(),
     a: date.getDay()
-  }
+  };
   const time_str = <span class="cstat-no" title="statement not covered" >format.replace(/{([ymdhisa])+}/g, <span class="fstat-no" title="function not covered" >(r</span>esult, key) =&gt; {</span>
-    const value = <span class="cstat-no" title="statement not covered" >formatObj[key]</span>
+    const value = <span class="cstat-no" title="statement not covered" >formatObj[key];</span>
     // Note: getDay() returns 0 on Sunday
 <span class="cstat-no" title="statement not covered" >    if (key === 'a') { <span class="cstat-no" title="statement not covered" >return ['日', '一', '二', '三', '四', '五', '六'][value ] </span>}</span>
 <span class="cstat-no" title="statement not covered" >    return value.toString().padStart(2, '0')</span>
-  })
+  });
 <span class="cstat-no" title="statement not covered" >  return time_str</span>
 }
 &nbsp;
@@ -834,10 +834,10 @@ export function <span class="fstat-no" title="function not covered" >formatTime(
   } else {
 <span class="cstat-no" title="statement not covered" >    time = +time</span>
   }
-  const d = <span class="cstat-no" title="statement not covered" >new Date(time)</span>
-  const now = <span class="cstat-no" title="statement not covered" >Date.now()</span>
+  const d = <span class="cstat-no" title="statement not covered" >new Date(time);</span>
+  const now = <span class="cstat-no" title="statement not covered" >Date.now();</span>
 &nbsp;
-  const diff = <span class="cstat-no" title="statement not covered" >(now - d) / 1000</span>
+  const diff = <span class="cstat-no" title="statement not covered" >(now - d) / 1000;</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  if (diff &lt; 30) {</span>
 <span class="cstat-no" title="statement not covered" >    return '刚刚'</span>
@@ -871,17 +871,17 @@ export function <span class="fstat-no" title="function not covered" >formatTime(
  * @returns {Object}
  */
 export function <span class="fstat-no" title="function not covered" >getQueryObject(</span>url) {
-<span class="cstat-no" title="statement not covered" >  url = url == null ? window.location.href : url</span>
-  const search = <span class="cstat-no" title="statement not covered" >url.substring(url.lastIndexOf('?') + 1)</span>
-  const obj = <span class="cstat-no" title="statement not covered" >{}</span>
-  const reg = <span class="cstat-no" title="statement not covered" >/([^?&amp;=]+)=([^?&amp;=]*)/g</span>
+<span class="cstat-no" title="statement not covered" >  url = url == null ? window.location.href : url;</span>
+  const search = <span class="cstat-no" title="statement not covered" >url.substring(url.lastIndexOf('?') + 1);</span>
+  const obj = <span class="cstat-no" title="statement not covered" >{};</span>
+  const reg = <span class="cstat-no" title="statement not covered" >/([^?&amp;=]+)=([^?&amp;=]*)/g;</span>
 <span class="cstat-no" title="statement not covered" >  search.replace(reg, <span class="fstat-no" title="function not covered" >(r</span>s, $1, $2) =&gt; {</span>
-    const name = <span class="cstat-no" title="statement not covered" >decodeURIComponent($1)</span>
-    let val = <span class="cstat-no" title="statement not covered" >decodeURIComponent($2)</span>
-<span class="cstat-no" title="statement not covered" >    val = String(val)</span>
-<span class="cstat-no" title="statement not covered" >    obj[name] = val</span>
+    const name = <span class="cstat-no" title="statement not covered" >decodeURIComponent($1);</span>
+    let val = <span class="cstat-no" title="statement not covered" >decodeURIComponent($2);</span>
+<span class="cstat-no" title="statement not covered" >    val = String(val);</span>
+<span class="cstat-no" title="statement not covered" >    obj[name] = val;</span>
 <span class="cstat-no" title="statement not covered" >    return rs</span>
-  })
+  });
 <span class="cstat-no" title="statement not covered" >  return obj</span>
 }
 &nbsp;
@@ -891,11 +891,11 @@ export function <span class="fstat-no" title="function not covered" >getQueryObj
  */
 export function <span class="fstat-no" title="function not covered" >byteLength(</span>str) {
   // returns the byte length of an utf8 string
-  let s = <span class="cstat-no" title="statement not covered" >str.length</span>
+  let s = <span class="cstat-no" title="statement not covered" >str.length;</span>
 <span class="cstat-no" title="statement not covered" >  for (var i = <span class="cstat-no" title="statement not covered" >str.length - 1;</span> i &gt;= 0; i--) {</span>
-    const code = <span class="cstat-no" title="statement not covered" >str.charCodeAt(i)</span>
-<span class="cstat-no" title="statement not covered" >    if (code &gt; 0x7f &amp;&amp; code &lt;= 0x7ff) <span class="cstat-no" title="statement not covered" >s++</span></span>
-    else <span class="cstat-no" title="statement not covered" >if (code &gt; 0x7ff &amp;&amp; code &lt;= 0xffff) <span class="cstat-no" title="statement not covered" >s += 2</span></span>
+    const code = <span class="cstat-no" title="statement not covered" >str.charCodeAt(i);</span>
+<span class="cstat-no" title="statement not covered" >    if (code &gt; 0x7f &amp;&amp; code &lt;= 0x7ff) <span class="cstat-no" title="statement not covered" >s++;</span></span>
+    else <span class="cstat-no" title="statement not covered" >if (code &gt; 0x7ff &amp;&amp; code &lt;= 0xffff) <span class="cstat-no" title="statement not covered" >s += 2;</span></span>
 <span class="cstat-no" title="statement not covered" >    if (code &gt;= 0xDC00 &amp;&amp; code &lt;= 0xDFFF) <span class="cstat-no" title="statement not covered" >i--</span></span>
   }
 <span class="cstat-no" title="statement not covered" >  return s</span>
@@ -906,7 +906,7 @@ export function <span class="fstat-no" title="function not covered" >byteLength(
  * @returns {Array}
  */
 export function <span class="fstat-no" title="function not covered" >cleanArray(</span>actual) {
-  const newArray = <span class="cstat-no" title="statement not covered" >[]</span>
+  const newArray = <span class="cstat-no" title="statement not covered" >[];</span>
 <span class="cstat-no" title="statement not covered" >  for (let i = <span class="cstat-no" title="statement not covered" >0;</span> i &lt; actual.length; i++) {</span>
 <span class="cstat-no" title="statement not covered" >    if (actual[i]) {</span>
 <span class="cstat-no" title="statement not covered" >      newArray.push(actual[i])</span>
@@ -920,10 +920,10 @@ export function <span class="fstat-no" title="function not covered" >cleanArray(
  * @returns {Array}
  */
 export function <span class="fstat-no" title="function not covered" >param(</span>json) {
-<span class="cstat-no" title="statement not covered" >  if (!json) <span class="cstat-no" title="statement not covered" >return ''</span></span>
+<span class="cstat-no" title="statement not covered" >  if (!json) <span class="cstat-no" title="statement not covered" >return '';</span></span>
 <span class="cstat-no" title="statement not covered" >  return cleanArray(</span>
     Object.keys(json).map(<span class="fstat-no" title="function not covered" >ke</span>y =&gt; {
-<span class="cstat-no" title="statement not covered" >      if (json[key] === undefined) <span class="cstat-no" title="statement not covered" >return ''</span></span>
+<span class="cstat-no" title="statement not covered" >      if (json[key] === undefined) <span class="cstat-no" title="statement not covered" >return '';</span></span>
 <span class="cstat-no" title="statement not covered" >      return encodeURIComponent(key) + '=' + encodeURIComponent(json[key])</span>
     })
   ).join('&amp;')
@@ -934,20 +934,20 @@ export function <span class="fstat-no" title="function not covered" >param(</spa
  * @returns {Object}
  */
 export function <span class="fstat-no" title="function not covered" >param2Obj(</span>url) {
-  const search = <span class="cstat-no" title="statement not covered" >decodeURIComponent(url.split('?')[1]).replace(/\+/g, ' ')</span>
+  const search = <span class="cstat-no" title="statement not covered" >decodeURIComponent(url.split('?')[1]).replace(/\+/g, ' ');</span>
 <span class="cstat-no" title="statement not covered" >  if (!search) {</span>
 <span class="cstat-no" title="statement not covered" >    return {}</span>
   }
-  const obj = <span class="cstat-no" title="statement not covered" >{}</span>
-  const searchArr = <span class="cstat-no" title="statement not covered" >search.split('&amp;')</span>
+  const obj = <span class="cstat-no" title="statement not covered" >{};</span>
+  const searchArr = <span class="cstat-no" title="statement not covered" >search.split('&amp;');</span>
 <span class="cstat-no" title="statement not covered" >  searchArr.forEach(<span class="fstat-no" title="function not covered" >v </span>=&gt; {</span>
-    const index = <span class="cstat-no" title="statement not covered" >v.indexOf('=')</span>
+    const index = <span class="cstat-no" title="statement not covered" >v.indexOf('=');</span>
 <span class="cstat-no" title="statement not covered" >    if (index !== -1) {</span>
-      const name = <span class="cstat-no" title="statement not covered" >v.substring(0, index)</span>
-      const val = <span class="cstat-no" title="statement not covered" >v.substring(index + 1, v.length)</span>
+      const name = <span class="cstat-no" title="statement not covered" >v.substring(0, index);</span>
+      const val = <span class="cstat-no" title="statement not covered" >v.substring(index + 1, v.length);</span>
 <span class="cstat-no" title="statement not covered" >      obj[name] = val</span>
     }
-  })
+  });
 <span class="cstat-no" title="statement not covered" >  return obj</span>
 }
 &nbsp;
@@ -956,8 +956,8 @@ export function <span class="fstat-no" title="function not covered" >param2Obj(<
  * @returns {string}
  */
 export function <span class="fstat-no" title="function not covered" >html2Text(</span>val) {
-  const div = <span class="cstat-no" title="statement not covered" >document.createElement('div')</span>
-<span class="cstat-no" title="statement not covered" >  div.innerHTML = val</span>
+  const div = <span class="cstat-no" title="statement not covered" >document.createElement('div');</span>
+<span class="cstat-no" title="statement not covered" >  div.innerHTML = val;</span>
 <span class="cstat-no" title="statement not covered" >  return div.textContent || div.innerText</span>
 }
 &nbsp;
@@ -975,13 +975,13 @@ export function <span class="fstat-no" title="function not covered" >objectMerge
 <span class="cstat-no" title="statement not covered" >    return source.slice()</span>
   }
 <span class="cstat-no" title="statement not covered" >  Object.keys(source).forEach(<span class="fstat-no" title="function not covered" >pr</span>operty =&gt; {</span>
-    const sourceProperty = <span class="cstat-no" title="statement not covered" >source[property]</span>
+    const sourceProperty = <span class="cstat-no" title="statement not covered" >source[property];</span>
 <span class="cstat-no" title="statement not covered" >    if (typeof sourceProperty === 'object') {</span>
 <span class="cstat-no" title="statement not covered" >      target[property] = objectMerge(target[property], sourceProperty)</span>
     } else {
 <span class="cstat-no" title="statement not covered" >      target[property] = sourceProperty</span>
     }
-  })
+  });
 <span class="cstat-no" title="statement not covered" >  return target</span>
 }
 &nbsp;
@@ -993,8 +993,8 @@ export function <span class="fstat-no" title="function not covered" >toggleClass
 <span class="cstat-no" title="statement not covered" >  if (!element || !className) {</span>
 <span class="cstat-no" title="statement not covered" >    return</span>
   }
-  let classString = <span class="cstat-no" title="statement not covered" >element.className</span>
-  const nameIndex = <span class="cstat-no" title="statement not covered" >classString.indexOf(className)</span>
+  let classString = <span class="cstat-no" title="statement not covered" >element.className;</span>
+  const nameIndex = <span class="cstat-no" title="statement not covered" >classString.indexOf(className);</span>
 <span class="cstat-no" title="statement not covered" >  if (nameIndex === -1) {</span>
 <span class="cstat-no" title="statement not covered" >    classString += '' + className</span>
   } else {
@@ -1024,33 +1024,33 @@ export function <span class="fstat-no" title="function not covered" >getTime(</s
  * @return {*}
  */
 export function <span class="fstat-no" title="function not covered" >debounce(</span>func, wait, immediate) {
-  let timeout, args, context, timestamp, result
+  let timeout, args, context, timestamp, result;
 &nbsp;
   const later = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >fu</span>nction() {</span>
     // 据上一次触发时间间隔
-    const last = <span class="cstat-no" title="statement not covered" >+new Date() - timestamp</span>
+    const last = <span class="cstat-no" title="statement not covered" >+new Date() - timestamp;</span>
 &nbsp;
     // 上次被包装函数被调用时间间隔 last 小于设定时间间隔 wait
 <span class="cstat-no" title="statement not covered" >    if (last &lt; wait &amp;&amp; last &gt; 0) {</span>
 <span class="cstat-no" title="statement not covered" >      timeout = setTimeout(later, wait - last)</span>
     } else {
-<span class="cstat-no" title="statement not covered" >      timeout = null</span>
+<span class="cstat-no" title="statement not covered" >      timeout = null;</span>
       // 如果设定为immediate===true，因为开始边界已经调用过了此处无需调用
 <span class="cstat-no" title="statement not covered" >      if (!immediate) {</span>
-<span class="cstat-no" title="statement not covered" >        result = func.apply(context, args)</span>
+<span class="cstat-no" title="statement not covered" >        result = func.apply(context, args);</span>
 <span class="cstat-no" title="statement not covered" >        if (!timeout) <span class="cstat-no" title="statement not covered" >context = args = null</span></span>
       }
     }
-  }
+  };
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  return <span class="fstat-no" title="function not covered" >fu</span>nction(...args) {</span>
-<span class="cstat-no" title="statement not covered" >    context = this</span>
-<span class="cstat-no" title="statement not covered" >    timestamp = +new Date()</span>
-    const callNow = <span class="cstat-no" title="statement not covered" >immediate &amp;&amp; !timeout</span>
+<span class="cstat-no" title="statement not covered" >    context = this;</span>
+<span class="cstat-no" title="statement not covered" >    timestamp = +new Date();</span>
+    const callNow = <span class="cstat-no" title="statement not covered" >immediate &amp;&amp; !timeout;</span>
     // 如果延时不存在，重新设定延时
-<span class="cstat-no" title="statement not covered" >    if (!timeout) <span class="cstat-no" title="statement not covered" >timeout = setTimeout(later, wait)</span></span>
+<span class="cstat-no" title="statement not covered" >    if (!timeout) <span class="cstat-no" title="statement not covered" >timeout = setTimeout(later, wait);</span></span>
 <span class="cstat-no" title="statement not covered" >    if (callNow) {</span>
-<span class="cstat-no" title="statement not covered" >      result = func.apply(context, args)</span>
+<span class="cstat-no" title="statement not covered" >      result = func.apply(context, args);</span>
 <span class="cstat-no" title="statement not covered" >      context = args = null</span>
     }
 &nbsp;
@@ -1069,14 +1069,14 @@ export function <span class="fstat-no" title="function not covered" >deepClone(<
 <span class="cstat-no" title="statement not covered" >  if (!source &amp;&amp; typeof source !== 'object') {</span>
 <span class="cstat-no" title="statement not covered" >    throw new Error('error arguments', 'deepClone')</span>
   }
-  const targetObj = <span class="cstat-no" title="statement not covered" >source.constructor === Array ? [] : {}</span>
+  const targetObj = <span class="cstat-no" title="statement not covered" >source.constructor === Array ? [] : {};</span>
 <span class="cstat-no" title="statement not covered" >  Object.keys(source).forEach(<span class="fstat-no" title="function not covered" >ke</span>ys =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    if (source[keys] &amp;&amp; typeof source[keys] === 'object') {</span>
 <span class="cstat-no" title="statement not covered" >      targetObj[keys] = deepClone(source[keys])</span>
     } else {
 <span class="cstat-no" title="statement not covered" >      targetObj[keys] = source[keys]</span>
     }
-  })
+  });
 <span class="cstat-no" title="statement not covered" >  return targetObj</span>
 }
 &nbsp;
@@ -1092,8 +1092,8 @@ export function <span class="fstat-no" title="function not covered" >uniqueArr(<
  * @returns {string}
  */
 export function <span class="fstat-no" title="function not covered" >createUniqueString(</span>) {
-  const timestamp = <span class="cstat-no" title="statement not covered" >+new Date() + ''</span>
-  const randomNum = <span class="cstat-no" title="statement not covered" >parseInt((1 + Math.random()) * 65536) + ''</span>
+  const timestamp = <span class="cstat-no" title="statement not covered" >+new Date() + '';</span>
+  const randomNum = <span class="cstat-no" title="statement not covered" >parseInt((1 + Math.random()) * 65536) + '';</span>
 <span class="cstat-no" title="statement not covered" >  return (+(randomNum + timestamp)).toString(32)</span>
 }
 &nbsp;
@@ -1123,7 +1123,7 @@ export function <span class="fstat-no" title="function not covered" >addClass(</
  */
 export function <span class="fstat-no" title="function not covered" >removeClass(</span>ele, cls) {
 <span class="cstat-no" title="statement not covered" >  if (hasClass(ele, cls)) {</span>
-    const reg = <span class="cstat-no" title="statement not covered" >new RegExp('(\\s|^)' + cls + '(\\s|$)')</span>
+    const reg = <span class="cstat-no" title="statement not covered" >new RegExp('(\\s|^)' + cls + '(\\s|$)');</span>
 <span class="cstat-no" title="statement not covered" >    ele.className = ele.className.replace(reg, ' ')</span>
   }
 }
@@ -1134,7 +1134,7 @@ export function <span class="fstat-no" title="function not covered" >removeClass
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu Jul 16 2020 17:42:19 GMT+0800 (China Standard Time)
+                at Fri Jul 17 2020 21:31:36 GMT+0800 (China Standard Time)
             </div>
         </div>
         <script src="..\prettify.js"></script>

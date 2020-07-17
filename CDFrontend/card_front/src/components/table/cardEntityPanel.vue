@@ -35,7 +35,7 @@
       </el-table-column>
       <el-table-column label="CardName" width="150px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate()">{{ row.cardName }}</span>
+          <span class="link-type" @click="handleUpdate(row)">{{ row.cardName }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Rarity" min-width="150px">
@@ -93,7 +93,7 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="panelVisible" top="5vh">
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="panelVisible" top="5vh" class="editDialog">
       <el-form ref="dataForm" :rules="rules" :model="temp" style="margin: auto 50px auto 50px; display:grid; grid-template-columns: 50% 50%; grid-column-gap: 10px" class="demo-form-inline">
         <el-form-item label="ID" prop="cardId" v-if="dialogStatus==='update'">
           <el-input v-model="temp.cardId" disabled />
@@ -138,19 +138,20 @@
         </div>
       </el-form>
 
-      <div slot="footer" class="dialog-footer">
+      <div slot="footer" class="dialog-footer outerDialog">
         <el-dialog
           title="Deletion Confirm"
           width="30%"
           :visible.sync="deleteVisible"
           append-to-body
+          class="innerDialog"
         >
           <el-input v-model="confirmPassword" placeholder="Identification" show-password width="60%" />
-          <el-button class="confirmButton" @click="confirmIdentity">Confirm Identity</el-button>
+          <el-button class="confirmInnerButton" @click="confirmIdentity">Confirm Identity</el-button>
 
           <span slot="footer" class="dialog-footer">
             <el-button class="cancelInnerButton" @click="deleteVisible = false">Cancel</el-button>
-            <el-button v-if="confirmDelete === false" type="danger" disabled>Delete</el-button>
+            <el-button class="deleteInnerButton" v-if="confirmDelete === false" type="danger" disabled>Delete</el-button>
             <el-button class="deleteInnerButton" v-else type="danger" @click="deleteData">Delete</el-button>
           </span>
         </el-dialog>
@@ -180,20 +181,9 @@ export default {
   name: 'CardEntityPanel',
   components: { Pagination },
   directives: { waves },
-  // filters: {
-  //   statusFilter(status) {
-  //     const statusMap = {
-  //       published: 'success',
-  //       draft: 'info',
-  //       deleted: 'danger'
-  //     };
-  //     return statusMap[status]
-  //   }
-  // },
   data() {
     return {
       search: '',
-      cardImg: '',
       temp: {
         cardId: undefined,
         cardName: '',
@@ -210,8 +200,23 @@ export default {
       confirmPassword: '',
       confirmDelete: false,
       deleteVisible: false,
-      tableKey: 0,
+      rules: {
+        cardId: [{ required: true, message: 'CardId is required', trigger: 'change' }],
+        cardName: [{ required: true, message: 'CardName is required', trigger: 'change' }],
+        rarity: [{ required: true, message: 'Rarity is required', trigger: 'change' }],
+        healthPoint: [{ required: true, message: 'HealthPoint is required', trigger: 'change' }],
+        attack: [{ required: true, message: 'Attack is required', trigger: 'change' }],
+        defense: [{ required: true, message: 'Defense is required', trigger: 'change' }],
+        attackRange: [{ required: true, message: 'AttackRange is required', trigger: 'change' }],
+        cd: [{ required: true, message: 'Cd is required', trigger: 'change' }],
+        speed: [{ required: true, message: 'Speed is required', trigger: 'change' }]
+      },
       list: null,
+      panelVisible: false,
+      dialogStatus: '',
+
+
+      tableKey: 0,
       listLoading: false,
       listQuery: {
         page: 1,
@@ -222,16 +227,9 @@ export default {
         sort: '+id'
       },
       sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
-      panelVisible: false,
-      dialogStatus: '',
       textMap: {
         update: 'Edit',
         create: 'Create'
-      },
-      rules: {
-        // cardId: [{ required: true, message: 'type is required', trigger: 'change' }],
-        // cardName: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
-        // rarity: [{ required: true, message: 'title is required', trigger: 'blur' }]
       },
       downloadLoading: false
     }
@@ -252,11 +250,11 @@ export default {
       .then(response => {
           _this.list = response.data;
           _this.watchList();
-        })
-        .catch(error =>
-        {
-          this.$message.error('Fetching Data Failed!');
-        });
+      })
+      .catch(error =>
+      {
+        this.$message.error('Fetching Data Failed!');
+      });
     },
     watchList() {
       const list = this.list;
@@ -281,11 +279,11 @@ export default {
           this.$message.error('Identification failed!');
         }
       })
-        .catch(error =>
-          {
-            this.$message.error('Identification failed!');
-          }
-        );
+      .catch(error =>
+        {
+          this.$message.error('Identification failed!');
+        }
+      );
     },
     deleteData() {
       const postData = new FormData();
@@ -300,11 +298,11 @@ export default {
           this.$message.error('Deleting Data failed!');
         }
       })
-        .catch(error =>
-          {
-            this.$message.error('Deleting Data failed!');
-          }
-        );
+      .catch(error =>
+        {
+          this.$message.error('Deleting Data failed!');
+        }
+      );
     },
     resetTemp() {
       this.temp = {
@@ -356,13 +354,13 @@ export default {
           this.$message.error('Creating Data failed!');
         }
       })
-        .catch(error =>
-          {
-            this.$message.error('Creating Data failed!');
-          }
-        );
+      .catch(error =>
+        {
+          this.$message.error('Creating Data failed!');
+        }
+      );
     },
-    handleUpdate() {
+    handleUpdate(row) {
       this.temp = Object.assign({}, row); // copy obj
       this.dialogStatus = 'update';
       this.panelVisible = true;
@@ -395,11 +393,11 @@ export default {
           this.$message.error('Updating Data failed!');
         }
       })
-        .catch(error =>
-          {
-            this.$message.error('Updating Data failed!');
-          }
-        );
+      .catch(error =>
+        {
+          this.$message.error('Updating Data failed!');
+        }
+      );
 
     },
 

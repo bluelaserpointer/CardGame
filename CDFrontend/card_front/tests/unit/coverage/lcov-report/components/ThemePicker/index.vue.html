@@ -416,8 +416,8 @@
 &lt;/template&gt;
 &nbsp;
 &lt;script&gt;
-<span class="cstat-no" title="statement not covered" >const version = require('element-ui/package.json').version // element-ui version from node_modules</span>
-<span class="cstat-no" title="statement not covered" >const ORIGINAL_THEME = '#409EFF' // default color</span>
+<span class="cstat-no" title="statement not covered" >const version = require('element-ui/package.json').version; // element-ui version from node_modules</span>
+<span class="cstat-no" title="statement not covered" >const ORIGINAL_THEME = '#409EFF'; // default color</span>
 &nbsp;
 export default {
 <span class="fstat-no" title="function not covered" >  data() {</span>
@@ -439,11 +439,11 @@ export default {
       immediate: true
     },
 <span class="fstat-no" title="function not covered" >    async theme(val) {</span>
-<span class="cstat-no" title="statement not covered" >      const oldVal = this.chalk ? this.theme : ORIGINAL_THEME</span>
-<span class="cstat-no" title="statement not covered" >      if (typeof val !== 'string') return</span>
-<span class="cstat-no" title="statement not covered" >      const themeCluster = this.getThemeCluster(val.replace('#', ''))</span>
-<span class="cstat-no" title="statement not covered" >      const originalCluster = this.getThemeCluster(oldVal.replace('#', ''))</span>
-<span class="cstat-no" title="statement not covered" >      console.log(themeCluster, originalCluster)</span>
+<span class="cstat-no" title="statement not covered" >      const oldVal = this.chalk ? this.theme : ORIGINAL_THEME;</span>
+<span class="cstat-no" title="statement not covered" >      if (typeof val !== 'string') return;</span>
+<span class="cstat-no" title="statement not covered" >      const themeCluster = this.getThemeCluster(val.replace('#', ''));</span>
+<span class="cstat-no" title="statement not covered" >      const originalCluster = this.getThemeCluster(oldVal.replace('#', ''));</span>
+<span class="cstat-no" title="statement not covered" >      console.log(themeCluster, originalCluster);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      const $message = this.$message({</span>
         message: '  Compiling the theme',
@@ -451,44 +451,44 @@ export default {
         type: 'success',
         duration: 0,
         iconClass: 'el-icon-loading'
-      })
+      });
 &nbsp;
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      const getHandler = (variable, id) =&gt; {</span></span>
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >        return () =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >          const originalCluster = this.getThemeCluster(ORIGINAL_THEME.replace('#', ''))</span>
-<span class="cstat-no" title="statement not covered" >          const newStyle = this.updateStyle(this[variable], originalCluster, themeCluster)</span>
+<span class="cstat-no" title="statement not covered" >          const originalCluster = this.getThemeCluster(ORIGINAL_THEME.replace('#', ''));</span>
+<span class="cstat-no" title="statement not covered" >          const newStyle = this.updateStyle(this[variable], originalCluster, themeCluster);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >          let styleTag = document.getElementById(id)</span>
+<span class="cstat-no" title="statement not covered" >          let styleTag = document.getElementById(id);</span>
 <span class="cstat-no" title="statement not covered" >          if (!styleTag) {</span>
-<span class="cstat-no" title="statement not covered" >            styleTag = document.createElement('style')</span>
-<span class="cstat-no" title="statement not covered" >            styleTag.setAttribute('id', id)</span>
+<span class="cstat-no" title="statement not covered" >            styleTag = document.createElement('style');</span>
+<span class="cstat-no" title="statement not covered" >            styleTag.setAttribute('id', id);</span>
 <span class="cstat-no" title="statement not covered" >            document.head.appendChild(styleTag)</span>
           }
 <span class="cstat-no" title="statement not covered" >          styleTag.innerText = newStyle</span>
         }
-      }
+      };
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      if (!this.chalk) {</span>
-<span class="cstat-no" title="statement not covered" >        const url = `https://unpkg.com/element-ui@${version}/lib/theme-chalk/index.css`</span>
+<span class="cstat-no" title="statement not covered" >        const url = `https://unpkg.com/element-ui@${version}/lib/theme-chalk/index.css`;</span>
 <span class="cstat-no" title="statement not covered" >        await this.getCSSString(url, 'chalk')</span>
       }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      const chalkHandler = getHandler('chalk', 'chalk-style')</span>
+<span class="cstat-no" title="statement not covered" >      const chalkHandler = getHandler('chalk', 'chalk-style');</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      chalkHandler()</span>
+<span class="cstat-no" title="statement not covered" >      chalkHandler();</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      const styles = [].slice.call(document.querySelectorAll('style'))</span></span>
         .filter(style =&gt; {
-<span class="cstat-no" title="statement not covered" >          const text = style.innerText</span>
+<span class="cstat-no" title="statement not covered" >          const text = style.innerText;</span>
 <span class="cstat-no" title="statement not covered" >          return new RegExp(oldVal, 'i').test(text) &amp;&amp; !/Chalk Variables/.test(text)</span>
-        })
+        });
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      styles.forEach(style =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >        const { innerText } = style</span>
-<span class="cstat-no" title="statement not covered" >        if (typeof innerText !== 'string') return</span>
+<span class="cstat-no" title="statement not covered" >        const { innerText } = style;</span>
+<span class="cstat-no" title="statement not covered" >        if (typeof innerText !== 'string') return;</span>
 <span class="cstat-no" title="statement not covered" >        style.innerText = this.updateStyle(innerText, originalCluster, themeCluster)</span>
-      })
+      });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      this.$emit('change', val)</span>
+<span class="cstat-no" title="statement not covered" >      this.$emit('change', val);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      $message.close()</span>
     }
@@ -496,69 +496,69 @@ export default {
 &nbsp;
   methods: {
 <span class="fstat-no" title="function not covered" >    updateStyle(style, oldCluster, newCluster) {</span>
-<span class="cstat-no" title="statement not covered" >      let newStyle = style</span>
+<span class="cstat-no" title="statement not covered" >      let newStyle = style;</span>
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      oldCluster.forEach((color, index) =&gt; {</span></span>
 <span class="cstat-no" title="statement not covered" >        newStyle = newStyle.replace(new RegExp(color, 'ig'), newCluster[index])</span>
-      })
+      });
 <span class="cstat-no" title="statement not covered" >      return newStyle</span>
     },
 &nbsp;
 <span class="fstat-no" title="function not covered" >    getCSSString(url, variable) {</span>
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      return new Promise(resolve =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >        const xhr = new XMLHttpRequest()</span>
+<span class="cstat-no" title="statement not covered" >        const xhr = new XMLHttpRequest();</span>
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >        xhr.onreadystatechange = () =&gt; {</span></span>
 <span class="cstat-no" title="statement not covered" >          if (xhr.readyState === 4 &amp;&amp; xhr.status === 200) {</span>
-<span class="cstat-no" title="statement not covered" >            this[variable] = xhr.responseText.replace(/@font-face{[^}]+}/, '')</span>
+<span class="cstat-no" title="statement not covered" >            this[variable] = xhr.responseText.replace(/@font-face{[^}]+}/, '');</span>
 <span class="cstat-no" title="statement not covered" >            resolve()</span>
           }
-        }
-<span class="cstat-no" title="statement not covered" >        xhr.open('GET', url)</span>
+        };
+<span class="cstat-no" title="statement not covered" >        xhr.open('GET', url);</span>
 <span class="cstat-no" title="statement not covered" >        xhr.send()</span>
       })
     },
 &nbsp;
 <span class="fstat-no" title="function not covered" >    getThemeCluster(theme) {</span>
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      const tintColor = (color, tint) =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >        let red = parseInt(color.slice(0, 2), 16)</span>
-<span class="cstat-no" title="statement not covered" >        let green = parseInt(color.slice(2, 4), 16)</span>
-<span class="cstat-no" title="statement not covered" >        let blue = parseInt(color.slice(4, 6), 16)</span>
+<span class="cstat-no" title="statement not covered" >        let red = parseInt(color.slice(0, 2), 16);</span>
+<span class="cstat-no" title="statement not covered" >        let green = parseInt(color.slice(2, 4), 16);</span>
+<span class="cstat-no" title="statement not covered" >        let blue = parseInt(color.slice(4, 6), 16);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >        if (tint === 0) { // when primary color is in its rgb space</span>
 <span class="cstat-no" title="statement not covered" >          return [red, green, blue].join(',')</span>
         } else {
-<span class="cstat-no" title="statement not covered" >          red += Math.round(tint * (255 - red))</span>
-<span class="cstat-no" title="statement not covered" >          green += Math.round(tint * (255 - green))</span>
-<span class="cstat-no" title="statement not covered" >          blue += Math.round(tint * (255 - blue))</span>
+<span class="cstat-no" title="statement not covered" >          red += Math.round(tint * (255 - red));</span>
+<span class="cstat-no" title="statement not covered" >          green += Math.round(tint * (255 - green));</span>
+<span class="cstat-no" title="statement not covered" >          blue += Math.round(tint * (255 - blue));</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >          red = red.toString(16)</span>
-<span class="cstat-no" title="statement not covered" >          green = green.toString(16)</span>
-<span class="cstat-no" title="statement not covered" >          blue = blue.toString(16)</span>
+<span class="cstat-no" title="statement not covered" >          red = red.toString(16);</span>
+<span class="cstat-no" title="statement not covered" >          green = green.toString(16);</span>
+<span class="cstat-no" title="statement not covered" >          blue = blue.toString(16);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >          return `#${red}${green}${blue}`</span>
         }
-      }
+      };
 &nbsp;
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      const shadeColor = (color, shade) =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >        let red = parseInt(color.slice(0, 2), 16)</span>
-<span class="cstat-no" title="statement not covered" >        let green = parseInt(color.slice(2, 4), 16)</span>
-<span class="cstat-no" title="statement not covered" >        let blue = parseInt(color.slice(4, 6), 16)</span>
+<span class="cstat-no" title="statement not covered" >        let red = parseInt(color.slice(0, 2), 16);</span>
+<span class="cstat-no" title="statement not covered" >        let green = parseInt(color.slice(2, 4), 16);</span>
+<span class="cstat-no" title="statement not covered" >        let blue = parseInt(color.slice(4, 6), 16);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        red = Math.round((1 - shade) * red)</span>
-<span class="cstat-no" title="statement not covered" >        green = Math.round((1 - shade) * green)</span>
-<span class="cstat-no" title="statement not covered" >        blue = Math.round((1 - shade) * blue)</span>
+<span class="cstat-no" title="statement not covered" >        red = Math.round((1 - shade) * red);</span>
+<span class="cstat-no" title="statement not covered" >        green = Math.round((1 - shade) * green);</span>
+<span class="cstat-no" title="statement not covered" >        blue = Math.round((1 - shade) * blue);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        red = red.toString(16)</span>
-<span class="cstat-no" title="statement not covered" >        green = green.toString(16)</span>
-<span class="cstat-no" title="statement not covered" >        blue = blue.toString(16)</span>
+<span class="cstat-no" title="statement not covered" >        red = red.toString(16);</span>
+<span class="cstat-no" title="statement not covered" >        green = green.toString(16);</span>
+<span class="cstat-no" title="statement not covered" >        blue = blue.toString(16);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >        return `#${red}${green}${blue}`</span>
-      }
+      };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      const clusters = [theme]</span>
+<span class="cstat-no" title="statement not covered" >      const clusters = [theme];</span>
 <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" >      for (let i = 0; i &lt;= 9; i++) {</span></span>
 <span class="cstat-no" title="statement not covered" >        clusters.push(tintColor(theme, Number((i / 10).toFixed(2))))</span>
       }
-<span class="cstat-no" title="statement not covered" >      clusters.push(shadeColor(theme, 0.1))</span>
+<span class="cstat-no" title="statement not covered" >      clusters.push(shadeColor(theme, 0.1));</span>
 <span class="cstat-no" title="statement not covered" >      return clusters</span>
     }
   }
@@ -588,7 +588,7 @@ export default {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu Jul 16 2020 17:42:19 GMT+0800 (China Standard Time)
+                at Fri Jul 17 2020 21:31:36 GMT+0800 (China Standard Time)
             </div>
         </div>
         <script src="..\..\prettify.js"></script>

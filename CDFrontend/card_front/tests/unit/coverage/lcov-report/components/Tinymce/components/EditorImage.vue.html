@@ -332,48 +332,48 @@ export default {
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      return Object.keys(this.listObj).every(item =&gt; this.listObj[item].hasSuccess)</span></span>
     },
 <span class="fstat-no" title="function not covered" >    handleSubmit() {</span>
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      const arr = Object.keys(this.listObj).map(v =&gt; this.listObj[v])</span></span>
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      const arr = Object.keys(this.listObj).map(v =&gt; this.listObj[v]);</span></span>
 <span class="cstat-no" title="statement not covered" >      if (!this.checkAllSuccess()) {</span>
-<span class="cstat-no" title="statement not covered" >        this.$message('Please wait for all images to be uploaded successfully. If there is a network problem, please refresh the page and upload again!')</span>
+<span class="cstat-no" title="statement not covered" >        this.$message('Please wait for all images to be uploaded successfully. If there is a network problem, please refresh the page and upload again!');</span>
 <span class="cstat-no" title="statement not covered" >        return</span>
       }
-<span class="cstat-no" title="statement not covered" >      this.$emit('successCBK', arr)</span>
-<span class="cstat-no" title="statement not covered" >      this.listObj = {}</span>
-<span class="cstat-no" title="statement not covered" >      this.fileList = []</span>
+<span class="cstat-no" title="statement not covered" >      this.$emit('successCBK', arr);</span>
+<span class="cstat-no" title="statement not covered" >      this.listObj = {};</span>
+<span class="cstat-no" title="statement not covered" >      this.fileList = [];</span>
 <span class="cstat-no" title="statement not covered" >      this.dialogVisible = false</span>
     },
 <span class="fstat-no" title="function not covered" >    handleSuccess(response, file) {</span>
-<span class="cstat-no" title="statement not covered" >      const uid = file.uid</span>
-<span class="cstat-no" title="statement not covered" >      const objKeyArr = Object.keys(this.listObj)</span>
+<span class="cstat-no" title="statement not covered" >      const uid = file.uid;</span>
+<span class="cstat-no" title="statement not covered" >      const objKeyArr = Object.keys(this.listObj);</span>
 <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" >      for (let i = 0, len = objKeyArr.length; i &lt; len; i++) {</span></span>
 <span class="cstat-no" title="statement not covered" >        if (this.listObj[objKeyArr[i]].uid === uid) {</span>
-<span class="cstat-no" title="statement not covered" >          this.listObj[objKeyArr[i]].url = response.files.file</span>
-<span class="cstat-no" title="statement not covered" >          this.listObj[objKeyArr[i]].hasSuccess = true</span>
+<span class="cstat-no" title="statement not covered" >          this.listObj[objKeyArr[i]].url = response.files.file;</span>
+<span class="cstat-no" title="statement not covered" >          this.listObj[objKeyArr[i]].hasSuccess = true;</span>
 <span class="cstat-no" title="statement not covered" >          return</span>
         }
       }
     },
 <span class="fstat-no" title="function not covered" >    handleRemove(file) {</span>
-<span class="cstat-no" title="statement not covered" >      const uid = file.uid</span>
-<span class="cstat-no" title="statement not covered" >      const objKeyArr = Object.keys(this.listObj)</span>
+<span class="cstat-no" title="statement not covered" >      const uid = file.uid;</span>
+<span class="cstat-no" title="statement not covered" >      const objKeyArr = Object.keys(this.listObj);</span>
 <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" >      for (let i = 0, len = objKeyArr.length; i &lt; len; i++) {</span></span>
 <span class="cstat-no" title="statement not covered" >        if (this.listObj[objKeyArr[i]].uid === uid) {</span>
-<span class="cstat-no" title="statement not covered" >          delete this.listObj[objKeyArr[i]]</span>
+<span class="cstat-no" title="statement not covered" >          delete this.listObj[objKeyArr[i]];</span>
 <span class="cstat-no" title="statement not covered" >          return</span>
         }
       }
     },
 <span class="fstat-no" title="function not covered" >    beforeUpload(file) {</span>
-<span class="cstat-no" title="statement not covered" >      const _self = this</span>
-<span class="cstat-no" title="statement not covered" >      const _URL = window.URL || window.webkitURL</span>
-<span class="cstat-no" title="statement not covered" >      const fileName = file.uid</span>
-<span class="cstat-no" title="statement not covered" >      this.listObj[fileName] = {}</span>
+<span class="cstat-no" title="statement not covered" >      const _self = this;</span>
+<span class="cstat-no" title="statement not covered" >      const _URL = window.URL || window.webkitURL;</span>
+<span class="cstat-no" title="statement not covered" >      const fileName = file.uid;</span>
+<span class="cstat-no" title="statement not covered" >      this.listObj[fileName] = {};</span>
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      return new Promise((resolve, reject) =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >        const img = new Image()</span>
-<span class="cstat-no" title="statement not covered" >        img.src = _URL.createObjectURL(file)</span>
+<span class="cstat-no" title="statement not covered" >        const img = new Image();</span>
+<span class="cstat-no" title="statement not covered" >        img.src = _URL.createObjectURL(file);</span>
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >        img.onload = function() {</span></span>
 <span class="cstat-no" title="statement not covered" >          _self.listObj[fileName] = { hasSuccess: false, uid: file.uid, width: this.width, height: this.height }</span>
-        }
+        };
 <span class="cstat-no" title="statement not covered" >        resolve(true)</span>
       })
     }
@@ -396,7 +396,7 @@ export default {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu Jul 16 2020 17:42:19 GMT+0800 (China Standard Time)
+                at Fri Jul 17 2020 21:31:36 GMT+0800 (China Standard Time)
             </div>
         </div>
         <script src="..\..\..\prettify.js"></script>

@@ -21,6 +21,8 @@ service.interceptors.request.use(
       // please modify it according to the actual situation
       config.headers['X-Token'] = getToken()
     }
+    console.log("Before sending request");
+    console.log(config);
     return config
   },
   error => {

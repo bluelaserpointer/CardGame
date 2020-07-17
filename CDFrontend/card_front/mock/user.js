@@ -33,7 +33,9 @@ module.exports = [
     response: config => {
       console.log("In mock login");
       const { username } = config.body;
-      // let role = localStorage.getItem('AdminRole');
+      // localStorage.setItem('TestingStorage', 'testToken');
+      // console.log("--------------------------");
+      // console.log(localStorage.getItem('TestingStorage'));
       // let token = 'admin-token';
       // switch(role){
       //   case 1:
@@ -48,7 +50,6 @@ module.exports = [
       const token = tokens[username];
 
       // TODO: GET ROLE HERE
-      console.log("GETTING USER ROLE/TOKEN");
       // mock error
       if (!token) {
         return {

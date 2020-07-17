@@ -45,7 +45,7 @@
 
     </el-table>
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="panelVisible" top="5vh">
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="panelVisible" top="5vh" class="editDialog">
       <el-form ref="dataForm" :rules="rules" :model="temp" style="margin: auto 50px auto 50px; display:grid; grid-template-columns: 50% 50%; grid-column-gap: 10px" class="demo-form-inline">
         <el-form-item label="ID" prop="ownItemId" v-if="dialogStatus==='update' ">
           <el-input v-model="temp.ownItemId" disabled/>
@@ -64,30 +64,31 @@
         </el-form-item>
       </el-form>
 
-      <div slot="footer" class="dialog-footer">
+      <div slot="footer" class="dialog-footer outerDialog">
         <el-dialog
           title="Deletion Confirm"
           width="30%"
           :visible.sync="deleteVisible"
           append-to-body
+          class="innerDialog"
         >
           <el-input v-model="confirmPassword" placeholder="Identification" show-password width="60%" />
-          <el-button @click="confirmIdentity">Confirm Identity</el-button>
+          <el-button class="confirmInnerButton" @click="confirmIdentity">Confirm Identity</el-button>
 
           <span slot="footer" class="dialog-footer">
-            <el-button @click="deleteVisible = false">Cancel</el-button>
-            <el-button v-if="confirmDelete === false" type="danger" disabled>Delete</el-button>
-            <el-button v-else type="danger" @click="deleteData">Delete</el-button>
+            <el-button class="cancelInnerButton" @click="deleteVisible = false">Cancel</el-button>
+            <el-button class="deleteInnerButton" v-if="confirmDelete === false" type="danger" disabled>Delete</el-button>
+            <el-button class="deleteInnerButton" v-else type="danger" @click="deleteData">Delete</el-button>
           </span>
         </el-dialog>
 
-        <el-button type="danger" @click="deleteVisible = true">
+        <el-button class="deleteOuterButton" type="danger" @click="deleteVisible = true">
           Delete
         </el-button>
-        <el-button @click="panelVisible = false">
+        <el-button class="cancelOuterButton" @click="panelVisible = false">
           Cancel
         </el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
+        <el-button class="confirmOuterButton" type="primary" @click="dialogStatus==='create'?createData():updateData()">
           Confirm
         </el-button>
       </div>
@@ -98,7 +99,6 @@
 
 <script>
 import waves from '@/directive/waves' // waves directive
-import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination/index'
 import axios from 'axios'
 import moment from "moment"; // secondary package based on el-pagination
@@ -130,8 +130,19 @@ export default {
       confirmPassword: '',
       confirmDelete: false,
       deleteVisible: false,
-      tableKey: 0,
       list: null,
+      panelVisible: false,
+      dialogStatus: '',
+      rules: {
+        ownItemId: [{ required: true, message: 'OwnItemId is required', trigger: 'change' }],
+        userId: [{ required: true, message: 'UserId is required', trigger: 'change' }],
+        itemId: [{ required: true, message: 'ItemId is required', trigger: 'change' }],
+        itemCount: [{ required: true, message: 'ItemCount is required', trigger: 'change' }],
+        accquireDate: [{ required: true, message: 'AccquireDate is required', trigger: 'change' }],
+      },
+
+
+      tableKey: 0,
       listLoading: false,
       listQuery: {
         page: 1,
@@ -142,28 +153,12 @@ export default {
         sort: '+id'
       },
       sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
-      panelVisible: false,
-      dialogStatus: '',
       textMap: {
         update: 'Edit',
         create: 'Create'
       },
       dialogPvVisible: false,
       pvData: [],
-      rules: {
-        ownItemId: [{ required: true, message: 'OwnItemId is required', trigger: 'change' }],
-        userId: [{ required: true, message: 'UserId is required', trigger: 'change' }],
-        itemId: [{ required: true, message: 'ItemId is required', trigger: 'change' }],
-        itemCount: [{ required: true, message: 'ItemCount is required', trigger: 'change' }],
-        accquireDate: [{ required: true, message: 'AccquireDate is required', trigger: 'change' }],
-        // timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
-        // title: [{ required: true, message: 'title is required', trigger: 'blur' }]
-        ownItemId: undefined,
-        userId: undefined,
-        itemId: undefined,
-        itemCount: undefined,
-        accquireDate: undefined
-      },
       downloadLoading: false
     }
   },
@@ -263,11 +258,11 @@ export default {
           this.$message.error('Updating Data failed!');
         }
       })
-        .catch(error =>
-          {
-            this.$message.error('Updating Data failed!');
-          }
-        );
+      .catch(error =>
+        {
+          this.$message.error('Updating Data failed!');
+        }
+      );
     },
     confirmIdentity() {
       let postData = new FormData();
@@ -281,11 +276,11 @@ export default {
           this.$message.error('Identification failed!');
         }
       })
-        .catch(error =>
-          {
-            this.$message.error('Identification failed!');
-          }
-        );
+      .catch(error =>
+        {
+          this.$message.error('Identification failed!');
+        }
+      );
     },
     deleteData() {
       let postData = new FormData();
@@ -301,11 +296,11 @@ export default {
           this.$message.error('Deleting Data failed!');
         }
       })
-        .catch(error =>
-          {
-            this.$message.error('Deleting Data failed!');
-          }
-        );
+      .catch(error =>
+        {
+          this.$message.error('Deleting Data failed!');
+        }
+      );
     },
 
     handleFilter() {
