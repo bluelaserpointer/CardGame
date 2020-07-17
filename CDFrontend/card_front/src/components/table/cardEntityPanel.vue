@@ -95,8 +95,8 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="panelVisible" top="5vh">
       <el-form ref="dataForm" :rules="rules" :model="temp" style="margin: auto 50px auto 50px; display:grid; grid-template-columns: 50% 50%; grid-column-gap: 10px" class="demo-form-inline">
-        <el-form-item v-if="dialogStatus!=='create'" label="ID" prop="cardId">
-          <el-input v-model="temp.cardId" />
+        <el-form-item label="ID" prop="cardId" v-if="dialogStatus==='update'">
+          <el-input v-model="temp.cardId" disabled />
         </el-form-item>
         <el-form-item label="CardName" prop="cardName">
           <el-input v-model="temp.cardName" />
@@ -212,7 +212,7 @@ export default {
       deleteVisible: false,
       tableKey: 0,
       list: null,
-      listLoading: true,
+      listLoading: false,
       listQuery: {
         page: 1,
         limit: 20,
@@ -248,14 +248,15 @@ export default {
   methods: {
     getList() {
       let _this = this;
-      // _this.listLoading = true;
       axios.get('http://localhost:8080/card/getAllCards')
       .then(response => {
           _this.list = response.data;
           _this.watchList();
-          // _this.listLoading = false
         })
-        .catch(error => console.log(error));
+        .catch(error =>
+        {
+          this.$message.error('Fetching Data Failed!');
+        });
     },
     watchList() {
       const list = this.list;
@@ -277,10 +278,14 @@ export default {
         if (response.data) {
           _this.confirmDelete = true
         } else {
-          this.$message.error('Identification failed!')
+          this.$message.error('Identification failed!');
         }
       })
-      .catch(error => console.log(error));
+        .catch(error =>
+          {
+            this.$message.error('Identification failed!');
+          }
+        );
     },
     deleteData() {
       const postData = new FormData();
@@ -292,10 +297,14 @@ export default {
           _this.deleteVisible = false;
           _this.getList()
         } else {
-          this.$message.error('Identification failed!')
+          this.$message.error('Deleting Data failed!');
         }
       })
-      .catch(error => console.log(error));
+        .catch(error =>
+          {
+            this.$message.error('Deleting Data failed!');
+          }
+        );
     },
     resetTemp() {
       this.temp = {
@@ -343,11 +352,18 @@ export default {
           _this.getList();
           _this.panelVisible = false;
           _this.resetTemp();
+        }else {
+          this.$message.error('Creating Data failed!');
         }
       })
-      .catch(error => console.log(error));
+        .catch(error =>
+          {
+            this.$message.error('Creating Data failed!');
+          }
+        );
     },
     handleUpdate() {
+      this.temp = Object.assign({}, row); // copy obj
       this.dialogStatus = 'update';
       this.panelVisible = true;
       this.$nextTick(() => {
@@ -371,11 +387,19 @@ export default {
       postData.append('shortDescription', this.temp.shortDescription);
 
       axios.post(`http://localhost:8080/card/updateCard`, postData).then(response => {
+        if(response.data) {
           _this.getList();
           _this.panelVisible = false;
           _this.resetTemp();
+        }else {
+          this.$message.error('Updating Data failed!');
+        }
       })
-      .catch(error => console.log(error));
+        .catch(error =>
+          {
+            this.$message.error('Updating Data failed!');
+          }
+        );
 
     },
 

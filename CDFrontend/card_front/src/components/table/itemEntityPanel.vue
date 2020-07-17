@@ -66,8 +66,8 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="panelVisible" top="5vh">
       <el-form ref="dataForm" :rules="rules" :model="temp" style="margin: auto 50px auto 50px; display:grid; grid-template-columns: 50% 50%; grid-column-gap: 10px" class="demo-form-inline">
-        <el-form-item v-if="dialogStatus!=='create'" label="ID" prop="itemId">
-          <el-input v-model="temp.itemId" />
+        <el-form-item label="ID" prop="itemId"v-if="dialogStatus==='update'">
+          <el-input v-model="temp.itemId" disabled/>
         </el-form-item>
         <el-form-item label="ItemName" prop="itemName">
           <el-input v-model="temp.itemName" />
@@ -163,7 +163,7 @@ export default {
       tableKey: 0,
       list: null,
       total: 0,
-      listLoading: true,
+      listLoading: false,
       listQuery: {
         page: 1,
         limit: 20,
@@ -228,9 +228,14 @@ export default {
         if (response.data) {
           _this.confirmDelete = true
         } else {
-          this.$message.error('Identification failed!')
+          this.$message.error('Identification failed!');
         }
       })
+        .catch(error =>
+          {
+            this.$message.error('Identification failed!');
+          }
+        );
     },
     deleteData() {
       const postData = new FormData();
@@ -242,9 +247,14 @@ export default {
           _this.deleteVisible = false;
           _this.getList()
         } else {
-          this.$message.error('Identification failed!')
+          this.$message.error('Deleting Data failed!');
         }
       })
+        .catch(error =>
+          {
+            this.$message.error('Deleting Data failed!');
+          }
+        );
     },
     uploadCover() {
       const _this = this;
@@ -265,6 +275,10 @@ export default {
         .then(response => {
           this.list = response.data;
           this.watchList()
+        })
+        .catch(error =>
+        {
+          this.$message.error('Fetching Data Failed!');
         });
     },
     handleFilter() {
@@ -311,7 +325,6 @@ export default {
     },
     createData() {
       const postData = new FormData();
-      const _this = this;
       postData.append('itemName', this.temp.itemName);
       postData.append('price', this.temp.price);
       postData.append('itemImg', this.temp.itemImg);
@@ -321,15 +334,19 @@ export default {
         if (response.data) {
           // TODO: SHORTEN THE REQUESTS
           this.getList();
-          _this.panelVisible = false
+          this.panelVisible = false;
         } else {
-          //
+          this.$message.error('Creating Data failed!');
         }
       })
+        .catch(error =>
+          {
+            this.$message.error('Creating Data failed!');
+          }
+        );
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row); // copy obj
-      // this.temp.timestamp = new Date(this.temp.timestamp)
       this.dialogStatus = 'update';
       this.panelVisible = true;
       this.$nextTick(() => {
@@ -351,9 +368,14 @@ export default {
           this.getList();
           _this.panelVisible = false
         } else {
-          //
+          this.$message.error('Updating Data failed!');
         }
       })
+        .catch(error =>
+          {
+            this.$message.error('Updating Data failed!');
+          }
+        );
     },
     getSortClass: function(key) {
       const sort = this.listQuery.sort;

@@ -84,7 +84,7 @@ export default {
       deleteVisible: false,
       tableKey: 0,
       list: null,
-      listLoading: true,
+      listLoading: false,
       listQuery: {
         page: 1,
         limit: 20,

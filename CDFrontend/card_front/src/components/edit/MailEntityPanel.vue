@@ -79,7 +79,7 @@ export default {
       deleteVisible: false,
       tableKey: 0,
       list: null,
-      listLoading: true,
+      listLoading: false,
       listQuery: {
         page: 1,
         limit: 20,
@@ -197,7 +197,6 @@ export default {
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row); // copy obj
-      // this.temp.timestamp = new Date(this.temp.timestamp)
       this.dialogStatus = 'update';
       this.panelVisible = true;
       this.$nextTick(() => {
