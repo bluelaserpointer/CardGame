@@ -1023,7 +1023,7 @@ export default {
         published: 'success',
         draft: 'info',
         deleted: 'danger'
-      }
+      };
 <span class="cstat-no" title="statement not covered" >      return statusMap[status]</span>
     }
   },
@@ -1033,8 +1033,8 @@ export default {
       cardList: null,
       chapterList: null,
       posMap: new Map(),
-      posList: new Array(),
-      prevList: new Array(),
+      posList: [],
+      prevList: [],
       currChapter: undefined,
       currPhase: undefined,
       prevChapter: undefined,
@@ -1045,7 +1045,7 @@ export default {
       placedCard: false,
       tableKey: 0,
       total: 0,
-      listLoading: true,
+      listLoading: false,
       listQuery: {
         page: 1,
         limit: 20,
@@ -1076,7 +1076,7 @@ export default {
   },
   watch: {
 <span class="fstat-no" title="function not covered" >    currPhase(val) {</span>
-<span class="cstat-no" title="statement not covered" >      this.prevPhase = val</span>
+<span class="cstat-no" title="statement not covered" >      this.prevPhase = val;</span>
 <span class="cstat-no" title="statement not covered" >      this.handleRefreshPhase(val)</span>
       // this.prevList = this.posList;
     },
@@ -1090,24 +1090,24 @@ export default {
   },
   methods: {
 <span class="fstat-no" title="function not covered" >    watchList() {</span>
-<span class="cstat-no" title="statement not covered" >      const list = this.cardList</span>
+<span class="cstat-no" title="statement not covered" >      const list = this.cardList;</span>
 <span class="cstat-no" title="statement not covered" >      for (const i in list) {</span>
-<span class="cstat-no" title="statement not covered" >        const details = list[i].cardDetails</span>
-<span class="cstat-no" title="statement not covered" >        list[i].cardImg = details.cardImg</span>
-<span class="cstat-no" title="statement not covered" >        list[i].cardDescription = details.cardDescription</span>
+<span class="cstat-no" title="statement not covered" >        const details = list[i].cardDetails;</span>
+<span class="cstat-no" title="statement not covered" >        list[i].cardImg = details.cardImg;</span>
+<span class="cstat-no" title="statement not covered" >        list[i].cardDescription = details.cardDescription;</span>
 <span class="cstat-no" title="statement not covered" >        list[i].shortDescription = details.shortDescription</span>
       }
-<span class="cstat-no" title="statement not covered" >      console.log(list)</span>
+<span class="cstat-no" title="statement not covered" >      console.log(list);</span>
 <span class="cstat-no" title="statement not covered" >      this.cardList = list</span>
     },
 <span class="fstat-no" title="function not covered" >    handleRefreshPhase(val) {</span>
-<span class="cstat-no" title="statement not covered" >      this.confirmed = true</span>
-<span class="cstat-no" title="statement not covered" >      this.placedCard = false</span>
-<span class="cstat-no" title="statement not covered" >      this.posList = new Array()</span>
-<span class="cstat-no" title="statement not covered" >      const chapterData = this.chapterData</span>
+<span class="cstat-no" title="statement not covered" >      this.confirmed = true;</span>
+<span class="cstat-no" title="statement not covered" >      this.placedCard = false;</span>
+<span class="cstat-no" title="statement not covered" >      this.posList = [];</span>
+<span class="cstat-no" title="statement not covered" >      const chapterData = this.chapterData;</span>
 <span class="cstat-no" title="statement not covered" >      for (const i in chapterData) {</span>
 <span class="cstat-no" title="statement not covered" >        if (chapterData[i].phaseId === val) {</span>
-<span class="cstat-no" title="statement not covered" >          this.posList.push(chapterData[i].positionId)</span>
+<span class="cstat-no" title="statement not covered" >          this.posList.push(chapterData[i].positionId);</span>
 <span class="cstat-no" title="statement not covered" >          this.posMap.set(chapterData[i].positionId, chapterData[i].cardId)</span>
         }
       }
@@ -1116,12 +1116,12 @@ export default {
       // TODO: Popup
       // TODO: Send Request
       // TODO: Clear all the necessary attributes &amp; Able to select another phase/chapter without asking
-<span class="cstat-no" title="statement not covered" >      const chapterPhaseData = Array.from(this.posMap)</span>
-<span class="cstat-no" title="statement not covered" >      const postData = new FormData()</span>
-<span class="cstat-no" title="statement not covered" >      const _this = this</span>
-<span class="cstat-no" title="statement not covered" >      postData.append('chapterId', this.currChapter)</span>
-<span class="cstat-no" title="statement not covered" >      postData.append('phaseId', this.currPhase)</span>
-<span class="cstat-no" title="statement not covered" >      postData.append('phaseData', JSON.stringify(chapterPhaseData))</span>
+<span class="cstat-no" title="statement not covered" >      const chapterPhaseData = Array.from(this.posMap);</span>
+<span class="cstat-no" title="statement not covered" >      const postData = new FormData();</span>
+<span class="cstat-no" title="statement not covered" >      const _this = this;</span>
+<span class="cstat-no" title="statement not covered" >      postData.append('chapterId', this.currChapter);</span>
+<span class="cstat-no" title="statement not covered" >      postData.append('phaseId', this.currPhase);</span>
+<span class="cstat-no" title="statement not covered" >      postData.append('phaseData', JSON.stringify(chapterPhaseData));</span>
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      axios.post(`http://localhost:8080/chapter/updateChapter`, postData).then(response =&gt; {</span></span>
 <span class="cstat-no" title="statement not covered" >        if (response.data) {</span>
 <span class="cstat-no" title="statement not covered" >          _this.chapterData = response.data</span>
@@ -1134,15 +1134,15 @@ export default {
       // TODO: GET PHASE
     },
 <span class="fstat-no" title="function not covered" >    handleChangeChapter() {</span>
-<span class="cstat-no" title="statement not covered" >      this.handleChange()</span>
+<span class="cstat-no" title="statement not covered" >      this.handleChange();</span>
 &nbsp;
       // TODO: GET CHAPTER
-<span class="cstat-no" title="statement not covered" >      const postData = new FormData()</span>
-<span class="cstat-no" title="statement not covered" >      const _this = this</span>
-<span class="cstat-no" title="statement not covered" >      postData.append('chapterId', this.currChapter)</span>
+<span class="cstat-no" title="statement not covered" >      const postData = new FormData();</span>
+<span class="cstat-no" title="statement not covered" >      const _this = this;</span>
+<span class="cstat-no" title="statement not covered" >      postData.append('chapterId', this.currChapter);</span>
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      axios.post('http://localhost:8080/chapter/getChapterDetailsByChapter', postData).then(response =&gt; {</span></span>
 <span class="cstat-no" title="statement not covered" >        if (response.data) {</span>
-<span class="cstat-no" title="statement not covered" >          _this.chapterData = response.data</span>
+<span class="cstat-no" title="statement not covered" >          _this.chapterData = response.data;</span>
 <span class="cstat-no" title="statement not covered" >          _this.handleRefreshPhase(1)</span>
         }
       })
@@ -1157,71 +1157,71 @@ export default {
           type: 'success'
         })
       } else {
-<span class="cstat-no" title="statement not covered" >        this.currPhase = this.prevPhase</span>
-<span class="cstat-no" title="statement not covered" >        this.currChapter = this.prevChapter</span>
-<span class="cstat-no" title="statement not covered" >        this.$message.error('Choices not yet confirmed!')</span>
+<span class="cstat-no" title="statement not covered" >        this.currPhase = this.prevPhase;</span>
+<span class="cstat-no" title="statement not covered" >        this.currChapter = this.prevChapter;</span>
+<span class="cstat-no" title="statement not covered" >        this.$message.error('Choices not yet confirmed!');</span>
 <span class="cstat-no" title="statement not covered" >        return</span>
       }
 <span class="cstat-no" title="statement not covered" >      if (this.currPhase !== undefined &amp;&amp; this.posList.length &gt; 0) { this.confirmed = false }</span>
     },
 <span class="fstat-no" title="function not covered" >    placeCard(pos) {</span>
 <span class="cstat-no" title="statement not covered" >      if (this.currChapter === undefined || this.currPhase === undefined || this.currCard === undefined) {</span>
-<span class="cstat-no" title="statement not covered" >        this.$message.error('Choices unspecified!')</span>
+<span class="cstat-no" title="statement not covered" >        this.$message.error('Choices unspecified!');</span>
 <span class="cstat-no" title="statement not covered" >        return</span>
       }
-<span class="cstat-no" title="statement not covered" >      this.confirmed = false</span>
-<span class="cstat-no" title="statement not covered" >      this.placedCard = true</span>
-<span class="cstat-no" title="statement not covered" >      const currCard = parseInt(this.currCard)</span>
-<span class="cstat-no" title="statement not covered" >      const index = this.posList.indexOf(pos)</span>
+<span class="cstat-no" title="statement not covered" >      this.confirmed = false;</span>
+<span class="cstat-no" title="statement not covered" >      this.placedCard = true;</span>
+<span class="cstat-no" title="statement not covered" >      const currCard = parseInt(this.currCard);</span>
+<span class="cstat-no" title="statement not covered" >      const index = this.posList.indexOf(pos);</span>
 <span class="cstat-no" title="statement not covered" >      if (this.posList.indexOf(pos) &gt;= 0) {</span>
-<span class="cstat-no" title="statement not covered" >        this.posMap.delete(pos)</span>
+<span class="cstat-no" title="statement not covered" >        this.posMap.delete(pos);</span>
 <span class="cstat-no" title="statement not covered" >        this.posList.splice(index, 1)</span>
       } else {
-<span class="cstat-no" title="statement not covered" >        this.posMap.set(pos, currCard)</span>
+<span class="cstat-no" title="statement not covered" >        this.posMap.set(pos, currCard);</span>
 <span class="cstat-no" title="statement not covered" >        this.posList.push(pos)</span>
       }
     },
 <span class="fstat-no" title="function not covered" >    uploadCover() {</span>
-<span class="cstat-no" title="statement not covered" >      const _this = this</span>
+<span class="cstat-no" title="statement not covered" >      const _this = this;</span>
       // 根据ref得到图片文件
-<span class="cstat-no" title="statement not covered" >      var file = this.$refs.img</span>
+<span class="cstat-no" title="statement not covered" >      var file = this.$refs.img;</span>
       // 使用h5的读取文件api
-<span class="cstat-no" title="statement not covered" >      var reader = new FileReader()</span>
-<span class="cstat-no" title="statement not covered" >      reader.readAsDataURL(file.files[0])</span>
+<span class="cstat-no" title="statement not covered" >      var reader = new FileReader();</span>
+<span class="cstat-no" title="statement not covered" >      reader.readAsDataURL(file.files[0]);</span>
       // 读取完成后触发
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      reader.onload = function() {</span></span>
         // 改变img的路径
-<span class="cstat-no" title="statement not covered" >        _this.temp.cardImg = this.result</span>
+<span class="cstat-no" title="statement not covered" >        _this.temp.cardImg = this.result;</span>
 <span class="cstat-no" title="statement not covered" >        console.log('In onload')</span>
       }
     },
 <span class="fstat-no" title="function not covered" >    getList() {</span>
-<span class="cstat-no" title="statement not covered" >      this.listLoading = true</span>
+<span class="cstat-no" title="statement not covered" >      this.listLoading = true;</span>
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      axios.get('http://localhost:8080/chapter/getAllChapters').then(response =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >        this.chapterList = response.data</span>
+<span class="cstat-no" title="statement not covered" >        this.chapterList = response.data;</span>
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >        axios.get('http://localhost:8080/card/getAllCards')</span></span>
           .then(res =&gt; {
-<span class="cstat-no" title="statement not covered" >            this.cardList = res.data</span>
+<span class="cstat-no" title="statement not covered" >            this.cardList = res.data;</span>
 <span class="cstat-no" title="statement not covered" >            this.watchList()</span>
           })
-      })
+      });
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      setTimeout(() =&gt; {</span></span>
 <span class="cstat-no" title="statement not covered" >        this.listLoading = false</span>
       }, 1.5 * 10)
     },
 <span class="fstat-no" title="function not covered" >    handleFilter() {</span>
-<span class="cstat-no" title="statement not covered" >      this.listQuery.page = 1</span>
+<span class="cstat-no" title="statement not covered" >      this.listQuery.page = 1;</span>
 <span class="cstat-no" title="statement not covered" >      this.getList()</span>
     },
 <span class="fstat-no" title="function not covered" >    handleModifyStatus(row, status) {</span>
 <span class="cstat-no" title="statement not covered" >      this.$message({</span>
         message: '操作Success',
         type: 'success'
-      })
+      });
 <span class="cstat-no" title="statement not covered" >      row.status = status</span>
     },
 <span class="fstat-no" title="function not covered" >    sortChange(data) {</span>
-<span class="cstat-no" title="statement not covered" >      const { prop, order } = data</span>
+<span class="cstat-no" title="statement not covered" >      const { prop, order } = data;</span>
 <span class="cstat-no" title="statement not covered" >      if (prop === 'id') {</span>
 <span class="cstat-no" title="statement not covered" >        this.sortByID(order)</span>
       }
@@ -1300,16 +1300,16 @@ export default {
         message: 'Delete Successfully',
         type: 'success',
         duration: 2000
-      })
+      });
 <span class="cstat-no" title="statement not covered" >      this.cardList.splice(index, 1)</span>
     },
 <span class="fstat-no" title="function not covered" >    getSortClass: function(key) {</span>
-<span class="cstat-no" title="statement not covered" >      const sort = this.listQuery.sort</span>
+<span class="cstat-no" title="statement not covered" >      const sort = this.listQuery.sort;</span>
 <span class="cstat-no" title="statement not covered" >      return sort === `+${key}` ? 'ascending' : 'descending'</span>
     },
 <span class="fstat-no" title="function not covered" >    handleFetchPv(pv) {</span>
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      fetchPv(pv).then(response =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >        this.pvData = response.data.pvData</span>
+<span class="cstat-no" title="statement not covered" >        this.pvData = response.data.pvData;</span>
 <span class="cstat-no" title="statement not covered" >        this.dialogPvVisible = true</span>
       })
     }
@@ -1323,7 +1323,7 @@ export default {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu Jul 16 2020 17:42:19 GMT+0800 (China Standard Time)
+                at Fri Jul 17 2020 21:31:36 GMT+0800 (China Standard Time)
             </div>
         </div>
         <script src="..\..\prettify.js"></script>

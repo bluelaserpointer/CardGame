@@ -174,7 +174,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">let callbacks = <span class="cstat-no" title="statement not covered" >[]</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">let callbacks = <span class="cstat-no" title="statement not covered" >[];</span>
 &nbsp;
 function <span class="fstat-no" title="function not covered" >loadedTinymce(</span>) {
   // to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2144
@@ -183,16 +183,16 @@ function <span class="fstat-no" title="function not covered" >loadedTinymce(</sp
 }
 &nbsp;
 const dynamicLoadScript = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(s</span>rc, callback) =&gt; {</span>
-  const existingScript = <span class="cstat-no" title="statement not covered" >document.getElementById(src)</span>
-  const cb = <span class="cstat-no" title="statement not covered" >callback || <span class="fstat-no" title="function not covered" >fu</span>nction() {}</span>
+  const existingScript = <span class="cstat-no" title="statement not covered" >document.getElementById(src);</span>
+  const cb = <span class="cstat-no" title="statement not covered" >callback || <span class="fstat-no" title="function not covered" >fu</span>nction() {};</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  if (!existingScript) {</span>
-    const script = <span class="cstat-no" title="statement not covered" >document.createElement('script')</span>
-<span class="cstat-no" title="statement not covered" >    script.src = src </span>// src url for the third-party library being loaded.
-<span class="cstat-no" title="statement not covered" >    script.id = src</span>
-<span class="cstat-no" title="statement not covered" >    document.body.appendChild(script)</span>
-<span class="cstat-no" title="statement not covered" >    callbacks.push(cb)</span>
-    const onEnd = <span class="cstat-no" title="statement not covered" >'onload' in script ? stdOnEnd : ieOnEnd</span>
+    const script = <span class="cstat-no" title="statement not covered" >document.createElement('script');</span>
+<span class="cstat-no" title="statement not covered" >    script.src = src; </span>// src url for the third-party library being loaded.
+<span class="cstat-no" title="statement not covered" >    script.id = src;</span>
+<span class="cstat-no" title="statement not covered" >    document.body.appendChild(script);</span>
+<span class="cstat-no" title="statement not covered" >    callbacks.push(cb);</span>
+    const onEnd = <span class="cstat-no" title="statement not covered" >'onload' in script ? stdOnEnd : ieOnEnd;</span>
 <span class="cstat-no" title="statement not covered" >    onEnd(script)</span>
   }
 &nbsp;
@@ -208,29 +208,29 @@ const dynamicLoadScript = <span class="cstat-no" title="statement not covered" >
 <span class="cstat-no" title="statement not covered" >    script.onload = <span class="fstat-no" title="function not covered" >fu</span>nction() {</span>
       // this.onload = null here is necessary
       // because even IE9 works not like others
-<span class="cstat-no" title="statement not covered" >      this.onerror = this.onload = null</span>
+<span class="cstat-no" title="statement not covered" >      this.onerror = this.onload = null;</span>
 <span class="cstat-no" title="statement not covered" >      for (const cb of callbacks) {</span>
 <span class="cstat-no" title="statement not covered" >        cb(null, script)</span>
       }
 <span class="cstat-no" title="statement not covered" >      callbacks = null</span>
-    }
+    };
 <span class="cstat-no" title="statement not covered" >    script.onerror = <span class="fstat-no" title="function not covered" >fu</span>nction() {</span>
-<span class="cstat-no" title="statement not covered" >      this.onerror = this.onload = null</span>
+<span class="cstat-no" title="statement not covered" >      this.onerror = this.onload = null;</span>
 <span class="cstat-no" title="statement not covered" >      cb(new Error('Failed to load ' + src), script)</span>
     }
   }
 &nbsp;
   function <span class="fstat-no" title="function not covered" >ieOnEnd(</span>script) {
 <span class="cstat-no" title="statement not covered" >    script.onreadystatechange = <span class="fstat-no" title="function not covered" >fu</span>nction() {</span>
-<span class="cstat-no" title="statement not covered" >      if (this.readyState !== 'complete' &amp;&amp; this.readyState !== 'loaded') <span class="cstat-no" title="statement not covered" >return</span></span>
-<span class="cstat-no" title="statement not covered" >      this.onreadystatechange = null</span>
+<span class="cstat-no" title="statement not covered" >      if (this.readyState !== 'complete' &amp;&amp; this.readyState !== 'loaded') <span class="cstat-no" title="statement not covered" >return;</span></span>
+<span class="cstat-no" title="statement not covered" >      this.onreadystatechange = null;</span>
 <span class="cstat-no" title="statement not covered" >      for (const cb of callbacks) {</span>
 <span class="cstat-no" title="statement not covered" >        cb(null, script) </span>// there is no way to catch loading errors in IE8
       }
 <span class="cstat-no" title="statement not covered" >      callbacks = null</span>
     }
   }
-}
+};
 &nbsp;
 export default dynamicLoadScript
 &nbsp;</pre></td></tr></table></pre>
@@ -240,7 +240,7 @@ export default dynamicLoadScript
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu Jul 16 2020 17:42:19 GMT+0800 (China Standard Time)
+                at Fri Jul 17 2020 21:31:36 GMT+0800 (China Standard Time)
             </div>
         </div>
         <script src="..\..\prettify.js"></script>

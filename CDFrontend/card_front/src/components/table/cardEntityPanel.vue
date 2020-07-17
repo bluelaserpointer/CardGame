@@ -35,7 +35,7 @@
       </el-table-column>
       <el-table-column label="CardName" width="150px" align="center">
         <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate()">{{ row.cardName }}</span>
+          <span class="link-type" @click="handleUpdate(row)">{{ row.cardName }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Rarity" min-width="150px">
@@ -360,7 +360,7 @@ export default {
         }
       );
     },
-    handleUpdate() {
+    handleUpdate(row) {
       this.temp = Object.assign({}, row); // copy obj
       this.dialogStatus = 'update';
       this.panelVisible = true;

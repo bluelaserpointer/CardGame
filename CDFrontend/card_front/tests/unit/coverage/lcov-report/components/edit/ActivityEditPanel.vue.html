@@ -693,7 +693,7 @@
   platforms: ['a-platform'],
   comment_disabled: false
   // importance: 0
-}
+};
 &nbsp;
 export default {
   name: 'ActivityEditPanel',
@@ -710,12 +710,12 @@ export default {
 <span class="cstat-no" title="statement not covered" >        this.$message({</span>
           message: rule.field + '为必传项',
           type: 'error'
-        })
+        });
 <span class="cstat-no" title="statement not covered" >        callback(new Error(rule.field + '为必传项'))</span>
       } else {
 <span class="cstat-no" title="statement not covered" >        callback()</span>
       }
-    }
+    };
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >    const validateSourceUri = (rule, value, callback) =&gt; {</span></span>
 <span class="cstat-no" title="statement not covered" >      if (value) {</span>
 <span class="cstat-no" title="statement not covered" >        if (validURL(value)) {</span>
@@ -724,13 +724,13 @@ export default {
 <span class="cstat-no" title="statement not covered" >          this.$message({</span>
             message: '外链url填写不正确',
             type: 'error'
-          })
+          });
 <span class="cstat-no" title="statement not covered" >          callback(new Error('外链url填写不正确'))</span>
         }
       } else {
 <span class="cstat-no" title="statement not covered" >        callback()</span>
       }
-    }
+    };
 <span class="cstat-no" title="statement not covered" >    return {</span>
       limit: false,
       postForm: Object.assign({}, defaultForm),
@@ -765,7 +765,7 @@ export default {
   },
 <span class="fstat-no" title="function not covered" >  created() {</span>
 <span class="cstat-no" title="statement not covered" >    if (this.isEdit) {</span>
-<span class="cstat-no" title="statement not covered" >      const id = this.$route.params &amp;&amp; this.$route.params.id</span>
+<span class="cstat-no" title="statement not covered" >      const id = this.$route.params &amp;&amp; this.$route.params.id;</span>
 <span class="cstat-no" title="statement not covered" >      this.fetchData(id)</span>
     }
 &nbsp;
@@ -777,14 +777,14 @@ export default {
   methods: {
 <span class="fstat-no" title="function not covered" >    fetchData(id) {</span>
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      fetchArticle(id).then(response =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >        this.postForm = response.data</span>
+<span class="cstat-no" title="statement not covered" >        this.postForm = response.data;</span>
 &nbsp;
         // just for test
-<span class="cstat-no" title="statement not covered" >        this.postForm.title += `   Article Id:${this.postForm.id}`</span>
-<span class="cstat-no" title="statement not covered" >        this.postForm.content_short += `   Article Id:${this.postForm.id}`</span>
+<span class="cstat-no" title="statement not covered" >        this.postForm.title += `   Article Id:${this.postForm.id}`;</span>
+<span class="cstat-no" title="statement not covered" >        this.postForm.content_short += `   Article Id:${this.postForm.id}`;</span>
 &nbsp;
         // set tagsview title
-<span class="cstat-no" title="statement not covered" >        this.setTagsViewTitle()</span>
+<span class="cstat-no" title="statement not covered" >        this.setTagsViewTitle();</span>
 &nbsp;
         // set page title
 <span class="cstat-no" title="statement not covered" >        this.setPageTitle()</span>
@@ -793,21 +793,21 @@ export default {
       })
     },
 <span class="fstat-no" title="function not covered" >    setTagsViewTitle() {</span>
-<span class="cstat-no" title="statement not covered" >      const title = 'Edit Activity'</span>
-<span class="cstat-no" title="statement not covered" >      const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` })</span>
+<span class="cstat-no" title="statement not covered" >      const title = 'Edit Activity';</span>
+<span class="cstat-no" title="statement not covered" >      const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` });</span>
 <span class="cstat-no" title="statement not covered" >      this.$store.dispatch('tagsView/updateVisitedView', route)</span>
     },
 <span class="fstat-no" title="function not covered" >    setPageTitle() {</span>
-<span class="cstat-no" title="statement not covered" >      const title = 'Edit Activity'</span>
+<span class="cstat-no" title="statement not covered" >      const title = 'Edit Activity';</span>
 <span class="cstat-no" title="statement not covered" >      document.title = `${title} - ${this.postForm.id}`</span>
     },
 <span class="fstat-no" title="function not covered" >    submitForm() {</span>
-<span class="cstat-no" title="statement not covered" >      const postData = new FormData()</span>
-<span class="cstat-no" title="statement not covered" >      postData.append('activityImg', this.postForm.image_uri)</span>
-<span class="cstat-no" title="statement not covered" >      postData.append('activityName', this.postForm.title)</span>
-<span class="cstat-no" title="statement not covered" >      postData.append('activityDescription', this.postForm.content)</span>
+<span class="cstat-no" title="statement not covered" >      const postData = new FormData();</span>
+<span class="cstat-no" title="statement not covered" >      postData.append('activityImg', this.postForm.image_uri);</span>
+<span class="cstat-no" title="statement not covered" >      postData.append('activityName', this.postForm.title);</span>
+<span class="cstat-no" title="statement not covered" >      postData.append('activityDescription', this.postForm.content);</span>
 <span class="cstat-no" title="statement not covered" >      if (this.limit === 1) { postData.append('start', '2020-01-01 00:00:00') } else { postData.append('start', this.displayTime) }</span>
-<span class="cstat-no" title="statement not covered" >      postData.append('type', this.limit)</span>
+<span class="cstat-no" title="statement not covered" >      postData.append('type', this.limit);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      axios.post(`http://localhost:8080/activity/addActivity`, postData).then(response =&gt; {</span></span>
 <span class="cstat-no" title="statement not covered" >        if (response.data) {</span>
@@ -822,7 +822,7 @@ export default {
 <span class="cstat-no" title="statement not covered" >        this.$message({</span>
           message: '请填写必要的标题和内容',
           type: 'warning'
-        })
+        });
 <span class="cstat-no" title="statement not covered" >        return</span>
       }
 <span class="cstat-no" title="statement not covered" >      this.$message({</span>
@@ -830,12 +830,12 @@ export default {
         type: 'success',
         showClose: true,
         duration: 1000
-      })
+      });
 <span class="cstat-no" title="statement not covered" >      this.postForm.status = 'draft'</span>
     },
 <span class="fstat-no" title="function not covered" >    getRemoteUserList(query) {</span>
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      searchUser(query).then(response =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >        if (!response.data.items) return</span>
+<span class="cstat-no" title="statement not covered" >        if (!response.data.items) return;</span>
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >        this.userListOptions = response.data.items.map(v =&gt; v.name)</span></span>
       })
     }
@@ -888,7 +888,7 @@ export default {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu Jul 16 2020 17:42:19 GMT+0800 (China Standard Time)
+                at Fri Jul 17 2020 21:31:36 GMT+0800 (China Standard Time)
             </div>
         </div>
         <script src="..\..\prettify.js"></script>

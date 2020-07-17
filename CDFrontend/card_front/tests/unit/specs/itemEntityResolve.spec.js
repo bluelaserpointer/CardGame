@@ -25,7 +25,7 @@ describe('ItemEntityPanel.vue', () => {
       localVue
     });
 
-  it('Item Entity Panel calling created',  async () => {
+  it('Item Entity Panel resolves calling created',  async () => {
     expect(wrapper.vm.list).toStrictEqual([{
       itemId: 0,
       itemName: '',
@@ -41,7 +41,7 @@ describe('ItemEntityPanel.vue', () => {
     expect(axios.get).toBeCalledWith('http://localhost:8080/item/getAllItems');
   });
 
-  it('Item Entity Panel calling getList, watchList',  async () => {
+  it('Item Entity Panel resolves calling getList, watchList',  async () => {
     expect(axios.get).toHaveBeenCalledTimes(1);
 
     await wrapper.vm.getList(()=>{wrapper.vm.watchList()});
@@ -60,10 +60,18 @@ describe('ItemEntityPanel.vue', () => {
     expect(axios.get).toBeCalledWith('http://localhost:8080/item/getAllItems');
   });
 
-  it('Item Entity Panel calling deleteData',  async () => {
+  it('Item Entity Panel resolves calling confirmIdentity', async () => {
+    wrapper.vm.confirmDelete = false;
+
+    await wrapper.vm.confirmIdentity();
+
+    expect(wrapper.vm.confirmDelete).toBeTruthy();
+  });
+
+  it('Item Entity Panel resolves calling deleteData',  async () => {
     wrapper.vm.confirmDelete = true;
 
-    expect(axios.post).toHaveBeenCalledTimes(0);
+    expect(axios.post).toHaveBeenCalledTimes(1);
     expect(axios.get).toHaveBeenCalledTimes(2);
     expect(wrapper.vm.confirmDelete).toBeTruthy();
 
@@ -71,12 +79,12 @@ describe('ItemEntityPanel.vue', () => {
 
     expect(wrapper.vm.panelVisible).toBeFalsy();
     expect(wrapper.vm.deleteVisible).toBeFalsy();
-    expect(axios.post).toHaveBeenCalledTimes(1);
+    expect(axios.post).toHaveBeenCalledTimes(2);
     expect(axios.get).toHaveBeenCalledTimes(3);
     expect(axios.get).toBeCalledWith("http://localhost:8080/item/getAllItems");
   });
 
-  it('Item Entity Panel calling resetTemp', () => {
+  it('Item Entity Panel resolves calling resetTemp', () => {
     wrapper.vm.temp = {
       itemId: 1,
       itemName: '1',
@@ -97,7 +105,7 @@ describe('ItemEntityPanel.vue', () => {
     );
   });
 
-  it('Item Entity Panel calling handleCreate', () => {
+  it('Item Entity Panel resolves calling handleCreate', () => {
     wrapper.vm.dialogStatus = 'xxx';
     wrapper.vm.panelVisible = false;
 
@@ -106,7 +114,7 @@ describe('ItemEntityPanel.vue', () => {
     expect(wrapper.vm.dialogStatus).toBeTruthy();
   });
 
-  it('Item Entity Panel calling handleUpdate', () => {
+  it('Item Entity Panel resolves calling handleUpdate', () => {
     wrapper.vm.dialogStatus = 'xxx';
     wrapper.vm.panelVisible = false;
 
@@ -115,12 +123,12 @@ describe('ItemEntityPanel.vue', () => {
     expect(wrapper.vm.dialogStatus).toBeTruthy();
   });
 
-  it('Item Entity Panel calling createData', async () => {
+  it('Item Entity Panel resolves calling createData', async () => {
     await wrapper.vm.createData();
     expect(wrapper.vm.panelVisible).toBeFalsy();
   });
 
-  it('Item Entity Panel calling updateData', async () => {
+  it('Item Entity Panel resolves calling updateData', async () => {
     await wrapper.vm.updateData();
     expect(wrapper.vm.panelVisible).toBeFalsy();
   });

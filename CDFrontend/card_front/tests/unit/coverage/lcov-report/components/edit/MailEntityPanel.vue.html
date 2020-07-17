@@ -324,8 +324,7 @@
 <a name='L266'></a><a href='#L266'>266</a>
 <a name='L267'></a><a href='#L267'>267</a>
 <a name='L268'></a><a href='#L268'>268</a>
-<a name='L269'></a><a href='#L269'>269</a>
-<a name='L270'></a><a href='#L270'>270</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L269'></a><a href='#L269'>269</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -524,7 +523,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -656,7 +654,7 @@ export default {
         published: 'success',
         draft: 'info',
         deleted: 'danger'
-      }
+      };
 <span class="cstat-no" title="statement not covered" >      return statusMap[status]</span>
     }
   },
@@ -675,7 +673,7 @@ export default {
       deleteVisible: false,
       tableKey: 0,
       list: null,
-      listLoading: true,
+      listLoading: false,
       listQuery: {
         page: 1,
         limit: 20,
@@ -706,12 +704,12 @@ export default {
   },
   methods: {
 <span class="fstat-no" title="function not covered" >    watchList() {</span>
-<span class="cstat-no" title="statement not covered" >      console.log('In watchList')</span>
-<span class="cstat-no" title="statement not covered" >      const list = this.list</span>
+<span class="cstat-no" title="statement not covered" >      console.log('In watchList');</span>
+<span class="cstat-no" title="statement not covered" >      const list = this.list;</span>
 <span class="cstat-no" title="statement not covered" >      for (const i in list) {</span>
-<span class="cstat-no" title="statement not covered" >        const details = list[i].mailDetails</span>
+<span class="cstat-no" title="statement not covered" >        const details = list[i].mailDetails;</span>
 <span class="cstat-no" title="statement not covered" >        if (details === null) { continue }</span>
-<span class="cstat-no" title="statement not covered" >        list[i].mailImg = details.mailImg</span>
+<span class="cstat-no" title="statement not covered" >        list[i].mailImg = details.mailImg;</span>
 <span class="cstat-no" title="statement not covered" >        list[i].mailDescription = details.mailDescription</span>
       }
 <span class="cstat-no" title="statement not covered" >      this.list = list</span>
@@ -727,40 +725,40 @@ export default {
       // TODO: REQUEST --- DELETE THE DATA
     },
 <span class="fstat-no" title="function not covered" >    uploadCover() {</span>
-<span class="cstat-no" title="statement not covered" >      const _this = this</span>
-<span class="cstat-no" title="statement not covered" >      var file = this.$refs.img</span>
-<span class="cstat-no" title="statement not covered" >      var reader = new FileReader()</span>
-<span class="cstat-no" title="statement not covered" >      reader.readAsDataURL(file.files[0])</span>
+<span class="cstat-no" title="statement not covered" >      const _this = this;</span>
+<span class="cstat-no" title="statement not covered" >      var file = this.$refs.img;</span>
+<span class="cstat-no" title="statement not covered" >      var reader = new FileReader();</span>
+<span class="cstat-no" title="statement not covered" >      reader.readAsDataURL(file.files[0]);</span>
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      reader.onload = function() {</span></span>
 <span class="cstat-no" title="statement not covered" >        _this.temp.mailImg = this.result</span>
       }
     },
 <span class="fstat-no" title="function not covered" >    getList() {</span>
-<span class="cstat-no" title="statement not covered" >      this.listLoading = true</span>
+<span class="cstat-no" title="statement not covered" >      this.listLoading = true;</span>
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      axios.get('http://localhost:8080/mail/getAllMails')</span></span>
         .then(response =&gt; {
-<span class="cstat-no" title="statement not covered" >          this.list = response.data</span>
-<span class="cstat-no" title="statement not covered" >          console.log(response.data)</span>
+<span class="cstat-no" title="statement not covered" >          this.list = response.data;</span>
+<span class="cstat-no" title="statement not covered" >          console.log(response.data);</span>
 <span class="cstat-no" title="statement not covered" >          this.watchList()</span>
-        })
+        });
       // Just to simulate the time of the request
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      setTimeout(() =&gt; {</span></span>
 <span class="cstat-no" title="statement not covered" >        this.listLoading = false</span>
       }, 1.5 * 10)
     },
 <span class="fstat-no" title="function not covered" >    handleFilter() {</span>
-<span class="cstat-no" title="statement not covered" >      this.listQuery.page = 1</span>
+<span class="cstat-no" title="statement not covered" >      this.listQuery.page = 1;</span>
 <span class="cstat-no" title="statement not covered" >      this.getList()</span>
     },
 <span class="fstat-no" title="function not covered" >    handleModifyStatus(row, status) {</span>
 <span class="cstat-no" title="statement not covered" >      this.$message({</span>
         message: '操作Success',
         type: 'success'
-      })
+      });
 <span class="cstat-no" title="statement not covered" >      row.status = status</span>
     },
 <span class="fstat-no" title="function not covered" >    sortChange(data) {</span>
-<span class="cstat-no" title="statement not covered" >      const { prop, order } = data</span>
+<span class="cstat-no" title="statement not covered" >      const { prop, order } = data;</span>
 <span class="cstat-no" title="statement not covered" >      if (prop === 'id') {</span>
 <span class="cstat-no" title="statement not covered" >        this.sortByID(order)</span>
       }
@@ -782,9 +780,9 @@ export default {
       }
     },
 <span class="fstat-no" title="function not covered" >    handleCreate() {</span>
-<span class="cstat-no" title="statement not covered" >      this.resetTemp()</span>
-<span class="cstat-no" title="statement not covered" >      this.dialogStatus = 'create'</span>
-<span class="cstat-no" title="statement not covered" >      this.panelVisible = true</span>
+<span class="cstat-no" title="statement not covered" >      this.resetTemp();</span>
+<span class="cstat-no" title="statement not covered" >      this.dialogStatus = 'create';</span>
+<span class="cstat-no" title="statement not covered" >      this.panelVisible = true;</span>
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      this.$nextTick(() =&gt; {</span></span>
 <span class="cstat-no" title="statement not covered" >        this.$refs['dataForm'].clearValidate()</span>
       })
@@ -792,21 +790,20 @@ export default {
 <span class="fstat-no" title="function not covered" >    createData() {</span>
     },
 <span class="fstat-no" title="function not covered" >    handleUpdate(row) {</span>
-<span class="cstat-no" title="statement not covered" >      this.temp = Object.assign({}, row) // copy obj</span>
-      // this.temp.timestamp = new Date(this.temp.timestamp)
-<span class="cstat-no" title="statement not covered" >      this.dialogStatus = 'update'</span>
-<span class="cstat-no" title="statement not covered" >      this.panelVisible = true</span>
+<span class="cstat-no" title="statement not covered" >      this.temp = Object.assign({}, row); // copy obj</span>
+<span class="cstat-no" title="statement not covered" >      this.dialogStatus = 'update';</span>
+<span class="cstat-no" title="statement not covered" >      this.panelVisible = true;</span>
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      this.$nextTick(() =&gt; {</span></span>
 <span class="cstat-no" title="statement not covered" >        this.$refs['dataForm'].clearValidate()</span>
       })
     },
 <span class="fstat-no" title="function not covered" >    updateData() {</span>
-<span class="cstat-no" title="statement not covered" >      const postData = new FormData()</span>
-<span class="cstat-no" title="statement not covered" >      postData.append('mailId', this.temp.id)</span>
-<span class="cstat-no" title="statement not covered" >      postData.append('mailName', this.temp.mailName)</span>
+<span class="cstat-no" title="statement not covered" >      const postData = new FormData();</span>
+<span class="cstat-no" title="statement not covered" >      postData.append('mailId', this.temp.id);</span>
+<span class="cstat-no" title="statement not covered" >      postData.append('mailName', this.temp.mailName);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      postData.append('mailImg', this.temp.mailImg)</span>
-<span class="cstat-no" title="statement not covered" >      postData.append('mailDescription', this.temp.mailDescription)</span>
+<span class="cstat-no" title="statement not covered" >      postData.append('mailImg', this.temp.mailImg);</span>
+<span class="cstat-no" title="statement not covered" >      postData.append('mailDescription', this.temp.mailDescription);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      axios.post(`http://localhost:8080/mail/update`, postData).then(response =&gt; {</span></span>
 <span class="cstat-no" title="statement not covered" >        if (response.data) {</span>
@@ -828,12 +825,12 @@ export default {
       // this.list.splice(index, 1)
     },
 <span class="fstat-no" title="function not covered" >    getSortClass: function(key) {</span>
-<span class="cstat-no" title="statement not covered" >      const sort = this.listQuery.sort</span>
+<span class="cstat-no" title="statement not covered" >      const sort = this.listQuery.sort;</span>
 <span class="cstat-no" title="statement not covered" >      return sort === `+${key}` ? 'ascending' : 'descending'</span>
     },
 <span class="fstat-no" title="function not covered" >    handleFetchPv(pv) {</span>
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      fetchPv(pv).then(response =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >        this.pvData = response.data.pvData</span>
+<span class="cstat-no" title="statement not covered" >        this.pvData = response.data.pvData;</span>
 <span class="cstat-no" title="statement not covered" >        this.dialogPvVisible = true</span>
       })
     }
@@ -870,7 +867,7 @@ export default {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu Jul 16 2020 17:42:19 GMT+0800 (China Standard Time)
+                at Fri Jul 17 2020 21:31:36 GMT+0800 (China Standard Time)
             </div>
         </div>
         <script src="..\..\prettify.js"></script>
