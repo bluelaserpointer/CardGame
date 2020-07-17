@@ -114,7 +114,7 @@
 <a name='L56'></a><a href='#L56'>56</a>
 <a name='L57'></a><a href='#L57'>57</a>
 <a name='L58'></a><a href='#L58'>58</a>
-<a name='L59'></a><a href='#L59'>59</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L59'></a><a href='#L59'>59</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -124,8 +124,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -173,26 +173,26 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">Math.easeInOutQuad = <span class="fstat-no" title="function not covered" >fu</span>nction(t, b, c, d) {
-<span class="cstat-no" title="statement not covered" >  t /= d / 2</span>
+<span class="cstat-no" title="statement not covered" >  t /= d / 2;</span>
 <span class="cstat-no" title="statement not covered" >  if (t &lt; 1) {</span>
 <span class="cstat-no" title="statement not covered" >    return c / 2 * t * t + b</span>
   }
-<span class="cstat-no" title="statement not covered" >  t--</span>
+<span class="cstat-no" title="statement not covered" >  t--;</span>
 <span class="cstat-no" title="statement not covered" >  return -c / 2 * (t * (t - 2) - 1) + b</span>
-}
+};
 &nbsp;
 // requestAnimationFrame for Smart Animating http://goo.gl/sx5sts
 var requestAnimFrame = (function() {
   return window.requestAnimationFrame || <span class="branch-1 cbranch-no" title="branch not covered" >window.webkitRequestAnimationFrame </span>|| <span class="branch-2 cbranch-no" title="branch not covered" >window.mozRequestAnimationFrame </span>|| <span class="fstat-no" title="function not covered" ><span class="branch-3 cbranch-no" title="branch not covered" >fu</span>nction(callback) { <span class="cstat-no" title="statement not covered" >window.setTimeout(callback, 1000 / 60) </span>}</span>
-})()
+})();
 &nbsp;
 /**
  * Because it's so fucking difficult to detect the scrolling element, just move them all
  * @param {number} amount
  */
 function <span class="fstat-no" title="function not covered" >move(</span>amount) {
-<span class="cstat-no" title="statement not covered" >  document.documentElement.scrollTop = amount</span>
-<span class="cstat-no" title="statement not covered" >  document.body.parentNode.scrollTop = amount</span>
+<span class="cstat-no" title="statement not covered" >  document.documentElement.scrollTop = amount;</span>
+<span class="cstat-no" title="statement not covered" >  document.body.parentNode.scrollTop = amount;</span>
 <span class="cstat-no" title="statement not covered" >  document.body.scrollTop = amount</span>
 }
 &nbsp;
@@ -206,18 +206,18 @@ function <span class="fstat-no" title="function not covered" >position(</span>) 
  * @param {Function} callback
  */
 export function <span class="fstat-no" title="function not covered" >scrollTo(</span>to, duration, callback) {
-  const start = <span class="cstat-no" title="statement not covered" >position()</span>
-  const change = <span class="cstat-no" title="statement not covered" >to - start</span>
-  const increment = <span class="cstat-no" title="statement not covered" >20</span>
-  let currentTime = <span class="cstat-no" title="statement not covered" >0</span>
-<span class="cstat-no" title="statement not covered" >  duration = (typeof (duration) === 'undefined') ? 500 : duration</span>
+  const start = <span class="cstat-no" title="statement not covered" >position();</span>
+  const change = <span class="cstat-no" title="statement not covered" >to - start;</span>
+  const increment = <span class="cstat-no" title="statement not covered" >20;</span>
+  let currentTime = <span class="cstat-no" title="statement not covered" >0;</span>
+<span class="cstat-no" title="statement not covered" >  duration = (typeof (duration) === 'undefined') ? 500 : duration;</span>
   var animateScroll = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >fu</span>nction() {</span>
     // increment the time
-<span class="cstat-no" title="statement not covered" >    currentTime += increment</span>
+<span class="cstat-no" title="statement not covered" >    currentTime += increment;</span>
     // find the value with the quadratic in-out easing function
-    var val = <span class="cstat-no" title="statement not covered" >Math.easeInOutQuad(currentTime, start, change, duration)</span>
+    var val = <span class="cstat-no" title="statement not covered" >Math.easeInOutQuad(currentTime, start, change, duration);</span>
     // move the document.body
-<span class="cstat-no" title="statement not covered" >    move(val)</span>
+<span class="cstat-no" title="statement not covered" >    move(val);</span>
     // do the animation unless its over
 <span class="cstat-no" title="statement not covered" >    if (currentTime &lt; duration) {</span>
 <span class="cstat-no" title="statement not covered" >      requestAnimFrame(animateScroll)</span>
@@ -227,7 +227,7 @@ export function <span class="fstat-no" title="function not covered" >scrollTo(</
 <span class="cstat-no" title="statement not covered" >        callback()</span>
       }
     }
-  }
+  };
 <span class="cstat-no" title="statement not covered" >  animateScroll()</span>
 }
 &nbsp;</pre></td></tr></table></pre>
@@ -237,7 +237,7 @@ export function <span class="fstat-no" title="function not covered" >scrollTo(</
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu Jul 16 2020 17:42:19 GMT+0800 (China Standard Time)
+                at Fri Jul 17 2020 21:31:36 GMT+0800 (China Standard Time)
             </div>
         </div>
         <script src="..\prettify.js"></script>

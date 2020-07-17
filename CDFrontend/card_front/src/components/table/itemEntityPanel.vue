@@ -352,7 +352,6 @@ export default {
       console.log(postData);
       axios.post(`http://localhost:8080/item/updateItem`, postData).then(response => {
         if (response.data) {
-          //
           this.getList();
           _this.panelVisible = false
         } else {
