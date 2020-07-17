@@ -80,6 +80,7 @@ public class UserController {
   // 增加用户经验值(如果累计经验值超过升级所需经验值则升级后再返回user)
   @RequestMapping(value = "/addExp")
   public @ResponseBody User addExp(@RequestParam("userId") Integer userId, @RequestParam("exp") Integer exp) {
+    System.out.println("Class: UserController Method: addExp Param: userId = " + userId + " exp = " + exp);
     return userService.addExp(userId, exp);
   }
 }
