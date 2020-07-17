@@ -14,12 +14,6 @@
       <el-button class="filter-card" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         Add
       </el-button>
-      <!--      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">-->
-      <!--        Export-->
-      <!--      </el-button>-->
-      <!--      <el-checkbox v-model="showReviewer" class="filter-item" style="margin-left:15px;" @change="tableKey=tableKey+1">-->
-      <!--        reviewer-->
-      <!--      </el-checkbox>-->
     </div>
 
 
@@ -64,7 +58,7 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="panelVisible" top="5vh">
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="panelVisible" top="5vh" class="editDialog">
       <el-form ref="dataForm" :rules="rules" :model="temp" style="margin: auto 50px auto 50px; display:grid; grid-template-columns: 50% 50%; grid-column-gap: 10px" class="demo-form-inline">
         <el-form-item label="ID" prop="itemId"v-if="dialogStatus==='update'">
           <el-input v-model="temp.itemId" disabled/>
@@ -92,45 +86,37 @@
         </div>
       </el-form>
 
-      <div slot="footer" class="dialog-footer">
+      <div slot="footer" class="dialog-footer outerDialog">
         <el-dialog
           title="Deletion Confirm"
           width="30%"
           :visible.sync="deleteVisible"
           append-to-body
+          class="innerDialog"
         >
           <el-input v-model="confirmPassword" placeholder="Identification" show-password width="60%" />
-          <el-button @click="confirmIdentity">Confirm Identity</el-button>
+          <el-button class="confirmInnerButton" @click="confirmIdentity">Confirm Identity</el-button>
 
           <span slot="footer" class="dialog-footer">
-            <el-button @click="deleteVisible = false">Cancel</el-button>
-            <el-button v-if="confirmDelete === false" type="danger" disabled>Delete</el-button>
-            <el-button v-else type="danger" @click="deleteData">Delete</el-button>
+            <el-button class="cancelInnerButton" @click="deleteVisible = false">Cancel</el-button>
+            <el-button class="deleteInnerButton" v-if="confirmDelete === false" type="danger" disabled>Delete</el-button>
+            <el-button class="deleteInnerButton" v-else type="danger" @click="deleteData">Delete</el-button>
           </span>
         </el-dialog>
 
-        <el-button type="danger" @click="deleteVisible = true">
+        <el-button class="deleteOuterButton" type="danger" @click="deleteVisible = true">
           Delete
         </el-button>
-        <el-button @click="panelVisible = false">
+        <el-button class="cancelOuterButton" @click="panelVisible = false">
           Cancel
         </el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
+        <el-button class="confirmOuterButton" type="primary" @click="dialogStatus==='create'?createData():updateData()">
           Confirm
         </el-button>
       </div>
 
     </el-dialog>
 
-    <!--    <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">-->
-    <!--      <el-table :data="pvData" border fit highlight-current-row style="width: 100%">-->
-    <!--        <el-table-column prop="key" label="Channel" />-->
-    <!--        <el-table-column prop="pv" label="Pv" />-->
-    <!--      </el-table>-->
-    <!--      <span slot="footer" class="dialog-footer">-->
-    <!--        <el-button type="primary" @click="dialogPvVisible = false">Confirm</el-button>-->
-    <!--      </span>-->
-    <!--    </el-dialog>-->
   </div>
 </template>
 
@@ -157,11 +143,27 @@ export default {
   data() {
     return {
       search: '',
+      temp: {
+        itemId: undefined,
+        itemName: '',
+        price: 999,
+        itemImg: '',
+        itemDescription: ''
+      },
       confirmPassword: '',
       confirmDelete: false,
       deleteVisible: false,
-      tableKey: 0,
       list: null,
+      panelVisible: false,
+      dialogStatus: '',
+      rules: {
+        itemId: [{ required: true, message: 'ItemId is required', trigger: 'change' }],
+        itemName: [{ required: true, message: 'ItemName is required', trigger: 'change' }],
+        price: [{ required: true, message: 'type is required', trigger: 'change' }],
+      },
+
+
+      tableKey: 0,
       total: 0,
       listLoading: false,
       listQuery: {
@@ -175,26 +177,12 @@ export default {
       sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
       statusOptions: ['published', 'draft', 'deleted'],
       showReviewer: false,
-      temp: {
-        itemId: undefined,
-        itemName: '',
-        price: 999,
-        itemImg: '',
-        itemDescription: ''
-      },
-      panelVisible: false,
-      dialogStatus: '',
       textMap: {
         update: 'Edit',
         create: 'Create'
       },
       dialogPvVisible: false,
       pvData: [],
-      rules: {
-        // type: [{ required: true, message: 'type is required', trigger: 'change' }],
-        // timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
-        // title: [{ required: true, message: 'title is required', trigger: 'blur' }]
-      },
       downloadLoading: false
     }
   },
@@ -231,11 +219,11 @@ export default {
           this.$message.error('Identification failed!');
         }
       })
-        .catch(error =>
-          {
-            this.$message.error('Identification failed!');
-          }
-        );
+      .catch(error =>
+        {
+          this.$message.error('Identification failed!');
+        }
+      );
     },
     deleteData() {
       const postData = new FormData();
@@ -250,11 +238,11 @@ export default {
           this.$message.error('Deleting Data failed!');
         }
       })
-        .catch(error =>
-          {
-            this.$message.error('Deleting Data failed!');
-          }
-        );
+      .catch(error =>
+        {
+          this.$message.error('Deleting Data failed!');
+        }
+      );
     },
     uploadCover() {
       const _this = this;
@@ -339,11 +327,11 @@ export default {
           this.$message.error('Creating Data failed!');
         }
       })
-        .catch(error =>
-          {
-            this.$message.error('Creating Data failed!');
-          }
-        );
+      .catch(error =>
+        {
+          this.$message.error('Creating Data failed!');
+        }
+      );
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row); // copy obj
@@ -371,11 +359,11 @@ export default {
           this.$message.error('Updating Data failed!');
         }
       })
-        .catch(error =>
-          {
-            this.$message.error('Updating Data failed!');
-          }
-        );
+      .catch(error =>
+        {
+          this.$message.error('Updating Data failed!');
+        }
+      );
     },
     getSortClass: function(key) {
       const sort = this.listQuery.sort;

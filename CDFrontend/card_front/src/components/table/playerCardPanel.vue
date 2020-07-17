@@ -59,9 +59,8 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="panelVisible" top="5vh">
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="panelVisible" top="5vh" class="editDialog">
       <el-form ref="dataForm" :rules="rules" :model="temp" style="margin: auto 50px auto 50px; display:grid; grid-template-columns: 50% 50%; grid-column-gap: 10px" class="demo-form-inline">
-
         <el-form-item label="ID" prop="ownCardId" v-if="dialogStatus==='update'">
           <el-input v-model="temp.ownCardId" disabled/>
         </el-form-item>
@@ -83,38 +82,36 @@
         <el-form-item label="RepetitiveOwns" prop="repetitiveOwns" v-if="dialogStatus==='update'">
           <el-input v-model="temp.repetitiveOwns" />
         </el-form-item>
-<!--        <el-form-item label="AccquireDate" prop="accquireDate" v-if="dialogStatus==='update'">-->
-<!--          <el-input v-model="temp.accquireDate" />-->
-<!--        </el-form-item>-->
         <el-form-item label-width="120px" label="AccquireDate" class="postInfo-container-item" v-if="dialogStatus==='update'">
           <el-date-picker v-model="temp.accquireDate" type="datetime" value-format="yyyy-MM-dd hh:mm:ss" placeholder="Select date and time" />
         </el-form-item>
       </el-form>
 
-      <div slot="footer" class="dialog-footer">
+      <div slot="footer" class="dialog-footer outerDialog">
         <el-dialog
           title="Deletion Confirm"
           width="30%"
           :visible.sync="deleteVisible"
           append-to-body
+          class="innerDialog"
         >
           <el-input v-model="confirmPassword" placeholder="Identification" show-password width="60%" />
-          <el-button @click="confirmIdentity">Confirm Identity</el-button>
+          <el-button class="confirmInnerButton" @click="confirmIdentity">Confirm Identity</el-button>
 
           <span slot="footer" class="dialog-footer">
-            <el-button @click="deleteVisible = false">Cancel</el-button>
-            <el-button v-if="confirmDelete === false" type="danger" disabled>Delete</el-button>
-            <el-button v-else type="danger" @click="deleteData">Delete</el-button>
+            <el-button class="cancelInnerButton" @click="deleteVisible = false">Cancel</el-button>
+            <el-button class="deleteInnerButton" v-if="confirmDelete === false" type="danger" disabled>Delete</el-button>
+            <el-button class="deleteInnerButton" v-else type="danger" @click="deleteData">Delete</el-button>
           </span>
         </el-dialog>
 
-        <el-button type="danger" @click="deleteVisible = true">
+        <el-button class="deleteOuterButton" type="danger" @click="deleteVisible = true">
           Delete
         </el-button>
-        <el-button @click="panelVisible = false">
+        <el-button class="cancelOuterButton" @click="panelVisible = false">
           Cancel
         </el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
+        <el-button class="confirmOuterButton" type="primary" @click="dialogStatus==='create'?createData():updateData()">
           Confirm
         </el-button>
       </div>
@@ -159,8 +156,21 @@ export default {
       confirmPassword: '',
       confirmDelete: false,
       deleteVisible: false,
-      tableKey: 0,
       list: null,
+      panelVisible: false,
+      dialogStatus: '',
+      rules: {
+        userId: [{ required: true, message: 'UserId is required.', trigger: 'change' }],
+        cardId: [{ required: true, message: 'CardId is required.', trigger: 'change' }],
+        cardLevel: [{ required: true, message: 'CardLevel is required.', trigger: 'change' }],
+        cardCurExp: [{ required: true, message: 'CardCurExp is required.', trigger: 'change' }],
+        cardLevelLimit: [{ required: true, message: 'CardLevelLimit is required.', trigger: 'change' }],
+        repetitiveOwns: [{ required: true, message: 'RepetitiveOwns is required.', trigger: 'change' }],
+        accquireDate: [{ required: true, message: 'AccquireData is required.', trigger: 'change' }],
+      },
+
+
+      tableKey: 0,
       listLoading: false,
       listQuery: {
         page: 1,
@@ -171,23 +181,12 @@ export default {
         sort: '+id'
       },
       sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
-      panelVisible: false,
-      dialogStatus: '',
       textMap: {
         update: 'Edit',
         create: 'Create'
       },
       dialogPvVisible: false,
       pvData: [],
-      rules: {
-        userId: [{ required: true, message: 'UserId is required.', trigger: 'change' }],
-        cardId: [{ required: true, message: 'CardId is required.', trigger: 'change' }],
-        cardLevel: [{ required: true, message: 'CardLevel is required.', trigger: 'change' }],
-        cardCurExp: [{ required: true, message: 'CardCurExp is required.', trigger: 'change' }],
-        cardLevelLimit: [{ required: true, message: 'CardLevelLimit is required.', trigger: 'change' }],
-        repetitiveOwns: [{ required: true, message: 'RepetitiveOwns is required.', trigger: 'change' }],
-        accquireDate: [{ required: true, message: 'AccquireData is required.', trigger: 'change' }],
-      },
       downloadLoading: false
     }
   },
@@ -290,11 +289,11 @@ export default {
           this.$message.error('Updating Data failed!');
         }
       })
-        .catch(error =>
-          {
-            this.$message.error('Updating Data failed!');
-          }
-        );
+      .catch(error =>
+        {
+          this.$message.error('Updating Data failed!');
+        }
+      );
     },
     confirmIdentity() {
       let postData = new FormData();
@@ -308,11 +307,11 @@ export default {
           this.$message.error('Identification failed!');
         }
       })
-        .catch(error =>
-          {
-            this.$message.error('Identification failed!');
-          }
-        );
+      .catch(error =>
+        {
+          this.$message.error('Identification failed!');
+        }
+      );
     },
     deleteData() {
       let postData = new FormData();
