@@ -117,50 +117,6 @@ public abstract class Point implements Serializable {
 		}
 		return this;
 	}
-	public Point rectCircuit(int centerX, int centerY, int speed, boolean clockwise) {
-		final int DX = -intDX(centerX), DY = -intDY(centerY);
-		final int AbsDX = Math.abs(DX), AbsDY = Math.abs(DY);
-		if(AbsDX > AbsDY) {
-			if(DX > 0 ^ clockwise)
-				addY(-speed);
-			else
-				addY(speed);
-		}else if(AbsDX < AbsDY) {
-			if(DY > 0 ^ clockwise)
-				addX(speed);
-			else
-				addX(-speed);
-		}else if((DX > 0 == DY > 0) ^ clockwise) {
-			if(DX < 0)
-				addX(speed);
-			else
-				addX(-speed);
-		}else {
-			if(DY < 0)
-				addY(speed);
-			else
-				addY(-speed);
-			
-		}
-		return this;
-	}
-	public Point rectCircuit(Point centerPoint, int speed, boolean clockwise) {
-		return rectCircuit(centerPoint.intX(), centerPoint.intY(), speed, clockwise);
-	}
-	public Point diaCircuit(int centerX, int centerY, int speed, boolean clockwise) {
-		return this;
-	}
-	public Point diaCircuit(Point centerPoint, int speed, boolean clockwise) {
-		return rectCircuit(centerPoint.intX(), centerPoint.intY(), speed, clockwise);
-	}
-	///////////////clone
-	public Point cloneAt(int dx, int dy) {
-		return clone().addXY(dx, dy);
-	}
-	public Point cloneAt(double dx, double dy) {
-		return clone().addXY(dx, dy);
-	}
-	
 	///////////////
 	//information
 	///////////////

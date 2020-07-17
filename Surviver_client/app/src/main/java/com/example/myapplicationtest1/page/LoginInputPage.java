@@ -9,8 +9,6 @@ import com.example.myapplicationtest1.utils.Utils;
 
 import org.json.JSONException;
 
-import java.util.Map;
-
 public class LoginInputPage extends Page {
     @Override
     public void onCreate(Bundle savedInstanceState) {

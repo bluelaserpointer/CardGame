@@ -30,10 +30,10 @@ public class GridArrayList<T> extends GridPainter {
 	//information
 	public final LinkedList<T> getIntersected(HasBoundingBox object) {
 		final LinkedList<T> liquids = new LinkedList<T>();
-		final int startX = (object.intX() - object.width()/2)/gridSize;
-		final int startY = (object.intY() - object.height()/2)/gridSize;
-		final int endX = (object.intX() + object.width()/2)/gridSize;
-		final int endY = (object.intY() + object.height()/2)/gridSize;
+		final int startX = (object.point().intX() - object.width()/2)/gridSize;
+		final int startY = (object.point().intY() - object.height()/2)/gridSize;
+		final int endX = (object.point().intX() + object.width()/2)/gridSize;
+		final int endY = (object.point().intY() + object.height()/2)/gridSize;
 		for(int posX = startX; posX <= endX; ++posX) {
 			for(int posY = startY; posY <= endY; ++posY) {
 				final T element = get_cellPos(posX, posY);
