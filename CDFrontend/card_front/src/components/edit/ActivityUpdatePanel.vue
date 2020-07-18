@@ -47,9 +47,16 @@
         <Tinymce ref="editor" v-model="postForm.content" :height="400" />
       </el-form-item>
 
-      <el-form-item prop="image_uri" style="margin: 0 0 30px 30px; width: 80%; grid-row: 2 / span 1; grid-column: 2 / span 1">
-        <Upload v-model="postForm.image_uri" />
-      </el-form-item>
+      <div style="display: grid; grid-template-columns: 50% 50%">
+        <el-image
+          style="width: 200px; height: 200px"
+          :src="postForm.image_uri"
+          :fit="itemImg"
+        />
+        <div class="coverControl">
+          <input ref="img" type="file" style="margin: 10px" @change="uploadCover">
+        </div>
+      </div>
 
     </div>
     <el-dialog
@@ -63,17 +70,16 @@
       <el-button class="confirmInnerButton" @click="confirmIdentity">Confirm Identity</el-button>
 
       <span slot="footer" class="dialog-footer">
-          <el-button class="cancelInnerButton" @click="deleteVisible = false">Cancel</el-button>
-          <el-button class="deleteInnerButton" v-if="confirmDelete === false" type="danger" disabled>Delete</el-button>
-          <el-button class="deleteInnerButton" v-else type="danger" @click="deleteData">Delete</el-button>
-        </span>
+        <el-button class="cancelInnerButton" @click="deleteVisible = false">Cancel</el-button>
+        <el-button class="deleteInnerButton" v-if="confirmDelete === false" type="danger" disabled>Delete</el-button>
+        <el-button class="deleteInnerButton" v-else type="danger" @click="deleteData">Delete</el-button>
+      </span>
     </el-dialog>
   </el-form>
 </template>
 
 <script>
   import Tinymce from '@/components/Tinymce/index'
-  import Upload from '@/components/Upload/SingleImage3'
   import MDinput from '@/components/MDinput/index'
   import Sticky from '@/components/Sticky/index' // 粘性header组件
   import Warning from './Warning'
@@ -98,17 +104,8 @@
 
   export default {
     name: 'ActivityUpdatePanel',
-    components: { Tinymce, MDinput, Upload, Sticky, Warning, CommentDropdown, PlatformDropdown, SourceUrlDropdown },
-    props: {
-      isEdit: {
-        type: Boolean,
-        default: false
-      },
-      updateContent:{
-        type: Object,
-        default: null
-      },
-    },
+    components: { Tinymce, MDinput, Sticky, Warning, CommentDropdown, PlatformDropdown, SourceUrlDropdown },
+    props: ['updateContent'] ,
     data() {
       const validateRequire = (rule, value, callback) => {
         if (value === '') {
@@ -121,22 +118,6 @@
           callback()
         }
       };
-
-      // const validateSourceUri = (rule, value, callback) => {
-      //   if (value) {
-      //     if (validURL(value)) {
-      //       callback()
-      //     } else {
-      //       this.$message({
-      //         message: '外链url填写不正确',
-      //         type: 'error'
-      //       });
-      //       callback(new Error('外链url填写不正确'))
-      //     }
-      //   } else {
-      //     callback()
-      //   }
-      // };
 
       return {
         deleteVisible: false,
@@ -193,6 +174,19 @@
       this.tempRoute = Object.assign({}, this.$route)
     },
     methods: {
+      uploadCover() {
+        const _this = this;
+        // 根据ref得到图片文件
+        var file = this.$refs.img;
+        // 使用h5的读取文件api
+        var reader = new FileReader();
+        reader.readAsDataURL(file.files[0]);
+        // 读取完成后触发
+        reader.onload = function() {
+          // 改变img的路径
+          _this.postForm.image_uri = this.result;
+        }
+      },
       confirmIdentity() {
         let postData = new FormData();
         let _this = this;
@@ -230,34 +224,6 @@
             }
           );
       },
-
-
-
-
-      delayDate(days){
-        let newDate = new Date();
-        let showDate;
-        for (let i = 1; i <= days; i++) { //后7天
-          let date = newDate.getDate() < 10 ? '0' + newDate.getDate() : newDate.getDate();
-          let yue = (newDate.getMonth() + 1) < 10 ? '0' + (newDate.getMonth() + 1) : (newDate.getMonth() + 1);
-          showDate = newDate.getFullYear() + '-' + yue + '-' + date;
-          newDate.setDate(newDate.getDate() + 1);
-        }
-        return showDate + ' 00:00:00';
-      },
-      formatDate(date){
-        return moment(new Date(date)).format('YYYY-MM-DD HH:mm:ss');
-      },
-
-      setTagsViewTitle() {
-        const title = 'Edit Activity';
-        const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` });
-        this.$store.dispatch('tagsView/updateVisitedView', route)
-      },
-      setPageTitle() {
-        const title = 'Edit Activity';
-        document.title = `${title} - ${this.postForm.id}`
-      },
       submitForm() {
         let postData = new FormData();
         let _this = this;
@@ -276,44 +242,49 @@
 
         postData.append('type', this.limit === true ? "true" : "false");
 
-        for (var key of postData.keys()) {
-          console.log(postData.get(key));
-        }
-
         axios.post(`http://localhost:8080/activity/updateActivity`, postData).then(response => {
           if (response.data) {
             //
             _this.$emit('getList');
           } else {
             //
+            this.$message.error('Updating Data failed!');
           }
         })
-
+          .catch(error =>
+            {
+              this.$message.error('Updating Data failed!');
+            }
+          );
+      },
+      delayDate(days){
+        let newDate = new Date();
+        let showDate;
+        for (let i = 1; i <= days; i++) { //后7天
+          let date = newDate.getDate() < 10 ? '0' + newDate.getDate() : newDate.getDate();
+          let yue = (newDate.getMonth() + 1) < 10 ? '0' + (newDate.getMonth() + 1) : (newDate.getMonth() + 1);
+          showDate = newDate.getFullYear() + '-' + yue + '-' + date;
+          newDate.setDate(newDate.getDate() + 1);
+        }
+        return showDate + ' 00:00:00';
+      },
+      formatDate(date){
+        return moment(new Date(date)).format('YYYY-MM-DD HH:mm:ss');
       },
 
 
-      // draftForm() {
-      //   if (this.postForm.content.length === 0 || this.postForm.title.length === 0) {
-      //     this.$message({
-      //       message: '请填写必要的标题和内容',
-      //       type: 'warning'
-      //     });
-      //     return
-      //   }
-      //   this.$message({
-      //     message: '保存成功',
-      //     type: 'success',
-      //     showClose: true,
-      //     duration: 1000
-      //   });
-      //   this.postForm.status = 'draft'
-      // },
-      // getRemoteUserList(query) {
-      //   searchUser(query).then(response => {
-      //     if (!response.data.items) return;
-      //     this.userListOptions = response.data.items.map(v => v.name)
-      //   })
-      // }
+
+
+      setTagsViewTitle() {
+        const title = 'Edit Activity';
+        const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` });
+        this.$store.dispatch('tagsView/updateVisitedView', route)
+      },
+      setPageTitle() {
+        const title = 'Edit Activity';
+        document.title = `${title} - ${this.postForm.id}`
+      },
+
     }
   }
 </script>

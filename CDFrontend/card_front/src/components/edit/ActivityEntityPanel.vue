@@ -5,10 +5,11 @@
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" />
     </div>
 
+<!--    :data="list.filter(data => !search || data.activityName.toLowerCase().includes(search.toLowerCase()))"-->
     <el-table
       :key="tableKey"
       v-loading="listLoading"
-      :data="list.filter(data => !search || data.activityName.toLowerCase().includes(search.toLowerCase()))"
+      :data="list"
       border
       fit
       highlight-current-row
@@ -143,7 +144,6 @@ export default {
       }
       this.list = list;
     },
-
     getList() {
       axios.get('http://localhost:8080/activity/getAllActivities')
         .then(response => {
@@ -165,51 +165,9 @@ export default {
       this.temp = Object.assign({}, row); // copy obj
       this.dialogStatus = 'update';
       this.panelVisible = true;
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
     },
 
 
-
-    // confirmIdentity() {
-    //   const postData = new FormData();
-    //   const _this = this;
-    //   postData.append('adminName', localStorage.getItem('AdminName'));
-    //   postData.append('password', this.confirmPassword);
-    //   axios.post('http://localhost:8080/admin/identifyAdmin', postData)
-    //     .then(response => {
-    //       if (response.data) {
-    //         _this.confirmDelete = true
-    //       } else {
-    //         this.$message.error('Identification failed!');
-    //       }
-    //     })
-    //     .catch(error =>
-    //       {
-    //         this.$message.error('Identification failed!');
-    //       }
-    //     );
-    // },
-    // deleteData() {
-    //   const postData = new FormData();
-    //   const _this = this;
-    //   postData.append('activityId', this.temp.activityId);
-    //   axios.post('http://localhost:8080/activity/deleteActivity', postData).then(response => {
-    //     if (response.data) {
-    //       _this.panelVisible = false;
-    //       _this.deleteVisible = false;
-    //       _this.getList()
-    //     } else {
-    //       this.$message.error('Deleting Data failed!');
-    //     }
-    //   })
-    //     .catch(error =>
-    //       {
-    //         this.$message.error('Deleting Data failed!');
-    //       }
-    //     );
-    // },
 
     handleFilter() {
       this.listQuery.page = 1;

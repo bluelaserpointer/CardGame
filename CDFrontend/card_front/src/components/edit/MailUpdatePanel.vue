@@ -27,9 +27,16 @@
         <Tinymce ref="editor" v-model="postForm.content" :height="400" />
       </el-form-item>
 
-      <el-form-item prop="image_uri" style="margin: 0 0 30px 30px; width: 80%; grid-row: 2 / span 1; grid-column: 2 / span 1">
-        <Upload v-model="postForm.image_uri" />
-      </el-form-item>
+      <div style="display: grid; grid-template-columns: 50% 50%">
+        <el-image
+          style="width: 200px; height: 200px"
+          :src="postForm.image_uri"
+          :fit="itemImg"
+        />
+        <div class="coverControl">
+          <input ref="img" type="file" style="margin: 10px" @change="uploadCover">
+        </div>
+      </div>
 
     </div>
     <el-dialog
@@ -53,7 +60,6 @@
 
 <script>
   import Tinymce from '@/components/Tinymce/index'
-  import Upload from '@/components/Upload/SingleImage3'
   import MDinput from '@/components/MDinput/index'
   import Sticky from '@/components/Sticky/index' // 粘性header组件
   import Warning from './Warning'
@@ -76,7 +82,7 @@
 
   export default {
     name: 'MailUpdatePanel',
-    components: { Tinymce, MDinput, Upload, Sticky, Warning, CommentDropdown, PlatformDropdown, SourceUrlDropdown },
+    components: { Tinymce, MDinput, Sticky, Warning, CommentDropdown, PlatformDropdown, SourceUrlDropdown },
     props: {
       isEdit: {
         type: Boolean,
@@ -165,6 +171,19 @@
       this.tempRoute = Object.assign({}, this.$route)
     },
     methods: {
+      uploadCover() {
+        const _this = this;
+        // 根据ref得到图片文件
+        var file = this.$refs.img;
+        // 使用h5的读取文件api
+        var reader = new FileReader();
+        reader.readAsDataURL(file.files[0]);
+        // 读取完成后触发
+        reader.onload = function() {
+          // 改变img的路径
+          _this.postForm.image_uri = this.result;
+        }
+      },
       confirmIdentity() {
         let postData = new FormData();
         let _this = this;

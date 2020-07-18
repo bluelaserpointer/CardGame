@@ -132,7 +132,6 @@
             :fit="cardImg"
           />
           <div class="coverControl">
-            <el-button type="primary" style="margin: 10px">上传<i class="el-icon-upload el-icon--right" /></el-button>
             <input ref="img" type="file" style="margin: 10px" @change="uploadCover">
           </div>
         </div>

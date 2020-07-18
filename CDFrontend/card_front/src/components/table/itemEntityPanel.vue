@@ -80,7 +80,6 @@
             :fit="itemImg"
           />
           <div class="coverControl">
-            <el-button type="primary" style="margin: 10px">上传<i class="el-icon-upload el-icon--right" /></el-button>
             <input ref="img" type="file" style="margin: 10px" @change="uploadCover">
           </div>
         </div>
@@ -206,7 +205,6 @@ export default {
       this.list = list
     },
     confirmIdentity() {
-      // TODO: REQUEST --- PWD USR MATCH
       const postData = new FormData();
       const _this = this;
       postData.append('adminName', localStorage.getItem('AdminName'));
@@ -255,7 +253,6 @@ export default {
       reader.onload = function() {
         // 改变img的路径
         _this.temp.itemImg = this.result;
-        console.log('In onload')
       }
     },
     getList() {
