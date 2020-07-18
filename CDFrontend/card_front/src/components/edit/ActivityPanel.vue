@@ -20,7 +20,7 @@ export default {
   },
   methods: {
     handleClick(tab, event) {
-      console.log(tab, event);
+      console.log(tab.$el.id);
       if (tab.$el.id === 'pane-second') {
         this.$refs.entity.getList()
       }

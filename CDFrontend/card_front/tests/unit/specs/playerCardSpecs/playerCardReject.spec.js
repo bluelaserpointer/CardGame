@@ -17,13 +17,13 @@ describe('PlayerCardPanel.vue', () => {
       localVue
     });
 
-  it('Player Card Panel rejecting created',  async () => {
+  it('Player Card Panel Rejects created',  async () => {
     expect(wrapper.vm.list).toStrictEqual(null);
     expect(axios.get).toHaveBeenCalledTimes(1);
     expect(axios.get).toBeCalledWith('http://localhost:8080/ownCard/getAllOwnCards');
   });
 
-  it('Player Card Panel rejecting confirmIdentity', async () => {
+  it('Player Card Panel Rejects confirmIdentity', async () => {
     wrapper.vm.confirmDelete = false;
 
     await wrapper.vm.confirmIdentity();
@@ -31,7 +31,7 @@ describe('PlayerCardPanel.vue', () => {
     expect(wrapper.vm.confirmDelete).toBeFalsy();
   });
 
-  it('Player Card Panel rejecting deleteData',  async () => {
+  it('Player Card Panel Rejects deleteData',  async () => {
     wrapper.vm.confirmDelete = true;
     wrapper.vm.panelVisible = true;
     wrapper.vm.deleteVisible = true;
@@ -49,13 +49,13 @@ describe('PlayerCardPanel.vue', () => {
     expect(axios.get).toBeCalledWith("http://localhost:8080/ownCard/getAllOwnCards");
   });
 
-  it('Player Card Panel rejecting createData', async () => {
+  it('Player Card Panel Rejects createData', async () => {
     wrapper.vm.panelVisible = true;
     await wrapper.vm.createData();
     expect(wrapper.vm.panelVisible).toBeTruthy();
   });
 
-  it('Player Card Panel rejecting updateData', async () => {
+  it('Player Card Panel Rejects updateData', async () => {
     wrapper.vm.panelVisible = true;
     await wrapper.vm.updateData();
     expect(wrapper.vm.panelVisible).toBeTruthy();

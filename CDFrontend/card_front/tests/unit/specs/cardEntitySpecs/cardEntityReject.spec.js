@@ -4,35 +4,36 @@ jest.mock('axios', () => ({
 }));
 
 import {createLocalVue, mount, shallowMount} from '@vue/test-utils'
-import ItemEntityPanel from '@/components/table/itemEntityPanel'
+import CardEntityPanel from '@/components/table/cardEntityPanel'
 import Element from 'element-ui';
+import flushPromises from "flush-promises";
 import axios from 'axios';
 
 const localVue = createLocalVue();
 localVue.use(Element);
 
-describe('ItemEntityPanel.vue', () => {
-  const wrapper = mount(ItemEntityPanel,
+describe('CardEntityPanel.vue', () => {
+  const wrapper = mount(CardEntityPanel,
     {
       localVue
     });
 
-  it('Item Entity Panel rejects calling created',  async () => {
+  it('Card Entity Panel Rejects created',  async () => {
     expect(wrapper.vm.list).toStrictEqual(null);
     expect(axios.get).toHaveBeenCalledTimes(1);
-    expect(axios.get).toBeCalledWith('http://localhost:8080/item/getAllItems');
+    expect(axios.get).toBeCalledWith('http://localhost:8080/card/getAllCards');
   });
 
-  it('Item Entity Panel rejects calling getList, watchList',  async () => {
+  it('Card Entity Panel Rejects getList, watchList',  async () => {
     expect(axios.get).toHaveBeenCalledTimes(1);
 
     await wrapper.vm.getList(()=>{wrapper.vm.watchList()});
     expect(wrapper.vm.list).toStrictEqual(null);
     expect(axios.get).toHaveBeenCalledTimes(2);
-    expect(axios.get).toBeCalledWith('http://localhost:8080/item/getAllItems');
+    expect(axios.get).toBeCalledWith('http://localhost:8080/card/getAllCards');
   });
 
-  it('Item Entity Panel rejects calling confirmIdentity', async () => {
+  it('Card Entity Panel Rejects confirmIdentity', async () => {
     wrapper.vm.confirmDelete = false;
 
     await wrapper.vm.confirmIdentity();
@@ -40,7 +41,8 @@ describe('ItemEntityPanel.vue', () => {
     expect(wrapper.vm.confirmDelete).toBeFalsy();
   });
 
-  it('Item Entity Panel rejects calling deleteData',  async () => {
+
+  it('Card Entity Panel Rejects deleteData',  async () => {
     wrapper.vm.confirmDelete = true;
     wrapper.vm.panelVisible = true;
     wrapper.vm.deleteVisible = true;
@@ -55,16 +57,16 @@ describe('ItemEntityPanel.vue', () => {
     expect(wrapper.vm.deleteVisible).toBeTruthy();
     expect(axios.post).toHaveBeenCalledTimes(2);
     expect(axios.get).toHaveBeenCalledTimes(2);
-    expect(axios.get).toBeCalledWith("http://localhost:8080/item/getAllItems");
+    expect(axios.get).toBeCalledWith("http://localhost:8080/card/getAllCards");
   });
 
-  it('Item Entity Panel rejects calling createData', async () => {
+  it('Card Entity Panel Rejects createData', async () => {
     wrapper.vm.panelVisible = true;
     await wrapper.vm.createData();
     expect(wrapper.vm.panelVisible).toBeTruthy();
   });
 
-  it('Item Entity Panel rejects calling updateData', async () => {
+  it('Card Entity Panel Rejects updateData', async () => {
     wrapper.vm.panelVisible = true;
     await wrapper.vm.updateData();
     expect(wrapper.vm.panelVisible).toBeTruthy();

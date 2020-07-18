@@ -21,7 +21,6 @@ jest.mock('axios', () => ({
 import {createLocalVue, mount, shallowMount} from '@vue/test-utils'
 import CardEntityPanel from '@/components/table/cardEntityPanel'
 import Element from 'element-ui';
-import flushPromises from "flush-promises";
 import axios from 'axios';
 
 const localVue = createLocalVue();
@@ -33,7 +32,7 @@ describe('CardEntityPanel.vue', () => {
       localVue
     });
 
-  it('Card Entity Panel calling created',  async () => {
+  it('Card Entity Panel Resolves created',  async () => {
     expect(wrapper.vm.list).toStrictEqual([{
       cardId: 0,
       cardName: '',
@@ -57,7 +56,7 @@ describe('CardEntityPanel.vue', () => {
     expect(axios.get).toBeCalledWith('http://localhost:8080/card/getAllCards');
   });
 
-  it('Card Entity Panel calling getList, watchList',  async () => {
+  it('Card Entity Panel Resolves getList, watchList',  async () => {
     expect(axios.get).toHaveBeenCalledTimes(1);
 
     await wrapper.vm.getList(()=>{wrapper.vm.watchList()});
@@ -84,10 +83,18 @@ describe('CardEntityPanel.vue', () => {
     expect(axios.get).toBeCalledWith('http://localhost:8080/card/getAllCards');
   });
 
-  it('Card Entity Panel calling deleteData',  async () => {
+  it('Card Entity Panel Resolves confirmIdentity', async () => {
+    wrapper.vm.confirmDelete = false;
+
+    await wrapper.vm.confirmIdentity();
+
+    expect(wrapper.vm.confirmDelete).toBeTruthy();
+  });
+
+  it('Card Entity Panel Resolves deleteData',  async () => {
     wrapper.vm.confirmDelete = true;
 
-    expect(axios.post).toHaveBeenCalledTimes(0);
+    expect(axios.post).toHaveBeenCalledTimes(1);
     expect(axios.get).toHaveBeenCalledTimes(2);
     expect(wrapper.vm.confirmDelete).toBeTruthy();
 
@@ -95,12 +102,12 @@ describe('CardEntityPanel.vue', () => {
 
     expect(wrapper.vm.panelVisible).toBeFalsy();
     expect(wrapper.vm.deleteVisible).toBeFalsy();
-    expect(axios.post).toHaveBeenCalledTimes(1);
+    expect(axios.post).toHaveBeenCalledTimes(2);
     expect(axios.get).toHaveBeenCalledTimes(3);
     expect(axios.get).toBeCalledWith("http://localhost:8080/card/getAllCards");
   });
 
-  it('Card Entity Panel calling resetTemp', () => {
+  it('Card Entity Panel Resolves resetTemp', () => {
     wrapper.vm.temp = {
       cardId: 1,
       cardName: '1',
@@ -135,7 +142,7 @@ describe('CardEntityPanel.vue', () => {
     );
   });
 
-  it('Card Entity Panel calling handleCreate', () => {
+  it('Card Entity Panel Resolves handleCreate', () => {
     wrapper.vm.dialogStatus = 'xxx';
     wrapper.vm.panelVisible = false;
 
@@ -144,7 +151,7 @@ describe('CardEntityPanel.vue', () => {
     expect(wrapper.vm.dialogStatus).toBeTruthy();
   });
 
-  it('Card Entity Panel calling handleUpdate', () => {
+  it('Card Entity Panel Resolves handleUpdate', () => {
     wrapper.vm.dialogStatus = 'xxx';
     wrapper.vm.panelVisible = false;
 
@@ -153,12 +160,12 @@ describe('CardEntityPanel.vue', () => {
     expect(wrapper.vm.dialogStatus).toBeTruthy();
   });
 
-  it('Card Entity Panel calling createData', async () => {
+  it('Card Entity Panel Resolves createData', async () => {
     await wrapper.vm.createData();
     expect(wrapper.vm.panelVisible).toBeFalsy();
   });
 
-  it('Card Entity Panel calling updateData', async () => {
+  it('Card Entity Panel Resolves updateData', async () => {
     await wrapper.vm.updateData();
     expect(wrapper.vm.panelVisible).toBeFalsy();
   });

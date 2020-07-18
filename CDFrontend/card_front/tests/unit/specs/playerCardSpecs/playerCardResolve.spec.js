@@ -26,7 +26,7 @@ describe('PlayerCardPanel.vue', () => {
       localVue
     });
 
-  it('Player Card Panel calling created',  async () => {
+  it('Player Card Panel Resolves created',  async () => {
     expect(wrapper.vm.list).toStrictEqual([{
       ownCardId: 0,
       userId: 0,
@@ -41,7 +41,7 @@ describe('PlayerCardPanel.vue', () => {
     expect(axios.get).toBeCalledWith('http://localhost:8080/ownCard/getAllOwnCards');
   });
 
-  it('Player Card Panel rejecting confirmIdentity', async () => {
+  it('Player Card Panel Resolves confirmIdentity', async () => {
     wrapper.vm.confirmDelete = false;
 
     await wrapper.vm.confirmIdentity();
@@ -49,7 +49,7 @@ describe('PlayerCardPanel.vue', () => {
     expect(wrapper.vm.confirmDelete).toBeTruthy();
   });
 
-  it('Player Card Panel calling deleteData',  async () => {
+  it('Player Card Panel Resolves deleteData',  async () => {
     wrapper.vm.confirmDelete = true;
 
     expect(axios.post).toHaveBeenCalledTimes(1);
@@ -65,7 +65,7 @@ describe('PlayerCardPanel.vue', () => {
     expect(axios.get).toBeCalledWith("http://localhost:8080/ownCard/getAllOwnCards");
   });
 
-  it('Player Card Panel calling resetTemp', () => {
+  it('Player Card Panel Resolves resetTemp', () => {
     wrapper.vm.temp = {
       ownCardId: 0,
       userId: 0,
@@ -92,7 +92,7 @@ describe('PlayerCardPanel.vue', () => {
     );
   });
 
-  it('Player Card Panel calling handleCreate', () => {
+  it('Player Card Panel Resolves handleCreate', () => {
     wrapper.vm.dialogStatus = 'xxx';
     wrapper.vm.panelVisible = false;
 
@@ -101,7 +101,7 @@ describe('PlayerCardPanel.vue', () => {
     expect(wrapper.vm.dialogStatus).toBeTruthy();
   });
 
-  it('Player Card Panel calling handleUpdate', () => {
+  it('Player Card Panel Resolves handleUpdate', () => {
     wrapper.vm.dialogStatus = 'xxx';
     wrapper.vm.panelVisible = false;
 
@@ -110,12 +110,12 @@ describe('PlayerCardPanel.vue', () => {
     expect(wrapper.vm.dialogStatus).toBeTruthy();
   });
 
-  it('Player Card Panel calling createData', async () => {
+  it('Player Card Panel Resolves createData', async () => {
     await wrapper.vm.createData();
     expect(wrapper.vm.panelVisible).toBeFalsy();
   });
 
-  it('Player Card Panel calling updateData', async () => {
+  it('Player Card Panel Resolves updateData', async () => {
     await wrapper.vm.updateData();
     expect(wrapper.vm.panelVisible).toBeFalsy();
   });
