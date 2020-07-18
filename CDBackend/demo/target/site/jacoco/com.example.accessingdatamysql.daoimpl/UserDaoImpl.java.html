@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserDaoImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">demo</a> &gt; <a href="index.source.html" class="el_package">com.example.accessingdatamysql.daoimpl</a> &gt; <span class="el_source">UserDaoImpl.java</span></div><h1>UserDaoImpl.java</h1><pre class="source lang-java linenums">package com.example.accessingdatamysql.daoimpl;
+
+import com.example.accessingdatamysql.dao.UserDao;
+import com.example.accessingdatamysql.repository.*;
+import com.example.accessingdatamysql.entity.*;
+
+// import org.hibernate.validator.constraints.ISBN;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+// import java.io.Console;
+import java.util.*;
+
+@Repository
+<span class="fc" id="L15">public class UserDaoImpl implements UserDao {</span>
+    @Autowired
+    private UserRepository UserRepository;
+
+    // 获取一个用户信息
+    @Override
+    public User getOneUser(Integer UserId) {
+<span class="fc" id="L22">        return UserRepository.getOne(UserId);</span>
+    }
+
+    // 添加一个新用户
+    @Override
+    public User addNewUser(String userName, String email, String password, String phoneNumber) {
+<span class="fc" id="L28">        User User = new User(userName, email, password, phoneNumber);</span>
+        // System.out.println(&quot;new User has an Id of : &quot; + n.getUserId());
+<span class="fc" id="L30">        UserRepository.save(User);</span>
+<span class="fc" id="L31">        return User;</span>
+    }
+
+    // 更新一个用户信息
+    @Override
+    public User updateUser(Integer UserId, String userName, String email, String password, String phoneNumber,
+            Integer credits, Boolean access, Integer level, Integer curExpPoint, Integer stamina, Integer money,
+            Double grade, Integer engKnowledge, Integer mathKnowledge, Integer chiKnowledge) {
+
+<span class="fc" id="L40">        User User = UserRepository.getOne(UserId);</span>
+        // System.out.println(&quot;old User has an Id of : &quot; + n.getUserId());
+<span class="fc" id="L42">        User.updateUser(userName, email, password, phoneNumber, credits, access, level, curExpPoint, stamina, money,</span>
+                grade, engKnowledge, mathKnowledge, chiKnowledge);
+
+<span class="fc" id="L45">        UserRepository.updateUserStatus(User, UserId);</span>
+        // return &quot;Modified User&quot;;
+<span class="fc" id="L47">        return User;</span>
+
+    }
+
+    // 获取所有用户信息
+    @Override
+    public List&lt;User&gt; getAllUsers() {
+<span class="fc" id="L54">        List&lt;User&gt; Users = UserRepository.findAll();</span>
+<span class="fc" id="L55">        return Users;</span>
+    }
+
+    // 删除部分用户
+    @Override
+    public String deleteUsers(List&lt;Integer&gt; UserIds) {
+<span class="fc bfc" id="L61" title="All 2 branches covered.">        for (int i = 0; i &lt; UserIds.size(); i++) {</span>
+<span class="fc" id="L62">            UserRepository.deleteById(UserIds.get(i));</span>
+        }
+<span class="fc" id="L64">        return &quot;Deleted Users by id&quot;;</span>
+    }
+
+    // 删除所有用户
+    @Override
+    public String deleteAll() {
+<span class="fc" id="L70">        UserRepository.deleteAll();</span>
+<span class="fc" id="L71">        return &quot;Deleted All Users&quot;;</span>
+    }
+
+    // 使用用户名查询用户
+    @Override
+    public User getOneUserByUserName(String userName) {
+<span class="fc" id="L77">        return UserRepository.findUserByUserNameEquals(userName);</span>
+    }
+
+    // 删除一个指定用户
+    @Override
+    public List&lt;User&gt; deleteUser(Integer userId) {
+<span class="fc" id="L83">        UserRepository.deleteById(userId);</span>
+<span class="fc" id="L84">        return getAllUsers();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

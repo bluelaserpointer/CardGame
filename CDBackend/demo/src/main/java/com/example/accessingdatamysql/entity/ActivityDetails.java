@@ -1,7 +1,5 @@
 package com.example.accessingdatamysql.entity;
 
-import java.sql.Timestamp;
-
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -14,14 +12,11 @@ public class ActivityDetails {
     private String activityImg;
     // 活动描述
     private String activityDescription;
-    // 活动开始的时间
-    private Timestamp start;
 
-    public ActivityDetails(Integer activityId, String activityImg, String activityDescription, Timestamp start) {
+    public ActivityDetails(Integer activityId, String activityImg, String activityDescription) {
         this.activityId = activityId;
         this.activityImg = activityImg;
         this.activityDescription = activityDescription;
-        this.start = start;
     }
 
     public Integer getActivityId() {
@@ -49,14 +44,6 @@ public class ActivityDetails {
 
     public void setActivityDescription(String activityDescription) {
         this.activityDescription = activityDescription;
-    }
-
-    public Timestamp getStart() {
-        return this.start;
-    }
-
-    public void setStart(Timestamp start) {
-        this.start = start;
     }
 
 }

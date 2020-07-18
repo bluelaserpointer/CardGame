@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CardServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">demo</a> &gt; <a href="index.source.html" class="el_package">com.example.accessingdatamysql.serviceimpl</a> &gt; <span class="el_source">CardServiceImpl.java</span></div><h1>CardServiceImpl.java</h1><pre class="source lang-java linenums">package com.example.accessingdatamysql.serviceimpl;
+
+import com.example.accessingdatamysql.dao.*;
+import com.example.accessingdatamysql.entity.*;
+import com.example.accessingdatamysql.service.CardService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.*;
+
+@Service
+<span class="fc" id="L13">public class CardServiceImpl implements CardService {</span>
+    @Autowired
+    private CardDao CardDao;
+
+    @Override
+    public Card getOneCard(Integer CardId) {
+<span class="nc" id="L19">        return CardDao.getOneCard(CardId);</span>
+    }
+
+    public String addNewCard(String cardName, String rarity, Integer healthPoint, Integer attack, Integer defense,
+            Integer attackRange, Double cd, Integer speed, String cardImg, String shortDescription,
+            String cardDescription) {
+<span class="nc" id="L25">        return CardDao.addNewCard(cardName, rarity, healthPoint, attack, defense, attackRange, cd, speed, cardImg,</span>
+                shortDescription, cardDescription);
+    }
+
+    public String updateCard(Integer cardId, String cardName, String rarity, Integer healthPoint, Integer attack,
+            Integer defense, Integer attackRange, Double cd, Integer speed, String cardImg, String shortDescription,
+            String cardDescription) {
+<span class="nc" id="L32">        System.out.println(&quot;In service&quot;);</span>
+<span class="nc" id="L33">        return CardDao.updateCard(cardId, cardName, rarity, healthPoint, attack, defense, attackRange, cd, speed,</span>
+                cardImg, shortDescription, cardDescription);
+    }
+
+    public List&lt;Card&gt; getAllCards() {
+<span class="nc" id="L38">        return CardDao.getAllCards();</span>
+    }
+
+    public String deleteCards(List&lt;Integer&gt; CardIds) {
+<span class="nc" id="L42">        return CardDao.deleteCards(CardIds);</span>
+    }
+
+    public String deleteAll() {
+<span class="nc" id="L46">        return CardDao.deleteAll();</span>
+    }
+
+    public List&lt;Card&gt; deleteCard(Integer cardId) {
+<span class="nc" id="L50">        return CardDao.deleteCard(cardId);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

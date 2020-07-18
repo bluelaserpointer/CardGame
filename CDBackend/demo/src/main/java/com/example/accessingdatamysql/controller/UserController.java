@@ -12,16 +12,17 @@ import java.util.*;
 import com.example.accessingdatamysql.service.UserService;
 
 @CrossOrigin(origins = "*")
-@RestController // This means that this class is a Controller
-@RequestMapping(path = "/user") // This means URL's start with /demo (after Application path)
+@RestController() // This means that this class is a Controller
+@RequestMapping(value = "/user") // This means URL's start with /demo (after Application path)
 public class UserController {
 
   @Autowired
   private UserService userService;
 
   // 获取一个用户信息
-  @RequestMapping(value = "/getUser")
-  public User findUserByUserId(@RequestParam("userId") Integer userId) {
+  @GetMapping(value = "/getUser")
+  public @ResponseBody User findUserByUserId(@RequestParam("userId") Integer userId) {
+    System.out.println("Class: UserController Method:finduserByUserId Param:" + userId);
     return userService.getOneUser(userId);
   }
 
@@ -79,6 +80,7 @@ public class UserController {
   // 增加用户经验值(如果累计经验值超过升级所需经验值则升级后再返回user)
   @RequestMapping(value = "/addExp")
   public @ResponseBody User addExp(@RequestParam("userId") Integer userId, @RequestParam("exp") Integer exp) {
+    System.out.println("Class: UserController Method: addExp Param: userId = " + userId + " exp = " + exp);
     return userService.addExp(userId, exp);
   }
 }

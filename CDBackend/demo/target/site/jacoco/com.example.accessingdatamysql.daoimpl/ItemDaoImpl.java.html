@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ItemDaoImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">demo</a> &gt; <a href="index.source.html" class="el_package">com.example.accessingdatamysql.daoimpl</a> &gt; <span class="el_source">ItemDaoImpl.java</span></div><h1>ItemDaoImpl.java</h1><pre class="source lang-java linenums">package com.example.accessingdatamysql.daoimpl;
+
+import com.example.accessingdatamysql.dao.ItemDao;
+import com.example.accessingdatamysql.repository.*;
+import com.example.accessingdatamysql.entity.*;
+
+// import org.hibernate.validator.constraints.ISBN;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+// import java.io.Console;
+import java.util.*;
+
+@Repository
+<span class="fc" id="L15">public class ItemDaoImpl implements ItemDao {</span>
+    @Autowired
+    private ItemRepository ItemRepository;
+    @Autowired
+    private ItemDetailsRepository ItemDetailsRepository;
+
+    @Override
+    public Item getOneItem(Integer ItemId) {
+<span class="nc" id="L23">        Item Item = ItemRepository.getOne(ItemId);</span>
+<span class="nc" id="L24">        Optional&lt;ItemDetails&gt; ItemDetails = ItemDetailsRepository.findItemDetailsByItemIdEquals(ItemId);</span>
+<span class="nc" id="L25">        ItemDetails.ifPresent(Item::setItemDetails);</span>
+<span class="nc" id="L26">        return Item;</span>
+    }
+
+    // public void modifyStorage(Item Item) {
+    // ItemRepository.updateStorageStatus(Item.getStorage(), Item.getItemId());
+    // return;
+    // }
+
+    // public ItemDetails findOneDetail(Integer id) {
+    // return ItemDetailsRepository.findById(id);
+    // }
+
+    public String addNewItem(String itemName, Integer price, String itemImg, String itemDescription) {
+
+<span class="nc" id="L40">        Item Item = new Item(itemName, price);</span>
+        // System.out.println(&quot;new Item has an Id of : &quot; + n.getItemId());
+<span class="nc" id="L42">        ItemRepository.save(Item);</span>
+<span class="nc" id="L43">        ItemDetails ItemDetails = new ItemDetails(Item.getItemId(), itemImg, itemDescription);</span>
+<span class="nc" id="L44">        ItemDetailsRepository.save(ItemDetails);</span>
+<span class="nc" id="L45">        return &quot;Saved Item&quot;;</span>
+
+    }
+
+    public String updateItem(Integer ItemId, String itemName, Integer price, String itemImg, String itemDescription) {
+
+<span class="nc" id="L51">        Item Item = ItemRepository.getOne(ItemId);</span>
+        // System.out.println(&quot;old Item has an Id of : &quot; + n.getItemId());
+<span class="nc" id="L53">        Item.setItem(itemName, price);</span>
+
+<span class="nc" id="L55">        ItemRepository.updateItemStatus(Item, ItemId);</span>
+
+<span class="nc" id="L57">        Optional&lt;ItemDetails&gt; optItemDetails = ItemDetailsRepository.findItemDetailsByItemIdEquals(ItemId);</span>
+<span class="nc" id="L58">        ItemDetails itemDetails = new ItemDetails(ItemId, &quot;&quot;, &quot;&quot;);</span>
+<span class="nc bnc" id="L59" title="All 2 branches missed.">        if (optItemDetails.isPresent()) {</span>
+<span class="nc" id="L60">            System.out.println(&quot;Item Exists&quot;);</span>
+<span class="nc" id="L61">            itemDetails = optItemDetails.get();</span>
+        } else {
+<span class="nc" id="L63">            System.out.println(&quot;Item doesn't exist&quot;);</span>
+        }
+
+<span class="nc" id="L66">        itemDetails.setItemDescription(itemDescription);</span>
+<span class="nc" id="L67">        itemDetails.setItemImg(itemImg);</span>
+<span class="nc" id="L68">        ItemDetailsRepository.save(itemDetails);</span>
+<span class="nc" id="L69">        return &quot;modified Item: &quot; + Item.getItemName();</span>
+
+    }
+
+    public List&lt;Item&gt; getAllItems() {
+<span class="nc" id="L74">        List&lt;Item&gt; Items = ItemRepository.findAll();</span>
+<span class="nc bnc" id="L75" title="All 2 branches missed.">        for (int i = 0; i &lt; Items.size(); i++) {</span>
+<span class="nc" id="L76">            Item Item = Items.get(i);</span>
+<span class="nc" id="L77">            Optional&lt;ItemDetails&gt; ItemDetails = ItemDetailsRepository.findItemDetailsByItemIdEquals(Item.getItemId());</span>
+<span class="nc" id="L78">            ItemDetails.ifPresent(Item::setItemDetails);</span>
+<span class="nc" id="L79">            Items.set(i, Item);</span>
+        }
+<span class="nc" id="L81">        return Items;</span>
+    }
+
+    public String deleteItems(List&lt;Integer&gt; ItemIds) {
+<span class="nc bnc" id="L85" title="All 2 branches missed.">        for (int i = 0; i &lt; ItemIds.size(); i++) {</span>
+<span class="nc" id="L86">            ItemRepository.deleteById(ItemIds.get(i));</span>
+<span class="nc" id="L87">            ItemDetailsRepository.deleteItemDetailsByItemIdEquals(ItemIds.get(i));</span>
+        }
+<span class="nc" id="L89">        return &quot;Deleted Items by id&quot;;</span>
+    }
+
+    public String deleteAll() {
+<span class="nc" id="L93">        ItemRepository.deleteAll();</span>
+<span class="nc" id="L94">        ItemDetailsRepository.deleteAll();</span>
+<span class="nc" id="L95">        return &quot;Deleted All Items&quot;;</span>
+    }
+
+    public List&lt;Item&gt; deleteItem(Integer itemId)
+    {
+<span class="nc" id="L100">      ItemRepository.deleteById(itemId);</span>
+<span class="nc" id="L101">      ItemDetailsRepository.deleteItemDetailsByItemIdEquals(itemId);</span>
+<span class="nc" id="L102">      return getAllItems();</span>
+    };
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

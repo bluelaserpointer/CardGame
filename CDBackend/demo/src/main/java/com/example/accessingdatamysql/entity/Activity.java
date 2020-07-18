@@ -1,5 +1,7 @@
 package com.example.accessingdatamysql.entity;
 
+import java.sql.Timestamp;
+
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -19,6 +21,8 @@ public class Activity {
     private String activityName;
     // 活动类型（分为定期或限定）
     private String type;
+    // 活动开始的时间
+    private Timestamp start;
     // 活动细节，包括描述与图片等
     @Transient
     private ActivityDetails activityDetails;
@@ -26,14 +30,16 @@ public class Activity {
     public Activity() {
     }
 
-    public Activity(String type, String activityName) {
+    public Activity(String type, String activityName, Timestamp start) {
         this.type = type;
         this.activityName = activityName;
+        this.start = start;
     }
 
-    public void setActivity(String type, String activityName) {
+    public void setActivity(String type, String activityName, Timestamp start) {
         this.type = type;
         this.activityName = activityName;
+        this.start = start;
     }
 
     public Integer getActivityId() {
@@ -58,6 +64,14 @@ public class Activity {
 
     public void setActivityName(String activityName) {
         this.activityName = activityName;
+    }
+
+    public Timestamp getStart() {
+        return this.start;
+    }
+
+    public void setStart(Timestamp start) {
+        this.start = start;
     }
 
     public ActivityDetails getActivityDetails() {

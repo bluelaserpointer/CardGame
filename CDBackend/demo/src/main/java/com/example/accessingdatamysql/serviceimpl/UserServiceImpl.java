@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
                 user.getCredits(), user.getAccess(), user.getLevel(), user.getCurExpPoint(), user.getStamina(),
                 user.getMoney(), user.getGrade(), user.getEngKnowledge(), user.getMathKnowledge(),
                 user.getChiKnowledge());
-        return null;
+        return user;
     }
 
     // 获取所有用户信息
@@ -82,8 +82,13 @@ public class UserServiceImpl implements UserService {
     // 增加用户经验值(如果累计经验值超过升级所需经验值则升级后再返回user)
     @Override
     public User addExp(Integer userId, Integer exp) {
-        User user = getOneUser(userId);
+        User user = userDao.getOneUser(userId);
         Integer expToNextLevel = expToLevelUp(user.getLevel());
+        System.out.println("UserService -> addExp:");
+        System.out.println("Before Modification: ");
+        System.out.println("User: userId = " + userId + " userName = " + user.getUserName() + " level = "
+                + user.getLevel() + " curExpPoint = " + user.getCurExpPoint() + " exp = " + exp);
+        System.out.println("expToNextLevel: " + expToNextLevel);
         Integer newExp = user.getCurExpPoint() + exp;
         if (newExp > expToNextLevel) {
             newExp -= expToNextLevel;
@@ -91,7 +96,11 @@ public class UserServiceImpl implements UserService {
         }
         user.setCurExpPoint(newExp);
         updateUserByUser(userId, user);
-        return null;
+        System.out.println("After Modification: ");
+        System.out.println("User: userId = " + userId + " userName = " + user.getUserName() + " level = "
+                + user.getLevel() + " curExpPoint = " + user.getCurExpPoint());
+
+        return user;
     }
 
     /*
@@ -100,6 +109,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public Integer expToLevelUp(Integer userLevel) {
         Integer base = 100; // 等级为1时需要100经验值
+        if (userLevel.equals(1))
+            return base;
         double IncreaseRate = 1.05;
         double result = Math.round(Math.pow(IncreaseRate, userLevel - 1) * base); // 小数采用四舍五入法
         return (int) result;

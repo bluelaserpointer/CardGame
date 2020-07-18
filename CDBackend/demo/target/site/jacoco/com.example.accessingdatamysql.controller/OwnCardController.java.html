@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OwnCardController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">demo</a> &gt; <a href="index.source.html" class="el_package">com.example.accessingdatamysql.controller</a> &gt; <span class="el_source">OwnCardController.java</span></div><h1>OwnCardController.java</h1><pre class="source lang-java linenums">package com.example.accessingdatamysql.controller;
+
+import com.example.accessingdatamysql.entity.*;
+import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
+
+import java.sql.Timestamp;
+// import java.sql.Timestamp;
+import java.util.*;
+
+import com.example.accessingdatamysql.service.OwnCardService;
+
+@CrossOrigin(origins = &quot;*&quot;)
+@RestController // This means that this class is a Controller
+@RequestMapping(path = &quot;/ownCard&quot;) // This means URL's start with /demo (after Application path)
+<span class="fc" id="L17">public class OwnCardController {</span>
+  @Autowired
+  private OwnCardService OwnCardService;
+
+  // 获取一张用户拥有卡牌关系
+  @RequestMapping(value = &quot;/getOwnCard&quot;)
+  public OwnCard findOwnCardByOwnCardId(@RequestParam(&quot;ownCardId&quot;) Integer ownCardId) {
+<span class="nc" id="L24">    return OwnCardService.getOneOwnCard(ownCardId);</span>
+  }
+
+  // 增加一个用户拥有卡牌关系
+  @RequestMapping(value = &quot;/addOwnCard&quot;)
+  public @ResponseBody String addNewOwnCard(@RequestParam(&quot;userId&quot;) Integer userId,
+      @RequestParam(&quot;cardId&quot;) Integer cardId) {
+<span class="nc" id="L31">    return OwnCardService.addNewOwnCard(userId, cardId);</span>
+  }
+
+  // 更新一个用户拥有卡牌关系
+  @RequestMapping(value = &quot;/updateOwnCard&quot;)
+  public @ResponseBody OwnCard updateOwnCard(@RequestParam(&quot;userId&quot;) Integer userId,
+      @RequestParam(&quot;cardId&quot;) Integer cardId, @RequestParam(&quot;cardLevel&quot;) Integer cardLevel,
+      @RequestParam(&quot;cardCurExp&quot;) Integer cardCurExp, @RequestParam(&quot;cardLevelLimit&quot;) Integer cardLevelLimit,
+      @RequestParam(&quot;repetitiveOwns&quot;) Integer repetitiveOwns, @RequestParam(&quot;accquireDate&quot;) Timestamp accquireDate) {
+<span class="nc" id="L40">    return OwnCardService.updateOwnCard(userId, cardId, cardLevel, cardCurExp, cardLevelLimit, repetitiveOwns,</span>
+        accquireDate);
+  }
+
+  // 用户拥有的卡片升级
+  @RequestMapping(value = &quot;/cardLevelUp&quot;)
+  public @ResponseBody OwnCard cardLevelUp(@RequestParam(&quot;userId&quot;) Integer userId,
+      @RequestParam(&quot;cardId&quot;) Integer cardId) {
+<span class="nc" id="L48">    return OwnCardService.cardLevelUp(userId, cardId);</span>
+  }
+
+  // 用户再一次拥有已拥有的卡片
+  @RequestMapping(value = &quot;/ownAnotherCard&quot;)
+  public @ResponseBody OwnCard ownAnotherCard(@RequestParam(&quot;userId&quot;) Integer userId,
+      @RequestParam(&quot;cardId&quot;) Integer cardId) {
+<span class="nc" id="L55">    return OwnCardService.ownAnotherCard(userId, cardId);</span>
+  }
+
+  // 获取所有用户拥有卡牌关系
+  @RequestMapping(value = &quot;/getAllOwnCards&quot;)
+  public List&lt;OwnCard&gt; getAllOwnCards() {
+<span class="nc" id="L61">    return OwnCardService.getAllOwnCards();</span>
+  }
+
+  // 获取某一用户的所有拥有卡牌关系
+  @RequestMapping(value = &quot;/getAllOwnCardsByUserId&quot;)
+  public List&lt;OwnCard&gt; getAllOwnCardsByUserId(@RequestParam(&quot;userId&quot;) Integer userId) {
+<span class="nc" id="L67">    return OwnCardService.getAllOwnCardsByUserId(userId);</span>
+  }
+
+  // 删除一些用户拥有卡牌关系
+  @RequestMapping(value = &quot;/deleteOwnCards&quot;)
+  public String deleteOwnCards(@RequestParam(&quot;ownCardIds&quot;) List&lt;Integer&gt; ownCardIds) {
+<span class="nc" id="L73">    return OwnCardService.deleteOwnCards(ownCardIds);</span>
+  }
+
+  // 删除所有用户拥有卡牌关系
+  @RequestMapping(value = &quot;/deleteAllOwnCards&quot;)
+  public String deleteAll() {
+<span class="nc" id="L79">    return OwnCardService.deleteAll();</span>
+  }
+
+  // 删除某个用户拥有卡牌关系
+  @RequestMapping(value = &quot;/deleteOwnCard&quot;)
+  public List&lt;OwnCard&gt; deleteOwnCard(@RequestParam(&quot;userId&quot;) Integer userId, @RequestParam(&quot;cardId&quot;) Integer cardId) {
+<span class="nc" id="L85">    return OwnCardService.deleteOwnCard(userId, cardId);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MissionListDaoImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">demo</a> &gt; <a href="index.source.html" class="el_package">com.example.accessingdatamysql.daoimpl</a> &gt; <span class="el_source">MissionListDaoImpl.java</span></div><h1>MissionListDaoImpl.java</h1><pre class="source lang-java linenums">package com.example.accessingdatamysql.daoimpl;
+
+import com.example.accessingdatamysql.dao.MissionListDao;
+import com.example.accessingdatamysql.repository.*;
+import com.example.accessingdatamysql.entity.*;
+
+// import org.hibernate.validator.constraints.ISBN;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+// import java.io.Console;
+import java.util.*;
+
+@Repository
+<span class="fc" id="L15">public class MissionListDaoImpl implements MissionListDao {</span>
+    @Autowired
+    private MissionListRepository MissionListRepository;
+
+    @Override
+    public MissionList getOneMissionList(Integer MissionListId) {
+<span class="nc" id="L21">        MissionList MissionList = MissionListRepository.getOne(MissionListId);</span>
+<span class="nc" id="L22">        return MissionList;</span>
+    }
+
+    public String addNewMissionList(Integer userId) {
+
+<span class="nc" id="L27">        MissionList MissionList = new MissionList(userId);</span>
+        // System.out.println(&quot;new MissionList has an Id of : &quot; + n.getMissionListId());
+<span class="nc" id="L29">        MissionListRepository.save(MissionList);</span>
+<span class="nc" id="L30">        return &quot;Saved MissionList&quot;;</span>
+
+    }
+
+    public String updateMissionList(Integer MissionListId, List&lt;Mission&gt; Missions) {
+
+<span class="nc" id="L36">        MissionList MissionList = MissionListRepository.getOne(MissionListId);</span>
+        // System.out.println(&quot;old MissionList has an Id of : &quot; + n.getMissionListId());
+<span class="nc" id="L38">        MissionList.setMissions(Missions);</span>
+
+<span class="nc" id="L40">        MissionListRepository.updateMissionListStatus(MissionList, MissionListId);</span>
+<span class="nc" id="L41">        return &quot;modified MissionList: &quot; + MissionList.getMissionListId();</span>
+
+    }
+
+    public List&lt;MissionList&gt; getAllMissionLists() {
+<span class="nc" id="L46">        List&lt;MissionList&gt; MissionLists = MissionListRepository.findAll();</span>
+<span class="nc" id="L47">        return MissionLists;</span>
+    }
+
+    public String deleteMissionLists(List&lt;Integer&gt; MissionListIds) {
+<span class="nc bnc" id="L51" title="All 2 branches missed.">        for (int i = 0; i &lt; MissionListIds.size(); i++) {</span>
+<span class="nc" id="L52">            MissionListRepository.deleteById(MissionListIds.get(i));</span>
+        }
+<span class="nc" id="L54">        return &quot;Deleted MissionLists by id&quot;;</span>
+    }
+
+    public String deleteAll() {
+<span class="nc" id="L58">        MissionListRepository.deleteAll();</span>
+<span class="nc" id="L59">        return &quot;Deleted All MissionLists&quot;;</span>
+    }
+
+    public List&lt;MissionList&gt; deleteMissionList(Integer MissionListId) {
+<span class="nc" id="L63">        MissionListRepository.deleteById(MissionListId);</span>
+<span class="nc" id="L64">        return getAllMissionLists();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
