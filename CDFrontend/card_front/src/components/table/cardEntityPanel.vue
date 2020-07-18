@@ -248,8 +248,13 @@ export default {
       let _this = this;
       axios.get('http://localhost:8080/card/getAllCards')
       .then(response => {
+        if(response.data) {
           _this.list = response.data;
           _this.watchList();
+        }else
+        {
+          this.$message.error('Fetching Data Failed!');
+        }
       })
       .catch(error =>
       {

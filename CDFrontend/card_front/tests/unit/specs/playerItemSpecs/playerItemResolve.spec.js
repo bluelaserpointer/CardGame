@@ -23,7 +23,7 @@ describe('PlayerItemPanel.vue', () => {
       localVue
     });
 
-  it('Player Item Panel calling created',  async () => {
+  it('Player Item Panel Resolves created',  async () => {
     expect(wrapper.vm.list).toStrictEqual([{
       ownItemId: 0,
       userId: 0,
@@ -35,7 +35,7 @@ describe('PlayerItemPanel.vue', () => {
     expect(axios.get).toBeCalledWith('http://localhost:8080/ownItem/getAllOwnItems');
   });
 
-  it('Player Card Panel rejecting confirmIdentity', async () => {
+  it('Player Item Panel rejecting confirmIdentity', async () => {
     wrapper.vm.confirmDelete = false;
 
     await wrapper.vm.confirmIdentity();
@@ -43,7 +43,7 @@ describe('PlayerItemPanel.vue', () => {
     expect(wrapper.vm.confirmDelete).toBeTruthy();
   });
 
-  it('Player Item Panel calling deleteData',  async () => {
+  it('Player Item Panel Resolves deleteData',  async () => {
     wrapper.vm.confirmDelete = true;
 
     expect(axios.post).toHaveBeenCalledTimes(1);
@@ -59,7 +59,7 @@ describe('PlayerItemPanel.vue', () => {
     expect(axios.get).toBeCalledWith("http://localhost:8080/ownItem/getAllOwnItems");
   });
 
-  it('Player Item Panel calling resetTemp', () => {
+  it('Player Item Panel Resolves resetTemp', () => {
     wrapper.vm.temp = {
       ownItemId: 0,
       userId: 0,
@@ -80,7 +80,7 @@ describe('PlayerItemPanel.vue', () => {
     );
   });
 
-  it('Player Item Panel calling handleCreate', () => {
+  it('Player Item Panel Resolves handleCreate', () => {
     wrapper.vm.dialogStatus = 'xxx';
     wrapper.vm.panelVisible = false;
 
@@ -89,7 +89,7 @@ describe('PlayerItemPanel.vue', () => {
     expect(wrapper.vm.dialogStatus).toBeTruthy();
   });
 
-  it('Player Item Panel calling handleUpdate', () => {
+  it('Player Item Panel Resolves handleUpdate', () => {
     wrapper.vm.dialogStatus = 'xxx';
     wrapper.vm.panelVisible = false;
 
@@ -98,12 +98,12 @@ describe('PlayerItemPanel.vue', () => {
     expect(wrapper.vm.dialogStatus).toBeTruthy();
   });
 
-  it('Player Item Panel calling createData', async () => {
+  it('Player Item Panel Resolves createData', async () => {
     await wrapper.vm.createData();
     expect(wrapper.vm.panelVisible).toBeFalsy();
   });
 
-  it('Player Item Panel calling updateData', async () => {
+  it('Player Item Panel Resolves updateData', async () => {
     await wrapper.vm.updateData();
     expect(wrapper.vm.panelVisible).toBeFalsy();
   });
