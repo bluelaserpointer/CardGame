@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
                 user.getCredits(), user.getAccess(), user.getLevel(), user.getCurExpPoint(), user.getStamina(),
                 user.getMoney(), user.getGrade(), user.getEngKnowledge(), user.getMathKnowledge(),
                 user.getChiKnowledge());
-        return null;
+        return user;
     }
 
     // 获取所有用户信息

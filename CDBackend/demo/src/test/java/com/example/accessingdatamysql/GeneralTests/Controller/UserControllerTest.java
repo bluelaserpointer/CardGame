@@ -36,21 +36,13 @@ public class UserControllerTest extends UnitTestDemoApplicationTests {
 
         @Test
         public void contextLoads() {
-
+                assertThat(userController).isNotNull();
         }
 
-        // @Autowired
         private MockMvc mockMvc;
 
         @Autowired
         private UserController userController;
-
-        @Test
-        @Transactional
-        @Rollback(value = true)
-        public void contexLoads() throws Exception {
-                assertThat(userController).isNotNull();
-        }
 
         @Before
         public void setUp() {

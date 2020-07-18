@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OwnCardServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">demo</a> &gt; <a href="index.source.html" class="el_package">com.example.accessingdatamysql.serviceimpl</a> &gt; <span class="el_source">OwnCardServiceImpl.java</span></div><h1>OwnCardServiceImpl.java</h1><pre class="source lang-java linenums">package com.example.accessingdatamysql.serviceimpl;
+
+import com.example.accessingdatamysql.dao.*;
+import com.example.accessingdatamysql.entity.*;
+import com.example.accessingdatamysql.service.OwnCardService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.sql.Timestamp;
+import java.util.*;
+
+@Service
+<span class="fc" id="L14">public class OwnCardServiceImpl implements OwnCardService {</span>
+    @Autowired
+    private OwnCardDao OwnCardDao;
+
+    // 用ownCardId找某一个用户拥有卡牌的关系
+    @Override
+    public OwnCard getOneOwnCard(Integer OwnCardId) {
+<span class="nc" id="L21">        return OwnCardDao.getOneOwnCard(OwnCardId);</span>
+    }
+
+    // 增加一个用户拥有某张卡牌的关系
+    @Override
+    public String addNewOwnCard(Integer userId, Integer cardId) {
+<span class="nc" id="L27">        return OwnCardDao.addNewOwnCard(userId, cardId);</span>
+    }
+
+    // 获取指定用户的所有拥有卡牌记录
+    public List&lt;OwnCard&gt; getAllOwnCardsByUserId(Integer userId) {
+<span class="nc" id="L32">        return OwnCardDao.getAllOwnCardsByUserId(userId);</span>
+    }
+
+    // 获取所有的用户拥有卡牌记录
+    public List&lt;OwnCard&gt; getAllOwnCards() {
+<span class="nc" id="L37">        return OwnCardDao.getAllOwnCards();</span>
+    }
+
+    // 用ownCardIds来删除拥有卡牌关系
+    public String deleteOwnCards(List&lt;Integer&gt; OwnCardIds) {
+<span class="nc" id="L42">        return OwnCardDao.deleteOwnCards(OwnCardIds);</span>
+    }
+
+    // 删除所有拥有卡牌关系
+    public String deleteAll() {
+<span class="nc" id="L47">        return OwnCardDao.deleteAll();</span>
+    }
+
+    // 删除单个拥有卡牌关系
+    public List&lt;OwnCard&gt; deleteOwnCard(Integer userId, Integer cardId) {
+<span class="nc" id="L52">        return OwnCardDao.deleteOwnCard(userId, cardId);</span>
+    }
+
+    // 更新一个用户拥有某张卡牌的所有信息
+    @Override
+    public OwnCard updateOwnCard(Integer userId, Integer cardId, Integer cardLevel, Integer cardCurExp,
+            Integer cardLevelLimit, Integer repetitiveOwns, Timestamp accquireDate) {
+<span class="nc" id="L59">        return OwnCardDao.updateOwnCard(userId, cardId, cardLevel, cardCurExp, cardLevelLimit, repetitiveOwns,</span>
+                accquireDate);
+    }
+
+    // 用户拥有的某张卡牌升级
+    @Override
+    public OwnCard cardLevelUp(Integer userId, Integer cardId) {
+<span class="nc" id="L66">        return OwnCardDao.cardLevelUp(userId, cardId);</span>
+    }
+
+    // 用户再一次拥有已经拥有的卡牌
+    @Override
+    public OwnCard ownAnotherCard(Integer userId, Integer cardId) {
+<span class="nc" id="L72">        return OwnCardDao.ownAnotherCard(userId, cardId);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
