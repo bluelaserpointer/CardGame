@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input v-model="search" placeholder="Title" style="width: 200px;" class="filter-card" />
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate" />
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" />
     </div>
 
     <el-table
@@ -17,12 +17,12 @@
     >
       <el-table-column label="ID" prop="id" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
         <template slot-scope="{row}">
-          <span>{{ row.activityId }}</span>
+          <span class="link-type" @click="handleUpdate(row)">{{ row.activityId }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Name" min-width="150px">
         <template slot-scope="{row}">
-          <span>{{ row.activityName }}</span>
+          <span class="link-type" @click="handleUpdate(row)">{{ row.activityName }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Description" min-width="150px">
@@ -49,11 +49,14 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="panelVisible" top="5vh" class="editDialog">
+      <ArticleUpdatePanel v-bind:update-content="temp"/>
+    </el-dialog>
+
   </div>
 
-  <el-dialog :title="textMap[dialogStatus]" :visible.sync="panelVisible" top="5vh" class="editDialog">
 
-  </el-dialog>
 
 </template>
 
@@ -62,10 +65,11 @@ import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination/index'
 import axios from 'axios'
 import moment from "moment"; // secondary package based on el-pagination
+import ArticleUpdatePanel from "@/components/edit/ActivityUpdatePanel";
 
 export default {
   name: 'ActivityEntityPanel',
-  components: { Pagination },
+  components: {ArticleUpdatePanel, Pagination },
   directives: { waves },
   filters: {
     statusFilter(status) {
@@ -85,7 +89,7 @@ export default {
         activityName: '',
         activityImg: '',
         activityDescription: '',
-        start: '2020-01-01 00:00:00',
+        start: this.delayDate(7),
         type: false,
       },
       confirmPassword: '',
@@ -125,61 +129,31 @@ export default {
     this.getList()
   },
   methods: {
+    delayDate(days){
+      let newDate = new Date();
+      let showDate;
+      for (let i = 1; i <= days; i++) { //后7天
+        let date = newDate.getDate() < 10 ? '0' + newDate.getDate() : newDate.getDate();
+        let yue = (newDate.getMonth() + 1) < 10 ? '0' + (newDate.getMonth() + 1) : (newDate.getMonth() + 1);
+        showDate = newDate.getFullYear() + '-' + yue + '-' + date;
+        newDate.setDate(newDate.getDate() + 1);
+      }
+      return showDate + ' 00:00:00';
+    },
     formatDate(date){
       return moment(new Date(date)).format('YYYY-MM-DD HH:mm:ss');
     },
-
     watchList() {
       const list = this.list;
       for (const i in list) {
         const details = list[i].activityDetails;
-        console.log(details);
         if (details === null) { continue }
         list[i].activityImg = details.activityImg;
         list[i].activityDescription = details.activityDescription;
       }
-      this.list = list
+      this.list = list;
     },
 
-    confirmIdentity() {
-      const postData = new FormData();
-      const _this = this;
-      postData.append('adminName', localStorage.getItem('AdminName'));
-      postData.append('password', this.confirmPassword);
-      axios.post('http://localhost:8080/admin/identifyAdmin', postData)
-        .then(response => {
-          if (response.data) {
-            _this.confirmDelete = true
-          } else {
-            this.$message.error('Identification failed!');
-          }
-        })
-        .catch(error =>
-          {
-            this.$message.error('Identification failed!');
-          }
-        );
-    },
-
-    deleteData() {
-      const postData = new FormData();
-      const _this = this;
-      postData.append('activityId', this.temp.activityId);
-      axios.post('http://localhost:8080/activity/deleteActivity', postData).then(response => {
-        if (response.data) {
-          _this.panelVisible = false;
-          _this.deleteVisible = false;
-          _this.getList()
-        } else {
-          this.$message.error('Deleting Data failed!');
-        }
-      })
-      .catch(error =>
-        {
-          this.$message.error('Deleting Data failed!');
-        }
-      );
-    },
     getList() {
       axios.get('http://localhost:8080/activity/getAllActivities')
         .then(response => {
@@ -202,7 +176,7 @@ export default {
         activityName: '',
         activityImg: '',
         activityDescription: '',
-        start: '2020-01-01 00:00:00',
+        start: this.delayDate(7),
         type: false,
       }
     },
@@ -214,43 +188,47 @@ export default {
         this.$refs['dataForm'].clearValidate()
       })
     },
-    updateData() {
-      let postData = new FormData();
-      let _this = this;
-      postData.append('activityId', this.temp.activityId);
-      postData.append('activityName', this.temp.activityName);
-      postData.append('activityImg', this.temp.activityImg);
-      postData.append('activityDescription', this.temp.activityDescription);
-      postData.append('type', this.temp.type);
-      postData.append('start', this.formatDate(this.temp.start));
 
-      axios.post(`http://localhost:8080/activity/updateActivity`, postData).then(response => {
-        if (response.data) {
-          //
-          _this.getList();
-          _this.panelVisible = false;
-          _this.resetTemp();
-        }else {
-          this.$message.error('Updating Data failed!');
-        }
-      })
-      .catch(error =>
-        {
-          this.$message.error('Updating Data failed!');
-        }
-      );
 
-    },
 
-    uploadCover() {
-      const _this = this;
-      var file = this.$refs.img;
-      var reader = new FileReader();
-      reader.readAsDataURL(file.files[0]);
-      reader.onload = function() {
-        _this.temp.activityImg = this.result
-      }
-    },
+    // confirmIdentity() {
+    //   const postData = new FormData();
+    //   const _this = this;
+    //   postData.append('adminName', localStorage.getItem('AdminName'));
+    //   postData.append('password', this.confirmPassword);
+    //   axios.post('http://localhost:8080/admin/identifyAdmin', postData)
+    //     .then(response => {
+    //       if (response.data) {
+    //         _this.confirmDelete = true
+    //       } else {
+    //         this.$message.error('Identification failed!');
+    //       }
+    //     })
+    //     .catch(error =>
+    //       {
+    //         this.$message.error('Identification failed!');
+    //       }
+    //     );
+    // },
+    // deleteData() {
+    //   const postData = new FormData();
+    //   const _this = this;
+    //   postData.append('activityId', this.temp.activityId);
+    //   axios.post('http://localhost:8080/activity/deleteActivity', postData).then(response => {
+    //     if (response.data) {
+    //       _this.panelVisible = false;
+    //       _this.deleteVisible = false;
+    //       _this.getList()
+    //     } else {
+    //       this.$message.error('Deleting Data failed!');
+    //     }
+    //   })
+    //     .catch(error =>
+    //       {
+    //         this.$message.error('Deleting Data failed!');
+    //       }
+    //     );
+    // },
 
     handleFilter() {
       this.listQuery.page = 1;

@@ -66,8 +66,6 @@ import Upload from '@/components/Upload/SingleImage3'
 import MDinput from '@/components/MDinput/index'
 import Sticky from '@/components/Sticky/index' // 粘性header组件
 import { validURL } from '@/utils/validate'
-import { fetchArticle } from '@/api/article'
-import { searchUser } from '@/api/remote-search'
 import Warning from './Warning'
 import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from '../../views/example/components/Dropdown'
 import axios from 'axios'
@@ -142,25 +140,8 @@ export default {
     contentShortLength() {
       return this.postForm.content_short.length
     }
-    // displayTime: {
-    //   // set and get is useful when the data
-    //   // returned by the back end api is different from the front end
-    //   // back end return => "2013-06-25 06:59:25"
-    //   // front end need timestamp => 1372114765000
-    //   get() {
-    //     return (+new Date(this.postForm.display_time))
-    //   },
-    //   set(val) {
-    //     this.postForm.display_time = new Date(val)
-    //   }
-    // }
   },
   created() {
-    // if (this.isEdit) {
-    //   const id = this.$route.params && this.$route.params.id;
-    //   this.fetchData(id)
-    // }
-
     // Why need to make a copy of this.$route here?
     // Because if you enter this page and quickly switch tag, may be in the execution of the setTagsViewTitle function, this.$route is no longer pointing to the current page
     // https://github.com/PanJiaChen/vue-element-admin/issues/1221
@@ -168,24 +149,17 @@ export default {
     this.tempRoute = Object.assign({}, this.$route)
   },
   methods: {
-    // fetchData(id) {
-    //   fetchArticle(id).then(response => {
-    //     this.postForm = response.data;
-    //
-    //     // just for test
-    //     this.postForm.title += `   Article Id:${this.postForm.id}`;
-    //     this.postForm.content_short += `   Article Id:${this.postForm.id}`;
-    //
-    //     // set tagsview title
-    //     this.setTagsViewTitle();
-    //
-    //     // set page title
-    //     this.setPageTitle()
-    //   }).catch(err => {
-    //     console.log(err)
-    //   })
-    // },
-
+    delayDate(days){
+      let newDate = new Date();
+      let showDate;
+      for (let i = 1; i <= days; i++) { //后7天
+        let date = newDate.getDate() < 10 ? '0' + newDate.getDate() : newDate.getDate();
+        let yue = (newDate.getMonth() + 1) < 10 ? '0' + (newDate.getMonth() + 1) : (newDate.getMonth() + 1);
+        showDate = newDate.getFullYear() + '-' + yue + '-' + date;
+        newDate.setDate(newDate.getDate() + 1);
+      }
+      return showDate + ' 00:00:00';
+    },
     setTagsViewTitle() {
       const title = 'Edit Activity';
       const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` });
@@ -200,7 +174,15 @@ export default {
       postData.append('activityImg', this.postForm.image_uri);
       postData.append('activityName', this.postForm.title);
       postData.append('activityDescription', this.postForm.content);
-      if (this.limit === 1) { postData.append('start', '2020-01-01 00:00:00') } else { postData.append('start', this.displayTime) }
+
+      if (this.limit === false) {
+        postData.append('start', null);
+      } else if (this.displayTime !== null) {
+        postData.append('start', this.displayTime);
+      }else {
+        postData.append('start', this.delayDate(7));
+      }
+
       postData.append('type', this.limit);
 
       axios.post(`http://localhost:8080/activity/addActivity`, postData).then(response => {
@@ -210,29 +192,33 @@ export default {
           //
         }
       })
+
     },
-    draftForm() {
-      if (this.postForm.content.length === 0 || this.postForm.title.length === 0) {
-        this.$message({
-          message: '请填写必要的标题和内容',
-          type: 'warning'
-        });
-        return
-      }
-      this.$message({
-        message: '保存成功',
-        type: 'success',
-        showClose: true,
-        duration: 1000
-      });
-      this.postForm.status = 'draft'
-    },
-    getRemoteUserList(query) {
-      searchUser(query).then(response => {
-        if (!response.data.items) return;
-        this.userListOptions = response.data.items.map(v => v.name)
-      })
-    }
+
+
+    // draftForm() {
+    //   if (this.postForm.content.length === 0 || this.postForm.title.length === 0) {
+    //     this.$message({
+    //       message: '请填写必要的标题和内容',
+    //       type: 'warning'
+    //     });
+    //     return
+    //   }
+    //   this.$message({
+    //     message: '保存成功',
+    //     type: 'success',
+    //     showClose: true,
+    //     duration: 1000
+    //   });
+    //   this.postForm.status = 'draft'
+    // },
+    // getRemoteUserList(query) {
+    //   searchUser(query).then(response => {
+    //     if (!response.data.items) return;
+    //     this.userListOptions = response.data.items.map(v => v.name)
+    //   })
+    // }
+
   }
 }
 </script>
