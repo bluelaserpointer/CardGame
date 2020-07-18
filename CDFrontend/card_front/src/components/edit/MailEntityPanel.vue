@@ -17,12 +17,12 @@
     >
       <el-table-column label="MailId" prop="mailId" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
         <template slot-scope="{row}">
-          <span>{{ row.mailId }}</span>
+          <span class="link-type" @click="handleUpdate(row)">{{ row.mailId }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Name" min-width="150px">
         <template slot-scope="{row}">
-          <span>{{ row.mailName }}</span>
+          <span class="link-type" @click="handleUpdate(row)">{{ row.mailName }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Description" min-width="150px">
@@ -40,19 +40,23 @@
       </el-table-column>
     </el-table>
 
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="panelVisible" top="5vh" class="editDialog">
+      <MailUpdatePanel v-bind:update-content="temp" @getList="getList" />
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
 import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
 import waves from '@/directive/waves' // waves directive
-import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination/index'
-import axios from 'axios' // secondary package based on el-pagination
+import axios from 'axios' // secondary package based on el-pagination;
+import MailUpdatePanel from "@/components/edit/MailUpdatePanel";
 
 export default {
   name: 'MailEntityPanel',
-  components: { Pagination },
+  components: {MailUpdatePanel, Pagination },
   directives: { waves },
   filters: {
     statusFilter(status) {
@@ -74,9 +78,6 @@ export default {
         mailImg: '',
         mailDescription: ''
       },
-      confirmPassword: '',
-      confirmDelete: false,
-      deleteVisible: false,
       tableKey: 0,
       list: null,
       listLoading: false,
@@ -97,11 +98,6 @@ export default {
       },
       dialogPvVisible: false,
       pvData: [],
-      rules: {
-        // type: [{ required: true, message: 'type is required', trigger: 'change' }],
-        // timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
-        // title: [{ required: true, message: 'title is required', trigger: 'blur' }]
-      },
       downloadLoading: false
     }
   },
@@ -110,25 +106,14 @@ export default {
   },
   methods: {
     watchList() {
-      console.log('In watchList');
-      const list = this.list;
+      let list = this.list;
       for (const i in list) {
         const details = list[i].mailDetails;
         if (details === null) { continue }
         list[i].mailImg = details.mailImg;
         list[i].mailDescription = details.mailDescription
       }
-      this.list = list
-    },
-    confirmIdentity() {
-      // TODO: REQUEST --- PWD USR MATCH
-      // IF MATCH
-      //    CONFIRM DELETE
-      // ELSE
-      //    DELETION FAILED
-    },
-    deleteData() {
-      // TODO: REQUEST --- DELETE THE DATA
+      this.list = list;
     },
     uploadCover() {
       const _this = this;
@@ -140,18 +125,27 @@ export default {
       }
     },
     getList() {
-      this.listLoading = true;
       axios.get('http://localhost:8080/mail/getAllMails')
         .then(response => {
+          this.panelVisible = false;
           this.list = response.data;
-          console.log(response.data);
           this.watchList()
         });
-      // Just to simulate the time of the request
-      setTimeout(() => {
-        this.listLoading = false
-      }, 1.5 * 10)
     },
+
+    handleUpdate(row) {
+      this.temp = Object.assign({}, row); // copy obj
+      this.dialogStatus = 'update';
+      this.panelVisible = true;
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
+      })
+    },
+
+
+
+
+
     handleFilter() {
       this.listQuery.page = 1;
       this.getList()
@@ -176,59 +170,6 @@ export default {
         this.listQuery.sort = '-id'
       }
       this.handleFilter()
-    },
-    resetTemp() {
-      this.temp = {
-        id: undefined,
-        mailName: '',
-        mailImg: '',
-        mailDescription: ''
-      }
-    },
-    handleCreate() {
-      this.resetTemp();
-      this.dialogStatus = 'create';
-      this.panelVisible = true;
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
-    },
-    createData() {
-    },
-    handleUpdate(row) {
-      this.temp = Object.assign({}, row); // copy obj
-      this.dialogStatus = 'update';
-      this.panelVisible = true;
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
-    },
-    updateData() {
-      const postData = new FormData();
-      postData.append('mailId', this.temp.id);
-      postData.append('mailName', this.temp.mailName);
-
-      postData.append('mailImg', this.temp.mailImg);
-      postData.append('mailDescription', this.temp.mailDescription);
-
-      axios.post(`http://localhost:8080/mail/update`, postData).then(response => {
-        if (response.data) {
-          //
-        } else {
-          //
-        }
-        axios.get('http://localhost:8080/mail/get/all')
-          .then(response => this.list = response.data)
-      })
-    },
-    handleDelete(row, index) {
-      // this.$notify({
-      //   title: 'Success',
-      //   message: 'Delete Successfully',
-      //   type: 'success',
-      //   duration: 2000
-      // })
-      // this.list.splice(index, 1)
     },
     getSortClass: function(key) {
       const sort = this.listQuery.sort;

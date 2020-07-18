@@ -271,6 +271,7 @@ export default {
       }
       this.list = list;
     },
+
     confirmIdentity() {
       const postData = new FormData();
       const _this = this;
@@ -309,6 +310,7 @@ export default {
         }
       );
     },
+
     resetTemp() {
       this.temp = {
         cardId: undefined,
@@ -405,8 +407,6 @@ export default {
       );
 
     },
-
-
 
     uploadCover() {
       const _this = this;

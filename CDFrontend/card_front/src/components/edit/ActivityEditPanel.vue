@@ -69,6 +69,7 @@ import { validURL } from '@/utils/validate'
 import Warning from './Warning'
 import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from '../../views/example/components/Dropdown'
 import axios from 'axios'
+import moment from "moment";
 
 const defaultForm = {
   status: 'draft',
@@ -160,6 +161,10 @@ export default {
       }
       return showDate + ' 00:00:00';
     },
+    formatDate(date){
+      return moment(new Date(date)).format('YYYY-MM-DD HH:mm:ss');
+    },
+
     setTagsViewTitle() {
       const title = 'Edit Activity';
       const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` });
@@ -169,6 +174,11 @@ export default {
       const title = 'Edit Activity';
       document.title = `${title} - ${this.postForm.id}`
     },
+    resetArticle(){
+      this.postForm = Object.assign({}, defaultForm);
+      this.$refs.editor.setContent('');
+      this.displayTime = null;
+    },
     submitForm() {
       const postData = new FormData();
       postData.append('activityImg', this.postForm.image_uri);
@@ -176,22 +186,28 @@ export default {
       postData.append('activityDescription', this.postForm.content);
 
       if (this.limit === false) {
-        postData.append('start', null);
-      } else if (this.displayTime !== null) {
-        postData.append('start', this.displayTime);
+        postData.append('start', this.formatDate(new Date()));
+      } else if (this.displayTime !== null && this.displayTime !== undefined ) {
+        postData.append('start', this.formatDate(this.displayTime));
       }else {
         postData.append('start', this.delayDate(7));
       }
 
-      postData.append('type', this.limit);
+      postData.append('type', this.limit === true ? "true" : "false");
 
       axios.post(`http://localhost:8080/activity/addActivity`, postData).then(response => {
         if (response.data) {
           //
+          this.resetArticle();
         } else {
-          //
+          this.$message.error('Publishing Activity failed!');
         }
       })
+      .catch(error =>
+        {
+          this.$message.error('Publishing Activity failed!');
+        }
+      );
 
     },
 

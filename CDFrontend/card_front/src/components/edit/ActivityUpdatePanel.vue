@@ -7,9 +7,10 @@
       <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">
         Publish
       </el-button>
-      <el-button v-loading="loading" type="warning" @click="draftForm">
-        Draft
+      <el-button class="deleteOuterButton" type="danger" @click="deleteVisible = true">
+        Delete
       </el-button>
+
     </sticky>
     <div class="createPost-main-container" style="display:grid; grid-template-columns: 50% 50%; grid-template-rows: 30% 70%;">
       <el-row style="grid-row: 1 / span 1; grid-column: 1 / span 2">
@@ -49,7 +50,24 @@
       <el-form-item prop="image_uri" style="margin: 0 0 30px 30px; width: 80%; grid-row: 2 / span 1; grid-column: 2 / span 1">
         <Upload v-model="postForm.image_uri" />
       </el-form-item>
+
     </div>
+    <el-dialog
+      title="Deletion Confirm"
+      width="30%"
+      :visible.sync="deleteVisible"
+      append-to-body
+      class="innerDialog"
+    >
+      <el-input v-model="confirmPassword" placeholder="Identification" show-password width="60%" />
+      <el-button class="confirmInnerButton" @click="confirmIdentity">Confirm Identity</el-button>
+
+      <span slot="footer" class="dialog-footer">
+          <el-button class="cancelInnerButton" @click="deleteVisible = false">Cancel</el-button>
+          <el-button class="deleteInnerButton" v-if="confirmDelete === false" type="danger" disabled>Delete</el-button>
+          <el-button class="deleteInnerButton" v-else type="danger" @click="deleteData">Delete</el-button>
+        </span>
+    </el-dialog>
   </el-form>
 </template>
 
@@ -61,6 +79,7 @@
   import Warning from './Warning'
   import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from '../../views/example/components/Dropdown'
   import axios from 'axios'
+  import moment from "moment";
 
   const defaultForm = {
     status: 'draft',
@@ -120,6 +139,9 @@
       // };
 
       return {
+        deleteVisible: false,
+        confirmDelete: false,
+        confirmPassword: '',
         limit: false,
         postForm: Object.assign({}, defaultForm),
         loading: false,
@@ -147,11 +169,15 @@
           this.postForm.image_uri = newVal.activityImg;
           this.postForm.title = newVal.activityName;
           this.$refs.editor.setContent(newVal.activityDescription);
-          this.limit = newVal.type;
+          this.limit = newVal.type === "true";
           this.displayTime = newVal.start;
         },
         deep:true
-      }
+      },
+      deleteVisible() {
+        this.confirmDelete = false;
+        this.confirmPassword = '';
+      } // untested
     },
     created() {
       // Why need to make a copy of this.$route here?
@@ -161,12 +187,53 @@
       this.postForm.image_uri = this.updateContent.activityImg;
       this.postForm.title = this.updateContent.activityName;
       this.postForm.content = this.updateContent.activityDescription;
-      this.limit = this.updateContent.type;
+      this.limit = this.updateContent.type === "true";
       this.displayTime = this.updateContent.start;
 
       this.tempRoute = Object.assign({}, this.$route)
     },
     methods: {
+      confirmIdentity() {
+        let postData = new FormData();
+        let _this = this;
+        postData.append('adminName', localStorage.getItem('AdminName'));
+        postData.append('password', this.confirmPassword);
+        axios.post('http://localhost:8080/admin/identifyAdmin', postData)
+          .then(response => {
+            if (response.data) {
+              _this.confirmDelete = true
+            } else {
+              this.$message.error('Identification failed!');
+            }
+          })
+          .catch(error =>
+            {
+              this.$message.error('Identification failed!');
+            }
+          );
+      },
+      deleteData() {
+        let postData = new FormData();
+        let _this = this;
+        postData.append('activityId', this.updateContent.activityId);
+        axios.post('http://localhost:8080/activity/deleteActivity', postData).then(response => {
+          if (response.data) {
+            _this.deleteVisible = false;
+            _this.$emit('getList');
+          } else {
+            this.$message.error('Deleting Data failed!');
+          }
+        })
+          .catch(error =>
+            {
+              this.$message.error('Deleting Data failed!');
+            }
+          );
+      },
+
+
+
+
       delayDate(days){
         let newDate = new Date();
         let showDate;
@@ -177,6 +244,9 @@
           newDate.setDate(newDate.getDate() + 1);
         }
         return showDate + ' 00:00:00';
+      },
+      formatDate(date){
+        return moment(new Date(date)).format('YYYY-MM-DD HH:mm:ss');
       },
 
       setTagsViewTitle() {
@@ -190,20 +260,21 @@
       },
       submitForm() {
         let postData = new FormData();
+        let _this = this;
         postData.append('activityId', this.updateContent.activityId);
         postData.append('activityImg', this.postForm.image_uri === undefined ? '' : this.postForm.image_uri);
         postData.append('activityName', this.postForm.title === undefined ? '' : this.postForm.title);
         postData.append('activityDescription', this.postForm.content === undefined ? '' : this.postForm.content);
 
         if (this.limit === false) {
-          postData.append('start', null);
+          postData.append('start', this.formatDate(new Date()));
         } else if (this.displayTime !== null && this.displayTime !== undefined ) {
-          postData.append('start', this.displayTime);
+          postData.append('start', this.formatDate(this.displayTime));
         }else {
           postData.append('start', this.delayDate(7));
         }
 
-        postData.append('type', this.limit);
+        postData.append('type', this.limit === true ? "true" : "false");
 
         for (var key of postData.keys()) {
           console.log(postData.get(key));
@@ -212,6 +283,7 @@
         axios.post(`http://localhost:8080/activity/updateActivity`, postData).then(response => {
           if (response.data) {
             //
+            _this.$emit('getList');
           } else {
             //
           }
