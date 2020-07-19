@@ -7,9 +7,9 @@
       <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">
         Publish
       </el-button>
-      <el-button v-loading="loading" type="warning" @click="draftForm">
-        Draft
-      </el-button>
+<!--      <el-button v-loading="loading" type="warning" @click="draftForm">-->
+<!--        Draft-->
+<!--      </el-button>-->
     </sticky>
     <div class="createPost-main-container" style="display:grid; grid-template-columns: 50% 50%; grid-template-rows: 30% 70%;">
       <el-row style="grid-row: 1 / span 1; grid-column: 1 / span 2">
@@ -24,11 +24,11 @@
           <div class="postInfo-container">
             <el-row>
               <el-col :span="8">
-                <el-form-item label-width="60px" label="Author:" class="postInfo-container-item">
-                  <el-select v-model="postForm.author" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="Search user">
-                    <el-option v-for="(item,index) in userListOptions" :key="item + index" :label="item" :value="item" />
-                  </el-select>
-                </el-form-item>
+<!--                <el-form-item label-width="60px" label="Author:" class="postInfo-container-item">-->
+<!--                  <el-select v-model="postForm.author" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="Search user">-->
+<!--                    <el-option v-for="(item,index) in userListOptions" :key="item + index" :label="item" :value="item" />-->
+<!--                  </el-select>-->
+<!--                </el-form-item>-->
                 <el-switch
                   v-model="limit"
                   active-color="#13ce66"
@@ -53,22 +53,29 @@
         <Tinymce ref="editor" v-model="postForm.content" :height="400" />
       </el-form-item>
 
-      <el-form-item prop="image_uri" style="margin: 0 0 30px 30px; width: 80%; grid-row: 2 / span 1; grid-column: 2 / span 1">
-        <Upload v-model="postForm.image_uri" />
-      </el-form-item>
+      <div style="display: grid; grid-template-columns: 50% 50%">
+        <el-image
+          style="width: 200px; height: 200px"
+          :src="postForm.image_uri"
+          :fit="itemImg"
+        />
+        <div class="coverControl">
+          <input ref="img" type="file" style="margin: 10px" @change="uploadCover">
+        </div>
+      </div>
     </div>
   </el-form>
 </template>
 
 <script>
 import Tinymce from '@/components/Tinymce/index'
-import Upload from '@/components/Upload/SingleImage3'
 import MDinput from '@/components/MDinput/index'
 import Sticky from '@/components/Sticky/index' // 粘性header组件
 import { validURL } from '@/utils/validate'
 import Warning from './Warning'
 import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from '../../views/example/components/Dropdown'
 import axios from 'axios'
+import moment from "moment";
 
 const defaultForm = {
   status: 'draft',
@@ -87,7 +94,7 @@ const defaultForm = {
 
 export default {
   name: 'ActivityEditPanel',
-  components: { Tinymce, MDinput, Upload, Sticky, Warning, CommentDropdown, PlatformDropdown, SourceUrlDropdown },
+  components: { Tinymce, MDinput, Sticky, Warning, CommentDropdown, PlatformDropdown, SourceUrlDropdown },
   props: {
     isEdit: {
       type: Boolean,
@@ -160,6 +167,59 @@ export default {
       }
       return showDate + ' 00:00:00';
     },
+    formatDate(date){
+      return moment(new Date(date)).format('YYYY-MM-DD HH:mm:ss');
+    },
+    resetArticle(){
+      this.postForm = Object.assign({}, defaultForm);
+      this.$refs.editor.setContent('');
+      this.displayTime = null;
+    },
+    submitForm() {
+      const postData = new FormData();
+      postData.append('activityImg', this.postForm.image_uri === undefined ? '' : this.postForm.image_uri);
+      postData.append('activityName', this.postForm.title === undefined ? '' : this.postForm.title);
+      postData.append('activityDescription', this.postForm.content === undefined ? '' : this.postForm.content);
+
+      if (this.limit === false) {
+        postData.append('start', this.formatDate(new Date()));
+      } else if (this.displayTime !== null && this.displayTime !== undefined ) {
+        postData.append('start', this.formatDate(this.displayTime));
+      }else {
+        postData.append('start', this.delayDate(7));
+      }
+
+      postData.append('type', this.limit === true ? "true" : "false");
+
+      axios.post(`http://localhost:8080/activity/addActivity`, postData).then(response => {
+        if (response.data) {
+          //
+          this.resetArticle();
+        } else {
+          this.$message.error('Publishing Activity failed!');
+        }
+      })
+      .catch(error =>
+        {
+          this.$message.error('Publishing Activity failed!');
+        }
+      );
+    },
+    uploadCover() {
+      const _this = this;
+      // 根据ref得到图片文件
+      var file = this.$refs.img;
+      // 使用h5的读取文件api
+      var reader = new FileReader();
+      reader.readAsDataURL(file.files[0]);
+      // 读取完成后触发
+      reader.onload = function() {
+        // 改变img的路径
+        _this.postForm.image_uri = this.result;
+      }
+    },
+
+
     setTagsViewTitle() {
       const title = 'Edit Activity';
       const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` });
@@ -169,56 +229,6 @@ export default {
       const title = 'Edit Activity';
       document.title = `${title} - ${this.postForm.id}`
     },
-    submitForm() {
-      const postData = new FormData();
-      postData.append('activityImg', this.postForm.image_uri);
-      postData.append('activityName', this.postForm.title);
-      postData.append('activityDescription', this.postForm.content);
-
-      if (this.limit === false) {
-        postData.append('start', null);
-      } else if (this.displayTime !== null) {
-        postData.append('start', this.displayTime);
-      }else {
-        postData.append('start', this.delayDate(7));
-      }
-
-      postData.append('type', this.limit);
-
-      axios.post(`http://localhost:8080/activity/addActivity`, postData).then(response => {
-        if (response.data) {
-          //
-        } else {
-          //
-        }
-      })
-
-    },
-
-
-    // draftForm() {
-    //   if (this.postForm.content.length === 0 || this.postForm.title.length === 0) {
-    //     this.$message({
-    //       message: '请填写必要的标题和内容',
-    //       type: 'warning'
-    //     });
-    //     return
-    //   }
-    //   this.$message({
-    //     message: '保存成功',
-    //     type: 'success',
-    //     showClose: true,
-    //     duration: 1000
-    //   });
-    //   this.postForm.status = 'draft'
-    // },
-    // getRemoteUserList(query) {
-    //   searchUser(query).then(response => {
-    //     if (!response.data.items) return;
-    //     this.userListOptions = response.data.items.map(v => v.name)
-    //   })
-    // }
-
   }
 }
 </script>

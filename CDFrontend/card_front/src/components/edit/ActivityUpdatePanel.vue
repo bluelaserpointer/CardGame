@@ -7,9 +7,10 @@
       <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">
         Publish
       </el-button>
-      <el-button v-loading="loading" type="warning" @click="draftForm">
-        Draft
+      <el-button class="deleteOuterButton" type="danger" @click="deleteVisible = true">
+        Delete
       </el-button>
+
     </sticky>
     <div class="createPost-main-container" style="display:grid; grid-template-columns: 50% 50%; grid-template-rows: 30% 70%;">
       <el-row style="grid-row: 1 / span 1; grid-column: 1 / span 2">
@@ -46,21 +47,45 @@
         <Tinymce ref="editor" v-model="postForm.content" :height="400" />
       </el-form-item>
 
-      <el-form-item prop="image_uri" style="margin: 0 0 30px 30px; width: 80%; grid-row: 2 / span 1; grid-column: 2 / span 1">
-        <Upload v-model="postForm.image_uri" />
-      </el-form-item>
+      <div style="display: grid; grid-template-columns: 50% 50%">
+        <el-image
+          style="width: 200px; height: 200px"
+          :src="postForm.image_uri"
+          :fit="itemImg"
+        />
+        <div class="coverControl">
+          <input ref="img" type="file" style="margin: 10px" @change="uploadCover">
+        </div>
+      </div>
+
     </div>
+    <el-dialog
+      title="Deletion Confirm"
+      width="30%"
+      :visible.sync="deleteVisible"
+      append-to-body
+      class="innerDialog"
+    >
+      <el-input v-model="confirmPassword" placeholder="Identification" show-password width="60%" />
+      <el-button class="confirmInnerButton" @click="confirmIdentity">Confirm Identity</el-button>
+
+      <span slot="footer" class="dialog-footer">
+        <el-button class="cancelInnerButton" @click="deleteVisible = false">Cancel</el-button>
+        <el-button class="deleteInnerButton" v-if="confirmDelete === false" type="danger" disabled>Delete</el-button>
+        <el-button class="deleteInnerButton" v-else type="danger" @click="deleteData">Delete</el-button>
+      </span>
+    </el-dialog>
   </el-form>
 </template>
 
 <script>
   import Tinymce from '@/components/Tinymce/index'
-  import Upload from '@/components/Upload/SingleImage3'
   import MDinput from '@/components/MDinput/index'
   import Sticky from '@/components/Sticky/index' // 粘性header组件
   import Warning from './Warning'
   import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from '../../views/example/components/Dropdown'
   import axios from 'axios'
+  import moment from "moment";
 
   const defaultForm = {
     status: 'draft',
@@ -79,17 +104,8 @@
 
   export default {
     name: 'ActivityUpdatePanel',
-    components: { Tinymce, MDinput, Upload, Sticky, Warning, CommentDropdown, PlatformDropdown, SourceUrlDropdown },
-    props: {
-      isEdit: {
-        type: Boolean,
-        default: false
-      },
-      updateContent:{
-        type: Object,
-        default: null
-      },
-    },
+    components: { Tinymce, MDinput, Sticky, Warning, CommentDropdown, PlatformDropdown, SourceUrlDropdown },
+    props: ['updateContent'] ,
     data() {
       const validateRequire = (rule, value, callback) => {
         if (value === '') {
@@ -103,23 +119,10 @@
         }
       };
 
-      // const validateSourceUri = (rule, value, callback) => {
-      //   if (value) {
-      //     if (validURL(value)) {
-      //       callback()
-      //     } else {
-      //       this.$message({
-      //         message: '外链url填写不正确',
-      //         type: 'error'
-      //       });
-      //       callback(new Error('外链url填写不正确'))
-      //     }
-      //   } else {
-      //     callback()
-      //   }
-      // };
-
       return {
+        deleteVisible: false,
+        confirmDelete: false,
+        confirmPassword: '',
         limit: false,
         postForm: Object.assign({}, defaultForm),
         loading: false,
@@ -147,11 +150,15 @@
           this.postForm.image_uri = newVal.activityImg;
           this.postForm.title = newVal.activityName;
           this.$refs.editor.setContent(newVal.activityDescription);
-          this.limit = newVal.type;
+          this.limit = newVal.type === "true";
           this.displayTime = newVal.start;
         },
         deep:true
-      }
+      },
+      deleteVisible() {
+        this.confirmDelete = false;
+        this.confirmPassword = '';
+      } // untested
     },
     created() {
       // Why need to make a copy of this.$route here?
@@ -161,12 +168,95 @@
       this.postForm.image_uri = this.updateContent.activityImg;
       this.postForm.title = this.updateContent.activityName;
       this.postForm.content = this.updateContent.activityDescription;
-      this.limit = this.updateContent.type;
+      this.limit = this.updateContent.type === "true";
       this.displayTime = this.updateContent.start;
 
       this.tempRoute = Object.assign({}, this.$route)
     },
     methods: {
+      uploadCover() {
+        const _this = this;
+        // 根据ref得到图片文件
+        var file = this.$refs.img;
+        // 使用h5的读取文件api
+        var reader = new FileReader();
+        reader.readAsDataURL(file.files[0]);
+        // 读取完成后触发
+        reader.onload = function() {
+          // 改变img的路径
+          _this.postForm.image_uri = this.result;
+        }
+      },
+      confirmIdentity() {
+        let postData = new FormData();
+        let _this = this;
+        postData.append('adminName', localStorage.getItem('AdminName'));
+        postData.append('password', this.confirmPassword);
+        axios.post('http://localhost:8080/admin/identifyAdmin', postData)
+          .then(response => {
+            if (response.data) {
+              _this.confirmDelete = true
+            } else {
+              this.$message.error('Identification failed!');
+            }
+          })
+          .catch(error =>
+            {
+              this.$message.error('Identification failed!');
+            }
+          );
+      },
+      deleteData() {
+        let postData = new FormData();
+        let _this = this;
+        postData.append('activityId', this.updateContent.activityId);
+        axios.post('http://localhost:8080/activity/deleteActivity', postData).then(response => {
+          if (response.data) {
+            _this.deleteVisible = false;
+            _this.$emit('getList');
+          } else {
+            this.$message.error('Deleting Data failed!');
+          }
+        })
+          .catch(error =>
+            {
+              this.$message.error('Deleting Data failed!');
+            }
+          );
+      },
+      submitForm() {
+        let postData = new FormData();
+        let _this = this;
+        postData.append('activityId', this.updateContent.activityId);
+        postData.append('activityImg', this.postForm.image_uri === undefined ? '' : this.postForm.image_uri);
+        postData.append('activityName', this.postForm.title === undefined ? '' : this.postForm.title);
+        postData.append('activityDescription', this.postForm.content === undefined ? '' : this.postForm.content);
+
+        if (this.limit === false) {
+          postData.append('start', this.formatDate(new Date()));
+        } else if (this.displayTime !== null && this.displayTime !== undefined ) {
+          postData.append('start', this.formatDate(this.displayTime));
+        }else {
+          postData.append('start', this.delayDate(7));
+        }
+
+        postData.append('type', this.limit === true ? "true" : "false");
+
+        axios.post(`http://localhost:8080/activity/updateActivity`, postData).then(response => {
+          if (response.data) {
+            //
+            _this.$emit('getList');
+          } else {
+            //
+            this.$message.error('Updating Data failed!');
+          }
+        })
+          .catch(error =>
+            {
+              this.$message.error('Updating Data failed!');
+            }
+          );
+      },
       delayDate(days){
         let newDate = new Date();
         let showDate;
@@ -178,6 +268,12 @@
         }
         return showDate + ' 00:00:00';
       },
+      formatDate(date){
+        return moment(new Date(date)).format('YYYY-MM-DD HH:mm:ss');
+      },
+
+
+
 
       setTagsViewTitle() {
         const title = 'Edit Activity';
@@ -188,60 +284,7 @@
         const title = 'Edit Activity';
         document.title = `${title} - ${this.postForm.id}`
       },
-      submitForm() {
-        let postData = new FormData();
-        postData.append('activityId', this.updateContent.activityId);
-        postData.append('activityImg', this.postForm.image_uri === undefined ? '' : this.postForm.image_uri);
-        postData.append('activityName', this.postForm.title === undefined ? '' : this.postForm.title);
-        postData.append('activityDescription', this.postForm.content === undefined ? '' : this.postForm.content);
 
-        if (this.limit === false) {
-          postData.append('start', null);
-        } else if (this.displayTime !== null && this.displayTime !== undefined ) {
-          postData.append('start', this.displayTime);
-        }else {
-          postData.append('start', this.delayDate(7));
-        }
-
-        postData.append('type', this.limit);
-
-        for (var key of postData.keys()) {
-          console.log(postData.get(key));
-        }
-
-        axios.post(`http://localhost:8080/activity/updateActivity`, postData).then(response => {
-          if (response.data) {
-            //
-          } else {
-            //
-          }
-        })
-
-      },
-
-
-      // draftForm() {
-      //   if (this.postForm.content.length === 0 || this.postForm.title.length === 0) {
-      //     this.$message({
-      //       message: '请填写必要的标题和内容',
-      //       type: 'warning'
-      //     });
-      //     return
-      //   }
-      //   this.$message({
-      //     message: '保存成功',
-      //     type: 'success',
-      //     showClose: true,
-      //     duration: 1000
-      //   });
-      //   this.postForm.status = 'draft'
-      // },
-      // getRemoteUserList(query) {
-      //   searchUser(query).then(response => {
-      //     if (!response.data.items) return;
-      //     this.userListOptions = response.data.items.map(v => v.name)
-      //   })
-      // }
     }
   }
 </script>
