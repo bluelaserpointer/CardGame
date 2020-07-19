@@ -35,34 +35,38 @@ describe('ActivityUpdatePanel.vue', () => {
     expect(wrapper.vm.displayTime).toBe('0');
   });
 
-  it('Activity Update Panel Resolves submitForm branch1', () => {
+  it('Activity Update Panel Resolves submitForm branch1', async () => {
     wrapper.vm.limit = false;
     expect(axios.post).toHaveBeenCalledTimes(0);
-    wrapper.vm.submitForm();
+    await wrapper.vm.submitForm();
     expect(axios.post).toHaveBeenCalledTimes(1);
   });
 
-  it('Activity Update Panel Resolves submitForm branch2', () => {
+  it('Activity Update Panel Resolves submitForm branch2', async() => {
+    wrapper.vm.limit = true;
     wrapper.vm.displayTime = '2000-01-01 00:00:00';
+
     expect(axios.post).toHaveBeenCalledTimes(1);
-    wrapper.vm.submitForm();
+    await wrapper.vm.submitForm();
     expect(axios.post).toHaveBeenCalledTimes(2);
   });
 
-  it('Activity Update Panel Resolves submitForm branch3', () => {
+  it('Activity Update Panel Resolves submitForm branch3', async() => {
+    wrapper.vm.limit = true;
     wrapper.vm.displayTime = undefined;
+
     expect(axios.post).toHaveBeenCalledTimes(2);
-    wrapper.vm.submitForm();
+    await wrapper.vm.submitForm();
     expect(axios.post).toHaveBeenCalledTimes(3);
   });
 
-  it('Activity Entity Panel Resolves formatDate', () => {
+  it('Activity Update Panel Resolves formatDate', () => {
     let date = new Date();
     let formatDateStr = moment(wrapper.vm.formatDate(date)).format('YYYY-MM-DD HH:mm:ss');
     expect(wrapper.vm.formatDate(date)).toBe(formatDateStr);
   });
 
-  it('Activity Entity Panel Resolves confirmIdentity', async () => {
+  it('Activity Update Panel Resolves confirmIdentity', async () => {
     wrapper.vm.confirmDelete = false;
 
     await wrapper.vm.confirmIdentity();
@@ -71,7 +75,7 @@ describe('ActivityUpdatePanel.vue', () => {
     expect(axios.post).toHaveBeenCalledTimes(4);
   });
 
-  it('Activity Entity Panel Resolves deleteData',  async () => {
+  it('Activity Update Panel Resolves deleteData',  async () => {
     wrapper.vm.confirmDelete = true;
 
     expect(axios.post).toHaveBeenCalledTimes(4);
@@ -84,4 +88,13 @@ describe('ActivityUpdatePanel.vue', () => {
     expect(axios.post).toHaveBeenCalledTimes(5);
   });
 
+  it('Activity Update Panel Resolves submitForm branch4', async() => {
+    wrapper.vm.postForm.image_uri = undefined;
+    wrapper.vm.postForm.title = undefined;
+    wrapper.vm.postForm.content = undefined;
+
+    expect(axios.post).toHaveBeenCalledTimes(5);
+    await wrapper.vm.submitForm();
+    expect(axios.post).toHaveBeenCalledTimes(6);
+  });
 });
