@@ -31,7 +31,7 @@ public class MailBoxDaoImpl implements MailBoxDao {
 
     }
 
-    public String updateMailBox(Integer MailBoxId, List<Mail> mails) {
+    public String updateMailBox(Integer MailBoxId, List<Integer> mails) {
 
         MailBox MailBox = MailBoxRepository.getOne(MailBoxId);
         // System.out.println("old MailBox has an Id of : " + n.getMailBoxId());

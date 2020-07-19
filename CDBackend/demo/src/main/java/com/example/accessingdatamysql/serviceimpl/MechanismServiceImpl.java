@@ -13,6 +13,7 @@ public class MechanismServiceImpl implements MechanismService {
     public Integer drawCard(Integer chi, Integer mat, Integer eng) {
 
         // LotteSpring(subject rarity)
+        System.out.println("chi: " + chi + "mat: " + mat + "eng: " + eng);
 
         final int[][][] lotteSpring = new int[Subject.values().length][5][]; // subject, rarity
         final int SUM = chi + mat + eng;
@@ -61,6 +62,7 @@ public class MechanismServiceImpl implements MechanismService {
         else
             subject = 2;
         final int[] group = lotteSpring[subject][rarity];
+        System.out.println("Result: " + group[(int) (Math.random() * group.length)]);
         return group[(int) (Math.random() * group.length)];
     }
 }

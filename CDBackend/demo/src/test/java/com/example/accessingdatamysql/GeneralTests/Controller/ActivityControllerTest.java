@@ -85,7 +85,7 @@ public class ActivityControllerTest {
     @DisplayName("File: ActivityController Method: updateActivity")
     public void updateActivity() throws Exception {
         MvcResult result = mockMvc.perform(get(
-                "/activity/updateActivity?activityId=61&activityName=updateTest&activityImg=updateTest&activityDescription=updateTest&start=2018-01-19 03:14:07.999999&type=updateTest")
+                "/activity/updateActivity?activityId=62&activityName=updateTest&activityImg=updateTest&activityDescription=updateTest&start=2018-01-19 03:14:07.999999&type=updateTest")
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
         System.out.println(result.getResponse().getContentAsString());
@@ -108,7 +108,7 @@ public class ActivityControllerTest {
     @DisplayName("File: ActivityController Method: deleteActivities")
     public void deleteActivities() throws Exception {
         MvcResult result = mockMvc
-                .perform(get("/activity/deleteActivities?activityIds=1").contentType(MediaType.APPLICATION_JSON_VALUE))
+                .perform(get("/activity/deleteActivities?activityIds=62").contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
         System.out.println(result.getResponse().getContentAsString());
     }
@@ -130,7 +130,7 @@ public class ActivityControllerTest {
     @DisplayName("File: ActivityController Method: deleteActivity")
     public void deleteActivity() throws Exception {
         MvcResult result = mockMvc
-                .perform(get("/activity/deleteActivity?activityId=1").contentType(MediaType.APPLICATION_JSON_VALUE))
+                .perform(get("/activity/deleteActivity?activityId=62").contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
         System.out.println(result.getResponse().getContentAsString());
     }

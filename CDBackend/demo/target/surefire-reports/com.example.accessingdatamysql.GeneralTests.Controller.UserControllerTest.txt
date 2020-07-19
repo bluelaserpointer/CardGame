@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.example.accessingdatamysql.GeneralTests.Controller.UserControllerTest
--------------------------------------------------------------------------------
-Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 12.772 s - in com.example.accessingdatamysql.GeneralTests.Controller.UserControllerTest

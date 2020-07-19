@@ -23,7 +23,7 @@ public class MailBoxServiceImpl implements MailBoxService {
         return MailBoxDao.addNewMailBox(userId);
     }
 
-    public String updateMailBox(Integer MailBoxId, List<Mail> mails) {
+    public String updateMailBox(Integer MailBoxId, List<Integer> mails) {
         return MailBoxDao.updateMailBox(MailBoxId, mails);
     }
 
