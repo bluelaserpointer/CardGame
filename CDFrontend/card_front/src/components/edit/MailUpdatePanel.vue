@@ -221,34 +221,6 @@
             }
           );
       },
-
-
-
-
-      delayDate(days){
-        let newDate = new Date();
-        let showDate;
-        for (let i = 1; i <= days; i++) { //后7天
-          let date = newDate.getDate() < 10 ? '0' + newDate.getDate() : newDate.getDate();
-          let yue = (newDate.getMonth() + 1) < 10 ? '0' + (newDate.getMonth() + 1) : (newDate.getMonth() + 1);
-          showDate = newDate.getFullYear() + '-' + yue + '-' + date;
-          newDate.setDate(newDate.getDate() + 1);
-        }
-        return showDate + ' 00:00:00';
-      },
-      formatDate(date){
-        return moment(new Date(date)).format('YYYY-MM-DD HH:mm:ss');
-      },
-
-      setTagsViewTitle() {
-        const title = 'Edit Mail';
-        const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` });
-        this.$store.dispatch('tagsView/updateVisitedView', route)
-      },
-      setPageTitle() {
-        const title = 'Edit Mail';
-        document.title = `${title} - ${this.postForm.id}`
-      },
       submitForm() {
         let postData = new FormData();
         let _this = this;
@@ -261,13 +233,29 @@
           if (response.data) {
             //
             _this.$emit('getList');
-          } else {
-            //
+          }else
+          {
+            this.$message.error('Fetching Data Failed!');
           }
         })
-
+          .catch(error =>
+          {
+            this.$message.error('Fetching Data Failed!');
+          });
       },
 
+
+
+
+      setTagsViewTitle() {
+        const title = 'Edit Mail';
+        const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` });
+        this.$store.dispatch('tagsView/updateVisitedView', route)
+      },
+      setPageTitle() {
+        const title = 'Edit Mail';
+        document.title = `${title} - ${this.postForm.id}`
+      },
 
       // draftForm() {
       //   if (this.postForm.content.length === 0 || this.postForm.title.length === 0) {

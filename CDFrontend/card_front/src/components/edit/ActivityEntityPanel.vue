@@ -72,16 +72,16 @@ export default {
   name: 'ActivityEntityPanel',
   components: {ActivityUpdatePanel, Pagination },
   directives: { waves },
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        published: 'success',
-        draft: 'info',
-        deleted: 'danger'
-      };
-      return statusMap[status]
-    }
-  },
+  // filters: {
+  //   statusFilter(status) {
+  //     const statusMap = {
+  //       published: 'success',
+  //       draft: 'info',
+  //       deleted: 'danger'
+  //     };
+  //     return statusMap[status]
+  //   }
+  // },
   data() {
     return {
       search: '',

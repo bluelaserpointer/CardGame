@@ -2,15 +2,15 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input v-model="search" placeholder="Title" style="width: 200px;" class="filter-card" />
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate" />
     </div>
 
+<!--    :data="list.filter(data => !search || data.mailName.toLowerCase().includes(search.toLowerCase()))"-->
     <el-table
       :key="tableKey"
       v-loading="listLoading"
-      :data="list.filter(data => !search || data.mailName.toLowerCase().includes(search.toLowerCase()))"
       border
       fit
+      :data="list"
       highlight-current-row
       style="width: 100%;"
       @sort-change="sortChange"
@@ -48,7 +48,6 @@
 </template>
 
 <script>
-import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
 import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination/index'
 import axios from 'axios' // secondary package based on el-pagination;
@@ -58,16 +57,16 @@ export default {
   name: 'MailEntityPanel',
   components: {MailUpdatePanel, Pagination },
   directives: { waves },
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        published: 'success',
-        draft: 'info',
-        deleted: 'danger'
-      };
-      return statusMap[status]
-    }
-  },
+  // filters: {
+  //   statusFilter(status) {
+  //     const statusMap = {
+  //       published: 'success',
+  //       draft: 'info',
+  //       deleted: 'danger'
+  //     };
+  //     return statusMap[status]
+  //   }
+  // },
   data() {
     return {
       search: '',
@@ -127,19 +126,24 @@ export default {
     getList() {
       axios.get('http://localhost:8080/mail/getAllMails')
         .then(response => {
-          this.panelVisible = false;
-          this.list = response.data;
-          this.watchList()
+          if(response.data) {
+            this.panelVisible = false;
+            this.list = response.data;
+            this.watchList()
+          }else
+          {
+            this.$message.error('Fetching Data Failed!');
+          }
+        })
+        .catch(error =>
+        {
+          this.$message.error('Fetching Data Failed!');
         });
     },
-
     handleUpdate(row) {
       this.temp = Object.assign({}, row); // copy obj
       this.dialogStatus = 'update';
       this.panelVisible = true;
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
     },
 
 
@@ -175,35 +179,6 @@ export default {
       const sort = this.listQuery.sort;
       return sort === `+${key}` ? 'ascending' : 'descending'
     },
-    handleFetchPv(pv) {
-      fetchPv(pv).then(response => {
-        this.pvData = response.data.pvData;
-        this.dialogPvVisible = true
-      })
-    }
-    // handleDownload() {
-    //   this.downloadLoading = true
-    //   import('@/vendor/Export2Excel').then(excel => {
-    //     const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
-    //     const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
-    //     const data = this.formatJson(filterVal)
-    //     excel.export_json_to_excel({
-    //       header: tHeader,
-    //       data,
-    //       filename: 'table-list'
-    //     })
-    //     this.downloadLoading = false
-    //   })
-    // },
-    // formatJson(filterVal) {
-    //   return this.list.map(v => filterVal.map(j => {
-    //     if (j === 'timestamp') {
-    //       return parseTime(v[j])
-    //     } else {
-    //       return v[j]
-    //     }
-    //   }))
-    // },
   }
 }
 </script>
