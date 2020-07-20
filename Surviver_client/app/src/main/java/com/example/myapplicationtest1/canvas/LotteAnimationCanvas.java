@@ -17,35 +17,33 @@ import androidx.annotation.Nullable;
 import com.example.myapplicationtest1.R;
 import com.example.myapplicationtest1.game.core.GHQ;
 
-public class LotteAnimationCanvas extends View {
+import java.util.Timer;
+import java.util.TimerTask;
+
+public class LotteAnimationCanvas extends MyCanvas {
     /*touch coordinate*/
     private int lastTouchX, lastTouchY;
     /*bitmaps*/
-    private Bitmap touchNotationBM, stageSpotBM;
+    //private Bitmap touchNotationBM, stageSpotBM;
     //paints
     private Paint whitePaint, chiPaint, engPaint, matPaint;
-
     //data
     public static int betCHI, betENG, betMAT;
 
-    public LotteAnimationCanvas(Context context) {//动态实例化view用到;
+    public LotteAnimationCanvas(Context context)  {//动态实例化view用到;
         super(context);
-        init();
     }
 
-    public LotteAnimationCanvas(Context context, @Nullable AttributeSet attrs) {//在xml 用到;
+    public LotteAnimationCanvas(Context context, @Nullable AttributeSet attrs) { //在xml 用到;
         super(context, attrs);
-        init();
     }
 
-    public LotteAnimationCanvas(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {//不会被系统默认调用，需要自己去显示的调用;
+    public LotteAnimationCanvas(Context context, @Nullable AttributeSet attrs, int defStyleAttr) { //不会被系统默认调用，需要自己去显示的调用;
         super(context, attrs, defStyleAttr);
-        init();
     }
-
+    @Override
     public void init() {
-        touchNotationBM = BitmapFactory.decodeResource(getResources(), R.drawable.titlecover);
-        stageSpotBM = BitmapFactory.decodeResource(getResources(), R.drawable.map_site);
+        //touchNotationBM = BitmapFactory.decodeResource(getResources(), R.drawable.titlecover);
         whitePaint = new Paint();
         whitePaint.setColor(Color.WHITE);
         chiPaint = new Paint();

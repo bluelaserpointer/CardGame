@@ -1,14 +1,9 @@
 package com.example.myapplicationtest1.page;
 
 import android.os.Bundle;
-import android.view.MotionEvent;
-import android.view.View;
 
 import com.example.myapplicationtest1.R;
 import com.example.myapplicationtest1.canvas.LotteAnimationCanvas;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class LottePage extends Page {
     @Override
@@ -23,12 +18,5 @@ public class LottePage extends Page {
         super.setTouchEvent(R.id.lotteBet_button4, () -> --LotteAnimationCanvas.betCHI);
         super.setTouchEvent(R.id.lotteBet_button5, () -> --LotteAnimationCanvas.betENG);
         super.setTouchEvent(R.id.lotteBet_button6, () -> --LotteAnimationCanvas.betMAT);
-        View lotteContent = findViewById(R.id.lotteContent);
-        new Timer().schedule(new TimerTask() {
-            public void run() {
-                if(lotteContent != null)
-                    lotteContent.invalidate();
-            }
-        },200,50);
     }
 }

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.util.AttributeSet;
-import android.view.View;
 
 import androidx.annotation.Nullable;
 
@@ -17,35 +16,40 @@ import com.example.myapplicationtest1.game.contents.unit.Knowledge;
 import com.example.myapplicationtest1.game.contents.unit.MyUnit;
 import com.example.myapplicationtest1.game.core.GHQ;
 import com.example.myapplicationtest1.game.paint.ImageFrame;
+import com.example.myapplicationtest1.page.BattleFinishPage;
+import com.example.myapplicationtest1.page.Page;
 import com.example.myapplicationtest1.pageParts.ChapterListAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class GameCanvas extends View {
+public class GameCanvas extends MyCanvas {
     /*touch coordinate*/
     private int lastTouchX, lastTouchY;
+    final Context context;
     public GameCanvas(Context context) { //动态实例化view用到;
         super(context);
-        init();
+        this.context = context;
     }
-
     public GameCanvas(Context context, @Nullable AttributeSet attrs) { //在xml 用到;
         super(context, attrs);
-        init();
+        this.context = context;
     }
-
     public GameCanvas(Context context, @Nullable AttributeSet attrs, int defStyleAttr) { //不会被系统默认调用，需要自己去显示的调用;
         super(context, attrs, defStyleAttr);
-        init();
+        this.context = context;
     }
     MyStage stage;
+    @Override
     public void init() {
         super.setOnTouchListener((v, event) -> {
             v.performClick();
             lastTouchX = (int)event.getX();
             lastTouchY = (int)event.getY();
+            if(stage.isGameClear || stage.isGameOver) {
+                Page.jump(context, BattleFinishPage.class);
+            }
             return false;
         });
         GHQ.setStage(stage = new MyStage(getWidth(), getHeight()));
