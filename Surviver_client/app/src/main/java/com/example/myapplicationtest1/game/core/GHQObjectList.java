@@ -1,9 +1,8 @@
 package com.example.myapplicationtest1.game.core;
 
-import com.example.myapplicationtest1.game.physics.HasBoundingBox;
 import com.example.myapplicationtest1.game.physics.HasPoint;
 import com.example.myapplicationtest1.game.physics.HitGroup;
-import com.example.myapplicationtest1.game.physics.HitInteractable;
+import com.example.myapplicationtest1.game.physics.HitIntractable;
 import com.example.myapplicationtest1.game.physics.Point;
 import com.example.myapplicationtest1.game.physics.hitShape.HasHitShape;
 
@@ -54,24 +53,24 @@ public class GHQObjectList<T extends GHQObject> extends LinkedList<T> {
 		}
 		return null;
 	}
-	public T forIntersects(HitInteractable object) {
+	public T forIntersects(HitIntractable object) {
 		for(T element : this) {
-			if(element instanceof HitInteractable && ((HitInteractable)element).intersects(object))
+			if(element instanceof HitIntractable && ((HitIntractable)element).intersects(object))
 				return element;
 		}
 		return null;
 	}
 	public T forShapeIntersects(HasHitShape object) {
 		for(T element : this) {
-			if(element instanceof HasHitShape && ((HasHitShape)element).hitShape().intersects(object))
+			if(element != null && ((HasHitShape)element).hitShape().intersects(object))
 				return element;
 		}
 		return null;
 	}
-	public T forIntersects_atNewPoint(HitInteractable object, double dx, double dy){
+	public T forIntersects_atNewPoint(HitIntractable object, double dx, double dy){
 		object.point().addXY(dx, dy);
 		for(T element : this) {
-			if(element instanceof HitInteractable && object.intersects((HitInteractable)element)) {
+			if(element != null && ((HasHitShape)element).hitShape().intersects(object)) {
 				object.point().addXY(-dx, -dy);
 				return element;
 			}
@@ -88,14 +87,14 @@ public class GHQObjectList<T extends GHQObject> extends LinkedList<T> {
 	}
 	public T forShapeIntersectsDot(int x, int y) {
 		for(T element : this) {
-			if(element instanceof HitInteractable && ((HitInteractable)element).boundingBoxIntersectsDot(x, y))
+			if(element instanceof HitIntractable && ((HitIntractable)element).boundingBoxIntersectsDot(x, y))
 				return element;
 		}
 		return null;
 	}
 	public T forIntersectsLine(HitGroup hitgroup, int x1, int y1, int x2, int y2) {
 		for(T element : this) {
-			if(element instanceof HitInteractable && ((HitInteractable)element).intersectsLine(hitgroup, x1, y1, x2, y2))
+			if(element instanceof HitIntractable && ((HitIntractable)element).intersectsLine(hitgroup, x1, y1, x2, y2))
 				return element;
 		}
 		return null;
@@ -105,7 +104,7 @@ public class GHQObjectList<T extends GHQObject> extends LinkedList<T> {
 	}
 	public T forIntersectsRect(HitGroup hitgroup, int x, int y, int w, int h) {
 		for(T element : this) {
-			if(element instanceof HitInteractable && ((HitInteractable)element).intersectsRect(hitgroup, x, y, w, h))
+			if(element instanceof HitIntractable && ((HitIntractable)element).intersectsRect(hitgroup, x, y, w, h))
 				return element;
 		}
 		return null;
@@ -113,10 +112,10 @@ public class GHQObjectList<T extends GHQObject> extends LinkedList<T> {
 	public T forIntersectsRect(int x, int y, int w, int h) {
 		return forIntersectsRect(HitGroup.HIT_ALL, x, y, w, h);
 	}
-	public boolean intersected(HitInteractable object) {
+	public boolean intersected(HitIntractable object) {
 		return forIntersects(object) != null;
 	}
-	public boolean intersected_atNewPoint(HitInteractable object, double dx, double dy) {
+	public boolean intersected_atNewPoint(HitIntractable object, double dx, double dy) {
 		return forIntersects_atNewPoint(object, dx, dy) != null;
 	}
 	public boolean shapeIntersected_dot(int x, int y) {

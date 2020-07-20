@@ -37,7 +37,7 @@ public class Square extends HitShape {
 		}else {
 			System.out.println("unhandled type: " + this.getClass().getName() + " against " + shape.getClass().getName());
 		}
-		return false;
+		return super.boundingBoxIntersects(shape);
 	}
 	@Override
 	public boolean boundingBoxIntersectsDot(int x, int y) {

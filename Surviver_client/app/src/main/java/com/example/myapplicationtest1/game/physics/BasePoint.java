@@ -34,19 +34,19 @@ public class BasePoint extends Point {
 	}
 	@Override
 	public int intX() {
-		return base.intX() + base.intX();
+		return base.point().intX() + base.point().intX();
 	}
 	@Override
 	public int intY() {
-		return base.intY() + base.intY();
+		return base.point().intY() + base.point().intY();
 	}
 	@Override
 	public double doubleX() {
-		return base.doubleX() + base.doubleX();
+		return base.point().doubleX() + base.point().doubleX();
 	}
 	@Override
 	public double doubleY() {
-		return base.doubleY() + base.doubleY();
+		return base.point().doubleY() + base.point().doubleY();
 	}
 	@Override
 	public Point setAll(Point point) {
