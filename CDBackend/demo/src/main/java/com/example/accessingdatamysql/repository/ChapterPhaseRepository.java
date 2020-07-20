@@ -10,11 +10,21 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 public interface ChapterPhaseRepository extends JpaRepository<ChapterPhase, ChapterPhaseEntityId> {
     Optional<ChapterPhase> findChapterPhaseByChapterIdEqualsAndPhaseIdEquals(Integer chapterId, Integer phaseId);
 
+    List<ChapterPhase> findChapterPhasesByChapterIdEquals(Integer chapterId);
+
+    @Modifying
+    @Transactional
+    void deleteChapterPhasesByChapterIdEqualsAndPhaseIdGreaterThan(Integer chapterId, Integer phaseId);
+
+    @Modifying
+    @Transactional
+    void deleteChapterPhasesByChapterIdEquals(Integer chapterId);
 
     @Transactional
     @Modifying

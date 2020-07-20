@@ -12,7 +12,7 @@ import javax.transaction.Transactional;
 public interface ChapterRepository extends JpaRepository<Chapter, Integer> {
     @Modifying
     @Transactional
-    void deleteChapterByChapterIdEquals(Integer chapterId);
+    void deleteChaptersByChapterIdEquals(Integer chapterId);
 
 
     @Transactional

@@ -27,6 +27,7 @@ public class ChapterDaoImpl implements ChapterDao {
     @Autowired
     private ChapterDetailsRepository chapterDetailsRepository;
 
+
     public List<ChapterDetails> updateChapterPhaseStrategy(Integer chapterId, Integer phaseId, String phaseData)
             throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -51,34 +52,45 @@ public class ChapterDaoImpl implements ChapterDao {
 
         Optional<ChapterPhase> optChapterPhase = chapterPhaseRepository
                 .findChapterPhaseByChapterIdEqualsAndPhaseIdEquals(chapterId, phaseId);
+        ChapterPhase chapterPhase;
         if (optChapterPhase.isPresent()) {
-            ChapterPhase chapterPhase = optChapterPhase.get();
-            chapterPhase.setAwardItems(mappedAwardItems);
-            chapterPhase.setAwardCards(mappedAwardCards);
-            chapterPhaseRepository.updateChapterPhaseStatus(chapterPhase, chapterId, phaseId);
+            chapterPhase = optChapterPhase.get();
+        }else{
+            chapterPhase = new ChapterPhase();
+            chapterPhase.setChapterId(chapterId);
+            chapterPhase.setPhaseId(phaseId);
         }
-        return getAllChapterPhases();
+        chapterPhase.setAwardItems(mappedAwardItems);
+        chapterPhase.setAwardCards(mappedAwardCards);
+        chapterPhaseRepository.save(chapterPhase);
+
+        return getChapterPhasesByChapter(chapterId);
     }
 
     public List<ChapterPhase> getAllChapterPhases() {
         return chapterPhaseRepository.findAll();
     }
 
-    public Map<Integer, Integer> parseAwardItems(String awardItems) {
-        String testItems = "{1:2, 2:3, 3:4, 4:5, 5:6}";
-        JSONObject parseObject = JSONArray.parseObject(awardItems);
-        Map<Integer, Integer> parseMap = parseObject.toJavaObject(Map.class);
-        System.out.println(parseMap);
+    // 将 String类型的 "[[2,1], [3,2], [4,3]]" 等 List<List> 形式转换为 Map
+    public Map<Integer, Integer> parseAwardItems(String awardItems) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        TypeFactory typeFactory = objectMapper.getTypeFactory();
+        List<List<Integer>> mappedList = objectMapper.readValue(awardItems, typeFactory.constructCollectionType(List.class, List.class));
         Map<Integer, Integer> transMap = new HashMap<>();
-        Set<Map.Entry<Integer, Integer>> entrySet = parseMap.entrySet();
-        for (Map.Entry<Integer, Integer> entry : entrySet) {
-            transMap.put(Integer.parseInt(String.valueOf(entry.getKey())),
-                    Integer.parseInt(String.valueOf(entry.getValue())));
+        for(int i = 0; i < mappedList.size(); i++)
+        {
+            Integer id = mappedList.get(i).get(0);
+            Integer quantity = mappedList.get(i).get(1);
+            transMap.put(id, quantity);
         }
-        System.out.println(transMap);
+        if(transMap.size() <= 0)
+        {
+            return null;
+        }
         return transMap;
     }
 
+    // 将 String类型的 "[1,2,3,4]" 转换成 List
     public List<Integer> parseAwardCards(String awardCards) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         TypeFactory typeFactory = objectMapper.getTypeFactory();
@@ -104,8 +116,33 @@ public class ChapterDaoImpl implements ChapterDao {
     }
 
     public List<Chapter> deleteChapter(Integer chapterId) {
-        chapterRepository.deleteChapterByChapterIdEquals(chapterId);
-        chapterDetailsRepository.deleteChapterDetailsByCardIdEquals(chapterId);
+
+        // 同时删除其余联动的数据
+        chapterRepository.deleteChaptersByChapterIdEquals(chapterId);
+        chapterPhaseRepository.deleteChapterPhasesByChapterIdEquals(chapterId);
+        chapterDetailsRepository.deleteChapterDetailsByChapterIdEquals(chapterId);
+
+        return getAllChapters();
+    }
+
+    public List<Chapter> updateChapter(Integer chapterId, Integer phaseNo, Integer phaseType) {
+        Optional<Chapter> optChapter = chapterRepository.findById(chapterId);
+        Chapter chapter;
+        if(optChapter.isPresent())
+        {
+            chapter = optChapter.get();
+        }else{
+            chapter = new Chapter();
+            chapter.setChapterId(chapterId);
+        }
+        chapter.setPhaseNo(phaseNo);
+        chapter.setPhaseType(phaseType);
+        chapterRepository.save(chapter);
+
+        // 其余关联的数据被更新，例如将 PhaseNo: 3 -> 1，需将 Phase3 与 Phase2 的数据更新(清除)
+        chapterPhaseRepository.deleteChapterPhasesByChapterIdEqualsAndPhaseIdGreaterThan(chapterId, phaseNo);
+        chapterDetailsRepository.deleteChapterDetailsByChapterIdEqualsAndPhaseIdGreaterThan(chapterId, phaseNo);
+
         return getAllChapters();
     }
 
@@ -117,7 +154,20 @@ public class ChapterDaoImpl implements ChapterDao {
         return chapterDetailsRepository.getChapterDetailsByChapterIdEquals(chapterId);
     }
 
+    public List<ChapterPhase> getChapterPhasesByChapter(Integer chapterId) {
+        return chapterPhaseRepository.findChapterPhasesByChapterIdEquals(chapterId);
+    }
+
     public List<ChapterDetails> getAllChapterDetails() {
         return chapterDetailsRepository.findAll();
+    }
+
+    public List<Chapter> addChapter(Integer phaseNo, Integer phaseType)
+    {
+        Chapter chapter = new Chapter();
+        chapter.setPhaseNo(phaseNo);
+        chapter.setPhaseType(phaseType);
+        chapterRepository.save(chapter);
+        return getAllChapters();
     }
 }
