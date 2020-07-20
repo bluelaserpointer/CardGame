@@ -14,13 +14,11 @@ public abstract class MyCanvas extends View {
         super(context);
         start();
     }
-
-    public MyCanvas(Context context, @Nullable AttributeSet attrs) {//在xml 用到;
+    public MyCanvas(Context context, @Nullable AttributeSet attrs) { //在xml 用到;
         super(context, attrs);
         start();
     }
-
-    public MyCanvas(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {//不会被系统默认调用，需要自己去显示的调用;
+    public MyCanvas(Context context, @Nullable AttributeSet attrs, int defStyleAttr) { //不会被系统默认调用，需要自己去显示的调用;
         super(context, attrs, defStyleAttr);
         start();
     }
