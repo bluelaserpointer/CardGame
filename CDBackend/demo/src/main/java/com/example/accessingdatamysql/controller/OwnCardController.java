@@ -26,7 +26,7 @@ public class OwnCardController {
 
   // 增加一个用户拥有卡牌关系
   @RequestMapping(value = "/addOwnCard")
-  public @ResponseBody String addNewOwnCard(@RequestParam("userId") Integer userId,
+  public @ResponseBody OwnCard addNewOwnCard(@RequestParam("userId") Integer userId,
       @RequestParam("cardId") Integer cardId) {
     return OwnCardService.addNewOwnCard(userId, cardId);
   }
@@ -49,11 +49,12 @@ public class OwnCardController {
   }
 
   // 用户再一次拥有已拥有的卡片
-  @RequestMapping(value = "/ownAnotherCard")
-  public @ResponseBody OwnCard ownAnotherCard(@RequestParam("userId") Integer userId,
-      @RequestParam("cardId") Integer cardId) {
-    return OwnCardService.ownAnotherCard(userId, cardId);
-  }
+  // @RequestMapping(value = "/ownAnotherCard")
+  // public @ResponseBody OwnCard ownAnotherCard(@RequestParam("userId") Integer
+  // userId,
+  // @RequestParam("cardId") Integer cardId) {
+  // return OwnCardService.ownAnotherCard(userId, cardId);
+  // }
 
   // 获取所有用户拥有卡牌关系
   @RequestMapping(value = "/getAllOwnCards")

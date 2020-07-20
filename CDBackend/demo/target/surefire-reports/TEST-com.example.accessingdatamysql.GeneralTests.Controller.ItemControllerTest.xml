@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.example.accessingdatamysql.GeneralTests.Controller.ItemControllerTest" time="3.465" tests="8" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.example.accessingdatamysql.GeneralTests.Controller.ItemControllerTest" time="3.435" tests="8" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_211\jre\bin"/>
@@ -64,12 +64,12 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase name="deleteItems" classname="com.example.accessingdatamysql.GeneralTests.Controller.ItemControllerTest" time="0.605"/>
-  <testcase name="addNewItem" classname="com.example.accessingdatamysql.GeneralTests.Controller.ItemControllerTest" time="0.434"/>
-  <testcase name="getAllItems" classname="com.example.accessingdatamysql.GeneralTests.Controller.ItemControllerTest" time="0.4"/>
-  <testcase name="updateItem" classname="com.example.accessingdatamysql.GeneralTests.Controller.ItemControllerTest" time="0.436"/>
-  <testcase name="deleteAllItems" classname="com.example.accessingdatamysql.GeneralTests.Controller.ItemControllerTest" time="0.385"/>
-  <testcase name="contextLoads" classname="com.example.accessingdatamysql.GeneralTests.Controller.ItemControllerTest" time="0.046"/>
-  <testcase name="deleteItem" classname="com.example.accessingdatamysql.GeneralTests.Controller.ItemControllerTest" time="0.407"/>
-  <testcase name="findItemByItemId" classname="com.example.accessingdatamysql.GeneralTests.Controller.ItemControllerTest" time="0.409"/>
+  <testcase name="deleteItems" classname="com.example.accessingdatamysql.GeneralTests.Controller.ItemControllerTest" time="0.426"/>
+  <testcase name="addNewItem" classname="com.example.accessingdatamysql.GeneralTests.Controller.ItemControllerTest" time="0.389"/>
+  <testcase name="getAllItems" classname="com.example.accessingdatamysql.GeneralTests.Controller.ItemControllerTest" time="0.411"/>
+  <testcase name="updateItem" classname="com.example.accessingdatamysql.GeneralTests.Controller.ItemControllerTest" time="0.403"/>
+  <testcase name="deleteAllItems" classname="com.example.accessingdatamysql.GeneralTests.Controller.ItemControllerTest" time="0.622"/>
+  <testcase name="contextLoads" classname="com.example.accessingdatamysql.GeneralTests.Controller.ItemControllerTest" time="0.035"/>
+  <testcase name="deleteItem" classname="com.example.accessingdatamysql.GeneralTests.Controller.ItemControllerTest" time="0.448"/>
+  <testcase name="findItemByItemId" classname="com.example.accessingdatamysql.GeneralTests.Controller.ItemControllerTest" time="0.382"/>
 </testsuite>

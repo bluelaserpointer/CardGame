@@ -65,12 +65,18 @@ public class UserServiceImpl implements UserService {
 
     // 登录逻辑
     @Override
-    public boolean identifyUser(String userName, String password) {
+    public Integer identifyUser(String userName, String password) {
         User fetchUser = userDao.getOneUserByUserName(userName);
-        if (fetchUser != null) {
-            return password.equals(fetchUser.getPassword());
+        System.out.println("Identify User:");
+        System.out.println(fetchUser);
+        if (fetchUser == null) {
+            return -1; // 不存在用户
         }
-        return false;
+        if (!password.equals(fetchUser.getPassword())) {
+            return -2; // 密码不正确
+        }
+
+        return fetchUser.getUserId();
     }
 
     // 删除一个指定用户
@@ -109,10 +115,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public Integer expToLevelUp(Integer userLevel) {
         Integer base = 100; // 等级为1时需要100经验值
-        if (userLevel.equals(1))
-            return base;
+        // if (userLevel.equals(1))
+        // return base;
         double IncreaseRate = 1.05;
         double result = Math.round(Math.pow(IncreaseRate, userLevel - 1) * base); // 小数采用四舍五入法
+        System.out.println(result);
         return (int) result;
     }
 

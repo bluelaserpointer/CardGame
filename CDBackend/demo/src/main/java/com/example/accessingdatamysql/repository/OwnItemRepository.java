@@ -1,5 +1,7 @@
 package com.example.accessingdatamysql.repository;
 
+import java.util.Optional;
+
 import javax.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.accessingdatamysql.entity.*;
@@ -15,6 +17,9 @@ public interface OwnItemRepository extends JpaRepository<OwnItem, Integer> {
     @Modifying
     @Transactional
     void deleteOwnItemByUserIdEqualsAndItemIdEquals(Integer userId, Integer itemId);
+
+    Optional<OwnItem> findOwnItemByUserIdEqualsAndItemIdEquals(Integer userId, Integer itemId);
+
     // @Query(value = "SELECT u from OwnItems u where u.userId = ?1", nativeQuery =
     // true)
     // List<OwnItem> findByUserId(Integer userId);

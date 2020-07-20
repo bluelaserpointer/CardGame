@@ -23,7 +23,10 @@ public class OwnCardServiceImpl implements OwnCardService {
 
     // 增加一个用户拥有某张卡牌的关系
     @Override
-    public String addNewOwnCard(Integer userId, Integer cardId) {
+    public OwnCard addNewOwnCard(Integer userId, Integer cardId) {
+        if (OwnCardDao.findOwnCardByUserIdEqualsAndCardIdEquals(userId, cardId) != null) {
+            return OwnCardDao.ownAnotherCard(OwnCardDao.findOwnCardByUserIdEqualsAndCardIdEquals(userId, cardId));
+        }
         return OwnCardDao.addNewOwnCard(userId, cardId);
     }
 
@@ -67,8 +70,8 @@ public class OwnCardServiceImpl implements OwnCardService {
     }
 
     // 用户再一次拥有已经拥有的卡牌
-    @Override
-    public OwnCard ownAnotherCard(Integer userId, Integer cardId) {
-        return OwnCardDao.ownAnotherCard(userId, cardId);
-    }
+    // @Override
+    // public OwnCard ownAnotherCard(Integer userId, Integer cardId) {
+    // return OwnCardDao.ownAnotherCard(userId, cardId);
+    // }
 }

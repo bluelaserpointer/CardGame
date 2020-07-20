@@ -23,11 +23,11 @@ public class OwnCardDaoImpl implements OwnCardDao {
     }
 
     // 增加一个用户拥有某张卡牌的关系
-    public String addNewOwnCard(Integer userId, Integer cardId) {
+    public OwnCard addNewOwnCard(Integer userId, Integer cardId) {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis()); // 获取当前时间作为获取卡牌的时间
         OwnCard owncard = new OwnCard(userId, cardId, timestamp);
         OwnCardRepository.save(owncard);
-        return "Saved OwnCard";
+        return owncard;
 
     }
 
@@ -35,7 +35,7 @@ public class OwnCardDaoImpl implements OwnCardDao {
     public OwnCard updateOwnCard(Integer userId, Integer cardId, Integer cardLevel, Integer cardCurExp,
             Integer cardLevelLimit, Integer repetitiveOwns, Timestamp accquireDate) {
         Optional<OwnCard> optOwnCard = OwnCardRepository.findOwnCardByUserIdEqualsAndCardIdEquals(userId, cardId);
-        if(optOwnCard.isPresent()) {
+        if (optOwnCard.isPresent()) {
             OwnCard ownCard = optOwnCard.get();
             ownCard.setOwnCard(userId, cardId, cardLevel, cardCurExp, cardLevelLimit, repetitiveOwns, accquireDate);
             OwnCardRepository.updateOwnCardStatus(ownCard, ownCard.getOwnCardId());
@@ -47,7 +47,7 @@ public class OwnCardDaoImpl implements OwnCardDao {
     // 用户拥有的某张卡牌升级
     public OwnCard cardLevelUp(Integer userId, Integer cardId) {
         Optional<OwnCard> optOwnCard = OwnCardRepository.findOwnCardByUserIdEqualsAndCardIdEquals(userId, cardId);
-        if(optOwnCard.isPresent()) {
+        if (optOwnCard.isPresent()) {
             OwnCard ownCard = optOwnCard.get();
             ownCard.setCardLevel(ownCard.getCardLevel() + 1);
             ownCard.setCardCurExp(0);
@@ -58,14 +58,17 @@ public class OwnCardDaoImpl implements OwnCardDao {
     }
 
     // 用户再一次拥有已经拥有的卡牌
-    public OwnCard ownAnotherCard(Integer userId, Integer cardId) {
+    public OwnCard ownAnotherCard(OwnCard ownCard) {
+        ownCard.setRepetitiveOwns(ownCard.getRepetitiveOwns() + 1);
+        // 这里还需要增加cardlevellimit的更新
+        OwnCardRepository.updateOwnCardStatus(ownCard, ownCard.getOwnCardId());
+        return ownCard;
+    }
+
+    public OwnCard findOwnCardByUserIdEqualsAndCardIdEquals(Integer userId, Integer cardId) {
         Optional<OwnCard> optOwnCard = OwnCardRepository.findOwnCardByUserIdEqualsAndCardIdEquals(userId, cardId);
-        if(optOwnCard.isPresent()) {
-            OwnCard ownCard = optOwnCard.get();
-            ownCard.setRepetitiveOwns(ownCard.getRepetitiveOwns() + 1);
-            // 这里还需要增加cardlevellimit的更新
-            OwnCardRepository.updateOwnCardStatus(ownCard, ownCard.getOwnCardId());
-            return ownCard;
+        if (optOwnCard.isPresent()) {
+            return optOwnCard.get();
         }
         return null;
     }
@@ -108,4 +111,5 @@ public class OwnCardDaoImpl implements OwnCardDao {
         OwnCardRepository.deleteOwnCardByUserIdEqualsAndCardIdEquals(userId, cardId);
         return getAllOwnCards();
     }
+
 }

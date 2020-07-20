@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.example.accessingdatamysql.GeneralTests.Controller.OwnCardControllerTest" time="4.845" tests="11" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.example.accessingdatamysql.GeneralTests.Controller.OwnCardControllerTest" time="4.748" tests="11" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_211\jre\bin"/>
@@ -64,15 +64,15 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase name="deleteOwnCard" classname="com.example.accessingdatamysql.GeneralTests.Controller.OwnCardControllerTest" time="0.58"/>
-  <testcase name="getAllOwnCardsByUserId" classname="com.example.accessingdatamysql.GeneralTests.Controller.OwnCardControllerTest" time="0.451"/>
-  <testcase name="addNewOwnCard" classname="com.example.accessingdatamysql.GeneralTests.Controller.OwnCardControllerTest" time="0.453"/>
-  <testcase name="deleteOwnCards" classname="com.example.accessingdatamysql.GeneralTests.Controller.OwnCardControllerTest" time="0.422"/>
-  <testcase name="findOwnCardByOwnCardId" classname="com.example.accessingdatamysql.GeneralTests.Controller.OwnCardControllerTest" time="0.42"/>
-  <testcase name="cardLevelUp" classname="com.example.accessingdatamysql.GeneralTests.Controller.OwnCardControllerTest" time="0.424"/>
-  <testcase name="contextLoads" classname="com.example.accessingdatamysql.GeneralTests.Controller.OwnCardControllerTest" time="0.053"/>
-  <testcase name="getAllOwnCards" classname="com.example.accessingdatamysql.GeneralTests.Controller.OwnCardControllerTest" time="0.434"/>
-  <testcase name="updateOwnCard" classname="com.example.accessingdatamysql.GeneralTests.Controller.OwnCardControllerTest" time="0.489"/>
-  <testcase name="ownAnotherCard" classname="com.example.accessingdatamysql.GeneralTests.Controller.OwnCardControllerTest" time="0.406"/>
-  <testcase name="deleteAllOwnCards" classname="com.example.accessingdatamysql.GeneralTests.Controller.OwnCardControllerTest" time="0.376"/>
+  <testcase name="deleteOwnCard" classname="com.example.accessingdatamysql.GeneralTests.Controller.OwnCardControllerTest" time="0.459"/>
+  <testcase name="getAllOwnCardsByUserId" classname="com.example.accessingdatamysql.GeneralTests.Controller.OwnCardControllerTest" time="0.469"/>
+  <testcase name="addNewOwnCard" classname="com.example.accessingdatamysql.GeneralTests.Controller.OwnCardControllerTest" time="0.421"/>
+  <testcase name="deleteOwnCards" classname="com.example.accessingdatamysql.GeneralTests.Controller.OwnCardControllerTest" time="0.391"/>
+  <testcase name="findOwnCardByOwnCardId" classname="com.example.accessingdatamysql.GeneralTests.Controller.OwnCardControllerTest" time="0.432"/>
+  <testcase name="cardLevelUp" classname="com.example.accessingdatamysql.GeneralTests.Controller.OwnCardControllerTest" time="0.467"/>
+  <testcase name="contextLoads" classname="com.example.accessingdatamysql.GeneralTests.Controller.OwnCardControllerTest" time="0.041"/>
+  <testcase name="getAllOwnCards" classname="com.example.accessingdatamysql.GeneralTests.Controller.OwnCardControllerTest" time="0.48"/>
+  <testcase name="updateOwnCard" classname="com.example.accessingdatamysql.GeneralTests.Controller.OwnCardControllerTest" time="0.439"/>
+  <testcase name="ownAnotherCard" classname="com.example.accessingdatamysql.GeneralTests.Controller.OwnCardControllerTest" time="0.533"/>
+  <testcase name="deleteAllOwnCards" classname="com.example.accessingdatamysql.GeneralTests.Controller.OwnCardControllerTest" time="0.342"/>
 </testsuite>

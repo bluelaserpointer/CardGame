@@ -10,7 +10,7 @@ public interface OwnCardService {
         OwnCard getOneOwnCard(Integer OwncardId);
 
         // 增加一个用户拥有某张卡牌的关系
-        String addNewOwnCard(Integer userId, Integer cardId);
+        OwnCard addNewOwnCard(Integer userId, Integer cardId);
 
         // 更新一个用户拥有某张卡牌的所有信息
         OwnCard updateOwnCard(Integer userId, Integer cardId, Integer cardLevel, Integer cardCurExp,
@@ -20,7 +20,7 @@ public interface OwnCardService {
         OwnCard cardLevelUp(Integer userId, Integer cardId);
 
         // 用户再一次拥有已经拥有的卡牌
-        OwnCard ownAnotherCard(Integer userId, Integer cardId);
+        // OwnCard ownAnotherCard(Integer userId, Integer cardId);
 
         // 获取所有的用户拥有卡牌记录
         List<OwnCard> getAllOwnCards();
