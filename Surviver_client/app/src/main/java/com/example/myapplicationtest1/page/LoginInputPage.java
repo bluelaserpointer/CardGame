@@ -1,6 +1,7 @@
 package com.example.myapplicationtest1.page;
 
 import android.os.Bundle;
+import android.text.SpannableStringBuilder;
 import android.view.View;
 import android.widget.EditText;
 
@@ -19,10 +20,7 @@ public class LoginInputPage extends Page {
     }
     public void onLoginInputClick(View view) throws JSONException {
         final String userName = ((EditText)findViewById(R.id.usernameText)).getText().toString();
-        EditText passwordText = findViewById(R.id.passwordText);
-        final String password = ((EditText)passwordText.getText()).toString();
-        System.out.println(userName);
-        System.out.println(password);
+        final String password = ((EditText)findViewById(R.id.passwordText)).getText().toString();
         if(Utils.identifyUserInput(userName, password)) {
             System.out.println("InputIdentification succeeded!!!!!!!!!!!!!!!!");
             Utils.saveUserInfo(this, userName, password);
