@@ -3,15 +3,11 @@ package com.example.myapplicationtest1.game.preset.item;
 import androidx.annotation.IntegerRes;
 
 import com.example.myapplicationtest1.game.calculate.Filter;
-import com.example.myapplicationtest1.game.calculate.verifier.Verifier;
-import com.example.myapplicationtest1.game.calculate.verifier.WhiteList;
 import com.example.myapplicationtest1.game.core.GHQ;
 import com.example.myapplicationtest1.game.core.GHQObject;
 import com.example.myapplicationtest1.game.paint.dot.DotPaint;
 import com.example.myapplicationtest1.game.physics.Point;
 import com.example.myapplicationtest1.game.physics.hitShape.ImageRectShape;
-import com.example.myapplicationtest1.game.preset.unit.BodyParts;
-import com.example.myapplicationtest1.game.preset.unit.BodyPartsType;
 import com.example.myapplicationtest1.game.preset.unit.Unit;
 import com.example.myapplicationtest1.game.storage.StorageWithSpace;
 
@@ -31,8 +27,6 @@ public class ItemData extends GHQObject implements Usable {
 	protected int stackCap = Integer.MAX_VALUE;
 	protected DotPaint paintScript;
 	private boolean isEquipped;
-	//equipment info
-	private Verifier<BodyPartsType> equippableBodyPartsTypeVerifier;
 
 	@Override
 	public String name() {
@@ -45,10 +39,6 @@ public class ItemData extends GHQObject implements Usable {
 	}
 	public ItemData setDotPaint(DotPaint dotPaint) {
 		paintScript = dotPaint;
-		return this;
-	}
-	public ItemData setEquippableBodyPartsType(BodyPartsType...whiteList) {
-		equippableBodyPartsTypeVerifier = new WhiteList<BodyPartsType>(whiteList);
 		return this;
 	}
 	//main role
@@ -198,16 +188,6 @@ public class ItemData extends GHQObject implements Usable {
 	}
 	public static boolean isValid(ItemData item) {
 		return item != null && item != ItemData.BLANK_ITEM;
-	}
-	public boolean canEquipTo(BodyParts bodyParts) {
-		for(BodyPartsType type : bodyParts.types()) {
-			if(equippableBodyPartsTypeVerifier.verify(type))
-				return true;
-		}
-		return false;
-	}
-	public Verifier<BodyPartsType> equippableBodyPartsTypeVerifier() {
-		return equippableBodyPartsTypeVerifier;
 	}
 	public boolean isEquipped() {
 		return isEquipped;

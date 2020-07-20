@@ -6,11 +6,10 @@ import android.graphics.Paint;
 import com.example.myapplicationtest1.game.calculate.Damage;
 import com.example.myapplicationtest1.game.core.GHQ;
 import com.example.myapplicationtest1.game.core.GHQObject;
-import com.example.myapplicationtest1.game.paint.ImageFrame;
 import com.example.myapplicationtest1.game.paint.dot.DotPaint;
 import com.example.myapplicationtest1.game.paint.dot.HasDotPaint;
 import com.example.myapplicationtest1.game.physics.HasAnglePoint;
-import com.example.myapplicationtest1.game.physics.HitInteractable;
+import com.example.myapplicationtest1.game.physics.HitIntractable;
 import com.example.myapplicationtest1.game.physics.Point;
 import com.example.myapplicationtest1.game.preset.item.ItemData;
 
@@ -88,7 +87,7 @@ public abstract class Unit extends GHQObject implements HasAnglePoint, HasDotPai
 		return "[Unit]" + "NOT_NAMED";
 	}
 	@Override
-	public boolean intersects(HitInteractable object) {
+	public boolean intersects(HitIntractable object) {
 		return isAlive() && super.intersects(object);
 	}
 	public abstract boolean isAlive();

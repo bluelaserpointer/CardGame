@@ -109,7 +109,6 @@
 </template>
 
 <script>
-import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination/index'
@@ -145,6 +144,8 @@ export default {
       switchedChapter: true,
       confirmed: true,
       placedCard: false,
+
+
       tableKey: 0,
       total: 0,
       listLoading: false,
@@ -160,7 +161,6 @@ export default {
       sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
       statusOptions: ['published', 'draft', 'deleted'],
       showReviewer: false,
-      dialogFormVisible: false,
       dialogStatus: '',
       textMap: {
         update: 'Edit',
@@ -180,7 +180,6 @@ export default {
     currPhase(val) {
       this.prevPhase = val;
       this.handleRefreshPhase(val)
-      // this.prevList = this.posList;
     },
     currChapter(val) {
       this.prevChapter = val
@@ -191,68 +190,51 @@ export default {
     this.getList()
   },
   methods: {
-    watchList() {
-      const list = this.cardList;
-      for (const i in list) {
-        const details = list[i].cardDetails;
-        list[i].cardImg = details.cardImg;
-        list[i].cardDescription = details.cardDescription;
-        list[i].shortDescription = details.shortDescription
-      }
-      console.log(list);
-      this.cardList = list
-    },
     handleRefreshPhase(val) {
       this.confirmed = true;
       this.placedCard = false;
       this.posList = [];
-      const chapterData = this.chapterData;
-      for (const i in chapterData) {
+      let chapterData = this.chapterData;
+      for (let i in chapterData) {
         if (chapterData[i].phaseId === val) {
           this.posList.push(chapterData[i].positionId);
           this.posMap.set(chapterData[i].positionId, chapterData[i].cardId)
         }
       }
+      console.log("PosList");
+      console.log(this.posList);
+      console.log("PosMap");
+      console.log(this.posMap);
     },
-    handleConfirm() {
-      // TODO: Popup
-      // TODO: Send Request
-      // TODO: Clear all the necessary attributes & Able to select another phase/chapter without asking
-      const chapterPhaseData = Array.from(this.posMap);
-      const postData = new FormData();
-      const _this = this;
-      postData.append('chapterId', this.currChapter);
-      postData.append('phaseId', this.currPhase);
-      postData.append('phaseData', JSON.stringify(chapterPhaseData));
-      axios.post(`http://localhost:8080/chapter/updateChapter`, postData).then(response => {
-        if (response.data) {
-          _this.chapterData = response.data
-        }
-        this.handleRefreshPhase(this.currPhase)
-      })
-    },
-    handleChangePhase() {
-      this.handleChange()
-      // TODO: GET PHASE
-    },
+
     handleChangeChapter() {
       this.handleChange();
-
-      // TODO: GET CHAPTER
-      const postData = new FormData();
-      const _this = this;
+      let postData = new FormData();
+      let _this = this;
       postData.append('chapterId', this.currChapter);
       axios.post('http://localhost:8080/chapter/getChapterDetailsByChapter', postData).then(response => {
         if (response.data) {
           _this.chapterData = response.data;
-          _this.handleRefreshPhase(1)
+          console.log("ChapterData");
+          console.log(_this.chapterData);
+          _this.handleRefreshPhase(1);
+        }else{
+          this.$message.error('Fetching Data Failed!');
         }
       })
+      .catch(error => {
+        this.$message.error('Fetching Data Failed!');
+      });
+    },
+
+    handleChangePhase() {
+      this.handleChange()
     },
     handleChange() {
       if (!this.placedCard) {
         return
       }
+
       if (this.confirmed || this.posList.length === 0) {
         this.$message({
           message: 'Choices confirmed!',
@@ -266,6 +248,8 @@ export default {
       }
       if (this.currPhase !== undefined && this.posList.length > 0) { this.confirmed = false }
     },
+
+
     placeCard(pos) {
       if (this.currChapter === undefined || this.currPhase === undefined || this.currCard === undefined) {
         this.$message.error('Choices unspecified!');
@@ -280,47 +264,83 @@ export default {
         this.posList.splice(index, 1)
       } else {
         this.posMap.set(pos, currCard);
-        this.posList.push(pos)
+        this.posList.push(pos);
       }
     },
-    uploadCover() {
-      const _this = this;
-      // 根据ref得到图片文件
-      var file = this.$refs.img;
-      // 使用h5的读取文件api
-      var reader = new FileReader();
-      reader.readAsDataURL(file.files[0]);
-      // 读取完成后触发
-      reader.onload = function() {
-        // 改变img的路径
-        _this.temp.cardImg = this.result;
-        console.log('In onload')
-      }
+    handleCardChoose(val) {
+      this.currCard = val.cardId
     },
+
+
+
+    handleConfirm() {
+      let chapterPhaseData = Array.from(this.posMap);
+      let postData = new FormData();
+      let _this = this;
+      postData.append('chapterId', this.currChapter);
+      postData.append('phaseId', this.currPhase);
+      postData.append('phaseData', JSON.stringify(chapterPhaseData));
+      axios.post(`http://localhost:8080/chapter/updateChapter`, postData).then(response => {
+        if (response.data) {
+          _this.chapterData = response.data
+        }else{
+          this.$message.error('Updating Data Failed!');
+        }
+        this.handleRefreshPhase(this.currPhase)
+      })
+        .catch(error => {
+          this.$message.error('Updating Data Failed!');
+        })
+    },
+
+
+
+
+
+
     getList() {
-      this.listLoading = true;
       axios.get('http://localhost:8080/chapter/getAllChapters').then(response => {
+        if(response.data)
+        {
         this.chapterList = response.data;
         axios.get('http://localhost:8080/card/getAllCards')
           .then(res => {
-            this.cardList = res.data;
-            this.watchList()
+            if(res.data) {
+              this.cardList = res.data;
+              this.watchList()
+            }else
+            {
+              this.$message.error('Fetching Data Failed!');
+            }
           })
-      });
-      setTimeout(() => {
-        this.listLoading = false
-      }, 1.5 * 10)
+          .catch(error =>
+          {
+            this.$message.error('Fetching Data Failed!');
+          });
+        }else{
+          this.$message.error('Fetching Data Failed!');
+        }})
+        .catch(error =>
+        {
+          this.$message.error('Fetching Data Failed!');
+        }
+      );
     },
+    watchList() {
+      let list = this.cardList;
+      for (let i in list) {
+        let details = list[i].cardDetails;
+        list[i].cardImg = details.cardImg;
+        list[i].cardDescription = details.cardDescription;
+        list[i].shortDescription = details.shortDescription
+      }
+      this.cardList = list
+    },
+
+
     handleFilter() {
       this.listQuery.page = 1;
       this.getList()
-    },
-    handleModifyStatus(row, status) {
-      this.$message({
-        message: '操作Success',
-        type: 'success'
-      });
-      row.status = status
     },
     sortChange(data) {
       const { prop, order } = data;
@@ -336,7 +356,12 @@ export default {
       }
       this.handleFilter()
     },
-    createData() {
+    getSortClass: function(key) {
+      const sort = this.listQuery.sort;
+      return sort === `+${key}` ? 'ascending' : 'descending'
+    },
+
+    // createData() {
       //
       // let postData = new FormData();
       // // postData.append('cardId', this.temp.id);
@@ -365,56 +390,9 @@ export default {
       //   axios.get('http://localhost:8080/card/get/all')
       //     .then(response => this.cardList = response.data);
       // })
-
-    },
-    handleCardChoose(val) {
-      this.currCard = val.cardId
-    },
-    updateData() {
-      // let postData = new FormData();
-      // postData.append('cardId', this.temp.id);
-      // postData.append('cardName', this.temp.cardName);
-      // postData.append('rarity', this.temp.price);
-      // postData.append('healthPoint', this.temp.healthPoint);
-      // postData.append('attack', this.temp.attack);
-      // postData.append('defense', this.temp.defense);
-      // postData.append('attackRange', this.temp.attackRange);
-      // postData.append('cd', this.temp.cd);
-      // postData.append('speed', this.temp.speed);
-      //
-      // postData.append('cardImg', this.temp.cardImg);
-      // postData.append('cardDescription', this.temp.cardDescription);
-      //
-      // axios.post(`http://localhost:8080/card/update`, postData).then(response => {
-      //   if(response.data) {
-      //     //
-      //   }
-      //   else {
-      //     //
-      //   }
-      //   axios.get('http://localhost:8080/card/get/all')
-      //     .then(response => this.cardList = response.data);
-      // })
-    },
-    handleDelete(row, index) {
-      this.$notify({
-        title: 'Success',
-        message: 'Delete Successfully',
-        type: 'success',
-        duration: 2000
-      });
-      this.cardList.splice(index, 1)
-    },
-    getSortClass: function(key) {
-      const sort = this.listQuery.sort;
-      return sort === `+${key}` ? 'ascending' : 'descending'
-    },
-    handleFetchPv(pv) {
-      fetchPv(pv).then(response => {
-        this.pvData = response.data.pvData;
-        this.dialogPvVisible = true
-      })
-    }
+    // },
+    // updateData() {
+    // },
   }
 }
 </script>

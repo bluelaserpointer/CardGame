@@ -33,33 +33,6 @@ public class Angle {
 	public void spin(double angle) {
 		set(get() + angle);
 	}
-	public double spinTo_ConstSpd(double targetAngle, double angularSpeed) {
-		final double D_ANGLE = diff(targetAngle);
-		if(D_ANGLE < 0) {
-			if(D_ANGLE < -angularSpeed) {
-				spin(-angularSpeed);
-				return Math.abs(D_ANGLE + angularSpeed);
-			} else {
-				set(targetAngle);
-				return 0.0;
-			}
-		}else if(D_ANGLE > 0){
-			if(D_ANGLE > angularSpeed) {
-				spin(angularSpeed);
-				return Math.abs(D_ANGLE - angularSpeed);
-			} else {
-				set(targetAngle);
-				return 0.0;
-			}
-		}else
-			return 0.0;
-	}
-	public double spinTo_Suddenly(double targetAngle, double turnFrame) {
-		final double D_ANGLE = diff(targetAngle);
-		final double TURN_ANGLE = D_ANGLE/turnFrame;
-		spin(TURN_ANGLE);
-		return Math.abs(D_ANGLE - TURN_ANGLE);
-	}
 	public static double spinTo_ConstSpd(double nowAngle, double targetAngle, double angularSpeed) {
 		final double D_ANGLE = targetAngle - nowAngle;
 		if(D_ANGLE < 0) {
@@ -94,17 +67,8 @@ public class Angle {
 	public double cos() {
 		return Math.cos(get());
 	}
-	public double sin(double r) {
-		return r*sin();
-	}
-	public double cos(double r) {
-		return r*cos();
-	}
 	public double diff(double angle) {
 		return angle - get();
-	}
-	public double dist(double angle) {
-		return diff(angle) % (Math.PI*2);
 	}
 	public double absDist(double angle) {
 		final double rawAngle = Math.abs(diff(angle));
@@ -112,8 +76,5 @@ public class Angle {
 	}
 	public boolean isDiffSmaller(double angle, double range) {
 		return absDist(angle) < range;
-	}
-	public DirectionLR directionLR() {
-		return cos() > 0 ? DirectionLR.RIGHT : DirectionLR.LEFT;
 	}
 }

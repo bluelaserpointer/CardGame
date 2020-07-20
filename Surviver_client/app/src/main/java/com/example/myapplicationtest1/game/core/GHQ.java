@@ -570,6 +570,8 @@ public final class GHQ implements Runnable{
 		targetCanvas.drawLine(x1, y1, x2, y2, new Paint());
 	}
 	public static void drawImageGHQ(Bitmap bm, int x, int y, int w, int h) {
+		if(bm == null)
+			return;
 		final int tx = x + w/2, ty = y + h/2;
 		final Rect bmRect = new Rect(0, 0, bm.getWidth(), bm.getHeight());
 		targetCanvas.translate(tx, ty);

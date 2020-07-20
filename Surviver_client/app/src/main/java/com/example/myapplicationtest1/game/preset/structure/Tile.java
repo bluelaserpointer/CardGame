@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.example.myapplicationtest1.game.core.GHQ;
+import com.example.myapplicationtest1.game.physics.HasBoundingBox;
 import com.example.myapplicationtest1.game.physics.HasPoint;
 import com.example.myapplicationtest1.game.physics.Point;
 import com.example.myapplicationtest1.game.physics.hitShape.HitShape;
@@ -54,18 +55,21 @@ public class Tile extends Structure {
 		}
 		@Override
 		public boolean intersectsLine(int x1, int y1, int x2, int y2) {
-			//TODO: line with tile intersection
-//			final Line2D line = new Line2D.Double(x1, y1, x2, y2);
-//			if(!line.intersects(point().intX(), point().intY(), X_TILES*TILE_SIZE, Y_TILES*TILE_SIZE))
-//				return false;
-//			for(int xi = 0;xi < X_TILES;xi++) {
-//				for(int yi = 0;yi < Y_TILES;yi++) {
-//					if(aliveTiles.get(xi + yi*X_TILES)){
-//						if(line.intersects(point().intX() + xi*TILE_SIZE, point().intY() + yi*TILE_SIZE, TILE_SIZE, TILE_SIZE))
-//							return true;
-//					}
-//				}
-//			}
+			if(!HasBoundingBox.isLineIntersectRectangle(x1, y1, x2, y2,
+					point().intX(), point().intY(),
+					point().intX() + X_TILES*TILE_SIZE,
+					point().intY() + Y_TILES*TILE_SIZE))
+				return false;
+			for(int xi = 0;xi < X_TILES;xi++) {
+				for(int yi = 0;yi < Y_TILES;yi++) {
+					if(aliveTiles.get(xi + yi*X_TILES)){
+						final int tileX = point().intX() + xi*TILE_SIZE;
+						final int tileY = point().intY() + yi*TILE_SIZE;
+						if(HasBoundingBox.isLineIntersectRectangle(x1, y1, x2, y2, tileX, tileY, tileX + TILE_SIZE, tileY + TILE_SIZE))
+							return true;
+					}
+				}
+			}
 			return false;
 		}
 		@Override
