@@ -218,7 +218,7 @@ public class Dynam extends Point.DoublePoint{
 		addXY(xSpeed(), ySpeed());
 	}
 	@Override
-	public void moveIfNoObstacles(HitInteractable source) {
+	public void moveIfNoObstacles(HitIntractable source) {
 		if(!GHQ.stage().hitObstacle_atNewPoint(source, (int)xSpeed(), (int)ySpeed()))
 			moveBySpeed();
 	}
