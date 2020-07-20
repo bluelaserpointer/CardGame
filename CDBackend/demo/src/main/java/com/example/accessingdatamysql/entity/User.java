@@ -1,5 +1,7 @@
 package com.example.accessingdatamysql.entity;
 
+import java.util.Map;
+
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -45,6 +47,10 @@ public class User {
     private Integer mathKnowledge;
     // 中文知识点
     private Integer chiKnowledge;
+    // 编队信息
+    @Column
+    @ElementCollection(targetClass = Integer.class)
+    private Map<Integer, Integer> teamFormation;
 
     public User() {
         this.credits = 0;
@@ -67,11 +73,14 @@ public class User {
         this.engKnowledge = 0;
         this.mathKnowledge = 0;
         this.chiKnowledge = 0;
+        for (int i = 1; i <= 25; i++) {
+            teamFormation.put(i, -1); // 该位置没有放卡牌时值为-1
+        }
     }
 
     public void updateUser(String userName, String email, String password, String phoneNumber, Integer credits,
             Boolean access, Integer level, Integer curExpPoint, Integer stamina, Integer money, Double grade,
-            Integer engKnowledge, Integer mathKnowledge, Integer chiKnowledge) {
+            Integer engKnowledge, Integer mathKnowledge, Integer chiKnowledge, Map<Integer, Integer> teamFormation) {
         this.userName = userName;
         this.email = email;
         this.password = password;
@@ -86,6 +95,7 @@ public class User {
         this.engKnowledge = engKnowledge;
         this.mathKnowledge = mathKnowledge;
         this.chiKnowledge = chiKnowledge;
+        this.teamFormation = teamFormation;
     }
 
     public Integer getUserId() {
@@ -206,6 +216,14 @@ public class User {
 
     public void setGrade(Double grade) {
         this.grade = grade;
+    }
+
+    public Map<Integer, Integer> getTeamFormation() {
+        return teamFormation;
+    }
+
+    public void setTeamFormation(Map<Integer, Integer> teamFormation) {
+        this.teamFormation = teamFormation;
     }
 
     // public MailBox getMailBox() {
