@@ -1,6 +1,5 @@
 package com.example.myapplicationtest1.game.physics.stage;
 
-import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.example.myapplicationtest1.game.core.GHQ;
@@ -11,7 +10,7 @@ import com.example.myapplicationtest1.game.physics.HasBoundingBox;
 import com.example.myapplicationtest1.game.physics.HasHitGroup;
 import com.example.myapplicationtest1.game.physics.HasPoint;
 import com.example.myapplicationtest1.game.physics.HitGroup;
-import com.example.myapplicationtest1.game.physics.HitInteractable;
+import com.example.myapplicationtest1.game.physics.HitIntractable;
 import com.example.myapplicationtest1.game.physics.Point;
 import com.example.myapplicationtest1.game.preset.bullet.Bullet;
 import com.example.myapplicationtest1.game.preset.effect.Effect;
@@ -285,7 +284,7 @@ public class GHQStage implements HasBoundingBox {
 	 * A class helps {@link Bullet} or other objects to detect touching enemies.
 	 * @return
 	 */
-	public final ArrayList<Unit> getHitUnits(ArrayList<Unit> units, HitInteractable object) {
+	public final ArrayList<Unit> getHitUnits(ArrayList<Unit> units, HitIntractable object) {
 		final ArrayList<Unit> result = new ArrayList<Unit>();
 		for(Unit unit : units) {
 			if(unit.intersects(object))
@@ -297,7 +296,7 @@ public class GHQStage implements HasBoundingBox {
 	 * A class helps {@link Bullet} or other objects to detect touching enemies.
 	 * @return
 	 */
-	public final ArrayList<Unit> getHitUnits(HitInteractable object) {
+	public final ArrayList<Unit> getHitUnits(HitIntractable object) {
 		return getHitUnits(getUnits_standpoint(object, false), object);
 	}
 	public void clear() {
@@ -328,10 +327,10 @@ public class GHQStage implements HasBoundingBox {
 	public final double visibility(Point p1, Point p2) {
 		return visibility(p1.intX(), p1.intY(), p2.intX(), p2.intY());
 	}
-	public final boolean hitObstacle(HitInteractable object) {
+	public final boolean hitObstacle(HitIntractable object) {
 		return !inStage(object) || structures.intersected(object);
 	}
-	public final boolean hitObstacle_atNewPoint(HitInteractable object, double dx, double dy) {
+	public final boolean hitObstacle_atNewPoint(HitIntractable object, double dx, double dy) {
 		return !inStage((int)(object.point().doubleX() + dx), (int)(object.point().doubleY() + dy)) || structures.intersected_atNewPoint(object, dx, dy);
 	}
 	

@@ -6,8 +6,6 @@ import java.util.Random;
 
 public enum Direction4 implements MonoDirection {
 	W, D, S, A;
-	
-	public static final int W_ID = 0, D_ID = 1, S_ID = 2, A_ID = 3;
 	public boolean isVert() {
 		return this == W || this == S;
 	}
@@ -35,34 +33,6 @@ public enum Direction4 implements MonoDirection {
 			return -1;
 		default:
 			return 0;
-		}
-	}
-	public Direction8TC30 left30() {
-		switch(this) {
-		case W:
-			return Direction8TC30.WWA;
-		case D:
-			return Direction8TC30.DDW;
-		case S:
-			return Direction8TC30.SSD;
-		case A:
-			return Direction8TC30.AAS;
-		default:
-			return null;
-		}
-	}
-	public Direction8TC30 right30() {
-		switch(this) {
-		case W:
-			return Direction8TC30.WWD;
-		case D:
-			return Direction8TC30.DDS;
-		case S:
-			return Direction8TC30.SSA;
-		case A:
-			return Direction8TC30.AAW;
-		default:
-			return null;
 		}
 	}
 	public Direction4 left() {
@@ -106,66 +76,6 @@ public enum Direction4 implements MonoDirection {
 		default:
 			return null;
 		}
-	}
-	@Override
-	public int id() {
-		switch(this) {
-		case W:
-			return W_ID;
-		case D:
-			return D_ID;
-		case S:
-			return S_ID;
-		case A:
-			return A_ID;
-		default:
-			return -1;
-		}
-	}
-	///////////////
-	//getOutermost
-	///////////////
-	public static Point getOutermost(Direction4 outerDirection, Point... points) {
-		Point assumePoint = null;
-		for(Point ver : points) {
-			if(ver != null && (assumePoint == null || assumePoint.checkDirection(ver, outerDirection)))
-				assumePoint = ver;
-		}
-		return assumePoint;
-	}
-	///////////////
-	//getVertHorzClosest
-	///////////////
-	public static Point[] getVertHorzClosest_int(Point basePoint, Iterable<? extends Point> points, Direction4...directions) {
-		if(points == null)
-			return null;
-		final Point[] assumePoints = new Point[directions.length];
-		for(Point point : points) {
-			if(point == null)
-				continue;
-			if(point.isVert(basePoint)) { //vertical - W or S
-				for(int i = 0;i < directions.length;i++) {
-					if(directions[i].isVert() && basePoint.checkDirection(point, directions[i]) && (assumePoints[i] == null || point.checkDirection(assumePoints[i], directions[i])))
-						assumePoints[i] = point;
-				}
-			}else if(point.isHorz(basePoint)) { //horizontal - A or D
-				for(int i = 0;i < directions.length;i++) {
-					if(directions[i].isHorz() && basePoint.checkDirection(point, directions[i]) && (assumePoints[i] == null || point.checkDirection(assumePoints[i], directions[i])))
-						assumePoints[i] = point;
-				}
-			}
-		}
-		return assumePoints;
-	}
-	public static <T extends Point>T getVertHorzClosest_int(Point basePoint, Iterable<T> points, Direction4 direction) {
-		if(points == null)
-			return null;
-		T assumePoint = null;
-		for(T point : points) {
-			if(point != null && basePoint.checkDirection_just(point, direction) && (assumePoint == null || point.checkDirection(assumePoint, direction)))
-				assumePoint = point;
-		}
-		return assumePoint;
 	}
 	@Override
 	public boolean isNone() {

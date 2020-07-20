@@ -2,7 +2,7 @@ package com.example.myapplicationtest1.game.physics;
 
 import com.example.myapplicationtest1.game.physics.hitShape.HitShape;
 
-public interface HasPhysics extends HitInteractable, HasAnglePoint{
+public interface HasPhysics extends HitIntractable, HasAnglePoint{
 	public abstract Physics physics();
 	@Override
 	public default HitShape hitShape() {
