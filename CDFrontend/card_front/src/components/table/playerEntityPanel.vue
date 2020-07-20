@@ -55,20 +55,11 @@
           <span>{{ row.password }}</span>
         </template>
       </el-table-column>
-      <!--      <el-table-column v-if="showReviewer" label="Reviewer" width="110px" align="center">-->
-      <!--        <template slot-scope="{row}">-->
-      <!--          <span style="color:red;">{{ row.reviewer }}</span>-->
-      <!--        </template>-->
-      <!--      </el-table-column>-->
       <el-table-column label="PhoneNumber" width="80px">
-        <!--        <template slot-scope="{row}">-->
-        <!--          <svg-icon v-for="n in + row.importance" :key="n" icon-class="star" class="meta-item__icon" />-->
-        <!--        </template>-->
         <template slot-scope="{row}">
           <span>{{ row.phoneNumber }}</span>
         </template>
       </el-table-column>
-
       <el-table-column label="Credits" align="center" width="95">
         <template slot-scope="{row}">
           <span>{{ row.credits }}</span>

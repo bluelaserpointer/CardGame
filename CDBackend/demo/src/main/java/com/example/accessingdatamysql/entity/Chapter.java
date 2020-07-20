@@ -8,6 +8,7 @@ import java.util.Map;
 public class Chapter {
     @Id
     @Column(name = "chapter_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer chapterId;
 
     @Column

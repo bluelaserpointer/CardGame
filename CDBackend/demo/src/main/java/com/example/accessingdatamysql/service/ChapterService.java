@@ -14,8 +14,10 @@ public interface ChapterService {
     List<Chapter> updateChapterAwards(Integer chapterId, String awardItems, String awardCards) throws JsonProcessingException;
     List<Chapter> getAllChapters();
     List<Chapter> deleteChapter(Integer chapterId);
+    List<Chapter> updateChapter(Integer chapterId, Integer phaseNo, Integer phaseType);
+    List<Chapter> addChapter(Integer phaseNo, Integer phaseType);
     List<ChapterDetails> getChapterDetailsByChapterAndByPhase(Integer chapterId, Integer phaseId);
     List<ChapterDetails> getChapterDetailsByChapter(Integer chapterId);
     List<ChapterDetails> getAllChapterDetails();
-
+    List<ChapterPhase> getChapterPhasesByChapter(Integer chapterId);
 }

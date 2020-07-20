@@ -12,7 +12,12 @@ public interface ChapterDetailsRepository extends JpaRepository<ChapterDetails, 
     List<ChapterDetails> getChapterDetailsByChapterIdEqualsAndPhaseIdEquals(Integer chapterId, Integer phaseId);
     List<ChapterDetails> getChapterDetailsByChapterIdEquals(Integer chapterId);
 
+
     @Modifying
     @Transactional
-    void deleteChapterDetailsByCardIdEquals(Integer chapterId);
+    void deleteChapterDetailsByChapterIdEquals(Integer chapterId);
+
+    @Modifying
+    @Transactional
+    void deleteChapterDetailsByChapterIdEqualsAndPhaseIdGreaterThan(Integer chapterId, Integer phaseId);
 }
