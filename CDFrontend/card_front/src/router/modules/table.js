@@ -19,6 +19,12 @@ const tableRouter = {
       meta: { title: 'Phase Entity Panel' }
     },
     {
+      path: 'phase-edit-table',
+      component: () => import('@/components/table/phaseEditPanel'),
+      name: 'PhaseEditPanel',
+      meta: { title: 'Phase Edit Panel' }
+    },
+    {
       path: 'item-entity-table',
       component: () => import('@/components/table/itemEntityPanel'),
       name: 'ItemEntityPanel',
