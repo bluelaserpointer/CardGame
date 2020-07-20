@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.example.accessingdatamysql.GeneralTests.Controller.OwnCardControllerTest
 -------------------------------------------------------------------------------
-Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.5 sec - in com.example.accessingdatamysql.GeneralTests.Controller.OwnCardControllerTest
+Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.748 sec - in com.example.accessingdatamysql.GeneralTests.Controller.OwnCardControllerTest

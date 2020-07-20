@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.example.accessingdatamysql.GeneralTests.Controller.OwnItemControllerTest
 -------------------------------------------------------------------------------
-Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.135 sec - in com.example.accessingdatamysql.GeneralTests.Controller.OwnItemControllerTest
+Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.578 sec - in com.example.accessingdatamysql.GeneralTests.Controller.OwnItemControllerTest

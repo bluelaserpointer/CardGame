@@ -67,7 +67,7 @@ public class UserController {
 
   // 登录逻辑
   @RequestMapping(value = "/identifyUser")
-  public boolean identifyUser(@RequestParam("userName") String userName, @RequestParam("password") String password) {
+  public Integer identifyUser(@RequestParam("userName") String userName, @RequestParam("password") String password) {
     return userService.identifyUser(userName, password);
   }
 

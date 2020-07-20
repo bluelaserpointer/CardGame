@@ -73,9 +73,22 @@ public class OwnItemControllerTest {
         @Transactional
         @Rollback(value = true)
         @DisplayName("File: OwnItemController Method: addNewOwnItem")
-        public void addNewOwnItem() throws Exception {
+        public void repeatOwnItem() throws Exception {
                 MvcResult result = mockMvc
                                 .perform(get("/ownItem/addOwnItem?userId=12&itemId=10&itemCount=3")
+                                                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
+                                .andReturn();
+                System.out.println(result.getResponse().getContentAsString());
+        }
+
+        @Test
+        @Transactional
+        @Rollback(value = true)
+        @DisplayName("File: OwnItemController Method: addNewOwnItem")
+        public void addNewOwnItem() throws Exception {
+                MvcResult result = mockMvc
+                                .perform(get("/ownItem/addOwnItem?userId=12&itemId=100&itemCount=3")
                                                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
                                 .andReturn();

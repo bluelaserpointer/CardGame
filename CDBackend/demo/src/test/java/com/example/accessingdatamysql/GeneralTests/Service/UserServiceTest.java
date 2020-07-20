@@ -28,17 +28,24 @@ public class UserServiceTest extends UnitTestDemoApplicationTests {
     }
 
     @Test
-    public void identifyUserFalse() {
-        String userName = "identifyUserFalse";
+    public void identifyUserNoUser() {
+        String userName = "identifyUserNoUser";
         String password = "identifyUserFalse";
-        assertFalse(testingService.identifyUser(userName, password));
+        assertTrue(testingService.identifyUser(userName, password).equals(-1));
     }
 
     @Test
     public void identifyUserTrue() {
         String userName = "identifyUserTrue";
         String password = "identifyUserTrue";
-        assertTrue(testingService.identifyUser(userName, password));
+        assertTrue(testingService.identifyUser(userName, password).equals(4));
+    }
+
+    @Test
+    public void identifyUserWrongPassword() {
+        String userName = "identifyUserTrue";
+        String password = "identifyUserFalse";
+        assertTrue(testingService.identifyUser(userName, password).equals(-2));
     }
 
     @Test

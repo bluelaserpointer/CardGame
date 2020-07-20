@@ -29,7 +29,7 @@ public interface UserService {
     String deleteAll();
 
     // 登录逻辑
-    boolean identifyUser(String userName, String password);
+    Integer identifyUser(String userName, String password);
 
     // 删除一个指定用户
     List<User> deleteUser(Integer userId);
