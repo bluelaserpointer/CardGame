@@ -18,7 +18,7 @@ public class HomePage extends Page {
         setContentView(R.layout.home);
         super.setJump(R.id.toBattle_button, MapPage.class);
         super.setJump(R.id.toOption_button, OptionPage.class);
-        super.setJump(R.id.toShop_button, ShopPage.class);
+        super.setJump(R.id.toShop_button, LottePage.class);
         super.setJump(R.id.toMail_button, MailPage.class);
         super.setJump(R.id.toAnnounce_button, AnnouncePage.class);
         super.setJump(R.id.toBag_button, TeamPage.class);

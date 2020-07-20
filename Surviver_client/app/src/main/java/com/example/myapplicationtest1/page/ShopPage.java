@@ -10,5 +10,6 @@ public class ShopPage extends Page {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.shop);
         super.setJump(R.id.return_button, HomePage.class);
+        super.setJump(R.id.toLotte_button, LottePage.class);
     }
 }

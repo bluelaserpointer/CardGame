@@ -85,7 +85,6 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/toLotte_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -109,7 +108,7 @@
             android:orientation="vertical">
 
             <com.example.myapplicationtest1.canvas.LotteAnimationCanvas
-                android:id="@+id/mainCanvas"
+                android:id="@+id/lotteContent"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="2" />
@@ -122,25 +121,46 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/lotteBet1_button"
+                    android:id="@+id/lotteBet_button1"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="Button" />
+                    android:text="语文+1" />
 
                 <Button
-                    android:id="@+id/lotteBet2_button"
+                    android:id="@+id/lotteBet_button2"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="Button" />
+                    android:text="英语+1" />
 
                 <Button
-                    android:id="@+id/lotteBet3_button"
+                    android:id="@+id/lotteBet_button3"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="Button" />
+                    android:text="数学+1" />
+
+                <Button
+                    android:id="@+id/lotteBet_button4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="语文-1" />
+
+                <Button
+                    android:id="@+id/lotteBet_button5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="英语-1" />
+
+                <Button
+                    android:id="@+id/lotteBet_button6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="数学-1" />
             </LinearLayout>
 
         </LinearLayout>
