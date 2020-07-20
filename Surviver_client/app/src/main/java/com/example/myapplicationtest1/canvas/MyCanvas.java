@@ -28,7 +28,13 @@ public abstract class MyCanvas extends View {
                 invalidate();
             }
         }, 200, 50);
+        super.setOnTouchListener((v, event) -> {
+            v.performClick();
+            touched((int)event.getX(), (int)event.getY());
+            return false;
+        });
         init();
     }
     public abstract void init();
+    public void touched(int x, int y) {}
 }

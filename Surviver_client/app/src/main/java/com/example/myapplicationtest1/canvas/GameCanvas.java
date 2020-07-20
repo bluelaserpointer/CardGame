@@ -25,8 +25,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class GameCanvas extends MyCanvas {
-    /*touch coordinate*/
-    private int lastTouchX, lastTouchY;
     final Context context;
     public GameCanvas(Context context) { //动态实例化view用到;
         super(context);
@@ -43,19 +41,16 @@ public class GameCanvas extends MyCanvas {
     MyStage stage;
     @Override
     public void init() {
-        super.setOnTouchListener((v, event) -> {
-            v.performClick();
-            lastTouchX = (int)event.getX();
-            lastTouchY = (int)event.getY();
-            if(stage.isGameClear || stage.isGameOver) {
-                Page.jump(context, BattleFinishPage.class);
-            }
-            return false;
-        });
         GHQ.setStage(stage = new MyStage(getWidth(), getHeight()));
         stage.init();
         //load stage data
         fetch();
+    }
+    @Override
+    public void touched(int x, int y) {
+        if(stage.isGameClear || stage.isGameOver) {
+            Page.jump(context, BattleFinishPage.class);
+        }
     }
     public void fetch() {
         try {

@@ -21,8 +21,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class LotteAnimationCanvas extends MyCanvas {
-    /*touch coordinate*/
-    private int lastTouchX, lastTouchY;
     /*bitmaps*/
     //private Bitmap touchNotationBM, stageSpotBM;
     //paints
@@ -55,12 +53,6 @@ public class LotteAnimationCanvas extends MyCanvas {
         matPaint = new Paint();
         matPaint.setColor(Color.BLUE);
         matPaint.setTextSize(40);
-        super.setOnTouchListener((v, event) -> {
-            v.performClick();
-            lastTouchX = (int) event.getX();
-            lastTouchY = (int) event.getY();
-            return false;
-        });
     }
     @Override
     protected void onDraw(Canvas canvas) {

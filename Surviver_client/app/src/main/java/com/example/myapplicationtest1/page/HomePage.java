@@ -6,9 +6,7 @@ import android.widget.Button;
 import com.example.myapplicationtest1.HttpClient;
 import com.example.myapplicationtest1.R;
 import com.example.myapplicationtest1.game.core.GHQ;
-import com.example.myapplicationtest1.utils.Utils;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
