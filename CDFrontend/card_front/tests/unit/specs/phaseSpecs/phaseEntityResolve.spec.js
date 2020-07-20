@@ -4,20 +4,20 @@ jest.mock('axios', () => ({
 }));
 
 import {createLocalVue, mount, shallowMount} from '@vue/test-utils'
-import PhaseEntityPanel from '@/components/table/phaseEntityPanel'
+import PhaseEditPanel from '@/components/table/phaseEditPanel'
 import Element from 'element-ui';
 import axios from 'axios';
 
 const localVue = createLocalVue();
 localVue.use(Element);
 
-describe('PhaseEntityPanel.vue', () => {
-  const wrapper = shallowMount(PhaseEntityPanel,
+describe('PhaseEditPanel.vue', () => {
+  const wrapper = shallowMount(PhaseEditPanel,
     {
       localVue
     });
 
-  it('Phase Entity Panel Resolves handleCardChoose', () => {
+  it('Phase Edit Panel Resolves handleCardChoose', () => {
     wrapper.vm.currCard = 2;
     let val = {
       cardId: 1
@@ -47,7 +47,7 @@ describe('PhaseEntityPanel.vue', () => {
     }
   ];
 
-  it('Phase Entity Panel Resolves placeCard', () => {
+  it('Phase Edit Panel Resolves placeCard', () => {
     wrapper.vm.confirmed = true;
     wrapper.vm.placedCard = false;
     wrapper.vm.currChapter = undefined;
@@ -74,7 +74,7 @@ describe('PhaseEntityPanel.vue', () => {
     expect(wrapper.vm.posMap.size).toBe(1);
   });
 
-  // it('Phase Entity Panel Resolves handleChange', () => {
+  // it('Phase Edit Panel Resolves handleChange', () => {
   //   wrapper.vm.placedCard = false;
   //   wrapper.vm.handleChange();
   //
