@@ -33,7 +33,8 @@ public class Utils {
             final String data = HttpClient.doGetShort("user/identifyUser?"
                     + "userName=" + getUserName + "&"
                     + "password=" + getPassword);
-            return !data.equals("false");
+            System.out.println("user: " + getUserName);
+            return data.charAt(0) == 't';
         }else{
             return false;
         }
