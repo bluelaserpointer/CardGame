@@ -22,61 +22,61 @@ import com.example.accessingdatamysql.service.AdminService;
 
   @RequestMapping(value = &quot;/getAdmin&quot;)
   public Admin findAdminByAdminId(@RequestParam(&quot;adminId&quot;) Integer adminId) {
-<span class="nc" id="L25">    return AdminService.getOneAdmin(adminId);</span>
+<span class="fc" id="L25">    return AdminService.getOneAdmin(adminId);</span>
   }
 
   @RequestMapping(value = &quot;/addAdmin&quot;)
   public @ResponseBody String addNewAdmin(@RequestParam(&quot;adminName&quot;) String adminName,
       @RequestParam(&quot;password&quot;) String password, @RequestParam(&quot;role&quot;) Integer role) {
-<span class="nc" id="L31">    return AdminService.addNewAdmin(adminName, password, role);</span>
+<span class="fc" id="L31">    return AdminService.addNewAdmin(adminName, password, role);</span>
   }
 
   @RequestMapping(value = &quot;/updateAdmin&quot;)
   public @ResponseBody String updateAdmin(@RequestParam(&quot;adminId&quot;) Integer adminId,
       @RequestParam(&quot;adminName&quot;) String adminName, @RequestParam(&quot;password&quot;) String password, @RequestParam(&quot;role&quot;) Integer role) {
-<span class="nc" id="L37">    return AdminService.updateAdmin(adminId, adminName, password, role);</span>
+<span class="fc" id="L37">    return AdminService.updateAdmin(adminId, adminName, password, role);</span>
   }
 
   @RequestMapping(value = &quot;/getAllAdmins&quot;)
   public List&lt;Admin&gt; getAllAdmins() {
-<span class="nc" id="L42">    return AdminService.getAllAdmins();</span>
+<span class="fc" id="L42">    return AdminService.getAllAdmins();</span>
   }
 
   @RequestMapping(value = &quot;/deleteAdmins&quot;)
   public String deleteAdmins(@RequestParam(&quot;adminIds&quot;) List&lt;Integer&gt; adminIds) {
-<span class="nc" id="L47">    return AdminService.deleteAdmins(adminIds);</span>
+<span class="fc" id="L47">    return AdminService.deleteAdmins(adminIds);</span>
   }
 
   @RequestMapping(value = &quot;/deleteAllAdmins&quot;)
   public String deleteAll() {
-<span class="nc" id="L52">    return AdminService.deleteAll();</span>
+<span class="fc" id="L52">    return AdminService.deleteAll();</span>
   }
 
   @RequestMapping(value = &quot;/identifyAdmin&quot;)
   public boolean identifyAdmin(@RequestParam(&quot;adminName&quot;) String adminName, @RequestParam(&quot;password&quot;) String password)
   {
-<span class="nc" id="L58">    System.out.println(adminName);</span>
-<span class="nc" id="L59">    System.out.println(password);</span>
-<span class="nc" id="L60">    return AdminService.identifyAdmin(adminName, password);</span>
+<span class="fc" id="L58">    System.out.println(adminName);</span>
+<span class="fc" id="L59">    System.out.println(password);</span>
+<span class="fc" id="L60">    return AdminService.identifyAdmin(adminName, password);</span>
   }
 
   @RequestMapping(value = &quot;/getAdminName&quot;)
   public List&lt;String&gt; getAdminNames()
   {
-<span class="nc" id="L66">    return AdminService.getAllAdminNames();</span>
+<span class="fc" id="L66">    return AdminService.getAllAdminNames();</span>
   };
 
   @RequestMapping(value = &quot;/getAdminRole&quot;)
   public Integer getAdminRole(@RequestParam(&quot;adminName&quot;) String adminName)
   {
-<span class="nc" id="L72">    return AdminService.getAdminRole(adminName);</span>
+<span class="fc" id="L72">    return AdminService.getAdminRole(adminName);</span>
   };
 
   @RequestMapping(value = &quot;/deleteAdmin&quot;)
   public List&lt;Admin&gt; deleteAdmin(@RequestParam(&quot;adminId&quot;) Integer adminId)
   {
-<span class="nc" id="L78">    return AdminService.deleteAdmin(adminId);</span>
+<span class="fc" id="L78">    return AdminService.deleteAdmin(adminId);</span>
   }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

@@ -18,58 +18,58 @@ import java.util.*;
     // 用ownCardId找某一个用户拥有卡牌的关系
     @Override
     public OwnCard getOneOwnCard(Integer OwnCardId) {
-<span class="nc" id="L21">        return OwnCardDao.getOneOwnCard(OwnCardId);</span>
+<span class="fc" id="L21">        return OwnCardDao.getOneOwnCard(OwnCardId);</span>
     }
 
     // 增加一个用户拥有某张卡牌的关系
     @Override
     public String addNewOwnCard(Integer userId, Integer cardId) {
-<span class="nc" id="L27">        return OwnCardDao.addNewOwnCard(userId, cardId);</span>
+<span class="fc" id="L27">        return OwnCardDao.addNewOwnCard(userId, cardId);</span>
     }
 
     // 获取指定用户的所有拥有卡牌记录
     public List&lt;OwnCard&gt; getAllOwnCardsByUserId(Integer userId) {
-<span class="nc" id="L32">        return OwnCardDao.getAllOwnCardsByUserId(userId);</span>
+<span class="fc" id="L32">        return OwnCardDao.getAllOwnCardsByUserId(userId);</span>
     }
 
     // 获取所有的用户拥有卡牌记录
     public List&lt;OwnCard&gt; getAllOwnCards() {
-<span class="nc" id="L37">        return OwnCardDao.getAllOwnCards();</span>
+<span class="fc" id="L37">        return OwnCardDao.getAllOwnCards();</span>
     }
 
     // 用ownCardIds来删除拥有卡牌关系
     public String deleteOwnCards(List&lt;Integer&gt; OwnCardIds) {
-<span class="nc" id="L42">        return OwnCardDao.deleteOwnCards(OwnCardIds);</span>
+<span class="fc" id="L42">        return OwnCardDao.deleteOwnCards(OwnCardIds);</span>
     }
 
     // 删除所有拥有卡牌关系
     public String deleteAll() {
-<span class="nc" id="L47">        return OwnCardDao.deleteAll();</span>
+<span class="fc" id="L47">        return OwnCardDao.deleteAll();</span>
     }
 
     // 删除单个拥有卡牌关系
     public List&lt;OwnCard&gt; deleteOwnCard(Integer userId, Integer cardId) {
-<span class="nc" id="L52">        return OwnCardDao.deleteOwnCard(userId, cardId);</span>
+<span class="fc" id="L52">        return OwnCardDao.deleteOwnCard(userId, cardId);</span>
     }
 
     // 更新一个用户拥有某张卡牌的所有信息
     @Override
     public OwnCard updateOwnCard(Integer userId, Integer cardId, Integer cardLevel, Integer cardCurExp,
             Integer cardLevelLimit, Integer repetitiveOwns, Timestamp accquireDate) {
-<span class="nc" id="L59">        return OwnCardDao.updateOwnCard(userId, cardId, cardLevel, cardCurExp, cardLevelLimit, repetitiveOwns,</span>
+<span class="fc" id="L59">        return OwnCardDao.updateOwnCard(userId, cardId, cardLevel, cardCurExp, cardLevelLimit, repetitiveOwns,</span>
                 accquireDate);
     }
 
     // 用户拥有的某张卡牌升级
     @Override
     public OwnCard cardLevelUp(Integer userId, Integer cardId) {
-<span class="nc" id="L66">        return OwnCardDao.cardLevelUp(userId, cardId);</span>
+<span class="fc" id="L66">        return OwnCardDao.cardLevelUp(userId, cardId);</span>
     }
 
     // 用户再一次拥有已经拥有的卡牌
     @Override
     public OwnCard ownAnotherCard(Integer userId, Integer cardId) {
-<span class="nc" id="L72">        return OwnCardDao.ownAnotherCard(userId, cardId);</span>
+<span class="fc" id="L72">        return OwnCardDao.ownAnotherCard(userId, cardId);</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

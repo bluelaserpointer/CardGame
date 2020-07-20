@@ -22,43 +22,43 @@ import com.example.accessingdatamysql.service.ItemService;
 
   @RequestMapping(value = &quot;/getItem&quot;)
   public Item findItemByItemId(@RequestParam(&quot;itemId&quot;) Integer itemId) {
-<span class="nc" id="L25">    return ItemService.getOneItem(itemId);</span>
+<span class="fc" id="L25">    return ItemService.getOneItem(itemId);</span>
   }
 
   @RequestMapping(value = &quot;/addItem&quot;)
   public @ResponseBody String addNewItem(@RequestParam(&quot;itemName&quot;) String itemName,
       @RequestParam(&quot;price&quot;) Integer price, @RequestParam(&quot;itemImg&quot;) String itemImg,
       @RequestParam(&quot;itemDescription&quot;) String itemDescription) {
-<span class="nc" id="L32">    return ItemService.addNewItem(itemName, price, itemImg, itemDescription);</span>
+<span class="fc" id="L32">    return ItemService.addNewItem(itemName, price, itemImg, itemDescription);</span>
   }
 
   @RequestMapping(value = &quot;/updateItem&quot;)
   public @ResponseBody String updateItem(@RequestParam(&quot;itemId&quot;) Integer itemId,
       @RequestParam(&quot;itemName&quot;) String itemName, @RequestParam(&quot;price&quot;) Integer price,
       @RequestParam(&quot;itemImg&quot;) String itemImg, @RequestParam(&quot;itemDescription&quot;) String itemDescription) {
-<span class="nc" id="L39">    return ItemService.updateItem(itemId, itemName, price, itemImg, itemDescription);</span>
+<span class="fc" id="L39">    return ItemService.updateItem(itemId, itemName, price, itemImg, itemDescription);</span>
   }
 
   @RequestMapping(value = &quot;/getAllItems&quot;)
   public List&lt;Item&gt; getAllItems() {
-<span class="nc" id="L44">    return ItemService.getAllItems();</span>
+<span class="fc" id="L44">    return ItemService.getAllItems();</span>
   }
 
   @RequestMapping(value = &quot;/deleteItems&quot;)
   public String deleteItems(@RequestParam(&quot;itemIds&quot;) List&lt;Integer&gt; itemIds) {
-<span class="nc" id="L49">    return ItemService.deleteItems(itemIds);</span>
+<span class="fc" id="L49">    return ItemService.deleteItems(itemIds);</span>
   }
 
   @RequestMapping(value = &quot;/deleteAllItems&quot;)
   public String deleteAll() {
-<span class="nc" id="L54">    return ItemService.deleteAll();</span>
+<span class="fc" id="L54">    return ItemService.deleteAll();</span>
   }
 
   @RequestMapping(value = &quot;/deleteItem&quot;)
   public List&lt;Item&gt; deleteItem(@RequestParam(&quot;itemId&quot;) Integer itemId)
   {
-<span class="nc" id="L60">    return ItemService.deleteItem(itemId);</span>
+<span class="fc" id="L60">    return ItemService.deleteItem(itemId);</span>
   }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

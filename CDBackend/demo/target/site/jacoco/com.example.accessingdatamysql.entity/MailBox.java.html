@@ -16,9 +16,9 @@ public class MailBox {
     @Column(name = &quot;mailBoxId&quot;, nullable = false)
     private Integer mailBoxId;
     // 邮箱内村的邮箱
-    @ManyToMany
-    @JoinColumn(name = &quot;mails&quot;, unique = false)
-    private List&lt;Mail&gt; mails;
+    @Column
+    @ElementCollection(targetClass = Integer.class)
+    private List&lt;Integer&gt; mailIds;
 
     // mailBoxid应该要等于userId（一对一关系，（不用自动生成的方法了））
 <span class="nc" id="L24">    public MailBox(Integer mailBoxId) {</span>
@@ -35,13 +35,13 @@ public class MailBox {
 <span class="nc" id="L35">        this.mailBoxId = mailBoxId;</span>
 <span class="nc" id="L36">    }</span>
 
-    public List&lt;Mail&gt; getMails() {
-<span class="nc" id="L39">        return this.mails;</span>
+    public List&lt;Integer&gt; getMailIds() {
+<span class="nc" id="L39">        return this.mailIds;</span>
     }
 
-    public void setMails(List&lt;Mail&gt; mails) {
-<span class="nc" id="L43">        this.mails = mails;</span>
+    public void setMails(List&lt;Integer&gt; mailIds) {
+<span class="nc" id="L43">        this.mailIds = mailIds;</span>
 <span class="nc" id="L44">    }</span>
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

@@ -17,34 +17,34 @@ import java.util.*;
 
     @Override
     public Activity getOneActivity(Integer ActivityId) {
-<span class="nc" id="L20">        return ActivityDao.getOneActivity(ActivityId);</span>
+<span class="fc" id="L20">        return ActivityDao.getOneActivity(ActivityId);</span>
     }
 
     public String addNewActivity(String type, String activityName, String activityImg, String activityDescription,
             Timestamp start) {
-<span class="nc" id="L25">        return ActivityDao.addNewActivity(type, activityName, activityImg, activityDescription, start);</span>
+<span class="fc" id="L25">        return ActivityDao.addNewActivity(type, activityName, activityImg, activityDescription, start);</span>
     }
 
     public String updateActivity(Integer ActivityId, String type, String activityName, String activityImg,
             String activityDescription, Timestamp start) {
-<span class="nc" id="L30">        return ActivityDao.updateActivity(ActivityId, type, activityName, activityImg, activityDescription, start);</span>
+<span class="fc" id="L30">        return ActivityDao.updateActivity(ActivityId, type, activityName, activityImg, activityDescription, start);</span>
     }
 
     public List&lt;Activity&gt; getAllActivities() {
-<span class="nc" id="L34">        System.out.println(&quot;Inside service&quot;);</span>
-<span class="nc" id="L35">        return ActivityDao.getAllActivities();</span>
+<span class="fc" id="L34">        System.out.println(&quot;Inside service&quot;);</span>
+<span class="fc" id="L35">        return ActivityDao.getAllActivities();</span>
     }
 
     public String deleteActivities(List&lt;Integer&gt; ActivityIds) {
-<span class="nc" id="L39">        return ActivityDao.deleteActivities(ActivityIds);</span>
+<span class="fc" id="L39">        return ActivityDao.deleteActivities(ActivityIds);</span>
     }
 
     public String deleteAll() {
-<span class="nc" id="L43">        return ActivityDao.deleteAll();</span>
+<span class="fc" id="L43">        return ActivityDao.deleteAll();</span>
     }
 
     public List&lt;Activity&gt; deleteActivity(Integer activityId) {
-<span class="nc" id="L47">        return ActivityDao.deleteActivity(activityId);</span>
+<span class="fc" id="L47">        return ActivityDao.deleteActivity(activityId);</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

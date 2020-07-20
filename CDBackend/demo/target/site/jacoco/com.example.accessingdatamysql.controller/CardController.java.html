@@ -22,7 +22,7 @@ import com.example.accessingdatamysql.service.CardService;
 
   @RequestMapping(value = &quot;/getCard&quot;)
   public Card findCardByCardId(@RequestParam(&quot;cardId&quot;) Integer cardId) {
-<span class="nc" id="L25">    return CardService.getOneCard(cardId);</span>
+<span class="fc" id="L25">    return CardService.getOneCard(cardId);</span>
   }
 
   @RequestMapping(value = &quot;/addCard&quot;)
@@ -33,7 +33,7 @@ import com.example.accessingdatamysql.service.CardService;
       @RequestParam(&quot;speed&quot;) Integer speed, @RequestParam(&quot;cardImg&quot;) String cardImg,
       @RequestParam(&quot;shortDescription&quot;) String shortDescription,
       @RequestParam(&quot;cardDescription&quot;) String cardDescription) {
-<span class="nc" id="L36">    return CardService.addNewCard(cardName, rarity, healthPoint, attack, defense, attackRange, cd, speed, cardImg,</span>
+<span class="fc" id="L36">    return CardService.addNewCard(cardName, rarity, healthPoint, attack, defense, attackRange, cd, speed, cardImg,</span>
         shortDescription, cardDescription);
   }
 
@@ -45,32 +45,32 @@ import com.example.accessingdatamysql.service.CardService;
       @RequestParam(&quot;cd&quot;) Double cd, @RequestParam(&quot;speed&quot;) Integer speed, @RequestParam(&quot;cardImg&quot;) String cardImg,
       @RequestParam(&quot;shortDescription&quot;) String shortDescription,
       @RequestParam(&quot;cardDescription&quot;) String cardDescription) {
-<span class="nc" id="L48">    System.out.println(&quot;In controller&quot;);</span>
+<span class="fc" id="L48">    System.out.println(&quot;In controller&quot;);</span>
 
-<span class="nc" id="L50">    return CardService.updateCard(cardId, cardName, rarity, healthPoint, attack, defense, attackRange, cd, speed,</span>
+<span class="fc" id="L50">    return CardService.updateCard(cardId, cardName, rarity, healthPoint, attack, defense, attackRange, cd, speed,</span>
         cardImg, shortDescription, cardDescription);
   }
 
   @RequestMapping(value = &quot;/getAllCards&quot;)
   public List&lt;Card&gt; getAllCards() {
-<span class="nc" id="L56">    return CardService.getAllCards();</span>
+<span class="fc" id="L56">    return CardService.getAllCards();</span>
   }
 
   @RequestMapping(value = &quot;/deleteCards&quot;)
   public String deleteCards(@RequestParam(&quot;cardIds&quot;) List&lt;Integer&gt; cardIds) {
-<span class="nc" id="L61">    return CardService.deleteCards(cardIds);</span>
+<span class="fc" id="L61">    return CardService.deleteCards(cardIds);</span>
   }
 
   @RequestMapping(value = &quot;/deleteAllCards&quot;)
   public String deleteAll() {
-<span class="nc" id="L66">    return CardService.deleteAll();</span>
+<span class="fc" id="L66">    return CardService.deleteAll();</span>
   }
 
   @RequestMapping(value = &quot;/deleteCard&quot;)
   public List&lt;Card&gt; deleteCard(@RequestParam(&quot;cardId&quot;) Integer cardId)
   {
-<span class="nc" id="L72">    return CardService.deleteCard(cardId);</span>
+<span class="fc" id="L72">    return CardService.deleteCard(cardId);</span>
   }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

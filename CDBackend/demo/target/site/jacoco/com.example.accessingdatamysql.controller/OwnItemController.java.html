@@ -22,43 +22,43 @@ import com.example.accessingdatamysql.service.OwnItemService;
 
   @RequestMapping(value = &quot;/getOwnItem&quot;)
   public OwnItem findOwnItemByOwnItemId(@RequestParam(&quot;ownItemId&quot;) Integer ownItemId) {
-<span class="nc" id="L25">    return OwnItemService.getOneOwnItem(ownItemId);</span>
+<span class="fc" id="L25">    return OwnItemService.getOneOwnItem(ownItemId);</span>
   }
 
   @RequestMapping(value = &quot;/addOwnItem&quot;)
   public @ResponseBody String addNewOwnItem(@RequestParam(&quot;userId&quot;) Integer userId,
       @RequestParam(&quot;itemId&quot;) Integer itemId, @RequestParam(&quot;itemCount&quot;) Integer itemCount) {
-<span class="nc" id="L31">    return OwnItemService.addNewOwnItem(userId, itemId, itemCount);</span>
+<span class="fc" id="L31">    return OwnItemService.addNewOwnItem(userId, itemId, itemCount);</span>
   }
 
   @RequestMapping(value = &quot;/updateOwnItem&quot;)
   public @ResponseBody String updateOwnItem(@RequestParam(&quot;ownItemId&quot;) Integer ownItemId,
       @RequestParam(&quot;userId&quot;) Integer userId, @RequestParam(&quot;itemId&quot;) Integer itemId,
       @RequestParam(&quot;itemCount&quot;) Integer itemCount) {
-<span class="nc" id="L38">    return OwnItemService.updateOwnItem(ownItemId, userId, itemId, itemCount);</span>
+<span class="fc" id="L38">    return OwnItemService.updateOwnItem(ownItemId, userId, itemId, itemCount);</span>
   }
 
   @RequestMapping(value = &quot;/getAllOwnItems&quot;)
   public List&lt;OwnItem&gt; getAllOwnItems() {
-<span class="nc" id="L43">    return OwnItemService.getAllOwnItems();</span>
+<span class="fc" id="L43">    return OwnItemService.getAllOwnItems();</span>
   }
 
   @RequestMapping(value = &quot;/deleteOwnItems&quot;)
   public String deleteOwnItems(@RequestParam(&quot;ownItemIds&quot;) List&lt;Integer&gt; ownItemIds) {
-<span class="nc" id="L48">    return OwnItemService.deleteOwnItems(ownItemIds);</span>
+<span class="fc" id="L48">    return OwnItemService.deleteOwnItems(ownItemIds);</span>
   }
 
   @RequestMapping(value = &quot;/deleteAllOwnItems&quot;)
   public String deleteAll() {
-<span class="nc" id="L53">    return OwnItemService.deleteAll();</span>
+<span class="fc" id="L53">    return OwnItemService.deleteAll();</span>
   }
 
   @RequestMapping(value = &quot;/deleteOwnItem&quot;)
   public List&lt;OwnItem&gt; deleteOwnItem(@RequestParam(&quot;userId&quot;) Integer userId, @RequestParam(&quot;itemId&quot;) Integer itemId)
   {
-<span class="nc" id="L59">    System.out.println(&quot;In controller&quot;);</span>
-<span class="nc" id="L60">    return OwnItemService.deleteOwnItem(userId, itemId);</span>
+<span class="fc" id="L59">    System.out.println(&quot;In controller&quot;);</span>
+<span class="fc" id="L60">    return OwnItemService.deleteOwnItem(userId, itemId);</span>
   }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

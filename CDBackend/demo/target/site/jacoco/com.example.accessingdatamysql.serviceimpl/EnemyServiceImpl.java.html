@@ -16,14 +16,14 @@ import java.util.*;
 
     @Override
     public Enemy getOneEnemy(Integer EnemyId) {
-<span class="nc" id="L19">        return EnemyDao.getOneEnemy(EnemyId);</span>
+<span class="fc" id="L19">        return EnemyDao.getOneEnemy(EnemyId);</span>
     }
 
     @Override
     public Enemy addNewEnemy(String enemyName, Integer healthPoint, Integer attack, Integer defense,
             Integer attackRange, Double cd, Integer speed, String enemyImg, String shortDescription,
             String enemyDescription) {
-<span class="nc" id="L26">        return EnemyDao.addNewEnemy(enemyName, healthPoint, attack, defense, attackRange, cd, speed, enemyImg,</span>
+<span class="fc" id="L26">        return EnemyDao.addNewEnemy(enemyName, healthPoint, attack, defense, attackRange, cd, speed, enemyImg,</span>
                 shortDescription, enemyDescription);
     }
 
@@ -31,28 +31,28 @@ import java.util.*;
     public Enemy updateEnemy(Integer enemyId, String enemyName, Integer healthPoint, Integer attack, Integer defense,
             Integer attackRange, Double cd, Integer speed, String enemyImg, String shortDescription,
             String enemyDescription) {
-<span class="nc" id="L34">        return EnemyDao.updateEnemy(enemyId, enemyName, healthPoint, attack, defense, attackRange, cd, speed, enemyImg,</span>
+<span class="fc" id="L34">        return EnemyDao.updateEnemy(enemyId, enemyName, healthPoint, attack, defense, attackRange, cd, speed, enemyImg,</span>
                 shortDescription, enemyDescription);
     }
 
     @Override
     public List&lt;Enemy&gt; getAllEnemies() {
-<span class="nc" id="L40">        return EnemyDao.getAllEnemies();</span>
+<span class="fc" id="L40">        return EnemyDao.getAllEnemies();</span>
     }
 
     @Override
     public String deleteEnemies(List&lt;Integer&gt; enemyIds) {
-<span class="nc" id="L45">        return EnemyDao.deleteEnemies(enemyIds);</span>
+<span class="fc" id="L45">        return EnemyDao.deleteEnemies(enemyIds);</span>
     }
 
     @Override
     public String deleteAll() {
-<span class="nc" id="L50">        return EnemyDao.deleteAll();</span>
+<span class="fc" id="L50">        return EnemyDao.deleteAll();</span>
     }
 
     public List&lt;Enemy&gt; deleteEnemy(Integer enemyId) {
-<span class="nc" id="L54">        return EnemyDao.deleteEnemy(enemyId);</span>
+<span class="fc" id="L54">        return EnemyDao.deleteEnemy(enemyId);</span>
     }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

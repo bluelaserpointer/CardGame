@@ -18,7 +18,7 @@ public class Mission {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer missionId;
     // 任务名称
-    private String MissionName;
+    private String missionName;
     // 任务类型（日常，后面的需要讨论）
     private String type;
     // 完成任务奖励的道具
@@ -27,23 +27,23 @@ public class Mission {
     private List&lt;Integer&gt; awardItems;
     // 任务详情（描述）
     @Transient
-    private MissionDetails MissionDetails;
+    private MissionDetails missionDetails;
 
 <span class="fc" id="L32">    public Mission() {</span>
 <span class="fc" id="L33">    }</span>
 
-<span class="nc" id="L35">    public Mission(String type, String MissionName) {</span>
-<span class="nc" id="L36">        this.type = type;</span>
-<span class="nc" id="L37">        this.MissionName = MissionName;</span>
-<span class="nc" id="L38">    }</span>
+<span class="fc" id="L35">    public Mission(String type, String missionName) {</span>
+<span class="fc" id="L36">        this.type = type;</span>
+<span class="fc" id="L37">        this.missionName = missionName;</span>
+<span class="fc" id="L38">    }</span>
 
-    public void setMission(String type, String MissionName) {
-<span class="nc" id="L41">        this.type = type;</span>
-<span class="nc" id="L42">        this.MissionName = MissionName;</span>
-<span class="nc" id="L43">    }</span>
+    public void setMission(String type, String missionName) {
+<span class="fc" id="L41">        this.type = type;</span>
+<span class="fc" id="L42">        this.missionName = missionName;</span>
+<span class="fc" id="L43">    }</span>
 
     public Integer getMissionId() {
-<span class="nc" id="L46">        return missionId;</span>
+<span class="fc" id="L46">        return missionId;</span>
     }
 
     public void setMissionId(Integer MissionId) {
@@ -55,32 +55,32 @@ public class Mission {
 <span class="nc" id="L55">    }</span>
 
     public String getType() {
-<span class="nc" id="L58">        return this.type;</span>
+<span class="fc" id="L58">        return this.type;</span>
     }
 
     public String getMissionName() {
-<span class="nc" id="L62">        return this.MissionName;</span>
+<span class="fc" id="L62">        return this.missionName;</span>
     }
 
     public void setMissionName(String MissionName) {
-<span class="nc" id="L66">        this.MissionName = MissionName;</span>
+<span class="nc" id="L66">        this.missionName = MissionName;</span>
 <span class="nc" id="L67">    }</span>
 
     public MissionDetails getMissionDetails() {
-<span class="nc" id="L70">        return this.MissionDetails;</span>
+<span class="fc" id="L70">        return this.missionDetails;</span>
     }
 
-    public void setMissionDetails(MissionDetails MissionDetails) {
-<span class="nc" id="L74">        this.MissionDetails = MissionDetails;</span>
+    public void setMissionDetails(MissionDetails missionDetails) {
+<span class="nc" id="L74">        this.missionDetails = missionDetails;</span>
 <span class="nc" id="L75">    }</span>
 
     public List&lt;Integer&gt; getAwardItems() {
-<span class="nc" id="L78">        return this.awardItems;</span>
+<span class="fc" id="L78">        return this.awardItems;</span>
     }
 
     public void setAwardItems(List&lt;Integer&gt; awardItems) {
-<span class="nc" id="L82">        this.awardItems = awardItems;</span>
-<span class="nc" id="L83">    }</span>
+<span class="fc" id="L82">        this.awardItems = awardItems;</span>
+<span class="fc" id="L83">    }</span>
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

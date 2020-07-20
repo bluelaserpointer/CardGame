@@ -16,11 +16,11 @@ import java.util.*;
 
     @Override
     public OwnItem getOneOwnItem(Integer OwnItemId) {
-<span class="nc" id="L19">        return OwnItemDao.getOneOwnItem(OwnItemId);</span>
+<span class="fc" id="L19">        return OwnItemDao.getOneOwnItem(OwnItemId);</span>
     }
 
     public String addNewOwnItem(Integer userId, Integer itemId, Integer ItemCount) {
-<span class="nc" id="L23">        return OwnItemDao.addNewOwnItem(userId, itemId, ItemCount);</span>
+<span class="fc" id="L23">        return OwnItemDao.addNewOwnItem(userId, itemId, ItemCount);</span>
     }
 
     public List&lt;OwnItem&gt; getAllOwnItemsByUserId(Integer userId) {
@@ -28,23 +28,23 @@ import java.util.*;
     }
 
     public String updateOwnItem(Integer OwnItemId, Integer userId, Integer itemId, Integer ItemCount) {
-<span class="nc" id="L31">        return OwnItemDao.updateOwnItem(OwnItemId, userId, itemId, ItemCount);</span>
+<span class="fc" id="L31">        return OwnItemDao.updateOwnItem(OwnItemId, userId, itemId, ItemCount);</span>
     }
 
     public List&lt;OwnItem&gt; getAllOwnItems() {
-<span class="nc" id="L35">        return OwnItemDao.getAllOwnItems();</span>
+<span class="fc" id="L35">        return OwnItemDao.getAllOwnItems();</span>
     }
 
     public String deleteOwnItems(List&lt;Integer&gt; OwnItemIds) {
-<span class="nc" id="L39">        return OwnItemDao.deleteOwnItems(OwnItemIds);</span>
+<span class="fc" id="L39">        return OwnItemDao.deleteOwnItems(OwnItemIds);</span>
     }
 
     public String deleteAll() {
-<span class="nc" id="L43">        return OwnItemDao.deleteAll();</span>
+<span class="fc" id="L43">        return OwnItemDao.deleteAll();</span>
     }
 
     public List&lt;OwnItem&gt; deleteOwnItem(Integer userId, Integer itemId){
-<span class="nc" id="L47">        return OwnItemDao.deleteOwnItem(userId, itemId);</span>
+<span class="fc" id="L47">        return OwnItemDao.deleteOwnItem(userId, itemId);</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

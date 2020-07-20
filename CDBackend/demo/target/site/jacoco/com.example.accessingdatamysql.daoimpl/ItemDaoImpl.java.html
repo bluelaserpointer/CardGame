@@ -20,10 +20,10 @@ import java.util.*;
 
     @Override
     public Item getOneItem(Integer ItemId) {
-<span class="nc" id="L23">        Item Item = ItemRepository.getOne(ItemId);</span>
-<span class="nc" id="L24">        Optional&lt;ItemDetails&gt; ItemDetails = ItemDetailsRepository.findItemDetailsByItemIdEquals(ItemId);</span>
-<span class="nc" id="L25">        ItemDetails.ifPresent(Item::setItemDetails);</span>
-<span class="nc" id="L26">        return Item;</span>
+<span class="fc" id="L23">        Item Item = ItemRepository.getOne(ItemId);</span>
+<span class="fc" id="L24">        Optional&lt;ItemDetails&gt; ItemDetails = ItemDetailsRepository.findItemDetailsByItemIdEquals(ItemId);</span>
+<span class="fc" id="L25">        ItemDetails.ifPresent(Item::setItemDetails);</span>
+<span class="fc" id="L26">        return Item;</span>
     }
 
     // public void modifyStorage(Item Item) {
@@ -37,69 +37,69 @@ import java.util.*;
 
     public String addNewItem(String itemName, Integer price, String itemImg, String itemDescription) {
 
-<span class="nc" id="L40">        Item Item = new Item(itemName, price);</span>
+<span class="fc" id="L40">        Item Item = new Item(itemName, price);</span>
         // System.out.println(&quot;new Item has an Id of : &quot; + n.getItemId());
-<span class="nc" id="L42">        ItemRepository.save(Item);</span>
-<span class="nc" id="L43">        ItemDetails ItemDetails = new ItemDetails(Item.getItemId(), itemImg, itemDescription);</span>
-<span class="nc" id="L44">        ItemDetailsRepository.save(ItemDetails);</span>
-<span class="nc" id="L45">        return &quot;Saved Item&quot;;</span>
+<span class="fc" id="L42">        ItemRepository.save(Item);</span>
+<span class="fc" id="L43">        ItemDetails ItemDetails = new ItemDetails(Item.getItemId(), itemImg, itemDescription);</span>
+<span class="fc" id="L44">        ItemDetailsRepository.save(ItemDetails);</span>
+<span class="fc" id="L45">        return &quot;Saved Item&quot;;</span>
 
     }
 
     public String updateItem(Integer ItemId, String itemName, Integer price, String itemImg, String itemDescription) {
 
-<span class="nc" id="L51">        Item Item = ItemRepository.getOne(ItemId);</span>
+<span class="fc" id="L51">        Item Item = ItemRepository.getOne(ItemId);</span>
         // System.out.println(&quot;old Item has an Id of : &quot; + n.getItemId());
-<span class="nc" id="L53">        Item.setItem(itemName, price);</span>
+<span class="fc" id="L53">        Item.setItem(itemName, price);</span>
 
-<span class="nc" id="L55">        ItemRepository.updateItemStatus(Item, ItemId);</span>
+<span class="fc" id="L55">        ItemRepository.updateItemStatus(Item, ItemId);</span>
 
-<span class="nc" id="L57">        Optional&lt;ItemDetails&gt; optItemDetails = ItemDetailsRepository.findItemDetailsByItemIdEquals(ItemId);</span>
-<span class="nc" id="L58">        ItemDetails itemDetails = new ItemDetails(ItemId, &quot;&quot;, &quot;&quot;);</span>
-<span class="nc bnc" id="L59" title="All 2 branches missed.">        if (optItemDetails.isPresent()) {</span>
+<span class="fc" id="L57">        Optional&lt;ItemDetails&gt; optItemDetails = ItemDetailsRepository.findItemDetailsByItemIdEquals(ItemId);</span>
+<span class="fc" id="L58">        ItemDetails itemDetails = new ItemDetails(ItemId, &quot;&quot;, &quot;&quot;);</span>
+<span class="pc bpc" id="L59" title="1 of 2 branches missed.">        if (optItemDetails.isPresent()) {</span>
 <span class="nc" id="L60">            System.out.println(&quot;Item Exists&quot;);</span>
 <span class="nc" id="L61">            itemDetails = optItemDetails.get();</span>
         } else {
-<span class="nc" id="L63">            System.out.println(&quot;Item doesn't exist&quot;);</span>
+<span class="fc" id="L63">            System.out.println(&quot;Item doesn't exist&quot;);</span>
         }
 
-<span class="nc" id="L66">        itemDetails.setItemDescription(itemDescription);</span>
-<span class="nc" id="L67">        itemDetails.setItemImg(itemImg);</span>
-<span class="nc" id="L68">        ItemDetailsRepository.save(itemDetails);</span>
-<span class="nc" id="L69">        return &quot;modified Item: &quot; + Item.getItemName();</span>
+<span class="fc" id="L66">        itemDetails.setItemDescription(itemDescription);</span>
+<span class="fc" id="L67">        itemDetails.setItemImg(itemImg);</span>
+<span class="fc" id="L68">        ItemDetailsRepository.save(itemDetails);</span>
+<span class="fc" id="L69">        return &quot;modified Item: &quot; + Item.getItemName();</span>
 
     }
 
     public List&lt;Item&gt; getAllItems() {
-<span class="nc" id="L74">        List&lt;Item&gt; Items = ItemRepository.findAll();</span>
-<span class="nc bnc" id="L75" title="All 2 branches missed.">        for (int i = 0; i &lt; Items.size(); i++) {</span>
-<span class="nc" id="L76">            Item Item = Items.get(i);</span>
-<span class="nc" id="L77">            Optional&lt;ItemDetails&gt; ItemDetails = ItemDetailsRepository.findItemDetailsByItemIdEquals(Item.getItemId());</span>
-<span class="nc" id="L78">            ItemDetails.ifPresent(Item::setItemDetails);</span>
-<span class="nc" id="L79">            Items.set(i, Item);</span>
+<span class="fc" id="L74">        List&lt;Item&gt; Items = ItemRepository.findAll();</span>
+<span class="fc bfc" id="L75" title="All 2 branches covered.">        for (int i = 0; i &lt; Items.size(); i++) {</span>
+<span class="fc" id="L76">            Item Item = Items.get(i);</span>
+<span class="fc" id="L77">            Optional&lt;ItemDetails&gt; ItemDetails = ItemDetailsRepository.findItemDetailsByItemIdEquals(Item.getItemId());</span>
+<span class="fc" id="L78">            ItemDetails.ifPresent(Item::setItemDetails);</span>
+<span class="fc" id="L79">            Items.set(i, Item);</span>
         }
-<span class="nc" id="L81">        return Items;</span>
+<span class="fc" id="L81">        return Items;</span>
     }
 
     public String deleteItems(List&lt;Integer&gt; ItemIds) {
-<span class="nc bnc" id="L85" title="All 2 branches missed.">        for (int i = 0; i &lt; ItemIds.size(); i++) {</span>
-<span class="nc" id="L86">            ItemRepository.deleteById(ItemIds.get(i));</span>
-<span class="nc" id="L87">            ItemDetailsRepository.deleteItemDetailsByItemIdEquals(ItemIds.get(i));</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">        for (int i = 0; i &lt; ItemIds.size(); i++) {</span>
+<span class="fc" id="L86">            ItemRepository.deleteById(ItemIds.get(i));</span>
+<span class="fc" id="L87">            ItemDetailsRepository.deleteItemDetailsByItemIdEquals(ItemIds.get(i));</span>
         }
-<span class="nc" id="L89">        return &quot;Deleted Items by id&quot;;</span>
+<span class="fc" id="L89">        return &quot;Deleted Items by id&quot;;</span>
     }
 
     public String deleteAll() {
-<span class="nc" id="L93">        ItemRepository.deleteAll();</span>
-<span class="nc" id="L94">        ItemDetailsRepository.deleteAll();</span>
-<span class="nc" id="L95">        return &quot;Deleted All Items&quot;;</span>
+<span class="fc" id="L93">        ItemRepository.deleteAll();</span>
+<span class="fc" id="L94">        ItemDetailsRepository.deleteAll();</span>
+<span class="fc" id="L95">        return &quot;Deleted All Items&quot;;</span>
     }
 
     public List&lt;Item&gt; deleteItem(Integer itemId)
     {
-<span class="nc" id="L100">      ItemRepository.deleteById(itemId);</span>
-<span class="nc" id="L101">      ItemDetailsRepository.deleteItemDetailsByItemIdEquals(itemId);</span>
-<span class="nc" id="L102">      return getAllItems();</span>
+<span class="fc" id="L100">      ItemRepository.deleteById(itemId);</span>
+<span class="fc" id="L101">      ItemDetailsRepository.deleteItemDetailsByItemIdEquals(itemId);</span>
+<span class="fc" id="L102">      return getAllItems();</span>
     };
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

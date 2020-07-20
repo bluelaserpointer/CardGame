@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MissionDetails.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">demo</a> &gt; <a href="index.source.html" class="el_package">com.example.accessingdatamysql.entity</a> &gt; <span class="el_source">MissionDetails.java</span></div><h1>MissionDetails.java</h1><pre class="source lang-java linenums">package com.example.accessingdatamysql.entity;
 
 // import java.sql.Timestamp;
-import java.util.List;
+// import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -10,33 +10,33 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = &quot;MissionDetails&quot;)
 public class MissionDetails {
     // 任务Id
-    private Integer MissionId;
+    private Integer missionId;
     // 任务描述
-    private String MissionDescription;
+    private String missionDescription;
 
-<span class="nc" id="L17">    public MissionDetails(Integer MissionId, String MissionDescription) {</span>
-<span class="nc" id="L18">        this.MissionId = MissionId;</span>
-<span class="nc" id="L19">        this.MissionDescription = MissionDescription;</span>
-<span class="nc" id="L20">    }</span>
+<span class="fc" id="L17">    public MissionDetails(Integer missionId, String missionDescription) {</span>
+<span class="fc" id="L18">        this.missionId = missionId;</span>
+<span class="fc" id="L19">        this.missionDescription = missionDescription;</span>
+<span class="fc" id="L20">    }</span>
 
     public Integer getMissionId() {
-<span class="nc" id="L23">        return MissionId;</span>
+<span class="nc" id="L23">        return missionId;</span>
     }
 
-    public void setMissionId(Integer MissionId) {
-<span class="nc" id="L27">        this.MissionId = MissionId;</span>
+    public void setMissionId(Integer missionId) {
+<span class="nc" id="L27">        this.missionId = missionId;</span>
 <span class="nc" id="L28">    }</span>
 
     @Id
     private ObjectId id;
 
     public String getMissionDescription() {
-<span class="nc" id="L34">        return this.MissionDescription;</span>
+<span class="nc" id="L34">        return this.missionDescription;</span>
     }
 
-    public void setMissionDescription(String MissionDescription) {
-<span class="nc" id="L38">        this.MissionDescription = MissionDescription;</span>
-<span class="nc" id="L39">    }</span>
+    public void setMissionDescription(String missionDescription) {
+<span class="fc" id="L38">        this.missionDescription = missionDescription;</span>
+<span class="fc" id="L39">    }</span>
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

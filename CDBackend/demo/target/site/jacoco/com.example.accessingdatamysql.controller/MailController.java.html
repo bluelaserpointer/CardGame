@@ -22,41 +22,41 @@ import com.example.accessingdatamysql.service.MailService;
 
   @RequestMapping(value = &quot;/getMail&quot;)
   public Mail findMailByMailId(@RequestParam(&quot;mailId&quot;) Integer mailId) {
-<span class="nc" id="L25">    return MailService.getOneMail(mailId);</span>
+<span class="fc" id="L25">    return MailService.getOneMail(mailId);</span>
   }
 
   @RequestMapping(value = &quot;/addMail&quot;)
   public @ResponseBody String addNewMail(@RequestParam(&quot;mailName&quot;) String mailName,
       @RequestParam(&quot;mailImg&quot;) String mailImg, @RequestParam(&quot;mailDescription&quot;) String mailDescription) {
-<span class="nc" id="L31">    return MailService.addNewMail(mailName, mailImg, mailDescription);</span>
+<span class="fc" id="L31">    return MailService.addNewMail(mailName, mailImg, mailDescription);</span>
   }
 
   @RequestMapping(value = &quot;/updateMail&quot;)
   public @ResponseBody String updateMail(@RequestParam(&quot;mailId&quot;) Integer mailId,
       @RequestParam(&quot;mailName&quot;) String mailName, @RequestParam(&quot;mailImg&quot;) String mailImg,
       @RequestParam(&quot;mailDescription&quot;) String mailDescription) {
-<span class="nc" id="L38">    return MailService.updateMail(mailId, mailName, mailImg, mailDescription);</span>
+<span class="fc" id="L38">    return MailService.updateMail(mailId, mailName, mailImg, mailDescription);</span>
   }
 
   @RequestMapping(value = &quot;/getAllMails&quot;)
   public List&lt;Mail&gt; getAllMails() {
-<span class="nc" id="L43">    return MailService.getAllMails();</span>
+<span class="fc" id="L43">    return MailService.getAllMails();</span>
   }
 
   @RequestMapping(value = &quot;/deleteMails&quot;)
   public String deleteMails(@RequestParam(&quot;mailIds&quot;) List&lt;Integer&gt; mailIds) {
-<span class="nc" id="L48">    return MailService.deleteMails(mailIds);</span>
+<span class="fc" id="L48">    return MailService.deleteMails(mailIds);</span>
   }
 
   @RequestMapping(value = &quot;/deleteAllMails&quot;)
   public String deleteAll() {
-<span class="nc" id="L53">    return MailService.deleteAll();</span>
+<span class="fc" id="L53">    return MailService.deleteAll();</span>
   }
 
   @RequestMapping(value = &quot;/deleteMail&quot;)
   public List&lt;Mail&gt; deleteMail(@RequestParam(&quot;mailId&quot;) Integer mailId)
   {
-<span class="nc" id="L59">    return MailService.deleteMail(mailId);</span>
+<span class="fc" id="L59">    return MailService.deleteMail(mailId);</span>
   }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

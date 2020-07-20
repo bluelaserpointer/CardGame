@@ -20,80 +20,83 @@ import java.util.*;
 
     @Override
     public Enemy getOneEnemy(Integer enemyId) {
-<span class="nc" id="L23">        Enemy Enemy = EnemyRepository.getOne(enemyId);</span>
-<span class="nc" id="L24">        Optional&lt;EnemyDetails&gt; EnemyDetails = EnemyDetailsRepository.findEnemyDetailsByEnemyIdEquals(enemyId);</span>
-<span class="nc" id="L25">        EnemyDetails.ifPresent(Enemy::setEnemyDetails);</span>
-<span class="nc" id="L26">        return Enemy;</span>
+<span class="fc" id="L23">        Enemy Enemy = EnemyRepository.getOne(enemyId);</span>
+<span class="fc" id="L24">        Optional&lt;EnemyDetails&gt; EnemyDetails = EnemyDetailsRepository.findEnemyDetailsByEnemyIdEquals(enemyId);</span>
+<span class="fc" id="L25">        EnemyDetails.ifPresent(Enemy::setEnemyDetails);</span>
+<span class="fc" id="L26">        return Enemy;</span>
     }
 
     @Override
     public Enemy addNewEnemy(String enemyName, Integer healthPoint, Integer attack, Integer defense,
             Integer attackRange, Double cd, Integer speed, String enemyImg, String shortDescription,
             String enemyDescription) {
-<span class="nc" id="L33">        Enemy enemy = new Enemy(enemyName, healthPoint, attack, defense, attackRange, cd, speed);</span>
-<span class="nc" id="L34">        EnemyRepository.save(enemy);</span>
-<span class="nc" id="L35">        EnemyDetails enemyDetails = new EnemyDetails(enemy.getEnemyId(), enemyImg, shortDescription, enemyDescription);</span>
-<span class="nc" id="L36">        EnemyDetailsRepository.save(enemyDetails);</span>
-<span class="nc" id="L37">        enemy.setEnemyDetails(enemyDetails);</span>
-<span class="nc" id="L38">        return enemy;</span>
+<span class="fc" id="L33">        Enemy enemy = new Enemy(enemyName, healthPoint, attack, defense, attackRange, cd, speed);</span>
+<span class="fc" id="L34">        EnemyRepository.save(enemy);</span>
+<span class="fc" id="L35">        System.out.println(enemy.getEnemyName());</span>
+
+<span class="fc" id="L37">        EnemyDetails enemyDetails = new EnemyDetails(enemy.getEnemyId(), enemyImg, shortDescription, enemyDescription);</span>
+<span class="fc" id="L38">        EnemyDetailsRepository.save(enemyDetails);</span>
+<span class="fc" id="L39">        enemy.setEnemyDetails(enemyDetails);</span>
+<span class="fc" id="L40">        System.out.println(enemyDetails.getEnemyDescription());</span>
+<span class="fc" id="L41">        return enemy;</span>
     }
 
     public Enemy updateEnemy(Integer enemyId, String enemyName, Integer healthPoint, Integer attack, Integer defense,
             Integer attackRange, Double cd, Integer speed, String enemyImg, String shortDescription,
             String enemyDescription) {
-<span class="nc" id="L44">        Enemy Enemy = EnemyRepository.getOne(enemyId);</span>
-<span class="nc" id="L45">        Enemy.setEnemy(enemyName, healthPoint, attack, defense, attackRange, cd, speed);</span>
+<span class="fc" id="L47">        Enemy Enemy = EnemyRepository.getOne(enemyId);</span>
+<span class="fc" id="L48">        Enemy.setEnemy(enemyName, healthPoint, attack, defense, attackRange, cd, speed);</span>
 
-<span class="nc" id="L47">        EnemyRepository.updateEnemyStatus(Enemy, enemyId);</span>
-<span class="nc" id="L48">        Optional&lt;EnemyDetails&gt; optEnemyDetails = EnemyDetailsRepository.findEnemyDetailsByEnemyIdEquals(enemyId);</span>
-<span class="nc" id="L49">        EnemyDetails EnemyDetails = new EnemyDetails(enemyId, &quot;&quot;, &quot;&quot;, &quot;&quot;);</span>
-<span class="nc bnc" id="L50" title="All 2 branches missed.">        if (optEnemyDetails.isPresent()) {</span>
-<span class="nc" id="L51">            System.out.println(&quot;Enemy Exists&quot;);</span>
-<span class="nc" id="L52">            EnemyDetails = optEnemyDetails.get();</span>
+<span class="fc" id="L50">        EnemyRepository.updateEnemyStatus(Enemy, enemyId);</span>
+<span class="fc" id="L51">        Optional&lt;EnemyDetails&gt; optEnemyDetails = EnemyDetailsRepository.findEnemyDetailsByEnemyIdEquals(enemyId);</span>
+<span class="fc" id="L52">        EnemyDetails EnemyDetails = new EnemyDetails(enemyId, &quot;&quot;, &quot;&quot;, &quot;&quot;);</span>
+<span class="pc bpc" id="L53" title="1 of 2 branches missed.">        if (optEnemyDetails.isPresent()) {</span>
+<span class="nc" id="L54">            System.out.println(&quot;Enemy Exists&quot;);</span>
+<span class="nc" id="L55">            EnemyDetails = optEnemyDetails.get();</span>
         } else {
-<span class="nc" id="L54">            System.out.println(&quot;Enemy doesn't exist&quot;);</span>
+<span class="fc" id="L57">            System.out.println(&quot;Enemy doesn't exist&quot;);</span>
         }
 
-<span class="nc" id="L57">        EnemyDetails.setEnemyDescription(enemyDescription);</span>
-<span class="nc" id="L58">        EnemyDetails.setShortDescription(shortDescription);</span>
-<span class="nc" id="L59">        EnemyDetails.setEnemyImg(enemyImg);</span>
-<span class="nc" id="L60">        EnemyDetailsRepository.save(EnemyDetails);</span>
-<span class="nc" id="L61">        Enemy.setEnemyDetails(EnemyDetails);</span>
+<span class="fc" id="L60">        EnemyDetails.setEnemyDescription(enemyDescription);</span>
+<span class="fc" id="L61">        EnemyDetails.setShortDescription(shortDescription);</span>
+<span class="fc" id="L62">        EnemyDetails.setEnemyImg(enemyImg);</span>
+<span class="fc" id="L63">        EnemyDetailsRepository.save(EnemyDetails);</span>
+<span class="fc" id="L64">        Enemy.setEnemyDetails(EnemyDetails);</span>
 
-<span class="nc" id="L63">        return Enemy;</span>
+<span class="fc" id="L66">        return Enemy;</span>
     }
 
     public List&lt;Enemy&gt; getAllEnemies() {
-<span class="nc" id="L67">        List&lt;Enemy&gt; Enemys = EnemyRepository.findAll();</span>
-<span class="nc bnc" id="L68" title="All 2 branches missed.">        for (int i = 0; i &lt; Enemys.size(); i++) {</span>
-<span class="nc" id="L69">            Enemy Enemy = Enemys.get(i);</span>
-<span class="nc" id="L70">            Optional&lt;EnemyDetails&gt; EnemyDetails = EnemyDetailsRepository</span>
-<span class="nc" id="L71">                    .findEnemyDetailsByEnemyIdEquals(Enemy.getEnemyId());</span>
-<span class="nc" id="L72">            EnemyDetails.ifPresent(Enemy::setEnemyDetails);</span>
-<span class="nc" id="L73">            Enemys.set(i, Enemy);</span>
+<span class="fc" id="L70">        List&lt;Enemy&gt; Enemys = EnemyRepository.findAll();</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">        for (int i = 0; i &lt; Enemys.size(); i++) {</span>
+<span class="fc" id="L72">            Enemy Enemy = Enemys.get(i);</span>
+<span class="fc" id="L73">            Optional&lt;EnemyDetails&gt; EnemyDetails = EnemyDetailsRepository</span>
+<span class="fc" id="L74">                    .findEnemyDetailsByEnemyIdEquals(Enemy.getEnemyId());</span>
+<span class="fc" id="L75">            EnemyDetails.ifPresent(Enemy::setEnemyDetails);</span>
+<span class="fc" id="L76">            Enemys.set(i, Enemy);</span>
         }
-<span class="nc" id="L75">        return Enemys;</span>
+<span class="fc" id="L78">        return Enemys;</span>
     }
 
     public String deleteEnemies(List&lt;Integer&gt; EnemyIds) {
-<span class="nc bnc" id="L79" title="All 2 branches missed.">        for (int i = 0; i &lt; EnemyIds.size(); i++) {</span>
-<span class="nc" id="L80">            EnemyRepository.deleteById(EnemyIds.get(i));</span>
-<span class="nc" id="L81">            EnemyDetailsRepository.deleteEnemyDetailsByEnemyIdEquals(EnemyIds.get(i));</span>
+<span class="fc bfc" id="L82" title="All 2 branches covered.">        for (int i = 0; i &lt; EnemyIds.size(); i++) {</span>
+<span class="fc" id="L83">            EnemyRepository.deleteById(EnemyIds.get(i));</span>
+<span class="fc" id="L84">            EnemyDetailsRepository.deleteEnemyDetailsByEnemyIdEquals(EnemyIds.get(i));</span>
         }
-<span class="nc" id="L83">        return &quot;Deleted Enemys by id&quot;;</span>
+<span class="fc" id="L86">        return &quot;Deleted Enemys by id&quot;;</span>
     }
 
     public String deleteAll() {
-<span class="nc" id="L87">        EnemyRepository.deleteAll();</span>
-<span class="nc" id="L88">        EnemyDetailsRepository.deleteAll();</span>
-<span class="nc" id="L89">        return &quot;Deleted All Enemys&quot;;</span>
+<span class="fc" id="L90">        EnemyRepository.deleteAll();</span>
+<span class="fc" id="L91">        EnemyDetailsRepository.deleteAll();</span>
+<span class="fc" id="L92">        return &quot;Deleted All Enemys&quot;;</span>
     }
 
     public List&lt;Enemy&gt; deleteEnemy(Integer EnemyId) {
-<span class="nc" id="L93">        EnemyRepository.deleteById(EnemyId);</span>
-<span class="nc" id="L94">        EnemyDetailsRepository.deleteEnemyDetailsByEnemyIdEquals(EnemyId);</span>
-<span class="nc" id="L95">        return getAllEnemies();</span>
+<span class="fc" id="L96">        EnemyRepository.deleteById(EnemyId);</span>
+<span class="fc" id="L97">        EnemyDetailsRepository.deleteEnemyDetailsByEnemyIdEquals(EnemyId);</span>
+<span class="fc" id="L98">        return getAllEnemies();</span>
     }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

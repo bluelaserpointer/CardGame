@@ -22,14 +22,14 @@ import com.example.accessingdatamysql.service.ActivityService;
 
   @RequestMapping(value = &quot;/getActivity&quot;)
   public Activity findActivityByActivityId(@RequestParam(&quot;activityId&quot;) Integer activityId) {
-<span class="nc" id="L25">    return ActivityService.getOneActivity(activityId);</span>
+<span class="fc" id="L25">    return ActivityService.getOneActivity(activityId);</span>
   }
 
   @RequestMapping(value = &quot;/addActivity&quot;)
   public @ResponseBody String addNewActivity(@RequestParam(&quot;activityName&quot;) String activityName,
       @RequestParam(&quot;activityImg&quot;) String activityImg, @RequestParam(&quot;activityDescription&quot;) String activityDescription,
       @RequestParam(&quot;start&quot;) Timestamp start, @RequestParam(&quot;type&quot;) String type) {
-<span class="nc" id="L32">    return ActivityService.addNewActivity(type, activityName, activityImg, activityDescription, start);</span>
+<span class="fc" id="L32">    return ActivityService.addNewActivity(type, activityName, activityImg, activityDescription, start);</span>
 
   }
 
@@ -38,28 +38,27 @@ import com.example.accessingdatamysql.service.ActivityService;
       @RequestParam(&quot;activityName&quot;) String activityName, @RequestParam(&quot;activityImg&quot;) String activityImg,
       @RequestParam(&quot;activityDescription&quot;) String activityDescription, @RequestParam(&quot;start&quot;) Timestamp start,
       @RequestParam(&quot;type&quot;) String type) {
-<span class="nc" id="L41">    return ActivityService.updateActivity(activityId, type, activityName, activityImg, activityDescription, start);</span>
+<span class="fc" id="L41">    return ActivityService.updateActivity(activityId, type, activityName, activityImg, activityDescription, start);</span>
   }
 
   @RequestMapping(value = &quot;/getAllActivities&quot;)
-  public List&lt;Activity&gt; getAllActivitys() {
-<span class="nc" id="L46">    return ActivityService.getAllActivities();</span>
+  public List&lt;Activity&gt; getAllActivities() {
+<span class="fc" id="L46">    return ActivityService.getAllActivities();</span>
   }
 
   @RequestMapping(value = &quot;/deleteActivities&quot;)
-  public String deleteActivitys(@RequestParam(&quot;activityIds&quot;) List&lt;Integer&gt; activityIds) {
-<span class="nc" id="L51">    return ActivityService.deleteActivities(activityIds);</span>
+  public String deleteActivities(@RequestParam(&quot;activityIds&quot;) List&lt;Integer&gt; activityIds) {
+<span class="fc" id="L51">    return ActivityService.deleteActivities(activityIds);</span>
   }
 
   @RequestMapping(value = &quot;/deleteAllActivities&quot;)
   public String deleteAll() {
-<span class="nc" id="L56">    return ActivityService.deleteAll();</span>
+<span class="fc" id="L56">    return ActivityService.deleteAll();</span>
   }
 
   @RequestMapping(value = &quot;/deleteActivity&quot;)
-  public List&lt;Activity&gt; deleteActivity(@RequestParam(&quot;activityId&quot;) Integer activityId)
-  {
-<span class="nc" id="L62">    return ActivityService.deleteActivity(activityId);</span>
+  public List&lt;Activity&gt; deleteActivity(@RequestParam(&quot;activityId&quot;) Integer activityId) {
+<span class="fc" id="L61">    return ActivityService.deleteActivity(activityId);</span>
   }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

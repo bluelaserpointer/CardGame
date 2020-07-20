@@ -16,38 +16,38 @@ import java.util.*;
 
     @Override
     public Card getOneCard(Integer CardId) {
-<span class="nc" id="L19">        return CardDao.getOneCard(CardId);</span>
+<span class="fc" id="L19">        return CardDao.getOneCard(CardId);</span>
     }
 
     public String addNewCard(String cardName, String rarity, Integer healthPoint, Integer attack, Integer defense,
             Integer attackRange, Double cd, Integer speed, String cardImg, String shortDescription,
             String cardDescription) {
-<span class="nc" id="L25">        return CardDao.addNewCard(cardName, rarity, healthPoint, attack, defense, attackRange, cd, speed, cardImg,</span>
+<span class="fc" id="L25">        return CardDao.addNewCard(cardName, rarity, healthPoint, attack, defense, attackRange, cd, speed, cardImg,</span>
                 shortDescription, cardDescription);
     }
 
     public String updateCard(Integer cardId, String cardName, String rarity, Integer healthPoint, Integer attack,
             Integer defense, Integer attackRange, Double cd, Integer speed, String cardImg, String shortDescription,
             String cardDescription) {
-<span class="nc" id="L32">        System.out.println(&quot;In service&quot;);</span>
-<span class="nc" id="L33">        return CardDao.updateCard(cardId, cardName, rarity, healthPoint, attack, defense, attackRange, cd, speed,</span>
+<span class="fc" id="L32">        System.out.println(&quot;In service&quot;);</span>
+<span class="fc" id="L33">        return CardDao.updateCard(cardId, cardName, rarity, healthPoint, attack, defense, attackRange, cd, speed,</span>
                 cardImg, shortDescription, cardDescription);
     }
 
     public List&lt;Card&gt; getAllCards() {
-<span class="nc" id="L38">        return CardDao.getAllCards();</span>
+<span class="fc" id="L38">        return CardDao.getAllCards();</span>
     }
 
     public String deleteCards(List&lt;Integer&gt; CardIds) {
-<span class="nc" id="L42">        return CardDao.deleteCards(CardIds);</span>
+<span class="fc" id="L42">        return CardDao.deleteCards(CardIds);</span>
     }
 
     public String deleteAll() {
-<span class="nc" id="L46">        return CardDao.deleteAll();</span>
+<span class="fc" id="L46">        return CardDao.deleteAll();</span>
     }
 
     public List&lt;Card&gt; deleteCard(Integer cardId) {
-<span class="nc" id="L50">        return CardDao.deleteCard(cardId);</span>
+<span class="fc" id="L50">        return CardDao.deleteCard(cardId);</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

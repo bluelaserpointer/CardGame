@@ -32,9 +32,12 @@ public class EnemyDaoImpl implements EnemyDao {
             String enemyDescription) {
         Enemy enemy = new Enemy(enemyName, healthPoint, attack, defense, attackRange, cd, speed);
         EnemyRepository.save(enemy);
+        System.out.println(enemy.getEnemyName());
+
         EnemyDetails enemyDetails = new EnemyDetails(enemy.getEnemyId(), enemyImg, shortDescription, enemyDescription);
         EnemyDetailsRepository.save(enemyDetails);
         enemy.setEnemyDetails(enemyDetails);
+        System.out.println(enemyDetails.getEnemyDescription());
         return enemy;
     }
 

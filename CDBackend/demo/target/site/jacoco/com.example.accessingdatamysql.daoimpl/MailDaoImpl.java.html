@@ -20,10 +20,10 @@ import java.util.*;
 
     @Override
     public Mail getOneMail(Integer MailId) {
-<span class="nc" id="L23">        Mail Mail = MailRepository.getOne(MailId);</span>
-<span class="nc" id="L24">        Optional&lt;MailDetails&gt; MailDetails = MailDetailsRepository.findMailDetailsByMailIdEquals(MailId);</span>
-<span class="nc" id="L25">        MailDetails.ifPresent(Mail::setMailDetails);</span>
-<span class="nc" id="L26">        return Mail;</span>
+<span class="fc" id="L23">        Mail Mail = MailRepository.getOne(MailId);</span>
+<span class="fc" id="L24">        Optional&lt;MailDetails&gt; MailDetails = MailDetailsRepository.findMailDetailsByMailIdEquals(MailId);</span>
+<span class="fc" id="L25">        MailDetails.ifPresent(Mail::setMailDetails);</span>
+<span class="fc" id="L26">        return Mail;</span>
     }
 
     // public void modifyStorage(Mail Mail) {
@@ -36,69 +36,69 @@ import java.util.*;
     // }
 
     public String addNewMail(String MailName, String mailImg, String mailDescription) {
-<span class="nc" id="L39">        System.out.println(mailDescription);</span>
-<span class="nc" id="L40">        Mail Mail = new Mail(MailName);</span>
+<span class="fc" id="L39">        System.out.println(mailDescription);</span>
+<span class="fc" id="L40">        Mail Mail = new Mail(MailName);</span>
         // System.out.println(&quot;new Mail has an Id of : &quot; + n.getMailId());
-<span class="nc" id="L42">        MailRepository.save(Mail);</span>
-<span class="nc" id="L43">        MailDetails MailDetails = new MailDetails(Mail.getMailId(), mailImg, mailDescription);</span>
-<span class="nc" id="L44">        MailDetailsRepository.save(MailDetails);</span>
-<span class="nc" id="L45">        return &quot;Saved Mail&quot;;</span>
+<span class="fc" id="L42">        MailRepository.save(Mail);</span>
+<span class="fc" id="L43">        MailDetails MailDetails = new MailDetails(Mail.getMailId(), mailImg, mailDescription);</span>
+<span class="fc" id="L44">        MailDetailsRepository.save(MailDetails);</span>
+<span class="fc" id="L45">        return &quot;Saved Mail&quot;;</span>
 
     }
 
     public String updateMail(Integer MailId, String MailName, String mailImg, String mailDescription) {
 
-<span class="nc" id="L51">        Mail Mail = MailRepository.getOne(MailId);</span>
+<span class="fc" id="L51">        Mail Mail = MailRepository.getOne(MailId);</span>
         // System.out.println(&quot;old Mail has an Id of : &quot; + n.getMailId());
-<span class="nc" id="L53">        Mail.setMailName(MailName);</span>
+<span class="fc" id="L53">        Mail.setMailName(MailName);</span>
 
-<span class="nc" id="L55">        MailRepository.updateMailStatus(Mail, MailId);</span>
+<span class="fc" id="L55">        MailRepository.updateMailStatus(Mail, MailId);</span>
 
-<span class="nc" id="L57">        Optional&lt;MailDetails&gt; optMailDetails = MailDetailsRepository.findMailDetailsByMailIdEquals(MailId);</span>
-<span class="nc" id="L58">        MailDetails mailDetails = new MailDetails(MailId, &quot;&quot;, &quot;&quot;);</span>
-<span class="nc bnc" id="L59" title="All 2 branches missed.">        if (optMailDetails.isPresent()) {</span>
+<span class="fc" id="L57">        Optional&lt;MailDetails&gt; optMailDetails = MailDetailsRepository.findMailDetailsByMailIdEquals(MailId);</span>
+<span class="fc" id="L58">        MailDetails mailDetails = new MailDetails(MailId, &quot;&quot;, &quot;&quot;);</span>
+<span class="pc bpc" id="L59" title="1 of 2 branches missed.">        if (optMailDetails.isPresent()) {</span>
 <span class="nc" id="L60">            System.out.println(&quot;Mail Exists&quot;);</span>
 <span class="nc" id="L61">            mailDetails = optMailDetails.get();</span>
         } else {
-<span class="nc" id="L63">            System.out.println(&quot;Mail doesn't exist&quot;);</span>
+<span class="fc" id="L63">            System.out.println(&quot;Mail doesn't exist&quot;);</span>
         }
 
-<span class="nc" id="L66">        mailDetails.setMailDescription(mailDescription);</span>
-<span class="nc" id="L67">        mailDetails.setMailImg(mailImg);</span>
-<span class="nc" id="L68">        MailDetailsRepository.save(mailDetails);</span>
-<span class="nc" id="L69">        return &quot;modified Mail: &quot; + Mail.getMailName();</span>
+<span class="fc" id="L66">        mailDetails.setMailDescription(mailDescription);</span>
+<span class="fc" id="L67">        mailDetails.setMailImg(mailImg);</span>
+<span class="fc" id="L68">        MailDetailsRepository.save(mailDetails);</span>
+<span class="fc" id="L69">        return &quot;modified Mail: &quot; + Mail.getMailName();</span>
 
     }
 
     public List&lt;Mail&gt; getAllMails() {
-<span class="nc" id="L74">        List&lt;Mail&gt; Mails = MailRepository.findAll();</span>
-<span class="nc bnc" id="L75" title="All 2 branches missed.">        for (int i = 0; i &lt; Mails.size(); i++) {</span>
-<span class="nc" id="L76">            Mail Mail = Mails.get(i);</span>
-<span class="nc" id="L77">            Optional&lt;MailDetails&gt; MailDetails = MailDetailsRepository.findMailDetailsByMailIdEquals(Mail.getMailId());</span>
-<span class="nc" id="L78">            MailDetails.ifPresent(Mail::setMailDetails);</span>
-<span class="nc" id="L79">            Mails.set(i, Mail);</span>
+<span class="fc" id="L74">        List&lt;Mail&gt; Mails = MailRepository.findAll();</span>
+<span class="fc bfc" id="L75" title="All 2 branches covered.">        for (int i = 0; i &lt; Mails.size(); i++) {</span>
+<span class="fc" id="L76">            Mail Mail = Mails.get(i);</span>
+<span class="fc" id="L77">            Optional&lt;MailDetails&gt; MailDetails = MailDetailsRepository.findMailDetailsByMailIdEquals(Mail.getMailId());</span>
+<span class="fc" id="L78">            MailDetails.ifPresent(Mail::setMailDetails);</span>
+<span class="fc" id="L79">            Mails.set(i, Mail);</span>
         }
-<span class="nc" id="L81">        return Mails;</span>
+<span class="fc" id="L81">        return Mails;</span>
     }
 
     public String deleteMails(List&lt;Integer&gt; MailIds) {
-<span class="nc bnc" id="L85" title="All 2 branches missed.">        for (int i = 0; i &lt; MailIds.size(); i++) {</span>
-<span class="nc" id="L86">            MailRepository.deleteById(MailIds.get(i));</span>
-<span class="nc" id="L87">            MailDetailsRepository.deleteMailDetailsByMailIdEquals(MailIds.get(i));</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">        for (int i = 0; i &lt; MailIds.size(); i++) {</span>
+<span class="fc" id="L86">            MailRepository.deleteById(MailIds.get(i));</span>
+<span class="fc" id="L87">            MailDetailsRepository.deleteMailDetailsByMailIdEquals(MailIds.get(i));</span>
         }
-<span class="nc" id="L89">        return &quot;Deleted Mails by id&quot;;</span>
+<span class="fc" id="L89">        return &quot;Deleted Mails by id&quot;;</span>
     }
 
     public String deleteAll() {
-<span class="nc" id="L93">        MailRepository.deleteAll();</span>
-<span class="nc" id="L94">        MailDetailsRepository.deleteAll();</span>
-<span class="nc" id="L95">        return &quot;Deleted All Mails&quot;;</span>
+<span class="fc" id="L93">        MailRepository.deleteAll();</span>
+<span class="fc" id="L94">        MailDetailsRepository.deleteAll();</span>
+<span class="fc" id="L95">        return &quot;Deleted All Mails&quot;;</span>
     }
 
     public List&lt;Mail&gt; deleteMail(Integer mailId){
-<span class="nc" id="L99">        MailRepository.deleteById(mailId);</span>
-<span class="nc" id="L100">        MailDetailsRepository.deleteMailDetailsByMailIdEquals(mailId);</span>
-<span class="nc" id="L101">        return getAllMails();</span>
+<span class="fc" id="L99">        MailRepository.deleteById(mailId);</span>
+<span class="fc" id="L100">        MailDetailsRepository.deleteMailDetailsByMailIdEquals(mailId);</span>
+<span class="fc" id="L101">        return getAllMails();</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

@@ -21,43 +21,43 @@ import com.example.accessingdatamysql.service.MissionService;
   private MissionService MissionService;
 
   @RequestMapping(value = &quot;/getMission&quot;)
-  public Mission findMissionByMissionId(@RequestParam(&quot;MissionId&quot;) Integer MissionId) {
-<span class="nc" id="L25">    return MissionService.getOneMission(MissionId);</span>
+  public Mission findMissionByMissionId(@RequestParam(&quot;missionId&quot;) Integer MissionId) {
+<span class="fc" id="L25">    return MissionService.getOneMission(MissionId);</span>
   }
 
   @RequestMapping(value = &quot;/addMission&quot;)
   public @ResponseBody String addNewMission(@RequestParam(&quot;type&quot;) String type,
-      @RequestParam(&quot;MissionName&quot;) String MissionName, @RequestParam(&quot;MissionDescription&quot;) String MissionDescription,
+      @RequestParam(&quot;missionName&quot;) String MissionName, @RequestParam(&quot;missionDescription&quot;) String MissionDescription,
       @RequestParam(&quot;awardItemIds&quot;) List&lt;Integer&gt; awardItemIds) {
-<span class="nc" id="L32">    return MissionService.addNewMission(type, MissionName, MissionDescription, awardItemIds);</span>
+<span class="fc" id="L32">    return MissionService.addNewMission(type, MissionName, MissionDescription, awardItemIds);</span>
   }
 
   @RequestMapping(value = &quot;/updateMission&quot;)
-  public @ResponseBody String updateMission(@RequestParam(&quot;MissionId&quot;) Integer MissionId,
-      @RequestParam(&quot;type&quot;) String type, @RequestParam(&quot;MissionName&quot;) String MissionName,
-      @RequestParam(&quot;MissionDescription&quot;) String MissionDescription,
+  public @ResponseBody String updateMission(@RequestParam(&quot;missionId&quot;) Integer MissionId,
+      @RequestParam(&quot;type&quot;) String type, @RequestParam(&quot;missionName&quot;) String MissionName,
+      @RequestParam(&quot;missionDescription&quot;) String MissionDescription,
       @RequestParam(&quot;awardItemIds&quot;) List&lt;Integer&gt; awardItemIds) {
-<span class="nc" id="L40">    return MissionService.updateMission(MissionId, type, MissionName, MissionDescription, awardItemIds);</span>
+<span class="fc" id="L40">    return MissionService.updateMission(MissionId, type, MissionName, MissionDescription, awardItemIds);</span>
   }
 
   @RequestMapping(value = &quot;/getAllMissions&quot;)
   public List&lt;Mission&gt; getAllMissions() {
-<span class="nc" id="L45">    return MissionService.getAllMissions();</span>
+<span class="fc" id="L45">    return MissionService.getAllMissions();</span>
   }
 
   @RequestMapping(value = &quot;/deleteMissions&quot;)
-  public String deleteMissions(@RequestParam(&quot;MissionIds&quot;) List&lt;Integer&gt; MissionIds) {
-<span class="nc" id="L50">    return MissionService.deleteMissions(MissionIds);</span>
+  public String deleteMissions(@RequestParam(&quot;missionIds&quot;) List&lt;Integer&gt; MissionIds) {
+<span class="fc" id="L50">    return MissionService.deleteMissions(MissionIds);</span>
   }
 
   @RequestMapping(value = &quot;/deleteAllMissions&quot;)
   public String deleteAll() {
-<span class="nc" id="L55">    return MissionService.deleteAll();</span>
+<span class="fc" id="L55">    return MissionService.deleteAll();</span>
   }
 
   @RequestMapping(value = &quot;/deleteMission&quot;)
-  public List&lt;Mission&gt; deleteMission(@RequestParam(&quot;MissionId&quot;) Integer MissionId) {
-<span class="nc" id="L60">    return MissionService.deleteMission(MissionId);</span>
+  public List&lt;Mission&gt; deleteMission(@RequestParam(&quot;missionId&quot;) Integer MissionId) {
+<span class="fc" id="L60">    return MissionService.deleteMission(MissionId);</span>
   }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

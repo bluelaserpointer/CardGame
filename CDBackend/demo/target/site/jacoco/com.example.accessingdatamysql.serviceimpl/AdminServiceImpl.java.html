@@ -16,47 +16,47 @@ import java.util.*;
 
     @Override
     public Admin getOneAdmin(Integer AdminId) {
-<span class="nc" id="L19">        return AdminDao.getOneAdmin(AdminId);</span>
+<span class="fc" id="L19">        return AdminDao.getOneAdmin(AdminId);</span>
     }
 
     public String addNewAdmin(String adminName, String password, Integer role) {
-<span class="nc" id="L23">        return AdminDao.addNewAdmin(adminName, password, role);</span>
+<span class="fc" id="L23">        return AdminDao.addNewAdmin(adminName, password, role);</span>
     }
 
     public String updateAdmin(Integer AdminId, String adminName, String password, Integer role) {
-<span class="nc" id="L27">        return AdminDao.updateAdmin(AdminId, adminName, password, role);</span>
+<span class="fc" id="L27">        return AdminDao.updateAdmin(AdminId, adminName, password, role);</span>
     }
 
     public List&lt;Admin&gt; getAllAdmins() {
-<span class="nc" id="L31">        return AdminDao.getAllAdmins();</span>
+<span class="fc" id="L31">        return AdminDao.getAllAdmins();</span>
     }
 
     public String deleteAdmins(List&lt;Integer&gt; AdminIds) {
-<span class="nc" id="L35">        return AdminDao.deleteAdmins(AdminIds);</span>
+<span class="fc" id="L35">        return AdminDao.deleteAdmins(AdminIds);</span>
     }
 
     public String deleteAll() {
-<span class="nc" id="L39">        return AdminDao.deleteAll();</span>
+<span class="fc" id="L39">        return AdminDao.deleteAll();</span>
     }
 
 
     public boolean identifyAdmin(String adminName, String password){
-<span class="nc" id="L44">        Admin fetchAdmin = AdminDao.getOneAdminByAdminName(adminName);</span>
-<span class="nc" id="L45">        System.out.println();</span>
-<span class="nc" id="L46">        System.out.println(fetchAdmin.getPassword());</span>
-<span class="nc" id="L47">        return password.equals(fetchAdmin.getPassword());</span>
+<span class="fc" id="L44">        Admin fetchAdmin = AdminDao.getOneAdminByAdminName(adminName);</span>
+<span class="fc" id="L45">        System.out.println();</span>
+<span class="fc" id="L46">        System.out.println(fetchAdmin.getPassword());</span>
+<span class="fc" id="L47">        return password.equals(fetchAdmin.getPassword());</span>
     }
 
     public List&lt;Admin&gt; deleteAdmin(Integer adminId) {
-<span class="nc" id="L51">        return AdminDao.deleteAdmin(adminId);</span>
+<span class="fc" id="L51">        return AdminDao.deleteAdmin(adminId);</span>
     }
 
     public List&lt;String&gt; getAllAdminNames(){
-<span class="nc" id="L55">        return AdminDao.getAllAdminNames();</span>
+<span class="fc" id="L55">        return AdminDao.getAllAdminNames();</span>
     };
 
     public Integer getAdminRole(String adminName) {
-<span class="nc" id="L59">        return AdminDao.getAdminRole(adminName);</span>
+<span class="fc" id="L59">        return AdminDao.getAdminRole(adminName);</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

@@ -1,2 +1,14 @@
+com\example\accessingdatamysql\GeneralTests\Controller\CardControllerTest.class
+com\example\accessingdatamysql\GeneralTests\Controller\MissionControllerTest.class
 com\example\accessingdatamysql\UnitTestDemoApplicationTests.class
+com\example\accessingdatamysql\GeneralTests\Controller\ChapterControllerTest.class
+com\example\accessingdatamysql\GeneralTests\Controller\MechanismControllerTest.class
+com\example\accessingdatamysql\GeneralTests\Controller\OwnItemControllerTest.class
+com\example\accessingdatamysql\GeneralTests\Service\UserServiceTest.class
+com\example\accessingdatamysql\GeneralTests\Controller\ActivityControllerTest.class
 com\example\accessingdatamysql\GeneralTests\Controller\UserControllerTest.class
+com\example\accessingdatamysql\GeneralTests\Controller\ItemControllerTest.class
+com\example\accessingdatamysql\GeneralTests\Controller\OwnCardControllerTest.class
+com\example\accessingdatamysql\GeneralTests\Controller\EnemyControllerTest.class
+com\example\accessingdatamysql\GeneralTests\Controller\AdminControllerTest.class
+com\example\accessingdatamysql\GeneralTests\Controller\MailControllerTest.class

@@ -14,35 +14,37 @@ import com.example.accessingdatamysql.service.EnemyService;
 
 @CrossOrigin(origins = "*")
 @RestController // This means that this class is a Controller
-@RequestMapping(path = "/Enemy") // This means URL's start with /demo (after Application path)
+@RequestMapping(path = "/enemy") // This means URL's start with /demo (after Application path)
 public class EnemyController {
   @Autowired
   private EnemyService EnemyService;
 
   @RequestMapping(value = "/getEnemy")
-  public Enemy findEnemyByEnemyId(@RequestParam("EnemyId") Integer EnemyId) {
+  public Enemy findEnemyByEnemyId(@RequestParam("enemyId") Integer EnemyId) {
     return EnemyService.getOneEnemy(EnemyId);
   }
 
   @RequestMapping(value = "/addEnemy")
-  public @ResponseBody Enemy addNewEnemy(@RequestParam("EnemyName") String EnemyName,
+  public @ResponseBody Enemy addNewEnemy(@RequestParam("enemyName") String enemyName,
       @RequestParam("healthPoint") Integer healthPoint, @RequestParam("attack") Integer attack,
       @RequestParam("defense") Integer defense, @RequestParam("attackRange") Integer attackRange,
-      @RequestParam("cd") Double cd, @RequestParam("speed") Integer speed, @RequestParam("EnemyImg") String EnemyImg,
+      @RequestParam("cd") Double cd, @RequestParam("speed") Integer speed, @RequestParam("enemyImg") String enemyImg,
       @RequestParam("shortDescription") String shortDescription,
-      @RequestParam("EnemyDescription") String EnemyDescription) {
-    return EnemyService.addNewEnemy(EnemyName, healthPoint, attack, defense, attackRange, cd, speed, EnemyImg,
-        shortDescription, EnemyDescription);
+      @RequestParam("enemyDescription") String enemyDescription) {
+    System.out.println("Class: EnemyController Method: addNewEnemy Param: ");
+
+    return EnemyService.addNewEnemy(enemyName, healthPoint, attack, defense, attackRange, cd, speed, enemyImg,
+        shortDescription, enemyDescription);
   }
 
   @RequestMapping(value = "/updateEnemy")
-  public @ResponseBody Enemy updateEnemy(@RequestParam("EnemyId") Integer EnemyId,
-      @RequestParam("EnemyName") String EnemyName, @RequestParam("healthPoint") Integer healthPoint,
+  public @ResponseBody Enemy updateEnemy(@RequestParam("enemyId") Integer EnemyId,
+      @RequestParam("enemyName") String EnemyName, @RequestParam("healthPoint") Integer healthPoint,
       @RequestParam("attack") Integer attack, @RequestParam("defense") Integer defense,
       @RequestParam("attackRange") Integer attackRange, @RequestParam("cd") Double cd,
-      @RequestParam("speed") Integer speed, @RequestParam("EnemyImg") String EnemyImg,
+      @RequestParam("speed") Integer speed, @RequestParam("enemyImg") String EnemyImg,
       @RequestParam("shortDescription") String shortDescription,
-      @RequestParam("EnemyDescription") String EnemyDescription) {
+      @RequestParam("enemyDescription") String EnemyDescription) {
     System.out.println("In controller");
 
     return EnemyService.updateEnemy(EnemyId, EnemyName, healthPoint, attack, defense, attackRange, cd, speed, EnemyImg,
@@ -54,18 +56,18 @@ public class EnemyController {
     return EnemyService.getAllEnemies();
   }
 
-  @RequestMapping(value = "/deleteEnemys")
-  public String deleteEnemies(@RequestParam("EnemyIds") List<Integer> EnemyIds) {
+  @RequestMapping(value = "/deleteEnemies")
+  public String deleteEnemies(@RequestParam("enemyIds") List<Integer> EnemyIds) {
     return EnemyService.deleteEnemies(EnemyIds);
   }
 
   @RequestMapping(value = "/deleteAllEnemies")
-  public String deleteAll() {
+  public String deleteAllEnemies() {
     return EnemyService.deleteAll();
   }
 
   @RequestMapping(value = "/deleteEnemy")
-  public List<Enemy> deleteEnemy(@RequestParam("EnemyId") Integer EnemyId) {
+  public List<Enemy> deleteEnemy(@RequestParam("enemyId") Integer EnemyId) {
     return EnemyService.deleteEnemy(EnemyId);
   }
 
