@@ -72,47 +72,78 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="8"
-        android:orientation="vertical">
-
-        <com.example.myapplicationtest1.MainCanvas
-            android:id="@+id/mainCanvas"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2" />
+        android:orientation="horizontal">
 
         <LinearLayout
-            android:id="@+id/addBetButtons"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+            android:id="@+id/buttons"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="vertical">
 
             <Button
-                android:id="@+id/button12"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:id="@+id/toLotte_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Button" />
+                android:background="@drawable/selected_tab"
+                android:text="知识抽卡" />
 
             <Button
-                android:id="@+id/button5"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:id="@+id/toShop_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Button" />
-
-            <Button
-                android:id="@+id/button20"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="Button" />
+                android:background="@drawable/unselected_tab"
+                android:text="图书馆商店" />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="8"
+            android:orientation="vertical">
+
+            <com.example.myapplicationtest1.canvas.LotteAnimationCanvas
+                android:id="@+id/mainCanvas"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2" />
+
+            <LinearLayout
+                android:id="@+id/addBetButtons"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/lotteBet1_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Button" />
+
+                <Button
+                    android:id="@+id/lotteBet2_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Button" />
+
+                <Button
+                    android:id="@+id/lotteBet3_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Button" />
+            </LinearLayout>
+
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>
