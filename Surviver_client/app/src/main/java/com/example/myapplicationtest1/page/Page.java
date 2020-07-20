@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.example.myapplicationtest1.R;
+
 public abstract class Page extends Activity {
     protected final void setJump(View view, Class<? extends Activity> targetPage) {
         view.setOnTouchListener((view1, motionEvent) -> {
@@ -22,5 +24,14 @@ public abstract class Page extends Activity {
     }
     public static void jump(Context context, Class<? extends Activity> targetPageClass) {
         context.startActivity(new Intent(context, targetPageClass));
+    }
+    protected final void setTouchEvent(int viewId, TouchProcess process) {
+        findViewById(viewId).setOnTouchListener((v, motionEvent) -> {
+            v.performClick();
+            if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                process.process();
+            }
+            return false;
+        });
     }
 }

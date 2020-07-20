@@ -15,6 +15,11 @@ public class Utils {
         edit.putString("password", password);
         edit.commit();
     }
+    public static void saveUserId(Context context, int id) {
+        final SharedPreferences.Editor edit = context.getSharedPreferences("data", Context.MODE_PRIVATE).edit();//数据自己可用
+        edit.putString("userId", String.valueOf(id));
+        edit.commit();
+    }
 
     // 从data.xml中获取用户名称
     public static String getUserName(Context context) {
@@ -23,7 +28,9 @@ public class Utils {
     public static String getPassword(Context context) {
         return context.getSharedPreferences("data", Context.MODE_PRIVATE).getString("password", "NOT_LOGGED");
     }
-
+    public static String getUserId(Context context) {
+        return context.getSharedPreferences("data", Context.MODE_PRIVATE).getString("userId", "-1");
+    }
     public static boolean identifyUser(Context context) throws JSONException {
         System.out.println("Inside identifyUser");
         final String getUserName = getUserName(context);

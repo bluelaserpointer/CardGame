@@ -7,7 +7,6 @@ import com.example.myapplicationtest1.HttpClient;
 import com.example.myapplicationtest1.R;
 import com.example.myapplicationtest1.game.core.GHQ;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,7 +17,7 @@ public class HomePage extends Page {
         setContentView(R.layout.home);
         super.setJump(R.id.toBattle_button, MapPage.class);
         super.setJump(R.id.toOption_button, OptionPage.class);
-        super.setJump(R.id.toShop_button, ShopPage.class);
+        super.setJump(R.id.toShop_button, LottePage.class);
         super.setJump(R.id.toMail_button, MailPage.class);
         super.setJump(R.id.toAnnounce_button, AnnouncePage.class);
         super.setJump(R.id.toBag_button, TeamPage.class);
@@ -32,12 +31,12 @@ public class HomePage extends Page {
     }
     public void fetchData() throws JSONException {
         // Fetching data of the current logged in user
-        final JSONArray arr = new JSONArray(HttpClient.doGetShort("user/getAllUsers"));
-        final JSONObject userInfo = arr.getJSONObject(0);
+        //TODO: switch that to get userId from Utils.getUserId
+        //final JSONArray arr = new JSONArray(HttpClient.doGetShort("user/getUser?userId=" + Utils.getUserId(this)));
+        final JSONObject userInfo = new JSONObject(HttpClient.doGetShort("user/getUser?userId=0"));
         // Sets the text of corresponding values
         ((Button)findViewById(R.id.grade_button)).setText(userInfo.get("grade").toString());
         ((Button)findViewById(R.id.stamina_button)).setText(userInfo.get("stamina").toString());
         ((Button)findViewById(R.id.money_button)).setText(userInfo.get("money").toString());
-
     }
 }
