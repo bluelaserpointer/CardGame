@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CardDaoImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">demo</a> &gt; <a href="index.source.html" class="el_package">com.example.accessingdatamysql.daoimpl</a> &gt; <span class="el_source">CardDaoImpl.java</span></div><h1>CardDaoImpl.java</h1><pre class="source lang-java linenums">package com.example.accessingdatamysql.daoimpl;
+
+import com.example.accessingdatamysql.dao.CardDao;
+import com.example.accessingdatamysql.repository.*;
+import com.example.accessingdatamysql.entity.*;
+
+// import org.hibernate.validator.constraints.ISBN;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+// import java.io.Console;
+import java.util.*;
+
+@Repository
+<span class="fc" id="L15">public class CardDaoImpl implements CardDao {</span>
+    @Autowired
+    private CardRepository CardRepository;
+    @Autowired
+    private CardDetailsRepository CardDetailsRepository;
+
+    @Override
+    public Card getOneCard(Integer cardId) {
+<span class="fc" id="L23">        Card card = CardRepository.getOne(cardId);</span>
+<span class="fc" id="L24">        Optional&lt;CardDetails&gt; cardDetails = CardDetailsRepository.findCardDetailsByCardIdEquals(cardId);</span>
+<span class="fc" id="L25">        cardDetails.ifPresent(card::setCardDetails);</span>
+<span class="fc" id="L26">        return card;</span>
+    }
+
+    // public void modifyStorage(Card Card) {
+    // CardRepository.updateStorageStatus(Card.getStorage(), Card.getCardId());
+    // return;
+    // }
+
+    // public CardDetails findOneDetail(Integer id) {
+    // return CardDetailsRepository.findById(id);
+    // }
+
+    public String addNewCard(String cardName, String rarity, Integer healthPoint, Integer attack, Integer defense,
+            Integer attackRange, Double cd, Integer speed, String cardImg, String shortDescription,
+            String cardDescription) {
+
+<span class="fc" id="L42">        Card card = new Card(rarity, cardName, healthPoint, attack, defense, attackRange, cd, speed);</span>
+        // System.out.println(&quot;new Card has an Id of : &quot; + n.getCardId());
+<span class="fc" id="L44">        CardRepository.save(card);</span>
+<span class="fc" id="L45">        CardDetails cardDetails = new CardDetails(card.getCardId(), cardImg, shortDescription, cardDescription);</span>
+<span class="fc" id="L46">        CardDetailsRepository.save(cardDetails);</span>
+<span class="fc" id="L47">        return &quot;Saved Card&quot;;</span>
+
+    }
+
+    public String updateCard(Integer cardId, String cardName, String rarity, Integer healthPoint, Integer attack,
+            Integer defense, Integer attackRange, Double cd, Integer speed, String cardImg, String shortDescription,
+            String cardDescription) {
+<span class="fc" id="L54">        Card card = CardRepository.getOne(cardId);</span>
+        // System.out.println(&quot;old Card has an Id of : &quot; + n.getCardId());
+<span class="fc" id="L56">        card.setCard(rarity, cardName, healthPoint, attack, defense, attackRange, cd, speed);</span>
+
+<span class="fc" id="L58">        CardRepository.updateCardStatus(card, cardId);</span>
+<span class="fc" id="L59">        Optional&lt;CardDetails&gt; optCardDetails = CardDetailsRepository.findCardDetailsByCardIdEquals(cardId);</span>
+<span class="fc" id="L60">        CardDetails cardDetails = new CardDetails(cardId, &quot;&quot;, &quot;&quot;, &quot;&quot;);</span>
+<span class="pc bpc" id="L61" title="1 of 2 branches missed.">        if (optCardDetails.isPresent()) {</span>
+<span class="nc" id="L62">            System.out.println(&quot;Card Exists&quot;);</span>
+<span class="nc" id="L63">            cardDetails = optCardDetails.get();</span>
+        } else {
+<span class="fc" id="L65">            System.out.println(&quot;Card doesn't exist&quot;);</span>
+        }
+
+<span class="fc" id="L68">        cardDetails.setCardDescription(cardDescription);</span>
+<span class="fc" id="L69">        cardDetails.setShortDescription(shortDescription);</span>
+<span class="fc" id="L70">        cardDetails.setCardImg(cardImg);</span>
+<span class="fc" id="L71">        CardDetailsRepository.save(cardDetails);</span>
+
+<span class="fc" id="L73">        return &quot;modified card: &quot; + card.getCardName();</span>
+    }
+
+    public List&lt;Card&gt; getAllCards() {
+<span class="fc" id="L77">        List&lt;Card&gt; Cards = CardRepository.findAll();</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">        for (int i = 0; i &lt; Cards.size(); i++) {</span>
+<span class="fc" id="L79">            Card card = Cards.get(i);</span>
+<span class="fc" id="L80">            Optional&lt;CardDetails&gt; CardDetails = CardDetailsRepository.findCardDetailsByCardIdEquals(card.getCardId());</span>
+<span class="fc" id="L81">            CardDetails.ifPresent(card::setCardDetails);</span>
+<span class="fc" id="L82">            Cards.set(i, card);</span>
+        }
+<span class="fc" id="L84">        return Cards;</span>
+    }
+
+    public String deleteCards(List&lt;Integer&gt; cardIds) {
+<span class="fc bfc" id="L88" title="All 2 branches covered.">        for (int i = 0; i &lt; cardIds.size(); i++) {</span>
+<span class="fc" id="L89">            CardRepository.deleteById(cardIds.get(i));</span>
+<span class="fc" id="L90">            CardDetailsRepository.deleteCardDetailsByCardIdEquals(cardIds.get(i));</span>
+        }
+<span class="fc" id="L92">        return &quot;Deleted Cards by id&quot;;</span>
+    }
+
+    public String deleteAll() {
+<span class="fc" id="L96">        CardRepository.deleteAll();</span>
+<span class="fc" id="L97">        CardDetailsRepository.deleteAll();</span>
+<span class="fc" id="L98">        return &quot;Deleted All Cards&quot;;</span>
+    }
+
+    public List&lt;Card&gt; deleteCard(Integer cardId) {
+<span class="fc" id="L102">        CardRepository.deleteById(cardId);</span>
+<span class="fc" id="L103">        CardDetailsRepository.deleteCardDetailsByCardIdEquals(cardId);</span>
+<span class="fc" id="L104">        return getAllCards();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

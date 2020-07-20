@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MissionDaoImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">demo</a> &gt; <a href="index.source.html" class="el_package">com.example.accessingdatamysql.daoimpl</a> &gt; <span class="el_source">MissionDaoImpl.java</span></div><h1>MissionDaoImpl.java</h1><pre class="source lang-java linenums">package com.example.accessingdatamysql.daoimpl;
+
+import com.example.accessingdatamysql.dao.ItemDao;
+import com.example.accessingdatamysql.dao.MissionDao;
+import com.example.accessingdatamysql.repository.*;
+import com.example.accessingdatamysql.entity.*;
+
+// import org.hibernate.validator.constraints.ISBN;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+// import java.io.Console;
+import java.util.*;
+
+@Repository
+<span class="fc" id="L16">public class MissionDaoImpl implements MissionDao {</span>
+    @Autowired
+    private MissionRepository MissionRepository;
+    @Autowired
+    private ItemDao ItemDao;
+    @Autowired
+    private MissionDetailsRepository MissionDetailsRepository;
+
+    @Override
+    public Mission getOneMission(Integer MissionId) {
+<span class="fc" id="L26">        Mission Mission = MissionRepository.getOne(MissionId);</span>
+<span class="fc" id="L27">        Optional&lt;MissionDetails&gt; MissionDetails = MissionDetailsRepository</span>
+<span class="fc" id="L28">                .findMissionDetailsByMissionIdEquals(MissionId);</span>
+<span class="fc" id="L29">        MissionDetails.ifPresent(Mission::setMissionDetails);</span>
+<span class="fc" id="L30">        return Mission;</span>
+    }
+
+    // public void modifyStorage(Mission Mission) {
+    // MissionRepository.updateStorageStatus(Mission.getStorage(),
+    // Mission.getMissionId());
+    // return;
+    // }
+
+    // public MissionDetails findOneDetail(Integer id) {
+    // return MissionDetailsRepository.findById(id);
+    // }
+
+    public String addNewMission(String type, String MissionName, String MissionDescription,
+            List&lt;Integer&gt; awardItemIds) {
+        // System.out.println(MissionDescription);
+<span class="fc" id="L46">        Mission Mission = new Mission(type, MissionName);</span>
+<span class="fc" id="L47">        Mission.setAwardItems(awardItemIds);</span>
+        // System.out.println(&quot;new Mission has an Id of : &quot; + n.getMissionId());
+<span class="fc" id="L49">        MissionRepository.save(Mission);</span>
+<span class="fc" id="L50">        MissionDetails MissionDetails = new MissionDetails(Mission.getMissionId(), MissionDescription);</span>
+<span class="fc" id="L51">        MissionDetailsRepository.save(MissionDetails);</span>
+<span class="fc" id="L52">        return &quot;Saved Mission&quot;;</span>
+
+    }
+
+    public String updateMission(Integer MissionId, String type, String MissionName, String MissionDescription,
+            List&lt;Integer&gt; awardItemIds) {
+
+<span class="fc" id="L59">        Mission Mission = MissionRepository.getOne(MissionId);</span>
+        // System.out.println(&quot;old Mission has an Id of : &quot; + n.getMissionId());
+<span class="fc" id="L61">        Mission.setMission(type, MissionName);</span>
+<span class="fc" id="L62">        Mission.setAwardItems(awardItemIds);</span>
+
+<span class="fc" id="L64">        MissionRepository.updateMissionStatus(Mission, MissionId);</span>
+
+<span class="fc" id="L66">        Optional&lt;MissionDetails&gt; optMissionDetails = MissionDetailsRepository</span>
+<span class="fc" id="L67">                .findMissionDetailsByMissionIdEquals(MissionId);</span>
+<span class="fc" id="L68">        MissionDetails MissionDetails = new MissionDetails(MissionId, &quot;&quot;);</span>
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">        if (optMissionDetails.isPresent()) {</span>
+<span class="nc" id="L70">            System.out.println(&quot;Mission Exists&quot;);</span>
+<span class="nc" id="L71">            MissionDetails = optMissionDetails.get();</span>
+        } else {
+<span class="fc" id="L73">            System.out.println(&quot;Mission doesn't exist&quot;);</span>
+        }
+
+<span class="fc" id="L76">        MissionDetails.setMissionDescription(MissionDescription);</span>
+<span class="fc" id="L77">        MissionDetailsRepository.save(MissionDetails);</span>
+<span class="fc" id="L78">        return &quot;modified Mission: &quot; + Mission.getMissionName();</span>
+
+    }
+
+    public List&lt;Mission&gt; getAllMissions() {
+<span class="fc" id="L83">        List&lt;Mission&gt; Missions = MissionRepository.findAll();</span>
+<span class="fc bfc" id="L84" title="All 2 branches covered.">        for (int i = 0; i &lt; Missions.size(); i++) {</span>
+<span class="fc" id="L85">            Mission Mission = Missions.get(i);</span>
+<span class="fc" id="L86">            Optional&lt;MissionDetails&gt; MissionDetails = MissionDetailsRepository</span>
+<span class="fc" id="L87">                    .findMissionDetailsByMissionIdEquals(Mission.getMissionId());</span>
+<span class="fc" id="L88">            MissionDetails.ifPresent(Mission::setMissionDetails);</span>
+<span class="fc" id="L89">            Missions.set(i, Mission);</span>
+        }
+<span class="fc" id="L91">        return Missions;</span>
+    }
+
+    public String deleteMissions(List&lt;Integer&gt; MissionIds) {
+<span class="fc bfc" id="L95" title="All 2 branches covered.">        for (int i = 0; i &lt; MissionIds.size(); i++) {</span>
+<span class="fc" id="L96">            MissionRepository.deleteById(MissionIds.get(i));</span>
+<span class="fc" id="L97">            MissionDetailsRepository.deleteMissionDetailsByMissionIdEquals(MissionIds.get(i));</span>
+        }
+<span class="fc" id="L99">        return &quot;Deleted Missions by id&quot;;</span>
+    }
+
+    public String deleteAll() {
+<span class="fc" id="L103">        MissionRepository.deleteAll();</span>
+<span class="fc" id="L104">        MissionDetailsRepository.deleteAll();</span>
+<span class="fc" id="L105">        return &quot;Deleted All Missions&quot;;</span>
+    }
+
+    public List&lt;Mission&gt; deleteMission(Integer MissionId) {
+<span class="fc" id="L109">        MissionRepository.deleteById(MissionId);</span>
+<span class="fc" id="L110">        MissionDetailsRepository.deleteMissionDetailsByMissionIdEquals(MissionId);</span>
+<span class="fc" id="L111">        return getAllMissions();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

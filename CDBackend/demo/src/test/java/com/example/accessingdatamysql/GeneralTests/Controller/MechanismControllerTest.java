@@ -56,17 +56,17 @@ public class MechanismControllerTest {
 
         }
 
-        @Test
-        @Transactional
-        @Rollback(value = true)
-        @DisplayName("File: MechanismController Method: drawCard")
-        public void drawCard() throws Exception {
-                MvcResult result = mockMvc
-                                .perform(get("/mechanism/drawCard?chi=10&mat=10&eng=10")
-                                                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
-                                .andReturn();
-                System.out.println(result.getResponse().getContentAsString());
-        }
+        // @Test
+        // @Transactional
+        // @Rollback(value = true)
+        // @DisplayName("File: MechanismController Method: drawCard")
+        // public void drawCard() throws Exception {
+        // MvcResult result = mockMvc
+        // .perform(get("/mechanism/drawCard?chi=10&mat=10&eng=10")
+        // .contentType(MediaType.APPLICATION_JSON_VALUE))
+        // .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
+        // .andReturn();
+        // System.out.println(result.getResponse().getContentAsString());
+        // }
 
 }

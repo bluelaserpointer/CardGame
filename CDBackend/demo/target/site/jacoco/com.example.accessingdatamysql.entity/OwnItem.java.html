@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OwnItem.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">demo</a> &gt; <a href="index.source.html" class="el_package">com.example.accessingdatamysql.entity</a> &gt; <span class="el_source">OwnItem.java</span></div><h1>OwnItem.java</h1><pre class="source lang-java linenums">
+package com.example.accessingdatamysql.entity;
+
+import javax.persistence.Entity;
+
+import java.sql.Timestamp;
+
+import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+@Entity
+@Table(name = &quot;OwnItem&quot;, schema = &quot;itemgame&quot;)
+@JsonIgnoreProperties(value = { &quot;handler&quot;, &quot;hibernateLazyInitializer&quot;, &quot;fieldHandler&quot; })
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = &quot;ownItemId&quot;)
+
+public class OwnItem {
+    // 拥有道具关系Id（PK）
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer ownItemId;
+    // 拥有道具的用户的userId
+    private Integer userId;
+    // 用户拥有的道具的itemId
+    private Integer itemId;
+    // 用户拥有道具的数量
+    private Integer ItemCount;
+    // 用户（首次）拥有道具的时间（也可以修改成最新一次重复拥有的时间）
+    private Timestamp accquireDate;
+
+<span class="fc" id="L33">    public OwnItem() {</span>
+<span class="fc" id="L34">    };</span>
+
+<span class="fc" id="L36">    public OwnItem(Integer userId, Integer itemId, Integer ItemCount, Timestamp accquireDate) {</span>
+<span class="fc" id="L37">        this.userId = userId;</span>
+<span class="fc" id="L38">        this.itemId = itemId;</span>
+<span class="fc" id="L39">        this.ItemCount = ItemCount;</span>
+<span class="fc" id="L40">        this.accquireDate = accquireDate;</span>
+<span class="fc" id="L41">    }</span>
+
+    public void setOwnItem(Integer userId, Integer itemId, Integer ItemCount, Timestamp accquireDate) {
+<span class="fc" id="L44">        this.userId = userId;</span>
+<span class="fc" id="L45">        this.itemId = itemId;</span>
+<span class="fc" id="L46">        this.ItemCount = ItemCount;</span>
+<span class="fc" id="L47">        this.accquireDate = accquireDate;</span>
+<span class="fc" id="L48">    }</span>
+
+    public Integer getOwnItemId() {
+<span class="fc" id="L51">        return ownItemId;</span>
+    }
+
+    public void setOwnItemId(Integer ownItemId) {
+<span class="nc" id="L55">        this.ownItemId = ownItemId;</span>
+<span class="nc" id="L56">    }</span>
+
+    public Integer getItemId() {
+<span class="fc" id="L59">        return itemId;</span>
+    }
+
+    public void setItemId(Integer itemId) {
+<span class="nc" id="L63">        this.itemId = itemId;</span>
+<span class="nc" id="L64">    }</span>
+
+    public Integer getUserId() {
+<span class="fc" id="L67">        return userId;</span>
+    }
+
+    public void setUserId(Integer userId) {
+<span class="nc" id="L71">        this.userId = userId;</span>
+
+<span class="nc" id="L73">    }</span>
+
+    public Integer getItemCount() {
+<span class="fc" id="L76">        return ItemCount;</span>
+    }
+
+    public void setItemCount(Integer ItemCount) {
+<span class="nc" id="L80">        this.ItemCount = ItemCount;</span>
+
+<span class="nc" id="L82">    }</span>
+
+    public Timestamp getAccquireDate() {
+<span class="fc" id="L85">        return accquireDate;</span>
+    }
+
+    public void setAccquireDate(Timestamp accquireDate) {
+<span class="nc" id="L89">        this.accquireDate = accquireDate;</span>
+<span class="nc" id="L90">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>User.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">demo</a> &gt; <a href="index.source.html" class="el_package">com.example.accessingdatamysql.entity</a> &gt; <span class="el_source">User.java</span></div><h1>User.java</h1><pre class="source lang-java linenums">package com.example.accessingdatamysql.entity;
+
+import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+@Entity // This tells Hibernate to make a table out of this class
+@Table(name = &quot;User&quot;, schema = &quot;cardgame&quot;)
+@JsonIgnoreProperties(value = { &quot;handler&quot;, &quot;hibernateLazyInitializer&quot; })
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = &quot;userId&quot;)
+@org.hibernate.annotations.Proxy(lazy = false)
+public class User {
+    // 用户Id
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer userId;
+    // 用户名
+    @Column(unique = true)
+    private String userName;
+    // 用户邮箱地址
+    private String email;
+    // 用户密码
+    private String password;
+    // 用户手机号码
+    private String phoneNumber;
+    // 用户信用（可删）
+    private Integer credits;
+    // 用户权限
+    private Boolean access;
+    // 用户等级
+    private Integer level;
+    // 用户目前经验值（每升一级清零【理论上来说】）
+    private Integer curExpPoint;
+    // 体力值
+    private Integer stamina;
+    // 氪金金币
+    private Integer money;
+    // 学生绩点（普通货币）
+    private Double grade;
+    // 英语知识点
+    private Integer engKnowledge;
+    // 数学知识点
+    private Integer mathKnowledge;
+    // 中文知识点
+    private Integer chiKnowledge;
+
+<span class="fc" id="L49">    public User() {</span>
+<span class="fc" id="L50">        this.credits = 0;</span>
+<span class="fc" id="L51">        this.access = true;</span>
+<span class="fc" id="L52">        this.level = 1;</span>
+<span class="fc" id="L53">    };</span>
+
+<span class="fc" id="L55">    public User(String userName, String email, String password, String phoneNumber) {</span>
+<span class="fc" id="L56">        this.userName = userName;</span>
+<span class="fc" id="L57">        this.email = email;</span>
+<span class="fc" id="L58">        this.password = password;</span>
+<span class="fc" id="L59">        this.phoneNumber = phoneNumber;</span>
+<span class="fc" id="L60">        this.credits = 0;</span>
+<span class="fc" id="L61">        this.access = true;</span>
+<span class="fc" id="L62">        this.level = 1;</span>
+<span class="fc" id="L63">        this.curExpPoint = 0; // 初始时应该等级为1且经验值为0</span>
+        // 这里需要确定一下每个等级的stamina是多少来确定初始化时的stamina值
+<span class="fc" id="L65">        this.money = 0;</span>
+<span class="fc" id="L66">        this.grade = 0.0;</span>
+<span class="fc" id="L67">        this.engKnowledge = 0;</span>
+<span class="fc" id="L68">        this.mathKnowledge = 0;</span>
+<span class="fc" id="L69">        this.chiKnowledge = 0;</span>
+<span class="fc" id="L70">    }</span>
+
+    public void updateUser(String userName, String email, String password, String phoneNumber, Integer credits,
+            Boolean access, Integer level, Integer curExpPoint, Integer stamina, Integer money, Double grade,
+            Integer engKnowledge, Integer mathKnowledge, Integer chiKnowledge) {
+<span class="fc" id="L75">        this.userName = userName;</span>
+<span class="fc" id="L76">        this.email = email;</span>
+<span class="fc" id="L77">        this.password = password;</span>
+<span class="fc" id="L78">        this.phoneNumber = phoneNumber;</span>
+<span class="fc" id="L79">        this.credits = credits;</span>
+<span class="fc" id="L80">        this.access = access;</span>
+<span class="fc" id="L81">        this.level = level;</span>
+<span class="fc" id="L82">        this.curExpPoint = curExpPoint;</span>
+<span class="fc" id="L83">        this.stamina = stamina;</span>
+<span class="fc" id="L84">        this.money = money;</span>
+<span class="fc" id="L85">        this.grade = grade;</span>
+<span class="fc" id="L86">        this.engKnowledge = engKnowledge;</span>
+<span class="fc" id="L87">        this.mathKnowledge = mathKnowledge;</span>
+<span class="fc" id="L88">        this.chiKnowledge = chiKnowledge;</span>
+<span class="fc" id="L89">    }</span>
+
+    public Integer getUserId() {
+<span class="fc" id="L92">        return userId;</span>
+    }
+
+    public void setUserId(Integer userId) {
+<span class="nc" id="L96">        this.userId = userId;</span>
+<span class="nc" id="L97">    }</span>
+
+    public String getUserName() {
+<span class="fc" id="L100">        return userName;</span>
+    }
+
+    public void setUserName(String userName) {
+<span class="nc" id="L104">        this.userName = userName;</span>
+<span class="nc" id="L105">    }</span>
+
+    public String getEmail() {
+<span class="fc" id="L108">        return email;</span>
+    }
+
+    public void setEmail(String email) {
+<span class="nc" id="L112">        this.email = email;</span>
+<span class="nc" id="L113">    }</span>
+
+    public String getPassword() {
+<span class="fc" id="L116">        return password;</span>
+    }
+
+    public void setPassword(String password) {
+<span class="nc" id="L120">        this.password = password;</span>
+<span class="nc" id="L121">    }</span>
+
+    public String getPhoneNumber() {
+<span class="fc" id="L124">        return phoneNumber;</span>
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+<span class="nc" id="L128">        this.phoneNumber = phoneNumber;</span>
+<span class="nc" id="L129">    }</span>
+
+    public Boolean getAccess() {
+<span class="fc" id="L132">        return this.access;</span>
+    }
+
+    public void setAccess(Boolean access) {
+<span class="nc" id="L136">        this.access = access;</span>
+<span class="nc" id="L137">    }</span>
+
+    public Integer getCredits() {
+<span class="fc" id="L140">        return credits;</span>
+    }
+
+    public void setCredits(Integer credits) {
+<span class="nc" id="L144">        this.credits = credits;</span>
+<span class="nc" id="L145">    }</span>
+
+    public Integer getLevel() {
+<span class="fc" id="L148">        return level;</span>
+    }
+
+    public void setLevel(Integer level) {
+<span class="nc" id="L152">        this.level = level;</span>
+<span class="nc" id="L153">    }</span>
+
+    public Integer getCurExpPoint() {
+<span class="fc" id="L156">        return curExpPoint;</span>
+    }
+
+    public void setCurExpPoint(Integer curExpPoint) {
+<span class="fc" id="L160">        this.curExpPoint = curExpPoint;</span>
+<span class="fc" id="L161">    }</span>
+
+    public Integer getStamina() {
+<span class="fc" id="L164">        return stamina;</span>
+    }
+
+    public void setStamina(Integer stamina) {
+<span class="nc" id="L168">        this.stamina = stamina;</span>
+<span class="nc" id="L169">    }</span>
+
+    public Integer getMoney() {
+<span class="fc" id="L172">        return money;</span>
+    }
+
+    public void setMoney(Integer money) {
+<span class="nc" id="L176">        this.money = money;</span>
+<span class="nc" id="L177">    }</span>
+
+    public Integer getEngKnowledge() {
+<span class="fc" id="L180">        return engKnowledge;</span>
+    }
+
+    public void setEngKnowledge(Integer engKnowledge) {
+<span class="nc" id="L184">        this.engKnowledge = engKnowledge;</span>
+<span class="nc" id="L185">    }</span>
+
+    public Integer getMathKnowledge() {
+<span class="fc" id="L188">        return mathKnowledge;</span>
+    }
+
+    public void setMathKnowledge(Integer mathKnowledge) {
+<span class="nc" id="L192">        this.mathKnowledge = mathKnowledge;</span>
+<span class="nc" id="L193">    }</span>
+
+    public Integer getChiKnowledge() {
+<span class="fc" id="L196">        return chiKnowledge;</span>
+    }
+
+    public void setChiKnowledge(Integer chiKnowledge) {
+<span class="nc" id="L200">        this.chiKnowledge = chiKnowledge;</span>
+<span class="nc" id="L201">    }</span>
+
+    public Double getGrade() {
+<span class="fc" id="L204">        return grade;</span>
+    }
+
+    public void setGrade(Double grade) {
+<span class="nc" id="L208">        this.grade = grade;</span>
+<span class="nc" id="L209">    }</span>
+
+    // public MailBox getMailBox() {
+    // return mailBox;
+    // }
+
+    // public void setMailBox(MailBox mailBox) {
+    // this.mailBox = mailBox;
+    // }
+
+    // public FriendList getFriendList() {
+    // return friendList;
+    // }
+
+    // public void setFriendList(FriendList friendList) {
+    // this.friendList = friendList;
+    // }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

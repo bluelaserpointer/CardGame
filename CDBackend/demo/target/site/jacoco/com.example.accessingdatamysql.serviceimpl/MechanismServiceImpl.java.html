@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MechanismServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">demo</a> &gt; <a href="index.source.html" class="el_package">com.example.accessingdatamysql.serviceimpl</a> &gt; <span class="el_source">MechanismServiceImpl.java</span></div><h1>MechanismServiceImpl.java</h1><pre class="source lang-java linenums">package com.example.accessingdatamysql.serviceimpl;
+
+import com.example.accessingdatamysql.service.*;
+import org.springframework.stereotype.Service;
+import com.example.accessingdatamysql.Classes.*;
+
+@Service
+<span class="fc" id="L8">public class MechanismServiceImpl implements MechanismService {</span>
+    // @Autowired
+    // private CardDao CardDao;
+
+    @Override
+    public Integer drawCard(Integer chi, Integer mat, Integer eng) {
+
+        // LotteSpring(subject rarity)
+<span class="nc" id="L16">        System.out.println(&quot;chi: &quot; + chi + &quot;mat: &quot; + mat + &quot;eng: &quot; + eng);</span>
+
+<span class="nc" id="L18">        final int[][][] lotteSpring = new int[Subject.values().length][5][]; // subject, rarity</span>
+<span class="nc" id="L19">        final int SUM = chi + mat + eng;</span>
+<span class="nc" id="L20">        final int RAND = (int) (Math.random() * 1000.0);</span>
+        int rarity;
+<span class="nc bnc" id="L22" title="All 2 branches missed.">        if (SUM &lt;= 5) {</span>
+<span class="nc bnc" id="L23" title="All 2 branches missed.">            if (RAND &lt; 900 - 10 * SUM)</span>
+<span class="nc" id="L24">                rarity = 0;</span>
+            else
+<span class="nc" id="L26">                rarity = 1;</span>
+<span class="nc bnc" id="L27" title="All 2 branches missed.">        } else if (SUM &lt;= 20) {</span>
+<span class="nc bnc" id="L28" title="All 2 branches missed.">            if (RAND &lt; 700 - 10 * SUM)</span>
+<span class="nc" id="L29">                rarity = 0;</span>
+<span class="nc bnc" id="L30" title="All 2 branches missed.">            else if (RAND &lt; 900 - 3 * SUM)</span>
+<span class="nc" id="L31">                rarity = 1;</span>
+            else
+<span class="nc" id="L33">                rarity = 2;</span>
+<span class="nc bnc" id="L34" title="All 2 branches missed.">        } else if (SUM &lt;= 50) {</span>
+<span class="nc bnc" id="L35" title="All 2 branches missed.">            if (RAND &lt; 600 - 10 * SUM)</span>
+<span class="nc" id="L36">                rarity = 0;</span>
+<span class="nc bnc" id="L37" title="All 2 branches missed.">            else if (RAND &lt; 800 - 4 * SUM)</span>
+<span class="nc" id="L38">                rarity = 1;</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">            else if (RAND &lt; 950 - 1 * SUM)</span>
+<span class="nc" id="L40">                rarity = 2;</span>
+            else
+<span class="nc" id="L42">                rarity = 3;</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">        } else if (SUM &lt;= 100) {</span>
+<span class="nc bnc" id="L44" title="All 2 branches missed.">            if (RAND &lt; 700 - 6 * SUM)</span>
+<span class="nc" id="L45">                rarity = 1;</span>
+<span class="nc bnc" id="L46" title="All 2 branches missed.">            else if (RAND &lt; 1500 - 10 * SUM)</span>
+<span class="nc" id="L47">                rarity = 2;</span>
+<span class="nc bnc" id="L48" title="All 2 branches missed.">            else if (RAND &lt; 1150 - 3 * SUM)</span>
+<span class="nc" id="L49">                rarity = 3;</span>
+            else
+<span class="nc" id="L51">                rarity = 4;</span>
+        } else {
+<span class="nc" id="L53">            System.out.println(&quot;too much bet bug?&quot;);</span>
+<span class="nc" id="L54">            rarity = 4;</span>
+        }
+<span class="nc" id="L56">        final int RAND2 = (int) (Math.random() * SUM);</span>
+        int subject;
+<span class="nc bnc" id="L58" title="All 2 branches missed.">        if (RAND2 &lt; chi)</span>
+<span class="nc" id="L59">            subject = 0;</span>
+<span class="nc bnc" id="L60" title="All 2 branches missed.">        else if (RAND2 &lt; chi + mat)</span>
+<span class="nc" id="L61">            subject = 1;</span>
+        else
+<span class="nc" id="L63">            subject = 2;</span>
+<span class="nc" id="L64">        final int[] group = lotteSpring[subject][rarity];</span>
+<span class="nc" id="L65">        System.out.println(&quot;Result: &quot; + group[(int) (Math.random() * group.length)]);</span>
+<span class="nc" id="L66">        return group[(int) (Math.random() * group.length)];</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

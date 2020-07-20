@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EnemyDaoImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">demo</a> &gt; <a href="index.source.html" class="el_package">com.example.accessingdatamysql.daoimpl</a> &gt; <span class="el_source">EnemyDaoImpl.java</span></div><h1>EnemyDaoImpl.java</h1><pre class="source lang-java linenums">package com.example.accessingdatamysql.daoimpl;
+
+import com.example.accessingdatamysql.dao.EnemyDao;
+import com.example.accessingdatamysql.repository.*;
+import com.example.accessingdatamysql.entity.*;
+
+// import org.hibernate.validator.constraints.ISBN;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+// import java.io.Console;
+import java.util.*;
+
+@Repository
+<span class="fc" id="L15">public class EnemyDaoImpl implements EnemyDao {</span>
+    @Autowired
+    private EnemyRepository EnemyRepository;
+    @Autowired
+    private EnemyDetailsRepository EnemyDetailsRepository;
+
+    @Override
+    public Enemy getOneEnemy(Integer enemyId) {
+<span class="fc" id="L23">        Enemy Enemy = EnemyRepository.getOne(enemyId);</span>
+<span class="fc" id="L24">        Optional&lt;EnemyDetails&gt; EnemyDetails = EnemyDetailsRepository.findEnemyDetailsByEnemyIdEquals(enemyId);</span>
+<span class="fc" id="L25">        EnemyDetails.ifPresent(Enemy::setEnemyDetails);</span>
+<span class="fc" id="L26">        return Enemy;</span>
+    }
+
+    @Override
+    public Enemy addNewEnemy(String enemyName, Integer healthPoint, Integer attack, Integer defense,
+            Integer attackRange, Double cd, Integer speed, String enemyImg, String shortDescription,
+            String enemyDescription) {
+<span class="fc" id="L33">        Enemy enemy = new Enemy(enemyName, healthPoint, attack, defense, attackRange, cd, speed);</span>
+<span class="fc" id="L34">        EnemyRepository.save(enemy);</span>
+<span class="fc" id="L35">        System.out.println(enemy.getEnemyName());</span>
+
+<span class="fc" id="L37">        EnemyDetails enemyDetails = new EnemyDetails(enemy.getEnemyId(), enemyImg, shortDescription, enemyDescription);</span>
+<span class="fc" id="L38">        EnemyDetailsRepository.save(enemyDetails);</span>
+<span class="fc" id="L39">        enemy.setEnemyDetails(enemyDetails);</span>
+<span class="fc" id="L40">        System.out.println(enemyDetails.getEnemyDescription());</span>
+<span class="fc" id="L41">        return enemy;</span>
+    }
+
+    public Enemy updateEnemy(Integer enemyId, String enemyName, Integer healthPoint, Integer attack, Integer defense,
+            Integer attackRange, Double cd, Integer speed, String enemyImg, String shortDescription,
+            String enemyDescription) {
+<span class="fc" id="L47">        Enemy Enemy = EnemyRepository.getOne(enemyId);</span>
+<span class="fc" id="L48">        Enemy.setEnemy(enemyName, healthPoint, attack, defense, attackRange, cd, speed);</span>
+
+<span class="fc" id="L50">        EnemyRepository.updateEnemyStatus(Enemy, enemyId);</span>
+<span class="fc" id="L51">        Optional&lt;EnemyDetails&gt; optEnemyDetails = EnemyDetailsRepository.findEnemyDetailsByEnemyIdEquals(enemyId);</span>
+<span class="fc" id="L52">        EnemyDetails EnemyDetails = new EnemyDetails(enemyId, &quot;&quot;, &quot;&quot;, &quot;&quot;);</span>
+<span class="pc bpc" id="L53" title="1 of 2 branches missed.">        if (optEnemyDetails.isPresent()) {</span>
+<span class="nc" id="L54">            System.out.println(&quot;Enemy Exists&quot;);</span>
+<span class="nc" id="L55">            EnemyDetails = optEnemyDetails.get();</span>
+        } else {
+<span class="fc" id="L57">            System.out.println(&quot;Enemy doesn't exist&quot;);</span>
+        }
+
+<span class="fc" id="L60">        EnemyDetails.setEnemyDescription(enemyDescription);</span>
+<span class="fc" id="L61">        EnemyDetails.setShortDescription(shortDescription);</span>
+<span class="fc" id="L62">        EnemyDetails.setEnemyImg(enemyImg);</span>
+<span class="fc" id="L63">        EnemyDetailsRepository.save(EnemyDetails);</span>
+<span class="fc" id="L64">        Enemy.setEnemyDetails(EnemyDetails);</span>
+
+<span class="fc" id="L66">        return Enemy;</span>
+    }
+
+    public List&lt;Enemy&gt; getAllEnemies() {
+<span class="fc" id="L70">        List&lt;Enemy&gt; Enemys = EnemyRepository.findAll();</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">        for (int i = 0; i &lt; Enemys.size(); i++) {</span>
+<span class="fc" id="L72">            Enemy Enemy = Enemys.get(i);</span>
+<span class="fc" id="L73">            Optional&lt;EnemyDetails&gt; EnemyDetails = EnemyDetailsRepository</span>
+<span class="fc" id="L74">                    .findEnemyDetailsByEnemyIdEquals(Enemy.getEnemyId());</span>
+<span class="fc" id="L75">            EnemyDetails.ifPresent(Enemy::setEnemyDetails);</span>
+<span class="fc" id="L76">            Enemys.set(i, Enemy);</span>
+        }
+<span class="fc" id="L78">        return Enemys;</span>
+    }
+
+    public String deleteEnemies(List&lt;Integer&gt; EnemyIds) {
+<span class="fc bfc" id="L82" title="All 2 branches covered.">        for (int i = 0; i &lt; EnemyIds.size(); i++) {</span>
+<span class="fc" id="L83">            EnemyRepository.deleteById(EnemyIds.get(i));</span>
+<span class="fc" id="L84">            EnemyDetailsRepository.deleteEnemyDetailsByEnemyIdEquals(EnemyIds.get(i));</span>
+        }
+<span class="fc" id="L86">        return &quot;Deleted Enemys by id&quot;;</span>
+    }
+
+    public String deleteAll() {
+<span class="fc" id="L90">        EnemyRepository.deleteAll();</span>
+<span class="fc" id="L91">        EnemyDetailsRepository.deleteAll();</span>
+<span class="fc" id="L92">        return &quot;Deleted All Enemys&quot;;</span>
+    }
+
+    public List&lt;Enemy&gt; deleteEnemy(Integer EnemyId) {
+<span class="fc" id="L96">        EnemyRepository.deleteById(EnemyId);</span>
+<span class="fc" id="L97">        EnemyDetailsRepository.deleteEnemyDetailsByEnemyIdEquals(EnemyId);</span>
+<span class="fc" id="L98">        return getAllEnemies();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">demo</a> &gt; <a href="index.source.html" class="el_package">com.example.accessingdatamysql.serviceimpl</a> &gt; <span class="el_source">UserServiceImpl.java</span></div><h1>UserServiceImpl.java</h1><pre class="source lang-java linenums">package com.example.accessingdatamysql.serviceimpl;
+
+import com.example.accessingdatamysql.dao.*;
+import com.example.accessingdatamysql.entity.*;
+import com.example.accessingdatamysql.service.UserService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.*;
+
+@Service
+<span class="fc" id="L13">public class UserServiceImpl implements UserService {</span>
+    @Autowired
+    private UserDao userDao;
+
+    // 获取一个用户信息
+    @Override
+    public User getOneUser(Integer UserId) {
+<span class="fc" id="L20">        return userDao.getOneUser(UserId);</span>
+    }
+
+    // 添加一个新用户
+    @Override
+    public User addNewUser(String userName, String email, String password, String phoneNumber) {
+<span class="fc" id="L26">        return userDao.addNewUser(userName, email, password, phoneNumber);</span>
+    }
+
+    // 更新一个用户信息
+    @Override
+    public User updateUser(Integer UserId, String userName, String email, String password, String phoneNumber,
+            Integer credits, Boolean access, Integer level, Integer curExpPoint, Integer stamina, Integer money,
+            Double grade, Integer engKnowledge, Integer mathKnowledge, Integer chiKnowledge) {
+<span class="fc" id="L34">        return userDao.updateUser(UserId, userName, email, password, phoneNumber, credits, access, level, curExpPoint,</span>
+                stamina, money, grade, engKnowledge, mathKnowledge, chiKnowledge);
+    }
+
+    // 只是一个更新的wrapper
+    @Override
+    public User updateUserByUser(Integer userId, User user) {
+<span class="fc" id="L41">        userDao.updateUser(userId, user.getUserName(), user.getEmail(), user.getPassword(), user.getPhoneNumber(),</span>
+<span class="fc" id="L42">                user.getCredits(), user.getAccess(), user.getLevel(), user.getCurExpPoint(), user.getStamina(),</span>
+<span class="fc" id="L43">                user.getMoney(), user.getGrade(), user.getEngKnowledge(), user.getMathKnowledge(),</span>
+<span class="fc" id="L44">                user.getChiKnowledge());</span>
+<span class="fc" id="L45">        return user;</span>
+    }
+
+    // 获取所有用户信息
+    @Override
+    public List&lt;User&gt; getAllUsers() {
+<span class="fc" id="L51">        return userDao.getAllUsers();</span>
+    }
+
+    // 删除部分用户
+    @Override
+    public String deleteUsers(List&lt;Integer&gt; UserIds) {
+<span class="fc" id="L57">        return userDao.deleteUsers(UserIds);</span>
+    }
+
+    // 删除所有用户
+    @Override
+    public String deleteAll() {
+<span class="fc" id="L63">        return userDao.deleteAll();</span>
+    }
+
+    // 登录逻辑
+    @Override
+    public boolean identifyUser(String userName, String password) {
+<span class="fc" id="L69">        User fetchUser = userDao.getOneUserByUserName(userName);</span>
+<span class="pc bpc" id="L70" title="1 of 2 branches missed.">        if (fetchUser != null) {</span>
+<span class="nc" id="L71">            return password.equals(fetchUser.getPassword());</span>
+        }
+<span class="fc" id="L73">        return false;</span>
+    }
+
+    // 删除一个指定用户
+    @Override
+    public List&lt;User&gt; deleteUser(Integer userId) {
+<span class="fc" id="L79">        return userDao.deleteUser(userId);</span>
+    }
+
+    // 增加用户经验值(如果累计经验值超过升级所需经验值则升级后再返回user)
+    @Override
+    public User addExp(Integer userId, Integer exp) {
+<span class="fc" id="L85">        User user = userDao.getOneUser(userId);</span>
+<span class="fc" id="L86">        Integer expToNextLevel = expToLevelUp(user.getLevel());</span>
+<span class="fc" id="L87">        System.out.println(&quot;UserService -&gt; addExp:&quot;);</span>
+<span class="fc" id="L88">        System.out.println(&quot;Before Modification: &quot;);</span>
+<span class="fc" id="L89">        System.out.println(&quot;User: userId = &quot; + userId + &quot; userName = &quot; + user.getUserName() + &quot; level = &quot;</span>
+<span class="fc" id="L90">                + user.getLevel() + &quot; curExpPoint = &quot; + user.getCurExpPoint() + &quot; exp = &quot; + exp);</span>
+<span class="fc" id="L91">        System.out.println(&quot;expToNextLevel: &quot; + expToNextLevel);</span>
+<span class="fc" id="L92">        Integer newExp = user.getCurExpPoint() + exp;</span>
+<span class="pc bpc" id="L93" title="1 of 2 branches missed.">        if (newExp &gt; expToNextLevel) {</span>
+<span class="nc" id="L94">            newExp -= expToNextLevel;</span>
+<span class="nc" id="L95">            user.setLevel(user.getLevel() + 1);</span>
+        }
+<span class="fc" id="L97">        user.setCurExpPoint(newExp);</span>
+<span class="fc" id="L98">        updateUserByUser(userId, user);</span>
+<span class="fc" id="L99">        System.out.println(&quot;After Modification: &quot;);</span>
+<span class="fc" id="L100">        System.out.println(&quot;User: userId = &quot; + userId + &quot; userName = &quot; + user.getUserName() + &quot; level = &quot;</span>
+<span class="fc" id="L101">                + user.getLevel() + &quot; curExpPoint = &quot; + user.getCurExpPoint());</span>
+
+<span class="fc" id="L103">        return user;</span>
+    }
+
+    /*
+     * 计算用户升级所需经验值 第一次升要100经验值,每一级比上一级多5%
+     */
+    @Override
+    public Integer expToLevelUp(Integer userLevel) {
+<span class="fc" id="L111">        Integer base = 100; // 等级为1时需要100经验值</span>
+<span class="pc bpc" id="L112" title="1 of 2 branches missed.">        if (userLevel.equals(1))</span>
+<span class="fc" id="L113">            return base;</span>
+<span class="nc" id="L114">        double IncreaseRate = 1.05;</span>
+<span class="nc" id="L115">        double result = Math.round(Math.pow(IncreaseRate, userLevel - 1) * base); // 小数采用四舍五入法</span>
+<span class="nc" id="L116">        return (int) result;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

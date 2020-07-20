@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ChatHistory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">demo</a> &gt; <a href="index.source.html" class="el_package">com.example.accessingdatamysql.entity</a> &gt; <span class="el_source">ChatHistory.java</span></div><h1>ChatHistory.java</h1><pre class="source lang-java linenums">package com.example.accessingdatamysql.entity;
+
+import java.util.List;
+
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = &quot;ChatHistory&quot;)
+public class ChatHistory {
+    // 这里应该需要进行大量修改，首先要考虑到发送次序问题，需要记录用户发出每一条信息的时间，可能需要再建立一个实体集
+    private Integer fromId;
+
+    private Integer toId;
+
+    private List&lt;String&gt; messages;
+
+<span class="nc" id="L18">    public ChatHistory(Integer fromId, Integer toId) {</span>
+<span class="nc" id="L19">        this.fromId = fromId;</span>
+<span class="nc" id="L20">        this.toId = toId;</span>
+<span class="nc" id="L21">    }</span>
+
+    public Integer getFromId() {
+<span class="nc" id="L24">        return fromId;</span>
+    }
+
+    public void setFromId(Integer fromId) {
+<span class="nc" id="L28">        this.fromId = fromId;</span>
+<span class="nc" id="L29">    }</span>
+
+    public Integer getToId() {
+<span class="nc" id="L32">        return toId;</span>
+    }
+
+    public void setToId(Integer toId) {
+<span class="nc" id="L36">        this.toId = toId;</span>
+<span class="nc" id="L37">    }</span>
+
+    @Id
+    private ObjectId id;
+
+    public List&lt;String&gt; getMessages() {
+<span class="nc" id="L43">        return this.messages;</span>
+    }
+
+    public void setMessages(List&lt;String&gt; messages) {
+<span class="nc" id="L47">        this.messages = messages;</span>
+<span class="nc" id="L48">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

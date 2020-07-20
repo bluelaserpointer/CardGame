@@ -1,10 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.example.accessingdatamysql.GeneralTests.Controller.MechanismControllerTest
 -------------------------------------------------------------------------------
-Tests run: 2, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.585 s <<< FAILURE! - in com.example.accessingdatamysql.GeneralTests.Controller.MechanismControllerTest
-drawCard  Time elapsed: 0.464 s  <<< ERROR!
-org.springframework.web.util.NestedServletException: Request processing failed; nested exception is java.lang.NullPointerException
-	at com.example.accessingdatamysql.GeneralTests.Controller.MechanismControllerTest.drawCard(MechanismControllerTest.java:65)
-Caused by: java.lang.NullPointerException
-	at com.example.accessingdatamysql.GeneralTests.Controller.MechanismControllerTest.drawCard(MechanismControllerTest.java:65)
-
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.377 sec - in com.example.accessingdatamysql.GeneralTests.Controller.MechanismControllerTest
