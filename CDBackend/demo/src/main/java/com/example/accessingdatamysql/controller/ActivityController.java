@@ -42,12 +42,12 @@ public class ActivityController {
   }
 
   @RequestMapping(value = "/getAllActivities")
-  public List<Activity> getAllActivitys() {
+  public List<Activity> getAllActivities() {
     return ActivityService.getAllActivities();
   }
 
   @RequestMapping(value = "/deleteActivities")
-  public String deleteActivitys(@RequestParam("activityIds") List<Integer> activityIds) {
+  public String deleteActivities(@RequestParam("activityIds") List<Integer> activityIds) {
     return ActivityService.deleteActivities(activityIds);
   }
 
@@ -57,8 +57,7 @@ public class ActivityController {
   }
 
   @RequestMapping(value = "/deleteActivity")
-  public List<Activity> deleteActivity(@RequestParam("activityId") Integer activityId)
-  {
+  public List<Activity> deleteActivity(@RequestParam("activityId") Integer activityId) {
     return ActivityService.deleteActivity(activityId);
   }
 }

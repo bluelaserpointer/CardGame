@@ -9,9 +9,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
-@Table(name = "Enemy", schema = "Enemygame")
+@Table(name = "Enemy", schema = "cardgame")
 @JsonIgnoreProperties(value = { "handler", "hibernateLazyInitializer", "fieldHandler" })
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "EnemyId")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "enemyId")
 
 public class Enemy {
     // 敌人Id（PK）

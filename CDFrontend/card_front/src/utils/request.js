@@ -21,6 +21,8 @@ service.interceptors.request.use(
       // please modify it according to the actual situation
       config.headers['X-Token'] = getToken()
     }
+    console.log("Before sending request");
+    console.log(config);
     return config
   },
   error => {
@@ -72,14 +74,14 @@ service.interceptors.response.use(
     }
   },
   error => {
-    console.log('err' + error) // for debug
+    console.log('err' + error); // for debug
     Message({
       message: error.message,
       type: 'error',
       duration: 5 * 1000
-    })
+    });
     return Promise.reject(error)
   }
-)
+);
 
 export default service

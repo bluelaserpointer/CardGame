@@ -18,7 +18,7 @@ public class Mission {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer missionId;
     // 任务名称
-    private String MissionName;
+    private String missionName;
     // 任务类型（日常，后面的需要讨论）
     private String type;
     // 完成任务奖励的道具
@@ -27,19 +27,19 @@ public class Mission {
     private List<Integer> awardItems;
     // 任务详情（描述）
     @Transient
-    private MissionDetails MissionDetails;
+    private MissionDetails missionDetails;
 
     public Mission() {
     }
 
-    public Mission(String type, String MissionName) {
+    public Mission(String type, String missionName) {
         this.type = type;
-        this.MissionName = MissionName;
+        this.missionName = missionName;
     }
 
-    public void setMission(String type, String MissionName) {
+    public void setMission(String type, String missionName) {
         this.type = type;
-        this.MissionName = MissionName;
+        this.missionName = missionName;
     }
 
     public Integer getMissionId() {
@@ -59,19 +59,19 @@ public class Mission {
     }
 
     public String getMissionName() {
-        return this.MissionName;
+        return this.missionName;
     }
 
     public void setMissionName(String MissionName) {
-        this.MissionName = MissionName;
+        this.missionName = MissionName;
     }
 
     public MissionDetails getMissionDetails() {
-        return this.MissionDetails;
+        return this.missionDetails;
     }
 
-    public void setMissionDetails(MissionDetails MissionDetails) {
-        this.MissionDetails = MissionDetails;
+    public void setMissionDetails(MissionDetails missionDetails) {
+        this.missionDetails = missionDetails;
     }
 
     public List<Integer> getAwardItems() {

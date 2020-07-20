@@ -31,11 +31,11 @@ public class ActivityDaoImpl implements ActivityDao {
     public String addNewActivity(String type, String activityName, String activityImg, String activityDescription,
             Timestamp start) {
 
-        Activity Activity = new Activity(type, activityName);
+        Activity Activity = new Activity(type, activityName, start);
         // System.out.println("new Activity has an Id of : " + n.getActivityId());
         ActivityRepository.save(Activity);
         ActivityDetails ActivityDetails = new ActivityDetails(Activity.getActivityId(), activityImg,
-                activityDescription, start);
+                activityDescription);
         ActivityDetailsRepository.save(ActivityDetails);
         return "Saved Activity";
     }
@@ -45,13 +45,13 @@ public class ActivityDaoImpl implements ActivityDao {
 
         Activity Activity = ActivityRepository.getOne(activityId);
         // System.out.println("old Activity has an Id of : " + n.getActivityId());
-        Activity.setActivity(type, activityName);
+        Activity.setActivity(type, activityName, start);
 
         ActivityRepository.updateActivityStatus(Activity, activityId);
 
         Optional<ActivityDetails> optActivityDetails = ActivityDetailsRepository
                 .findActivityDetailsByActivityIdEquals(activityId);
-        ActivityDetails activityDetails = new ActivityDetails(activityId, "", "", null);
+        ActivityDetails activityDetails = new ActivityDetails(activityId, "", "");
 
         if (optActivityDetails.isPresent()) {
             System.out.println("Activity Exists");
@@ -62,7 +62,6 @@ public class ActivityDaoImpl implements ActivityDao {
 
         activityDetails.setActivityDescription(activityDescription);
         activityDetails.setActivityImg(activityImg);
-        activityDetails.setStart(start);
         ActivityDetailsRepository.save(activityDetails);
         return "modified Activity: " + Activity.getActivityName();
 

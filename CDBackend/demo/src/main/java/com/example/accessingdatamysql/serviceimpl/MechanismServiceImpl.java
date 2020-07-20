@@ -1,15 +1,8 @@
 package com.example.accessingdatamysql.serviceimpl;
 
-import com.example.accessingdatamysql.dao.*;
-import com.example.accessingdatamysql.entity.*;
 import com.example.accessingdatamysql.service.*;
-
-import java.sql.Timestamp;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.accessingdatamysql.Classes.*;
-
-import java.util.*;
 
 @Service
 public class MechanismServiceImpl implements MechanismService {
@@ -20,6 +13,7 @@ public class MechanismServiceImpl implements MechanismService {
     public Integer drawCard(Integer chi, Integer mat, Integer eng) {
 
         // LotteSpring(subject rarity)
+        System.out.println("chi: " + chi + "mat: " + mat + "eng: " + eng);
 
         final int[][][] lotteSpring = new int[Subject.values().length][5][]; // subject, rarity
         final int SUM = chi + mat + eng;
@@ -68,6 +62,7 @@ public class MechanismServiceImpl implements MechanismService {
         else
             subject = 2;
         final int[] group = lotteSpring[subject][rarity];
+        System.out.println("Result: " + group[(int) (Math.random() * group.length)]);
         return group[(int) (Math.random() * group.length)];
     }
 }

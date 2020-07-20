@@ -9,7 +9,7 @@ public interface MailBoxService {
 
         String addNewMailBox(Integer userId);
 
-        String updateMailBox(Integer MailBoxId, List<Mail> mails);
+        String updateMailBox(Integer MailBoxId, List<Integer> mails);
 
         List<MailBox> getAllMailBoxs();
 

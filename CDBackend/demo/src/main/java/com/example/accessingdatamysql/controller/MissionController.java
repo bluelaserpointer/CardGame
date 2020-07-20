@@ -21,21 +21,21 @@ public class MissionController {
   private MissionService MissionService;
 
   @RequestMapping(value = "/getMission")
-  public Mission findMissionByMissionId(@RequestParam("MissionId") Integer MissionId) {
+  public Mission findMissionByMissionId(@RequestParam("missionId") Integer MissionId) {
     return MissionService.getOneMission(MissionId);
   }
 
   @RequestMapping(value = "/addMission")
   public @ResponseBody String addNewMission(@RequestParam("type") String type,
-      @RequestParam("MissionName") String MissionName, @RequestParam("MissionDescription") String MissionDescription,
+      @RequestParam("missionName") String MissionName, @RequestParam("missionDescription") String MissionDescription,
       @RequestParam("awardItemIds") List<Integer> awardItemIds) {
     return MissionService.addNewMission(type, MissionName, MissionDescription, awardItemIds);
   }
 
   @RequestMapping(value = "/updateMission")
-  public @ResponseBody String updateMission(@RequestParam("MissionId") Integer MissionId,
-      @RequestParam("type") String type, @RequestParam("MissionName") String MissionName,
-      @RequestParam("MissionDescription") String MissionDescription,
+  public @ResponseBody String updateMission(@RequestParam("missionId") Integer MissionId,
+      @RequestParam("type") String type, @RequestParam("missionName") String MissionName,
+      @RequestParam("missionDescription") String MissionDescription,
       @RequestParam("awardItemIds") List<Integer> awardItemIds) {
     return MissionService.updateMission(MissionId, type, MissionName, MissionDescription, awardItemIds);
   }
@@ -46,7 +46,7 @@ public class MissionController {
   }
 
   @RequestMapping(value = "/deleteMissions")
-  public String deleteMissions(@RequestParam("MissionIds") List<Integer> MissionIds) {
+  public String deleteMissions(@RequestParam("missionIds") List<Integer> MissionIds) {
     return MissionService.deleteMissions(MissionIds);
   }
 
@@ -56,7 +56,7 @@ public class MissionController {
   }
 
   @RequestMapping(value = "/deleteMission")
-  public List<Mission> deleteMission(@RequestParam("MissionId") Integer MissionId) {
+  public List<Mission> deleteMission(@RequestParam("missionId") Integer MissionId) {
     return MissionService.deleteMission(MissionId);
   }
 }

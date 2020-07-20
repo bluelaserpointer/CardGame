@@ -77,7 +77,9 @@
 import { validUsername } from '@/utils/validate'
 import { validPassword } from '@/utils/validate'
 import SocialSign from './components/SocialSignin'
-import axios from "axios";
+import axios from 'axios'
+import { removeToken } from '@/utils/auth'
+
 
 export default {
   name: 'Login',
@@ -96,22 +98,21 @@ export default {
       // console.log("!validPassword");
       // console.log(!validPassword(value));
       let valid = false;
-      let postData = new FormData();
+      const postData = new FormData();
       postData.append('adminName', this.loginForm.username);
       postData.append('password', this.loginForm.password);
-      axios.post(`http://localhost:8080/admin/identifyAdmin`, postData).then(res=>{
-          if(res.data) {
-            valid = true;
-            if (!validPassword(value) || !valid) {
-              callback(new Error('Please enter Passwords that meet the standard.'))
-            } else {
-              callback()
-            }
-          }else{
+      axios.post(`http://localhost:8080/admin/identifyAdmin`, postData).then(res => {
+        if (res.data) {
+          valid = true;
+          if (!validPassword(value) || !valid) {
             callback(new Error('Please enter Passwords that meet the standard.'))
+          } else {
+            callback()
           }
-      });
-
+        } else {
+          callback(new Error('Please enter Passwords that meet the standard.'))
+        }
+      })
     };
     return {
       loginForm: {
@@ -145,9 +146,9 @@ export default {
   created() {
     axios.get(`http://localhost:8080/admin/getAdminName`).then(response => {
       if (response.data) {
-        localStorage.setItem('AdminNames', JSON.stringify(response.data));
+        localStorage.setItem('AdminNames', JSON.stringify(response.data))
       }
-    });
+    })
   },
   mounted() {
     if (this.loginForm.username === '') {
@@ -180,17 +181,19 @@ export default {
       // axios.post(`http://localhost:8080/admin/getAdminRole`, postData).then(res=>{
       //   localStorage.setItem('AdminRole', res.data);
       // });
+      removeToken();
+      console.log("Right before removing Token");
       this.$refs.loginForm.validate(async valid => {
         if (valid) {
           this.loading = true;
           this.$store.dispatch('user/login', this.loginForm)
             .then(() => {
-              this.$router.push({path: this.redirect || '/', query: this.otherQuery});
+              this.$router.push({ path: this.redirect || '/', query: this.otherQuery });
               localStorage.setItem('AdminName', this.loginForm.username);
-              this.loading = false;
+              this.loading = false
             })
             .catch(() => {
-              this.loading = false;
+              this.loading = false
             })
         } else {
           console.log('Error submit!');

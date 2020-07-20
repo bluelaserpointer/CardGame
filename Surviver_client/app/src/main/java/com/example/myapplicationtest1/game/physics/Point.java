@@ -117,50 +117,6 @@ public abstract class Point implements Serializable {
 		}
 		return this;
 	}
-	public Point rectCircuit(int centerX, int centerY, int speed, boolean clockwise) {
-		final int DX = -intDX(centerX), DY = -intDY(centerY);
-		final int AbsDX = Math.abs(DX), AbsDY = Math.abs(DY);
-		if(AbsDX > AbsDY) {
-			if(DX > 0 ^ clockwise)
-				addY(-speed);
-			else
-				addY(speed);
-		}else if(AbsDX < AbsDY) {
-			if(DY > 0 ^ clockwise)
-				addX(speed);
-			else
-				addX(-speed);
-		}else if((DX > 0 == DY > 0) ^ clockwise) {
-			if(DX < 0)
-				addX(speed);
-			else
-				addX(-speed);
-		}else {
-			if(DY < 0)
-				addY(speed);
-			else
-				addY(-speed);
-			
-		}
-		return this;
-	}
-	public Point rectCircuit(Point centerPoint, int speed, boolean clockwise) {
-		return rectCircuit(centerPoint.intX(), centerPoint.intY(), speed, clockwise);
-	}
-	public Point diaCircuit(int centerX, int centerY, int speed, boolean clockwise) {
-		return this;
-	}
-	public Point diaCircuit(Point centerPoint, int speed, boolean clockwise) {
-		return rectCircuit(centerPoint.intX(), centerPoint.intY(), speed, clockwise);
-	}
-	///////////////clone
-	public Point cloneAt(int dx, int dy) {
-		return clone().addXY(dx, dy);
-	}
-	public Point cloneAt(double dx, double dy) {
-		return clone().addXY(dx, dy);
-	}
-	
 	///////////////
 	//information
 	///////////////
@@ -250,36 +206,30 @@ public abstract class Point implements Serializable {
 	}
 	///////////////inRangeX&Y&XY
 	public final boolean inRangeX(int x, int xDistance) {
-		return intAbsDX(x) < xDistance;
+		return intAbsDX(x) <= xDistance;
 	}
 	public final boolean inRangeY(int y, int yDistance) {
-		return intAbsDY(y) < yDistance;
+		return intAbsDY(y) <= yDistance;
 	}
 	public final boolean inRangeX(Point point, int xDistance) {
-		return intAbsDX(point) < xDistance;
+		return intAbsDX(point) <= xDistance;
 	}
 	public final boolean inRangeY(Point point, int yDistance) {
-		return intAbsDY(point) < yDistance;
+		return intAbsDY(point) <= yDistance;
 	}
 	public final boolean inRangeX(Point point, double xDistance) {
-		return doubleAbsDX(point) < xDistance;
+		return doubleAbsDX(point) <= xDistance;
 	}
 	public final boolean inRangeY(Point point, double yDistance) {
-		return doubleAbsDY(point) < yDistance;
+		return doubleAbsDY(point) <= yDistance;
 	}
 	public final boolean inRangeXY(int x, int y, int xDistance, int yDistance) {
 		return inRangeX(x, xDistance) && inRangeY(y, yDistance);
 	}
 	public final boolean inRangeXY(Point point, int xDistance, int yDistance) {
-		return inRangeX(point, xDistance) && inRangeY(point, yDistance);
+		return inRangeXY(point.intX(), point.intY(), xDistance, yDistance);
 	}
 	public final boolean inRangeXY(Point point, int distance) {
-		return inRangeXY(point, distance, distance);
-	}
-	public final boolean inRangeXY(Point point, double xDistance, double yDistance) {
-		return inRangeX(point, xDistance) && inRangeY(point, yDistance);
-	}
-	public final boolean inRangeXY(Point point, double distance) {
 		return inRangeXY(point, distance, distance);
 	}
 	///////////////distance&distanceSq
@@ -305,10 +255,10 @@ public abstract class Point implements Serializable {
 	}
 	///////////////inRange&inRangeSq
 	public final boolean inRangeSq(double x, double y, double distanceSq) {
-		return distanceSq(x, y) < distanceSq;
+		return distanceSq(x, y) <= distanceSq;
 	}
 	public final boolean inRangeSq(Point point, double distanceSq) {
-		return distanceSq(point) < distanceSq;
+		return distanceSq(point) <= distanceSq;
 	}
 	public final boolean inRangeSq(HasPoint hasPoint, double distanceSq) {
 		return hasPoint == null ? false : inRangeSq(hasPoint.point(), distanceSq);
@@ -331,16 +281,6 @@ public abstract class Point implements Serializable {
 		return !GHQ.stage().inStage(this) || GHQ.stage().structures.shapeIntersected_dot(this);
 	}
 	///////////////isVisible
-	public boolean isVisible(int x, int y, double viewDistance) {
-		final double dist = distance(x, y);
-		return !(dist > viewDistance) && dist + GHQ.stage().visibility(intX(), intY(), x, y) < viewDistance;
-	}
-	public boolean isVisible(Point point, double viewDistance) {
-		return isVisible(point.intX(), point.intY(), viewDistance);
-	}
-	public boolean isVisible(HasPoint hasPoint, double viewDistance) {
-		return hasPoint == null ? false : isVisible(hasPoint.point(), viewDistance);
-	}
 	public boolean isVisible(int x, int y) {
 		return GHQ.stage().visibility(intX(), intY(), x, y) == 0.0;
 	}
@@ -396,7 +336,7 @@ public abstract class Point implements Serializable {
 	}
 	///////////////approach&approachIfNoObstacles
 	public void approach(double dstX, double dstY, double speed) {
-		final double DX = dstX - doubleX(),DY = dstY - doubleY();
+		final double DX = doubleDX(dstX), DY = doubleDY(dstY);
 		final double DISTANCE = sqrt(DX*DX + DY*DY);
 		if(DISTANCE <= speed)
 			setXY(dstX, dstY);
@@ -412,18 +352,13 @@ public abstract class Point implements Serializable {
 		if(target != null)
 			approach(target.point(), speed);
 	}
-	public void approachIfNoObstacles(HitInteractable source, double dstX, double dstY, double speed) {
-		final double DX = dstX - doubleX(), DY = dstY - doubleY();
-		final double DISTANCE = sqrt(DX*DX + DY*DY);
-		if(DISTANCE > speed) {
-			final double RATE = speed/DISTANCE;
-			dstX = doubleX() + DX*RATE;
-			dstY = doubleY() + DY*RATE;
-		}
-		if(!GHQ.stage().hitObstacle_atNewPoint(source, (int)dstX, (int)dstY))
-			setXY(dstX, dstY);
+	public void approachIfNoObstacles(HitIntractable source, double dstX, double dstY, double speed) {
+		final double originalX = doubleX(), originalY = doubleY();
+		approach(dstX, dstY, speed);
+		if(GHQ.stage().hitObstacle(source))
+			setXY(originalX, originalY);
 	}
-	public void approachIfNoObstacles(HitInteractable source, Point dstPoint, double speed) {
+	public void approachIfNoObstacles(HitIntractable source, Point dstPoint, double speed) {
 		approachIfNoObstacles(source, dstPoint.doubleX(), dstPoint.doubleY(), speed);
 	}
 
@@ -527,7 +462,7 @@ public abstract class Point implements Serializable {
 		moveBySpeed();
 	}
 	public void moveBySpeed() {}
-	public void moveIfNoObstacles(HitInteractable source) {}
+	public void moveIfNoObstacles(HitIntractable source) {}
 	/**
 	 * Move forward with a limited length.
 	 * @param lengthCap

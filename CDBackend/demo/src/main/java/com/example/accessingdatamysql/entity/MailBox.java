@@ -16,9 +16,9 @@ public class MailBox {
     @Column(name = "mailBoxId", nullable = false)
     private Integer mailBoxId;
     // 邮箱内村的邮箱
-    @ManyToMany
-    @JoinColumn(name = "mails", unique = false)
-    private List<Mail> mails;
+    @Column
+    @ElementCollection(targetClass = Integer.class)
+    private List<Integer> mailIds;
 
     // mailBoxid应该要等于userId（一对一关系，（不用自动生成的方法了））
     public MailBox(Integer mailBoxId) {
@@ -35,12 +35,12 @@ public class MailBox {
         this.mailBoxId = mailBoxId;
     }
 
-    public List<Mail> getMails() {
-        return this.mails;
+    public List<Integer> getMailIds() {
+        return this.mailIds;
     }
 
-    public void setMails(List<Mail> mails) {
-        this.mails = mails;
+    public void setMails(List<Integer> mailIds) {
+        this.mailIds = mailIds;
     }
 
 }
