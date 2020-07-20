@@ -23,17 +23,18 @@ public class OwnItemDaoImpl implements OwnItemDao {
         return OwnItem;
     }
 
-    public String addNewOwnItem(Integer userId, Integer itemId, Integer ItemCount) {
+    public OwnItem addNewOwnItem(Integer userId, Integer itemId, Integer ItemCount) {
+
         Timestamp accquireDate = new Timestamp(System.currentTimeMillis());
 
         OwnItem ownItem = new OwnItem(userId, itemId, ItemCount, accquireDate);
         // System.out.println("new OwnItem has an Id of : " + n.getOwnItemId());
         OwnItemRepository.save(ownItem);
-        return "Saved OwnItem";
+        return ownItem;
 
     }
 
-    public String updateOwnItem(Integer OwnItemId, Integer userId, Integer itemId, Integer ItemCount) {
+    public OwnItem updateOwnItem(Integer OwnItemId, Integer userId, Integer itemId, Integer ItemCount) {
         Timestamp accquireDate = new Timestamp(System.currentTimeMillis());
         OwnItem OwnItem = OwnItemRepository.getOne(OwnItemId);
         // System.out.println("old Card has an Id of : " + n.getCardId());
@@ -42,13 +43,28 @@ public class OwnItemDaoImpl implements OwnItemDao {
         OwnItemRepository.updateOwnItemStatus(OwnItem, OwnItemId);
         // return "Modified Card";
         // Image = Image.replace(' ', '+');
-        return "modified OwnItem: " + OwnItem.getOwnItemId();
+        return OwnItem;
 
     }
 
     public List<OwnItem> getAllOwnItems() {
         List<OwnItem> OwnItems = OwnItemRepository.findAll();
         return OwnItems;
+    }
+
+    public OwnItem findOwnItemByUserIdEqualsAndItemIdEquals(Integer userId, Integer itemId) {
+        Optional<OwnItem> optOwnItem = OwnItemRepository.findOwnItemByUserIdEqualsAndItemIdEquals(userId, itemId);
+        if (optOwnItem.isPresent()) {
+            return optOwnItem.get();
+        }
+        return null;
+    }
+
+    @Override
+    public OwnItem repeatOwnItem(OwnItem ownItem, Integer itemCount) {
+        ownItem.setItemCount(itemCount);
+        OwnItemRepository.updateOwnItemStatus(ownItem, ownItem.getOwnItemId());
+        return ownItem;
     }
 
     public List<OwnItem> getAllOwnItemsByUserId(Integer userId) {
@@ -75,9 +91,9 @@ public class OwnItemDaoImpl implements OwnItemDao {
         return "Deleted All OwnItems";
     }
 
-    public List<OwnItem> deleteOwnItem(Integer userId, Integer itemId)
-    {
+    public List<OwnItem> deleteOwnItem(Integer userId, Integer itemId) {
         OwnItemRepository.deleteOwnItemByUserIdEqualsAndItemIdEquals(userId, itemId);
         return getAllOwnItems();
     }
+
 }

@@ -73,9 +73,22 @@ public class OwnCardControllerTest {
         @Transactional
         @Rollback(value = true)
         @DisplayName("File: OwnCardController Method: addNewOwnCard")
-        public void addNewOwnCard() throws Exception {
+        public void ownAnotherCard() throws Exception {
                 MvcResult result = mockMvc
                                 .perform(get("/ownCard/addOwnCard?userId=12&cardId=10")
+                                                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
+                                .andReturn();
+                System.out.println(result.getResponse().getContentAsString());
+        }
+
+        @Test
+        @Transactional
+        @Rollback(value = true)
+        @DisplayName("File: OwnCardController Method: addNewOwnCard")
+        public void addNewOwnCard() throws Exception {
+                MvcResult result = mockMvc
+                                .perform(get("/ownCard/addOwnCard?userId=12&cardId=100")
                                                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
                                 .andReturn();
@@ -108,18 +121,18 @@ public class OwnCardControllerTest {
                 System.out.println(result.getResponse().getContentAsString());
         }
 
-        @Test
-        @Transactional
-        @Rollback(value = true)
-        @DisplayName("File: OwnCardController Method: ownAnotherCard")
-        public void ownAnotherCard() throws Exception {
-                MvcResult result = mockMvc
-                                .perform(get("/ownCard/ownAnotherCard?userId=12&cardId=10")
-                                                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
-                                .andReturn();
-                System.out.println(result.getResponse().getContentAsString());
-        }
+        // @Test
+        // @Transactional
+        // @Rollback(value = true)
+        // @DisplayName("File: OwnCardController Method: ownAnotherCard")
+        // public void ownAnotherCard() throws Exception {
+        // MvcResult result = mockMvc
+        // .perform(get("/ownCard/ownAnotherCard?userId=12&cardId=10")
+        // .contentType(MediaType.APPLICATION_JSON_VALUE))
+        // .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
+        // .andReturn();
+        // System.out.println(result.getResponse().getContentAsString());
+        // }
 
         @Test
         @Transactional

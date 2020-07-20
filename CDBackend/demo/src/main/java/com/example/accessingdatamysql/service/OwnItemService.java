@@ -7,9 +7,9 @@ import java.util.List;
 public interface OwnItemService {
         OwnItem getOneOwnItem(Integer OwnItemId);
 
-        String addNewOwnItem(Integer userId, Integer itemId, Integer ItemCount);
+        OwnItem addNewOwnItem(Integer userId, Integer itemId, Integer ItemCount);
 
-        String updateOwnItem(Integer OwnItemId, Integer userId, Integer itemId, Integer ItemCount);
+        OwnItem updateOwnItem(Integer OwnItemId, Integer userId, Integer itemId, Integer ItemCount);
 
         List<OwnItem> getAllOwnItems();
 

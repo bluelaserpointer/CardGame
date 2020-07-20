@@ -26,13 +26,13 @@ public class OwnItemController {
   }
 
   @RequestMapping(value = "/addOwnItem")
-  public @ResponseBody String addNewOwnItem(@RequestParam("userId") Integer userId,
+  public @ResponseBody OwnItem addNewOwnItem(@RequestParam("userId") Integer userId,
       @RequestParam("itemId") Integer itemId, @RequestParam("itemCount") Integer itemCount) {
     return OwnItemService.addNewOwnItem(userId, itemId, itemCount);
   }
 
   @RequestMapping(value = "/updateOwnItem")
-  public @ResponseBody String updateOwnItem(@RequestParam("ownItemId") Integer ownItemId,
+  public @ResponseBody OwnItem updateOwnItem(@RequestParam("ownItemId") Integer ownItemId,
       @RequestParam("userId") Integer userId, @RequestParam("itemId") Integer itemId,
       @RequestParam("itemCount") Integer itemCount) {
     return OwnItemService.updateOwnItem(ownItemId, userId, itemId, itemCount);
@@ -54,8 +54,7 @@ public class OwnItemController {
   }
 
   @RequestMapping(value = "/deleteOwnItem")
-  public List<OwnItem> deleteOwnItem(@RequestParam("userId") Integer userId, @RequestParam("itemId") Integer itemId)
-  {
+  public List<OwnItem> deleteOwnItem(@RequestParam("userId") Integer userId, @RequestParam("itemId") Integer itemId) {
     System.out.println("In controller");
     return OwnItemService.deleteOwnItem(userId, itemId);
   }

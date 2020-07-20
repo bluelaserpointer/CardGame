@@ -67,6 +67,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean identifyUser(String userName, String password) {
         User fetchUser = userDao.getOneUserByUserName(userName);
+        System.out.println("Identify User:");
+        System.out.println(fetchUser);
         if (fetchUser != null) {
             return password.equals(fetchUser.getPassword());
         }
@@ -109,10 +111,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public Integer expToLevelUp(Integer userLevel) {
         Integer base = 100; // 等级为1时需要100经验值
-        if (userLevel.equals(1))
-            return base;
+        // if (userLevel.equals(1))
+        // return base;
         double IncreaseRate = 1.05;
         double result = Math.round(Math.pow(IncreaseRate, userLevel - 1) * base); // 小数采用四舍五入法
+        System.out.println(result);
         return (int) result;
     }
 

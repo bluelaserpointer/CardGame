@@ -19,7 +19,13 @@ public class OwnItemServiceImpl implements OwnItemService {
         return OwnItemDao.getOneOwnItem(OwnItemId);
     }
 
-    public String addNewOwnItem(Integer userId, Integer itemId, Integer ItemCount) {
+    public OwnItem addNewOwnItem(Integer userId, Integer itemId, Integer ItemCount) {
+        if (OwnItemDao.findOwnItemByUserIdEqualsAndItemIdEquals(userId, itemId) != null) {
+            // 用户本身就拥有该道具
+            return OwnItemDao.repeatOwnItem(OwnItemDao.findOwnItemByUserIdEqualsAndItemIdEquals(userId, itemId),
+                    ItemCount);
+
+        }
         return OwnItemDao.addNewOwnItem(userId, itemId, ItemCount);
     }
 
@@ -27,7 +33,7 @@ public class OwnItemServiceImpl implements OwnItemService {
         return OwnItemDao.getAllOwnItemsByUserId(userId);
     }
 
-    public String updateOwnItem(Integer OwnItemId, Integer userId, Integer itemId, Integer ItemCount) {
+    public OwnItem updateOwnItem(Integer OwnItemId, Integer userId, Integer itemId, Integer ItemCount) {
         return OwnItemDao.updateOwnItem(OwnItemId, userId, itemId, ItemCount);
     }
 
@@ -43,7 +49,7 @@ public class OwnItemServiceImpl implements OwnItemService {
         return OwnItemDao.deleteAll();
     }
 
-    public List<OwnItem> deleteOwnItem(Integer userId, Integer itemId){
+    public List<OwnItem> deleteOwnItem(Integer userId, Integer itemId) {
         return OwnItemDao.deleteOwnItem(userId, itemId);
     }
 }

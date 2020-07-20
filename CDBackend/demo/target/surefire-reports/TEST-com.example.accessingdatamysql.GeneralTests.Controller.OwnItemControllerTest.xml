@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.example.accessingdatamysql.GeneralTests.Controller.OwnItemControllerTest" time="3.358" tests="8" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.example.accessingdatamysql.GeneralTests.Controller.OwnItemControllerTest" time="3.135" tests="8" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_211\jre\bin"/>
@@ -64,12 +64,12 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase name="deleteOwnItem" classname="com.example.accessingdatamysql.GeneralTests.Controller.OwnItemControllerTest" time="0.503"/>
-  <testcase name="addNewOwnItem" classname="com.example.accessingdatamysql.GeneralTests.Controller.OwnItemControllerTest" time="0.343"/>
-  <testcase name="deleteOwnItems" classname="com.example.accessingdatamysql.GeneralTests.Controller.OwnItemControllerTest" time="0.359"/>
-  <testcase name="findOwnItemByOwnItemId" classname="com.example.accessingdatamysql.GeneralTests.Controller.OwnItemControllerTest" time="0.449"/>
-  <testcase name="contextLoads" classname="com.example.accessingdatamysql.GeneralTests.Controller.OwnItemControllerTest" time="0.035"/>
-  <testcase name="getAllOwnItems" classname="com.example.accessingdatamysql.GeneralTests.Controller.OwnItemControllerTest" time="0.503"/>
-  <testcase name="updateOwnItem" classname="com.example.accessingdatamysql.GeneralTests.Controller.OwnItemControllerTest" time="0.456"/>
-  <testcase name="deleteAllOwnItems" classname="com.example.accessingdatamysql.GeneralTests.Controller.OwnItemControllerTest" time="0.423"/>
+  <testcase name="deleteOwnItem" classname="com.example.accessingdatamysql.GeneralTests.Controller.OwnItemControllerTest" time="0.437"/>
+  <testcase name="addNewOwnItem" classname="com.example.accessingdatamysql.GeneralTests.Controller.OwnItemControllerTest" time="0.34"/>
+  <testcase name="deleteOwnItems" classname="com.example.accessingdatamysql.GeneralTests.Controller.OwnItemControllerTest" time="0.481"/>
+  <testcase name="findOwnItemByOwnItemId" classname="com.example.accessingdatamysql.GeneralTests.Controller.OwnItemControllerTest" time="0.364"/>
+  <testcase name="contextLoads" classname="com.example.accessingdatamysql.GeneralTests.Controller.OwnItemControllerTest" time="0.022"/>
+  <testcase name="getAllOwnItems" classname="com.example.accessingdatamysql.GeneralTests.Controller.OwnItemControllerTest" time="0.394"/>
+  <testcase name="updateOwnItem" classname="com.example.accessingdatamysql.GeneralTests.Controller.OwnItemControllerTest" time="0.391"/>
+  <testcase name="deleteAllOwnItems" classname="com.example.accessingdatamysql.GeneralTests.Controller.OwnItemControllerTest" time="0.433"/>
 </testsuite>

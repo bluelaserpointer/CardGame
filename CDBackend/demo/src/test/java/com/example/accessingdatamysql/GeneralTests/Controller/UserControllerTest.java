@@ -117,7 +117,7 @@ public class UserControllerTest extends UnitTestDemoApplicationTests {
         @DisplayName("File: UserController Method: identifyUser")
         public void identifyUser() throws Exception {
                 MvcResult result = mockMvc
-                                .perform(get("/user/identifyUser?userName=naomi&password=4everppg")
+                                .perform(get("/user/identifyUser?userName=identifyUserTrue&password=identifyUserTrue")
                                                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                                 .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
                 System.out.println(result.getResponse().getContentAsString());
