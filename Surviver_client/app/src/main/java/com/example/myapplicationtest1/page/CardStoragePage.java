@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplicationtest1.R;
 import com.example.myapplicationtest1.pageParts.CardListAdapter;
+import com.example.myapplicationtest1.utils.Utils;
 
 public class CardStoragePage extends Page {
     @Override
@@ -20,5 +21,6 @@ public class CardStoragePage extends Page {
         final RecyclerView cardStorageViewer = findViewById(R.id.cardStorageContent);
         cardStorageViewer.setLayoutManager(new LinearLayoutManager(CardStoragePage.this));
         cardStorageViewer.setAdapter(new CardListAdapter(CardStoragePage.this));
+        Utils.setUserTopBarInfo(this);
     }
 }

@@ -62,5 +62,34 @@ public class LotteAnimationCanvas extends MyCanvas {
         GHQ.drawStringGHQ("语文知识:" + betCHI, 50, 50, chiPaint);
         GHQ.drawStringGHQ("英语知识:" + betENG, 50, 100, engPaint);
         GHQ.drawStringGHQ("数学知识:" + betMAT, 50, 150, matPaint);
+        canvas.drawRect(getWidth()/2 - 100, getHeight()/2 - 100, getWidth()/2 + 100, getHeight()/2 + 100, GHQ.generatePaint(Color.GREEN));
+    }
+    @Override
+    public void touched(int x, int y) {
+        System.out.println("LotteAnimationCanvas: " + x + ", " + y);
+        if(Math.abs(x - getWidth()/2) < 100 && Math.abs(y - getHeight()/2) < 100) {
+            betCHI = betENG = betMAT = 0;
+        }
+    }
+    public static void addCHI() {
+        ++betCHI;
+    }
+    public static void addENG() {
+        ++betENG;
+    }
+    public static void addMAT() {
+        ++betMAT;
+    }
+    public static void removeCHI() {
+        if(betCHI > 0)
+            --betCHI;
+    }
+    public static void removeENG() {
+        if(betENG > 0)
+            --betENG;
+    }
+    public static void removeMAT() {
+        if(betMAT > 0)
+            --betMAT;
     }
 }
