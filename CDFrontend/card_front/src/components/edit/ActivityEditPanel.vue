@@ -176,10 +176,16 @@ export default {
       this.displayTime = null;
     },
     submitForm() {
+      if(this.postForm.title === undefined || this.postForm.content === undefined || this.postForm.title === '' || this.postForm.content === '')
+      {
+        this.$message.error('Data From Invalid!');
+        return false;
+      }
+
       const postData = new FormData();
       postData.append('activityImg', this.postForm.image_uri === undefined ? '' : this.postForm.image_uri);
-      postData.append('activityName', this.postForm.title === undefined ? '' : this.postForm.title);
-      postData.append('activityDescription', this.postForm.content === undefined ? '' : this.postForm.content);
+      postData.append('activityName', this.postForm.title);
+      postData.append('activityDescription', this.postForm.content);
 
       if (this.limit === false) {
         postData.append('start', this.formatDate(new Date()));
