@@ -79,8 +79,7 @@ public class FullscreenActivity extends AppCompatActivity {
             if (AUTO_HIDE) {
                 hide();
             }
-            if(Utils.identifyUser(this))
-            {
+            if(Utils.identifyUser()) {
                 System.out.println("Identification succeeded!!!!!!!!!!!!!!!!");
                 Page.jump(this, HomePage.class);
             }else{
