@@ -97,7 +97,7 @@
     <!--    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />-->
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="panelVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
+      <el-form ref="temp" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
         <el-form-item label="Username" prop="userName">
           <el-input v-model="temp.userName" />
         </el-form-item>
@@ -129,7 +129,7 @@
         <el-button @click="panelVisible = false">
           Cancel
         </el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
+        <el-button type="primary" @click="dialogStatus==='create'?createData('temp'):updateData('temp')">
           Confirm
         </el-button>
       </div>
@@ -250,35 +250,43 @@ export default {
       this.dialogStatus = 'create';
       this.panelVisible = true;
       this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
+        this.$refs['temp'].clearValidate()
       })
     },
-    createData() {
-      const postData = new FormData();
-      const _this = this;
-      postData.append('userName', this.temp.userName);
-      postData.append('password', this.temp.password);
-      postData.append('phoneNumber', this.temp.phoneNumber);
-      postData.append('credits', this.temp.credits);
-      postData.append('access', this.temp.access);
-      postData.append('level', this.temp.level);
-      postData.append('email', this.temp.email);
+    createData(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          const postData = new FormData();
+          const _this = this;
+          postData.append('userName', this.temp.userName);
+          postData.append('password', this.temp.password);
+          postData.append('phoneNumber', this.temp.phoneNumber);
+          postData.append('credits', this.temp.credits);
+          postData.append('access', this.temp.access);
+          postData.append('level', this.temp.level);
+          postData.append('email', this.temp.email);
 
-      axios.post(`http://localhost:8080/user/addUser`, postData).then(response => {
-        if (response.data) {
-          //
-          _this.getList();
-          _this.panelVisible = false;
-          _this.resetTemp();
-        }else {
-          this.$message.error('Adding Data failed!');
+          axios.post(`http://localhost:8080/user/addUser`, postData).then(response => {
+            if (response.data) {
+              //
+              _this.getList();
+              _this.panelVisible = false;
+              _this.resetTemp();
+            }else {
+              this.$message.error('Adding Data failed!');
+            }
+          })
+            .catch(error =>
+              {
+                this.$message.error('Adding Data failed!');
+              }
+            );
+        } else {
+          this.$message.error('Form Invalid!');
+          return false;
         }
-      })
-        .catch(error =>
-          {
-            this.$message.error('Adding Data failed!');
-          }
-        );
+      });
+
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row); // copy obj
@@ -286,36 +294,44 @@ export default {
       this.dialogStatus = 'update';
       this.panelVisible = true;
       this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
+        this.$refs['temp'].clearValidate()
       })
     },
-    updateData() {
-      const postData = new FormData();
-      const _this = this;
-      postData.append('userId', this.temp.userId);
-      postData.append('userName', this.temp.userName);
-      postData.append('password', this.temp.password);
-      postData.append('phoneNumber', this.temp.phoneNumber);
-      postData.append('credits', this.temp.credits);
-      postData.append('access', this.temp.access);
-      postData.append('level', this.temp.level);
-      postData.append('email', this.temp.email);
+    updateData(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          const postData = new FormData();
+          const _this = this;
+          postData.append('userId', this.temp.userId);
+          postData.append('userName', this.temp.userName);
+          postData.append('password', this.temp.password);
+          postData.append('phoneNumber', this.temp.phoneNumber);
+          postData.append('credits', this.temp.credits);
+          postData.append('access', this.temp.access);
+          postData.append('level', this.temp.level);
+          postData.append('email', this.temp.email);
 
-      axios.post(`http://localhost:8080/user/updateUser`, postData).then(response => {
-        if (response.data) {
-          //
-          axios.get('http://localhost:8080/user/getAllUsers')
-            .then(response => this.list = response.data);
-          _this.panelVisible = false
+          axios.post(`http://localhost:8080/user/updateUser`, postData).then(response => {
+            if (response.data) {
+              //
+              axios.get('http://localhost:8080/user/getAllUsers')
+                .then(response => this.list = response.data);
+              _this.panelVisible = false
+            } else {
+              this.$message.error('Updating Data failed!');
+            }
+          })
+            .catch(error =>
+              {
+                this.$message.error('Updating Data failed!');
+              }
+            );
         } else {
-          this.$message.error('Updating Data failed!');
+          this.$message.error('Form Invalid!');
+          return false;
         }
-      })
-        .catch(error =>
-          {
-            this.$message.error('Updating Data failed!');
-          }
-        );
+      });
+
 
     },
 
