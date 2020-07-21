@@ -34,6 +34,8 @@ public class Card {
     private Double cd;
     // 卡牌速度属性
     private Integer speed;
+    // 卡牌派系(1 chi 2 mat 3 eng)
+    private Integer type;
 
     // 可能需要添加技能相关的attributes
 
@@ -41,7 +43,7 @@ public class Card {
     };
 
     public Card(String rarity, String cardName, Integer healthPoint, Integer attack, Integer defense,
-            Integer attackRange, Double cd, Integer speed) {
+            Integer attackRange, Double cd, Integer speed, Integer type) {
         this.rarity = rarity;
         this.cardName = cardName;
         this.healthPoint = healthPoint;
@@ -50,10 +52,11 @@ public class Card {
         this.attackRange = attackRange;
         this.cd = cd;
         this.speed = speed;
+        this.type = type;
     }
 
     public void setCard(String rarity, String cardName, Integer healthPoint, Integer attack, Integer defense,
-            Integer attackRange, Double cd, Integer speed) {
+            Integer attackRange, Double cd, Integer speed, Integer type) {
         this.rarity = rarity;
         this.cardName = cardName;
         this.healthPoint = healthPoint;
@@ -62,6 +65,7 @@ public class Card {
         this.attackRange = attackRange;
         this.cd = cd;
         this.speed = speed;
+        this.type = type;
     }
 
     public Integer getCardId() {
@@ -135,6 +139,14 @@ public class Card {
 
     public void setCd(Double cd) {
         this.cd = cd;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     @Transient

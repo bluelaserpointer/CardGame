@@ -2,4 +2,7 @@
 CDFrontend/.idea/vcs.xml
 CDFrontend/.idea/workspace.xml
 CDFrontend/card_front/tests/unit
-CDBackend/demo/target
+/CDBackend/demo/target/*
+Surviver_client/app/.classpath
+Surviver_client/app/.project
+Surviver_client/app/.settings/org.eclipse.buildship.core.prefs

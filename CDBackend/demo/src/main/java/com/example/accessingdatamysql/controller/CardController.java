@@ -32,9 +32,9 @@ public class CardController {
       @RequestParam("attackRange") Integer attackRange, @RequestParam("cd") Double cd,
       @RequestParam("speed") Integer speed, @RequestParam("cardImg") String cardImg,
       @RequestParam("shortDescription") String shortDescription,
-      @RequestParam("cardDescription") String cardDescription) {
+      @RequestParam("cardDescription") String cardDescription, @RequestParam("type") Integer type) {
     return CardService.addNewCard(cardName, rarity, healthPoint, attack, defense, attackRange, cd, speed, cardImg,
-        shortDescription, cardDescription);
+        shortDescription, cardDescription, type);
   }
 
   @RequestMapping(value = "/updateCard")
@@ -44,11 +44,11 @@ public class CardController {
       @RequestParam("defense") Integer defense, @RequestParam("attackRange") Integer attackRange,
       @RequestParam("cd") Double cd, @RequestParam("speed") Integer speed, @RequestParam("cardImg") String cardImg,
       @RequestParam("shortDescription") String shortDescription,
-      @RequestParam("cardDescription") String cardDescription) {
+      @RequestParam("cardDescription") String cardDescription, @RequestParam("type") Integer type) {
     System.out.println("In controller");
 
     return CardService.updateCard(cardId, cardName, rarity, healthPoint, attack, defense, attackRange, cd, speed,
-        cardImg, shortDescription, cardDescription);
+        cardImg, shortDescription, cardDescription, type);
   }
 
   @RequestMapping(value = "/getAllCards")
@@ -67,8 +67,7 @@ public class CardController {
   }
 
   @RequestMapping(value = "/deleteCard")
-  public List<Card> deleteCard(@RequestParam("cardId") Integer cardId)
-  {
+  public List<Card> deleteCard(@RequestParam("cardId") Integer cardId) {
     return CardService.deleteCard(cardId);
   }
 
