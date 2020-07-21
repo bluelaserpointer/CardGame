@@ -33,13 +33,13 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardLi
 
     public void fetch() {
         knowledgeParameters.clear();
-        System.out.println("!!!fetch " + "ownCard/getAllOwnCardsByUserId?userId=" + Utils.getUserName());
+        System.out.println("!!!fetch " + "ownCard/getAllOwnCardsByUserId?userId=" + Utils.getUserId());
         if(Utils.getUserName().equals("NOT_LOGGED")) {
             System.out.println("!!!CardListAdapter: not login");
             return;
         }
         try {
-            final JSONArray arr = new JSONArray(HttpClient.doGetShort("ownCard/getAllOwnCardsByUserId?userId=" + Utils.getUserName()));
+            final JSONArray arr = new JSONArray(HttpClient.doGetShort("ownCard/getAllOwnCardsByUserId?userId=" + Utils.getUserId()));
             for(int i = 0; i < arr.length(); ++i) {
                 final JSONObject object = arr.getJSONObject(i);
                 final int cardId = object.getInt("cardId");

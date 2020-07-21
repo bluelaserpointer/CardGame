@@ -13,6 +13,7 @@ import org.json.JSONObject;
 
 public class Utils {
     public static SharedPreferences sp;
+    public static int userId;
     public static void setSharedPreference(Context context) {
         sp = context.getSharedPreferences("data", Context.MODE_PRIVATE); //数据自己可用
     }
@@ -23,20 +24,22 @@ public class Utils {
         edit.commit();
     }
     public static void saveUserId(int id) {
-        final SharedPreferences.Editor edit = sp.edit();
-        edit.putString("userId", String.valueOf(id));
-        edit.commit();
+//        final SharedPreferences.Editor edit = sp.edit();
+//        edit.putString("userId", String.valueOf(id));
+//        edit.commit();
+        userId = id;
     }
 
     // 从data.xml中获取用户名称
     public static String getUserName() {
-        return sp.getString("userName", "NOT_LOGGED");
+        return sp == null ? "SP_NULL" : sp.getString("userName", "NOT_LOGGED");
     }
     public static String getPassword() {
-        return sp.getString("password", "NOT_LOGGED");
+        return sp == null ? "SP_NULL" : sp.getString("password", "NOT_LOGGED");
     }
-    public static String getUserId() {
-        return sp.getString("userId", "-1");
+    public static Integer getUserId() {
+        //return sp.getString("userId", "-1");
+        return userId;
     }
     public static boolean identifyUser() {
         return identifyUser(getUserName(), getPassword());
