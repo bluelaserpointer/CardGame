@@ -2,6 +2,7 @@ package com.example.accessingdatamysql.controller;
 
 import com.example.accessingdatamysql.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 // import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,7 @@ public class UserController {
 
   @Autowired
   private UserService userService;
+  private BCryptPasswordEncoder bCryptPasswordEncoder;
 
   // 获取一个用户信息
   @GetMapping(value = "/getUser")
@@ -30,6 +32,8 @@ public class UserController {
   @RequestMapping(value = "/addUser")
   public @ResponseBody User addNewUser(@RequestParam("userName") String userName, @RequestParam("email") String email,
       @RequestParam("password") String password, @RequestParam("phoneNumber") String phoneNumber) {
+    // 加密密码
+    password = bCryptPasswordEncoder.encode(password);
     return userService.addNewUser(userName, email, password, phoneNumber);
   }
 
@@ -43,6 +47,8 @@ public class UserController {
       @RequestParam("stamina") Integer stamina, @RequestParam("money") Integer money,
       @RequestParam("grade") Double grade, @RequestParam("engKnowledge") Integer engKnowledge,
       @RequestParam("mathKnowledge") Integer mathKnowledge, @RequestParam("chiKnowledge") Integer chiKnowledge) {
+    // 加密密码
+    password = bCryptPasswordEncoder.encode(password);
     return userService.updateUser(userId, userName, email, password, phoneNumber, credits, access, level, curExpPoint,
         stamina, money, grade, engKnowledge, mathKnowledge, chiKnowledge);
   }
