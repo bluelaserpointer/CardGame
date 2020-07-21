@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 
 
-context('CardPanel', () => {
+context('ItemPanel', () => {
   let LOCAL_STORAGE_MEMORY = {};
 
   Cypress.Commands.add("saveLocalStorage", () => {
@@ -67,11 +67,11 @@ context('CardPanel', () => {
 
     cy.get(':nth-child(3) > .el-submenu > .el-submenu__title > .el-submenu__icon-arrow').click();
 
-    cy.get(':nth-child(4) > a > .el-menu-item').click();
+    cy.get(':nth-child(3) > .el-submenu > .el-menu > :nth-child(3) > a > .el-menu-item > span').click();
 
   });
 
-  it('Card Panel Invalid Form', () => {
+  it('Item Panel Invalid Form', () => {
     cy.get('.filter-container > .el-button').click();
 
     cy.get('.cancelOuterButton > span').click();
@@ -84,7 +84,7 @@ context('CardPanel', () => {
     cy.get('.confirmOuterButton > span').click();
 
     cy.get(':nth-child(1) > .el-form-item__content > .el-input > .el-input__inner')
-      .type('E2E Ultra Card');
+      .type('E2E Ultra Item');
 
     cy.get(':nth-child(2) > .el-form-item__content > .el-input > .el-input__inner')
       .clear();
@@ -92,61 +92,12 @@ context('CardPanel', () => {
     cy.get('.confirmOuterButton > span').click();
 
     cy.get(':nth-child(2) > .el-form-item__content > .el-input > .el-input__inner')
-      .type('E2E Super Rare');
-
-    cy.get(':nth-child(3) > .el-form-item__content > .el-input > .el-input__inner')
-      .clear();
-
-    cy.get('.confirmOuterButton > span').click();
-
-    cy.get(':nth-child(3) > .el-form-item__content > .el-input > .el-input__inner')
-      .type('999');
-
-    cy.get(':nth-child(4) > .el-form-item__content > .el-input > .el-input__inner')
-      .clear();
-
-    cy.get('.confirmOuterButton > span').click();
-
-    cy.get(':nth-child(4) > .el-form-item__content > .el-input > .el-input__inner')
-      .type('999');
-
-    cy.get(':nth-child(5) > .el-form-item__content > .el-input > .el-input__inner')
-      .clear();
-
-    cy.get('.confirmOuterButton > span').click();
-
-    cy.get(':nth-child(5) > .el-form-item__content > .el-input > .el-input__inner')
-      .type('999');
-
-    cy.get(':nth-child(6) > .el-form-item__content > .el-input > .el-input__inner')
-      .clear();
-
-    cy.get('.confirmOuterButton > span').click();
-
-    cy.get(':nth-child(6) > .el-form-item__content > .el-input > .el-input__inner')
-      .type('999');
-
-    cy.get(':nth-child(7) > .el-form-item__content > .el-input > .el-input__inner')
-      .clear();
-
-    cy.get('.confirmOuterButton > span').click();
-
-    cy.get(':nth-child(7) > .el-form-item__content > .el-input > .el-input__inner')
-      .type('999');
-
-    cy.get(':nth-child(8) > .el-form-item__content > .el-input > .el-input__inner')
-      .clear();
-
-    cy.get('.confirmOuterButton > span').click();
-
-    cy.get(':nth-child(8) > .el-form-item__content > .el-input > .el-input__inner')
       .type('999');
 
     cy.get('.confirmOuterButton > span').click({force: true});
   });
 
-  it('Card Panel Update Data', () => {
-
+  it('Item Panel Update Data', () => {
     cy.get(':nth-child(3) > .el-table_1_column_2 > .cell > .link-type').click({force: true});
 
     cy.get(':nth-child(2) > .el-form-item__content > .el-input > .el-input__inner')
@@ -155,7 +106,7 @@ context('CardPanel', () => {
     cy.get('.confirmOuterButton > span').click();
 
     cy.get(':nth-child(2) > .el-form-item__content > .el-input > .el-input__inner')
-      .type('E2E Not Ultra Card');
+      .type('E2E Not Ultra Item');
 
     cy.get(':nth-child(3) > .el-form-item__content > .el-input > .el-input__inner')
       .clear();
@@ -163,61 +114,12 @@ context('CardPanel', () => {
     cy.get('.confirmOuterButton > span').click();
 
     cy.get(':nth-child(3) > .el-form-item__content > .el-input > .el-input__inner')
-      .type('E2E Super Not Rare');
-
-    cy.get(':nth-child(4) > .el-form-item__content > .el-input > .el-input__inner')
-      .clear();
-
-    cy.get('.confirmOuterButton > span').click();
-
-    cy.get(':nth-child(4) > .el-form-item__content > .el-input > .el-input__inner')
-      .type('111');
-
-    cy.get(':nth-child(5) > .el-form-item__content > .el-input > .el-input__inner')
-      .clear();
-
-    cy.get('.confirmOuterButton > span').click();
-
-    cy.get(':nth-child(5) > .el-form-item__content > .el-input > .el-input__inner')
-      .type('111');
-
-    cy.get(':nth-child(6) > .el-form-item__content > .el-input > .el-input__inner')
-      .clear();
-
-    cy.get('.confirmOuterButton > span').click();
-
-    cy.get(':nth-child(6) > .el-form-item__content > .el-input > .el-input__inner')
-      .type('111');
-
-    cy.get(':nth-child(7) > .el-form-item__content > .el-input > .el-input__inner')
-      .clear();
-
-    cy.get('.confirmOuterButton > span').click();
-
-    cy.get(':nth-child(7) > .el-form-item__content > .el-input > .el-input__inner')
-      .type('111');
-
-    cy.get(':nth-child(8) > .el-form-item__content > .el-input > .el-input__inner')
-      .clear();
-
-    cy.get('.confirmOuterButton > span').click();
-
-    cy.get(':nth-child(8) > .el-form-item__content > .el-input > .el-input__inner')
-      .type('111');
-
-    cy.get(':nth-child(9) > .el-form-item__content > .el-input > .el-input__inner')
-      .clear();
-
-    cy.get('.confirmOuterButton > span').click();
-
-    cy.get(':nth-child(9) > .el-form-item__content > .el-input > .el-input__inner')
       .type('111');
 
     cy.get('.confirmOuterButton > span').click({force: true});
-
   });
 
-  it('Card Panel Delete Data', () => {
+  it('Item Panel Delete Data', () => {
     cy.get(':nth-child(3) > .el-table_1_column_2 > .cell > .link-type').click({force: true});
 
     cy.get('.deleteOuterButton').click();
@@ -239,6 +141,4 @@ context('CardPanel', () => {
     cy.get('.deleteInnerButton').click({force: true});
 
   })
-
-
 });
