@@ -14,8 +14,13 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import com.example.myapplicationtest1.HttpClient;
 import com.example.myapplicationtest1.R;
 import com.example.myapplicationtest1.game.core.GHQ;
+import com.example.myapplicationtest1.utils.Utils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -26,6 +31,7 @@ public class LotteAnimationCanvas extends MyCanvas {
     //paints
     private Paint whitePaint, chiPaint, engPaint, matPaint;
     //data
+    public static int stockCHI, stockENG, stockMAT;
     public static int betCHI, betENG, betMAT;
 
     public LotteAnimationCanvas(Context context)  {//动态实例化view用到;
@@ -53,32 +59,46 @@ public class LotteAnimationCanvas extends MyCanvas {
         matPaint = new Paint();
         matPaint.setColor(Color.BLUE);
         matPaint.setTextSize(40);
+        try {
+            JSONObject data = new JSONObject(HttpClient.doGetShort("user/getUser?userId=" + Utils.getUserId()));
+            stockCHI = data.getInt("chiKnowledge");
+            stockENG = data.getInt("engKnowledge");
+            stockMAT = data.getInt("mathKnowledge");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         GHQ.setTargetCanvas(canvas);
         canvas.drawRect(0, 0, getWidth(), getHeight(), whitePaint);
-        GHQ.drawStringGHQ("语文知识:" + betCHI, 50, 50, chiPaint);
-        GHQ.drawStringGHQ("英语知识:" + betENG, 50, 100, engPaint);
-        GHQ.drawStringGHQ("数学知识:" + betMAT, 50, 150, matPaint);
+        GHQ.drawStringGHQ("语文知识:" + betCHI + "/" + stockCHI, 50, 50, chiPaint);
+        GHQ.drawStringGHQ("英语知识:" + betENG + "/" + stockENG, 50, 100, engPaint);
+        GHQ.drawStringGHQ("数学知识:" + betMAT + "/" + stockMAT, 50, 150, matPaint);
         canvas.drawRect(getWidth()/2 - 100, getHeight()/2 - 100, getWidth()/2 + 100, getHeight()/2 + 100, GHQ.generatePaint(Color.GREEN));
     }
     @Override
     public void touched(int x, int y) {
         System.out.println("LotteAnimationCanvas: " + x + ", " + y);
         if(Math.abs(x - getWidth()/2) < 100 && Math.abs(y - getHeight()/2) < 100) {
+            //TODO: waiting for backend making drawCard process
+            //String data = HttpClient.doGetShort("mechanism/drawCard?chi=" + betCHI + "&mat=" + betMAT + "&eng=" + betENG);
+            //int id = Integer.parseInt(data.substring(data.length() - 2));
             betCHI = betENG = betMAT = 0;
         }
     }
     public static void addCHI() {
-        ++betCHI;
+        if(betCHI < stockCHI)
+            ++betCHI;
     }
     public static void addENG() {
-        ++betENG;
+        if(betENG < stockENG)
+            ++betENG;
     }
     public static void addMAT() {
-        ++betMAT;
+        if(betMAT < stockMAT)
+            ++betMAT;
     }
     public static void removeCHI() {
         if(betCHI > 0)
