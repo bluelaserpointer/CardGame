@@ -7,9 +7,13 @@ import android.widget.Button;
 
 import com.example.myapplicationtest1.HttpClient;
 import com.example.myapplicationtest1.R;
+import com.example.myapplicationtest1.game.contents.unit.Knowledge;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Utils {
     public static SharedPreferences sp;
@@ -72,5 +76,13 @@ public class Utils {
         } catch(JSONException e) {
             e.printStackTrace();
         }
+    }
+    public static HashMap<Integer, Knowledge.KnowledgeParameter> ownCardRemoteRecords = new HashMap<>();
+    public static HashMap<Integer, Knowledge.KnowledgeParameter> cardsInfoRemoteRecords = new HashMap<>();
+    public static void loadAllCardsInfo() {
+
+    }
+    public static Knowledge.KnowledgeParameter getKnowledgeParameter(int ownCardId) {
+        return ownCardRemoteRecords.get(ownCardId);
     }
 }
