@@ -1,8 +1,7 @@
+!CDFrontend/card_front/cypress/integration/tests/
 
 CDFrontend/.idea/vcs.xml
 CDFrontend/.idea/workspace.xml
 CDFrontend/card_front/tests/unit
-CDFrontend/card_front/cypress
+CDFrontend/card_front/cypress/integration/examples
 CDBackend/demo/target
-
-!CDFrontend/card_front/cypress/integration/tests/
