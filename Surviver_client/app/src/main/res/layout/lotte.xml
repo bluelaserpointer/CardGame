@@ -40,20 +40,21 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/button14"
+                    android:id="@+id/stamina_button"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="10"
                     android:background="@drawable/top_label" />
 
                 <Button
+                    android:id="@+id/money_button"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="10"
                     android:background="@drawable/top_label" />
 
                 <Button
-                    android:id="@+id/button13"
+                    android:id="@+id/grade_button"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="10"
