@@ -62,25 +62,25 @@
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="panelVisible" top="5vh" class="editDialog">
       <el-form ref="temp" :rules="rules" :model="temp" style="margin: auto 50px auto 50px; display:grid; grid-template-columns: 50% 50%; grid-column-gap: 10px" class="demo-form-inline">
         <el-form-item label="ID" prop="ownCardId" v-if="dialogStatus==='update'">
-          <el-input v-model="temp.ownCardId" disabled/>
+          <el-input class="ownCardIdOwnCardInput" v-model="temp.ownCardId" disabled/>
         </el-form-item>
         <el-form-item label="UserId" prop="userId">
-          <el-input v-model="temp.userId" />
+          <el-input class="userIdOwnCardInput" v-model="temp.userId" />
         </el-form-item>
         <el-form-item label="CardId" prop="cardId">
-          <el-input v-model="temp.cardId" />
+          <el-input class="cardIdOwnCardInput" v-model="temp.cardId" />
         </el-form-item>
         <el-form-item label="CardLevel" prop="cardLevel" v-if="dialogStatus==='update'">
-          <el-input v-model="temp.cardLevel" />
+          <el-input class="cardLevelOwnCardInput" v-model="temp.cardLevel" />
         </el-form-item>
         <el-form-item label="CardCurExp" prop="cardCurExp" v-if="dialogStatus==='update'">
-          <el-input v-model="temp.cardCurExp" />
+          <el-input class="cardCurExpOwnCardInput" v-model="temp.cardCurExp" />
         </el-form-item>
         <el-form-item label="CardLevelLimit" prop="cardLevelLimit" v-if="dialogStatus==='update'">
-          <el-input v-model="temp.cardLevelLimit" />
+          <el-input class="cardLevelLimitOwnCardInput" v-model="temp.cardLevelLimit" />
         </el-form-item>
         <el-form-item label="RepetitiveOwns" prop="repetitiveOwns" v-if="dialogStatus==='update'">
-          <el-input v-model="temp.repetitiveOwns" />
+          <el-input class="repetitiveOwnsOwnCardInput" v-model="temp.repetitiveOwns" />
         </el-form-item>
         <el-form-item label-width="120px" label="AccquireDate" class="postInfo-container-item" v-if="dialogStatus==='update'">
           <el-date-picker v-model="temp.accquireDate" type="datetime" value-format="yyyy-MM-dd hh:mm:ss" placeholder="Select date and time" />
@@ -95,23 +95,23 @@
           append-to-body
           class="innerDialog"
         >
-          <el-input v-model="confirmPassword" placeholder="Identification" show-password width="60%" />
-          <el-button class="confirmInnerButton" @click="confirmIdentity">Confirm Identity</el-button>
+          <el-input class="confirmOwnCardInput" v-model="confirmPassword" placeholder="Identification" show-password width="60%" />
+          <el-button class="confirmOwnCardInnerButton" @click="confirmIdentity">Confirm Identity</el-button>
 
           <span slot="footer" class="dialog-footer">
-            <el-button class="cancelInnerButton" @click="deleteVisible = false">Cancel</el-button>
-            <el-button class="deleteInnerButton" v-if="confirmDelete === false" type="danger" disabled>Delete</el-button>
-            <el-button class="deleteInnerButton" v-else type="danger" @click="deleteData">Delete</el-button>
+            <el-button class="cancelOwnCardInnerButton" @click="deleteVisible = false">Cancel</el-button>
+            <el-button class="deleteOwnCardInnerButton" v-if="confirmDelete === false" type="danger" disabled>Delete</el-button>
+            <el-button class="deleteOwnCardInnerButton" v-else type="danger" @click="deleteData">Delete</el-button>
           </span>
         </el-dialog>
 
-        <el-button class="deleteOuterButton" type="danger" @click="deleteVisible = true">
+        <el-button class="deleteOwnCardOuterButton" type="danger" @click="deleteVisible = true">
           Delete
         </el-button>
-        <el-button class="cancelOuterButton" @click="panelVisible = false">
+        <el-button class="cancelOwnCardOuterButton" @click="panelVisible = false">
           Cancel
         </el-button>
-        <el-button class="confirmOuterButton" type="primary" @click="dialogStatus==='create'?createData('temp'):updateData('temp')">
+        <el-button class="confirmOwnCardOuterButton" type="primary" @click="dialogStatus==='create'?createData('temp'):updateData('temp')">
           Confirm
         </el-button>
       </div>

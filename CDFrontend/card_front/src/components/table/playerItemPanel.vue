@@ -51,16 +51,16 @@
           <el-input v-model="temp.ownItemId" disabled/>
         </el-form-item>
         <el-form-item label="UserId" prop="userId">
-          <el-input v-model="temp.userId" />
+          <el-input class="userIdOwnItemInput" v-model="temp.userId" />
         </el-form-item>
         <el-form-item label="ItemId" prop="itemId">
-          <el-input v-model="temp.itemId" />
+          <el-input class="itemIdOwnItemInput" v-model="temp.itemId" />
         </el-form-item>
         <el-form-item label="ItemCount" prop="itemCount">
-          <el-input v-model="temp.itemCount" />
+          <el-input class="itemCountOwnItemInput" v-model="temp.itemCount" />
         </el-form-item>
         <el-form-item label-width="120px" label="AccquireDate" class="postInfo-container-item" v-if="dialogStatus==='update'">
-          <el-date-picker v-model="temp.accquireDate" type="datetime" value-format="yyyy-MM-dd hh:mm:ss" placeholder="Select date and time" />
+          <el-date-picker class="dateOwnItemInput" v-model="temp.accquireDate" type="datetime" value-format="yyyy-MM-dd hh:mm:ss" placeholder="Select date and time" />
         </el-form-item>
       </el-form>
 
@@ -72,23 +72,23 @@
           append-to-body
           class="innerDialog"
         >
-          <el-input v-model="confirmPassword" placeholder="Identification" show-password width="60%" />
-          <el-button class="confirmInnerButton" @click="confirmIdentity">Confirm Identity</el-button>
+          <el-input class="confirmOwnItemInput" v-model="confirmPassword" placeholder="Identification" show-password width="60%" />
+          <el-button class="confirmOwnItemInnerButton" @click="confirmIdentity">Confirm Identity</el-button>
 
           <span slot="footer" class="dialog-footer">
-            <el-button class="cancelInnerButton" @click="deleteVisible = false">Cancel</el-button>
-            <el-button class="deleteInnerButton" v-if="confirmDelete === false" type="danger" disabled>Delete</el-button>
-            <el-button class="deleteInnerButton" v-else type="danger" @click="deleteData">Delete</el-button>
+            <el-button class="cancelOwnItemInnerButton" @click="deleteVisible = false">Cancel</el-button>
+            <el-button class="deleteOwnItemInnerButton" v-if="confirmDelete === false" type="danger" disabled>Delete</el-button>
+            <el-button class="deleteOwnItemInnerButton" v-else type="danger" @click="deleteData">Delete</el-button>
           </span>
         </el-dialog>
 
-        <el-button class="deleteOuterButton" type="danger" @click="deleteVisible = true">
+        <el-button class="deleteOwnItemOuterButton" type="danger" @click="deleteVisible = true">
           Delete
         </el-button>
-        <el-button class="cancelOuterButton" @click="panelVisible = false">
+        <el-button class="cancelOwnItemOuterButton" @click="panelVisible = false">
           Cancel
         </el-button>
-        <el-button class="confirmOuterButton" type="primary" @click="dialogStatus==='create'?createData('temp'):updateData('temp')">
+        <el-button class="confirmOwnItemOuterButton" type="primary" @click="dialogStatus==='create'?createData('temp'):updateData('temp')">
           Confirm
         </el-button>
       </div>

@@ -34,7 +34,7 @@ context('ActivityEdit', () => {
 
     cy.get('.login-button').click();
 
-    cy.get('.hamburger').click();
+    // cy.get('.hamburger').click();
 
     cy.get(':nth-child(4) > .el-submenu > .el-submenu__title').click();
 
@@ -43,14 +43,14 @@ context('ActivityEdit', () => {
   });
 
   it('Activity Edit Invalid Form', () => {
-    cy.get('.el-button--success > span').click();
+    cy.get('.activityEditPublishButton').click();
     cy.get('.material-input')
       .type('Test Title');
-    cy.get('.el-button--success > span').click();
+    cy.get('.activityEditPublishButton').click();
     cy.get('iframe').its('0.contentDocument.body')
       .type('Test Content');
     cy.get('.material-input').clear();
-    cy.get('.el-button--success > span').click();
+    cy.get('.activityEditPublishButton').click();
   });
 
   it('Activity Edit Limited Publish', () => {
@@ -59,8 +59,7 @@ context('ActivityEdit', () => {
     cy.get('.el-col > .el-switch > .el-switch__core').click();
     cy.get('.el-date-editor > .el-input__inner').click();
     cy.get('.el-picker-panel__footer > .el-button--text > span').click();
-    cy.get('.el-button--success > span').click();
-
+    cy.get('.activityEditPublishButton').click();
   });
 
   it('Activity Edit Unlimited Form', () => {
@@ -68,7 +67,7 @@ context('ActivityEdit', () => {
       .type('Test Title');
     cy.get('iframe')
       .its('0.contentDocument.body').type('Test Content');
-    cy.get('.el-button--success > span').click();
+    cy.get('.activityEditPublishButton').click();
   });
 
   it('Activity Update Invalid Form', () => {
@@ -76,7 +75,7 @@ context('ActivityEdit', () => {
     cy.get(':nth-child(2) > .el-table_1_column_2 > .cell > .link-type').click();
     cy.get('.el-dialog__body > .el-form > .createPost-main-container > [style="grid-area: 1 / 1 / span 1 / span 2;"] > .el-col-24 > [style="margin-bottom: 40px;"] > .el-form-item__content > .material-input__component > div > .material-input')
       .clear();
-    cy.get('[data-v-6dc435d2=""][style="z-index: 10; height: 50px;"] > .sub-navbar > .el-button--success').click();
+    cy.get('.activityUpdatePublishButton').click();
     cy.get('.el-dialog__body > .el-form > .createPost-main-container > [style="grid-area: 1 / 1 / span 1 / span 2;"] > .el-col-24 > [style="margin-bottom: 40px;"] > .el-form-item__content > .material-input__component > div > .material-input')
       .type('New Title');
     // cy.get('iframe').its('0.contentDocument.body')
@@ -89,21 +88,21 @@ context('ActivityEdit', () => {
   it('Activity Update Normal', () => {
     // cy.get('iframe').its('0.contentDocument.body')
     //   .type('Test Content');
-    cy.get('[data-v-6dc435d2=""][style="z-index: 10; height: 50px;"] > .sub-navbar > .el-button--success').click();
+    cy.get('.activityUpdatePublishButton').click();
   });
 
   it('Activity Update Limited->Unlimited', () => {
     cy.get('#tab-second').click();
     cy.get(':nth-child(2) > .el-table_1_column_2 > .cell > .link-type').click();
     cy.get('.el-dialog__body > .el-form > .createPost-main-container > [style="grid-area: 1 / 1 / span 1 / span 2;"] > .el-col-24 > .postInfo-container > .el-row > .el-col-8 > .el-switch > .el-switch__core').click();
-    cy.get('[data-v-6dc435d2=""][style="z-index: 10; height: 50px;"] > .sub-navbar > .el-button--success').click();
+    cy.get('.activityUpdatePublishButton').click();
   });
 
   it('Activity Update Unlimited->Limited', () => {
     cy.get('#tab-second').click();
     cy.get(':nth-child(2) > .el-table_1_column_2 > .cell > .link-type').click();
     cy.get('.el-dialog__body > .el-form > .createPost-main-container > [style="grid-area: 1 / 1 / span 1 / span 2;"] > .el-col-24 > .postInfo-container > .el-row > .el-col-8 > .el-switch > .el-switch__core').click();
-    cy.get('[data-v-6dc435d2=""][style="z-index: 10; height: 50px;"] > .sub-navbar > .el-button--success').click();
+    cy.get('.activityUpdatePublishButton').click();
   });
 
   it('Activity Delete', () => {
