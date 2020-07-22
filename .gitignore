@@ -7,3 +7,9 @@ CDFrontend/card_front/cypress/integration/examples
 CDFrontend/card_front/lib
 CDFrontend/card_front/coverage/lcov-report
 CDBackend/demo/target
+
+CDFrontend/card_front/coverage/lcov.info
+CDFrontend/card_front/coverage/coverage-summary.json
+CDFrontend/card_front/coverage/coverage-final.json
+CDFrontend/card_front/coverage/coverage-final.json
+CDFrontend/card_front/.nyc_output/out.json
