@@ -38,12 +38,20 @@ public class UserController {
   }
 
   // 添加一个新用户
-  @RequestMapping(value = "/addUser")
-  public @ResponseBody User addNewUser(@RequestParam("userName") String userName, @RequestParam("email") String email,
-      @RequestParam("password") String password, @RequestParam("phoneNumber") String phoneNumber) {
-    // 加密密码
-    // password = bCryptPasswordEncoder.encode(password);
-    return userService.addNewUser(userName, email, password, phoneNumber);
+  // @RequestMapping(value = "/addUser")
+  // public @ResponseBody User addNewUser(@RequestParam("userName") String
+  // userName, @RequestParam("email") String email,
+  // @RequestParam("password") String password, @RequestParam("phoneNumber")
+  // String phoneNumber) {
+  // // 加密密码
+  // // password = bCryptPasswordEncoder.encode(password);
+  // return userService.addNewUser(userName, email, password, phoneNumber);
+  // }
+
+  @PostMapping("/register")
+  public @ResponseBody User identifyUser(@RequestBody User registerUser) {
+    return userService.addNewUser(registerUser.getUserName(), registerUser.getEmail(), registerUser.getPassword(),
+        registerUser.getPhoneNumber());
   }
 
   // 更新一个用户信息

@@ -44,8 +44,9 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     // SIGN_UP_URL
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable().authorizeRequests().antMatchers(HttpMethod.POST, "/user/identifyUser")
-                .permitAll().anyRequest().authenticated().and().exceptionHandling().and()
+        http.cors().and().csrf().disable().authorizeRequests().antMatchers(HttpMethod.POST, "/user/register")
+                .permitAll().antMatchers(HttpMethod.POST, "/user/identifyUser").permitAll().anyRequest().authenticated()
+                .and().exceptionHandling().and()
                 // .addFilter(new JWTAuthenticationFilter(authenticationManager()))
                 // .addFilter(new JWTAuthorizationFilter(authenticationManager()))
                 // // this disables session creation on Spring Security
