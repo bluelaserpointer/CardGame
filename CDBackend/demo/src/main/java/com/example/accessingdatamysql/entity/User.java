@@ -1,5 +1,7 @@
 package com.example.accessingdatamysql.entity;
 
+import java.util.Map;
+
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -207,21 +209,5 @@ public class User {
     public void setGrade(Double grade) {
         this.grade = grade;
     }
-
-    // public MailBox getMailBox() {
-    // return mailBox;
-    // }
-
-    // public void setMailBox(MailBox mailBox) {
-    // this.mailBox = mailBox;
-    // }
-
-    // public FriendList getFriendList() {
-    // return friendList;
-    // }
-
-    // public void setFriendList(FriendList friendList) {
-    // this.friendList = friendList;
-    // }
 
 }
