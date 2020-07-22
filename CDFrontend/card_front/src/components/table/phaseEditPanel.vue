@@ -1,6 +1,6 @@
 <template>
-  <div class="app-container" style="display: grid; grid-template-rows: 20% 80%">
-    <div class="filter-container" style="width: 100%; grid-row: 1 / span 1; grid-column: 1 / span 2; display:grid; grid-template-columns: 50% 50%; grid-column-gap: 5px">
+  <div class="app-container" style="display: grid; grid-template-rows: 5% 95%;">
+    <div class="filter-container" style="width: 100%; grid-row: 1 / span 1; display:grid; grid-template-columns: 50% 50%; grid-column-gap: 5px;">
       <div style="grid-column: 1 / span 2; display:grid; grid-template-columns: 50% 50%; grid-column-gap: 5px">
         <div style="display:grid; grid-template-columns: 50% 50%; grid-column-gap: 5px">
           <span style="margin-left: auto;">Chapter:
@@ -19,7 +19,7 @@
             <el-select v-model="currPhase" placeholder="请选择" @change="handleChangePhase">
               <el-option-group>
                 <el-option
-                  v-for="phaseNo in chapterList[currChapter-1].phaseNo"
+                  v-for="phaseNo in currPhaseNo"
                   :key="phaseNo"
                   :label="phaseNo"
                   :value="phaseNo"
@@ -40,122 +40,119 @@
       </div>
     </div>
 
-    <div style="display: grid; width: 100%; grid-template-columns: 50% 50%">
-      <div>
+    <div style="display: grid; width: 100%; height: 100%; grid-template-columns: 50% 50%">
+      <div style="display: grid; width: 100%; height: 100%; grid-column: 1 / span 1; grid-template-rows: 50% 50%">
 <!--    @current-change="handleCardChoose"-->
-        <el-table
-          :key="tableKey"
-          v-loading="listLoading"
-          :data="itemList"
-          border
-          fit
-          highlight-current-row
-          style="width: 100%;"
-          @sort-change="sortChange"
-        >
-          <el-table-column label="ID" prop="itemId" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
-            <template slot-scope="{row}">
-              <span>{{ row.itemId }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="ItemName" width="150px" align="center">
-            <template slot-scope="{row}">
-              <span class="link-type">{{ row.itemName }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="Description" min-width="150px">
-            <template slot-scope="{row}">
-              <span>{{ row.itemDescription }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="Cover" min-width="150px">
-            <template slot-scope="{row}">
-              <el-image
-                style="width: 40px; height: 40px"
-                :src="row.itemImg"
-              />
-            </template>
-          </el-table-column>
-          <el-table-column label="Phase">
-            <template slot-scope="scope">
-              <el-button
-                size="mini"
-                @click="phaseAddItem(scope.$index, scope.row)">+</el-button>
-              <el-button
-                size="mini"
-                @click="phaseMinusItem(scope.$index, scope.row)">-</el-button>
-            </template>
-          </el-table-column>
-          <el-table-column label="Chapter">
-            <template slot-scope="scope">
-              <el-button
-                size="mini"
-                @click="chapterAddItem(scope.$index, scope.row)">+</el-button>
-              <el-button
-                size="mini"
-                @click="chapterMinusItem(scope.$index, scope.row)">-</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-        <el-table
-          :key="tableKey"
+        <div style="display: grid; grid-row: 1 / span 1; width: 100%; grid-template-columns: 50% 50%">
+          <el-table
+            style="grid-column: 1 / span 1"
+            :key="tableKey"
+            v-loading="listLoading"
+            :data="itemList"
+            border
+            fit
+            highlight-current-row
+            height="350"
+            max-height="350"
+            @sort-change="sortChange"
+          >
+            <el-table-column label="ID" prop="itemId" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
+              <template slot-scope="{row}">
+                <span>{{ row.itemId }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="ItemName" width="80" align="center">
+              <template slot-scope="{row}">
+                <span class="link-type">{{ row.itemName }}</span>
+              </template>
+            </el-table-column>
+<!--            <el-table-column label="Description" width="80" align="center">-->
+<!--              <template slot-scope="{row}">-->
+<!--                <span>{{ row.itemDescription }}</span>-->
+<!--              </template>-->
+<!--            </el-table-column>-->
+            <el-table-column label="Phase" align="center">
+              <template slot-scope="scope">
+                <el-button
+                  size="mini"
+                  @click="phaseAddItem(scope.$index, scope.row)">+</el-button>
+                <el-button
+                  size="mini"
+                  @click="phaseMinusItem(scope.$index, scope.row)">-</el-button>
+              </template>
+            </el-table-column>
+            <el-table-column label="Chapter" align="center">
+              <template slot-scope="scope">
+                <el-button
+                  size="mini"
+                  @click="chapterAddItem(scope.$index, scope.row)">+</el-button>
+                <el-button
+                  size="mini"
+                  @click="chapterMinusItem(scope.$index, scope.row)">-</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <el-table
+            style="grid-column: 2 / span 1"
+            :key="tableKey"
           v-loading="listLoading"
           :data="cardList"
           border
           fit
           highlight-current-row
-          style="margin-right:auto; width: auto; grid-row: 2 / span 1; grid-column: 2 / span 1"
+            height="350"
+            max-height="350"
           @sort-change="sortChange"
         >
-          <el-table-column label="ID" prop="cardId" sortable="custom" align="center" width="90" :class-name="getSortClass('id')">
+          <el-table-column label="ID" prop="cardId" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
             <template slot-scope="{row}">
               <span>{{ row.cardId }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="CardName" width="90" align="center">
+          <el-table-column label="CardName" width="80" align="center">
             <template slot-scope="{row}">
               <span>{{ row.cardName }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="HP" width="90" align="center">
-            <template slot-scope="{row}">
-              <span>{{ row.healthPoint }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="ATK" width="90">
-            <template slot-scope="{row}">
-              <span>{{ row.attack }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="DEF" align="center" width="90">
-            <template slot-scope="{row}">
-              <span>{{ row.defense }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="RANGE" class-name="status-col" width="90">
-            <template slot-scope="{row}">
-              <span>{{ row.attackRange }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="CD" class-name="status-col" width="90">
-            <template slot-scope="{row}">
-              <span>{{ row.cd }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="SPD" class-name="status-col" width="90">
-            <template slot-scope="{row}">
-              <span>{{ row.speed }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="Cover" min-width="150px">
-            <template slot-scope="{row}">
-              <el-image
-                style="width: 40px; height: 40px"
-                :src="row.cardImg"
-              />
-            </template>
-          </el-table-column>
-          <el-table-column label="Phase">
+<!--          <el-table-column label="HP" width="80" align="center">-->
+<!--            <template slot-scope="{row}">-->
+<!--              <span>{{ row.healthPoint }}</span>-->
+<!--            </template>-->
+<!--          </el-table-column>-->
+<!--          <el-table-column label="ATK" width="80">-->
+<!--            <template slot-scope="{row}">-->
+<!--              <span>{{ row.attack }}</span>-->
+<!--            </template>-->
+<!--          </el-table-column>-->
+<!--          <el-table-column label="DEF" align="center" width="80">-->
+<!--            <template slot-scope="{row}">-->
+<!--              <span>{{ row.defense }}</span>-->
+<!--            </template>-->
+<!--          </el-table-column>-->
+<!--          <el-table-column label="RANGE" class-name="status-col" width="80">-->
+<!--            <template slot-scope="{row}">-->
+<!--              <span>{{ row.attackRange }}</span>-->
+<!--            </template>-->
+<!--          </el-table-column>-->
+<!--          <el-table-column label="CD" class-name="status-col" width="80">-->
+<!--            <template slot-scope="{row}">-->
+<!--              <span>{{ row.cd }}</span>-->
+<!--            </template>-->
+<!--          </el-table-column>-->
+<!--          <el-table-column label="SPD" class-name="status-col" width="80">-->
+<!--            <template slot-scope="{row}">-->
+<!--              <span>{{ row.speed }}</span>-->
+<!--            </template>-->
+<!--          </el-table-column>-->
+<!--          <el-table-column label="Cover" min-width="150px">-->
+<!--            <template slot-scope="{row}">-->
+<!--              <el-image-->
+<!--                style="width: 40px; height: 40px"-->
+<!--                :src="row.cardImg"-->
+<!--              />-->
+<!--            </template>-->
+<!--          </el-table-column>-->
+          <el-table-column label="Phase" align="center">
             <template slot-scope="scope">
               <el-button
                 size="mini"
@@ -165,7 +162,7 @@
                 @click="phaseMinusCard(scope.$index, scope.row)">-</el-button>
             </template>
           </el-table-column>
-          <el-table-column label="Chapter">
+          <el-table-column label="Chapter" align="center">
             <template slot-scope="scope">
               <el-button
                 size="mini"
@@ -176,93 +173,107 @@
             </template>
           </el-table-column>
         </el-table>
+        </div>
 
-<!--        PhaseAwards-->
-        Phase
-        <el-button @click="handlePhaseAwardConfirm">Confirm Phase</el-button>
-        <el-table
-          :key="tableKey"
-          v-loading="listLoading"
-          :data="phaseAwardItems"
-          border
-          fit
-          highlight-current-row
-          style="width: 100%;"
-          @sort-change="sortChange"
-        >
-          <el-table-column label="ItemId" prop="itemId" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
-            <template slot-scope="{row}">
-              <span>{{ row.itemId }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="Quantity" width="150px" align="center">
-            <template slot-scope="{row}">
-              <span class="link-type">{{ row.quantity }}</span>
-            </template>
-          </el-table-column>
-        </el-table>
-        <el-table
-          :key="tableKey"
-          v-loading="listLoading"
-          :data="phaseAwardCards"
-          border
-          fit
-          highlight-current-row
-          style="width: 100%;"
-          @sort-change="sortChange"
-        >
-          <el-table-column label="CardId" prop="itemId" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
-            <template slot-scope="{row}">
-              <span>{{ row }}</span>
-            </template>
-          </el-table-column>
-        </el-table>
-<!--        <el-button @click="handleChapterAwardConfirm">Confirm Chapter</el-button>-->
-
-        Chapter
-        <el-button @click="handleChapterAwardConfirm">Confirm Chapter</el-button>
-        <el-table
-          :key="tableKey"
-          v-loading="listLoading"
-          :data="chapterAwardItems"
-          border
-          fit
-          highlight-current-row
-          style="width: 100%;"
-          @sort-change="sortChange"
-        >
-          <el-table-column label="ItemId" prop="itemId" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
-            <template slot-scope="{row}">
-              <span>{{ row.itemId }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="Quantity" width="150px" align="center">
-            <template slot-scope="{row}">
-              <span class="link-type">{{ row.quantity }}</span>
-            </template>
-          </el-table-column>
-        </el-table>
-        <el-table
+        <div style="display: grid; grid-row: 2 / span 1; width: 100%; height: 100%; grid-template-columns: 50% 50%">
+  <!--        PhaseAwards-->
+  <!--        Phase-->
+          <div style="display: grid; height: 100%; grid-template-columns: 50% 50%">
+            <el-table
+              :key="tableKey"
+              v-loading="listLoading"
+              :data="phaseAwardItems"
+              border
+              fit
+              highlight-current-row
+              style="width: 100%; grid-column: 1 / span 1"
+              height="350"
+              max-height="350"
+              @sort-change="sortChange"
+            >
+              <el-table-column label="ItemId" prop="itemId" sortable="custom" align="center" width="130" :class-name="getSortClass('id')">
+                <template slot-scope="{row}">
+                  <span>{{ row.itemId }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="Qty" align="center">
+                <template slot-scope="{row}">
+                  <span class="link-type">{{ row.quantity }}</span>
+                </template>
+              </el-table-column>
+            </el-table>
+            <el-table
+            :key="tableKey"
+            v-loading="listLoading"
+            :data="phaseAwardCards"
+            border
+            fit
+            highlight-current-row
+            style="width: 100%; grid-column: 2 / span 1"
+            height="350"
+            max-height="350"
+            @sort-change="sortChange"
+          >
+            <el-table-column label="CardId" prop="itemId" sortable="custom" align="center" :class-name="getSortClass('id')">
+              <template slot-scope="{row}">
+                <span>{{ row }}</span>
+              </template>
+            </el-table-column>
+          </el-table>
+          </div>
+  <!--        Chapter-->
+          <div style="display: grid; height: 100%; grid-template-columns: 50% 50%">
+            <el-table
+              :key="tableKey"
+              v-loading="listLoading"
+              :data="chapterAwardItems"
+              border
+              fit
+              highlight-current-row
+              style="width: 100%; grid-column: 1 / span 1"
+              height="350"
+              max-height="350"
+              @sort-change="sortChange"
+            >
+              <el-table-column label="ItemId" prop="itemId" sortable="custom" align="center" width="130" :class-name="getSortClass('id')">
+                <template slot-scope="{row}">
+                  <span>{{ row.itemId }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="Qty" align="center">
+                <template slot-scope="{row}">
+                  <span class="link-type">{{ row.quantity }}</span>
+                </template>
+              </el-table-column>
+            </el-table>
+            <el-table
           :key="tableKey"
           v-loading="listLoading"
           :data="chapterAwardCards"
           border
           fit
           highlight-current-row
-          style="width: 100%;"
+          style="width: 100%; grid-column: 2 / span 1"
+          height="350"
+          max-height="350"
           @sort-change="sortChange"
         >
-          <el-table-column label="CardId" prop="itemId" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
+          <el-table-column label="CardId" prop="itemId" sortable="custom" align="center" :class-name="getSortClass('id')">
             <template slot-scope="{row}">
               <span>{{ row }}</span>
             </template>
           </el-table-column>
         </el-table>
-
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 50% 50%">
+          <el-button @click="handlePhaseAwardConfirm">Confirm Phase</el-button>
+          <el-button @click="handleChapterAwardConfirm">Confirm Chapter</el-button>
+        </div>
       </div>
 
-      <div>
-        <div style="margin: auto; width:400px; display: grid; grid-template-columns: auto auto auto auto auto; grid-template-rows: auto auto auto auto auto;">
+      <div style="display: grid; width: 100%; height: 100%; grid-column: 2 / span 1; grid-template-rows: 50% 50%">
+        <div style="margin: auto; width:350px; display: grid; grid-row: 1 / span 1; grid-template-columns: auto auto auto auto auto; grid-template-rows: auto auto auto auto auto;">
           <div v-for="pos in 25">
             <el-button :style="{'background':(posList.includes(pos) ? '#85b2dc' : '#fff'), 'color': (posList.includes(pos) ? '#fff' : '#000'), 'width': '80px'}" @click="placeCard(pos)">{{ pos }}</el-button>
           </div>
@@ -274,54 +285,56 @@
           border
           fit
           highlight-current-row
-          style="margin-right:auto; width: auto; grid-row: 2 / span 1; grid-column: 2 / span 1"
+          style="margin-right:auto; width: 100%; grid-row: 2 / span 1"
+          height="350"
+          max-height="350"
           @current-change="handleCardChoose"
           @sort-change="sortChange"
         >
-          <el-table-column label="ID" prop="cardId" sortable="custom" align="center" width="90" :class-name="getSortClass('id')">
+          <el-table-column label="ID" prop="cardId" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
             <template slot-scope="{row}">
               <span>{{ row.cardId }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="CardName" width="90" align="center">
+          <el-table-column label="CardName" width="150" align="center">
             <template slot-scope="{row}">
               <span>{{ row.cardName }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="HP" width="90" align="center">
+          <el-table-column label="HP" width="80" align="center">
             <template slot-scope="{row}">
               <span>{{ row.healthPoint }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="ATK" width="90">
+          <el-table-column label="ATK" width="80" align="center">
             <template slot-scope="{row}">
               <span>{{ row.attack }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="DEF" align="center" width="90">
+          <el-table-column label="DEF" align="center" width="80">
             <template slot-scope="{row}">
               <span>{{ row.defense }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="RANGE" class-name="status-col" width="90">
+          <el-table-column label="RANGE" class-name="status-col" width="80" align="center">
             <template slot-scope="{row}">
               <span>{{ row.attackRange }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="CD" class-name="status-col" width="90">
+          <el-table-column label="CD" class-name="status-col" width="80" align="center">
             <template slot-scope="{row}">
               <span>{{ row.cd }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="SPD" class-name="status-col" width="90">
+          <el-table-column label="SPD" class-name="status-col" width="80" align="center">
             <template slot-scope="{row}">
               <span>{{ row.speed }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="Cover" min-width="150px">
+          <el-table-column label="Cover" min-width="100px">
             <template slot-scope="{row}">
               <el-image
-                style="width: 100px; height: 100px"
+                style="width: auto; height: auto"
                 :src="row.cardImg"
               />
             </template>
@@ -367,6 +380,7 @@ export default {
       prevList: [],
       currChapter: undefined,
       currPhase: undefined,
+      currPhaseNo: undefined,
       prevChapter: undefined,
       prevPhase: undefined,
       currCard: undefined,
@@ -557,10 +571,9 @@ export default {
       {
         if(this.chapterList[i].chapterId === this.currChapter)
         {
+          this.currPhaseNo = this.chapterList[i].phaseNo;
           this.chapterAwardItems = this.transObjToArr(this.chapterList[i].awardItems);
           this.chapterAwardCards = Array.from(this.chapterList[i].awardCards);
-          console.log(this.chapterAwardCards);
-          console.log(this.chapterAwardItems);
         }
       }
 
@@ -721,6 +734,7 @@ export default {
       axios.get('http://localhost:8080/chapter/getAllChapters').then(response => {
         if(response.data)
         {
+          console.log(response.data);
           this.chapterList = response.data;
 
           axios.get('http://localhost:8080/card/getAllCards')
