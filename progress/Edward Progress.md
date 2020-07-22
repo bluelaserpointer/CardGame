@@ -129,3 +129,15 @@ Edward Raymond He 518030990022
 #### Currently working on:
 
 1. 将完成更多e2e测试
+
+### 2020.07.21
+
+#### Finished: 
+
+1. 完成了 Phase, Player, OwnItem, OwnCard, Activity, Mail 的e2e测试
+2. 修复了前端测试所需的 className
+
+#### Currently working on:
+
+1. 正在做更多与Phase相关的测试（先前遗漏了些）
+2. 正在学习认证授权相关的衔接内容
