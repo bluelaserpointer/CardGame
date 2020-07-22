@@ -21,6 +21,7 @@ public class HomePage extends Page {
         super.setJump(R.id.toMail_button, MailPage.class);
         super.setJump(R.id.toAnnounce_button, AnnouncePage.class);
         super.setJump(R.id.toBag_button, TeamPage.class);
+        super.setJump(R.id.toUserInfo_button, UserInfoPage.class);
         GHQ.setResource(getResources());
         try {
             final JSONObject userInfo = Utils.getUserInfo();
