@@ -174,6 +174,7 @@ export default {
       this.postForm = Object.assign({}, defaultForm);
       this.$refs.editor.setContent('');
       this.displayTime = null;
+      this.limit = false;
     },
     submitForm() {
       if(this.postForm.title === undefined || this.postForm.content === undefined || this.postForm.title === '' || this.postForm.content === '')

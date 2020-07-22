@@ -4,4 +4,5 @@ CDFrontend/.idea/vcs.xml
 CDFrontend/.idea/workspace.xml
 CDFrontend/card_front/tests/unit
 CDFrontend/card_front/cypress/integration/examples
+CDFrontend/card_front/lib
 CDBackend/demo/target
