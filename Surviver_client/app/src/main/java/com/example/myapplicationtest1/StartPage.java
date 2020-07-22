@@ -108,6 +108,13 @@ public class StartPage extends AppCompatActivity {
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
         findViewById(R.id.login_button).setOnTouchListener(loginHideTouchListener);
+        findViewById(R.id.hello_button).setOnTouchListener((v, motionEvent) -> {
+            v.performClick();
+            if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                Page.jump(this, LoginInputPage.class);
+            }
+            return false;
+        });
     }
 
     @Override

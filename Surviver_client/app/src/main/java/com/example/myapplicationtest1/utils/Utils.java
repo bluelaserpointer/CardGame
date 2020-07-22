@@ -60,6 +60,7 @@ public class Utils {
             return true;
         } else {
             loginFailReason = userId;
+            System.out.println("Utils: identification result: " + userId);
         }
         return false;
     }

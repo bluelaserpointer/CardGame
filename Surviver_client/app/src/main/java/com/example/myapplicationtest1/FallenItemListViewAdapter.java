@@ -19,8 +19,8 @@ public class FallenItemListViewAdapter extends RecyclerView.Adapter<FallenItemLi
 
     private static final String TAG = "ExpListViewAdapter";
 
-    private ArrayList<String> mTexts = new ArrayList<>();
-    private ArrayList<String> mImages = new ArrayList<>();
+    private ArrayList<String> mTexts;
+    private ArrayList<String> mImages;
     private Context mContext;
 
     public FallenItemListViewAdapter(Context mContext, ArrayList<String> mTexts, ArrayList<String> mImages) {
@@ -64,7 +64,7 @@ public class FallenItemListViewAdapter extends RecyclerView.Adapter<FallenItemLi
         return mImages.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder{
         ImageView image;
         TextView exp;
 
