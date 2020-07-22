@@ -4,7 +4,7 @@
       <!--        <CommentDropdown v-model = "postForm.comment_disabled" />-->
       <!--      <PlatformDropdown v-model="postForm.platforms" />-->
       <!--        <SourceUrlDropdown v-model = "postForm.source_uri" />-->
-      <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">
+      <el-button class="mailUpdatePublishButton" v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">
         Publish
       </el-button>
       <el-button class="deleteOuterButton" type="danger" @click="deleteVisible = true">

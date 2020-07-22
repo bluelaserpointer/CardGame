@@ -3,10 +3,11 @@
     <div class="filter-container" style="width: 100%; grid-row: 1 / span 1; display:grid; grid-template-columns: 50% 50%; grid-column-gap: 5px;">
       <div style="grid-column: 1 / span 2; display:grid; grid-template-columns: 50% 50%; grid-column-gap: 5px">
         <div style="display:grid; grid-template-columns: 50% 50%; grid-column-gap: 5px">
-          <span style="margin-left: auto;">Chapter:
-            <el-select v-model="currChapter" placeholder="请选择" @change="handleChangeChapter">
-              <el-option-group>
+          <span style="margin-left: auto;" class="chapterSelectArea">Chapter:
+            <el-select v-model="currChapter" class="chapterSelect" placeholder="请选择" @change="handleChangeChapter">
+              <el-option-group class="chapterOption">
                 <el-option
+                  class="chapterSelectOption"
                   v-for="chapter in chapterList"
                   :key="chapter.chapterId"
                   :label="chapter.chapterId"
@@ -15,10 +16,24 @@
               </el-option-group>
             </el-select>
           </span>
-          <span v-if="currChapter !== undefined" style="margin-right: auto;">Phase:
-            <el-select v-model="currPhase" placeholder="请选择" @change="handleChangePhase">
-              <el-option-group>
+          <span v-if="currChapter !== undefined" class="phaseSelectArea" style="margin-right: auto;">Phase:
+            <el-select v-model="currPhase" class="phaseSelect" placeholder="请选择" @change="handleChangePhase">
+              <el-option-group class="phaseOption">
                 <el-option
+                  class="phaseSelectOption"
+                  v-for="phaseNo in currPhaseNo"
+                  :key="phaseNo"
+                  :label="phaseNo"
+                  :value="phaseNo"
+                />
+              </el-option-group>
+            </el-select>
+          </span>
+          <span v-else style="margin-right: auto;">Phase:
+            <el-select v-model="currPhase" class="phaseSelect" placeholder="请选择" @change="handleChangePhase" disabled>
+              <el-option-group class="phaseOption">
+                <el-option
+                  class="phaseSelectOption"
                   v-for="phaseNo in currPhaseNo"
                   :key="phaseNo"
                   :label="phaseNo"
@@ -30,10 +45,10 @@
           <span v-else style="margin-right: auto;" />
         </div>
         <div>
-          <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleConfirm">
+          <el-button class="filter-item confirmButton" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleConfirm">
             Confirm
           </el-button>
-          <el-button class="filter-item" style="margin-left: 10px;" type="warning" @click="handleRefreshPhase(currPhase)">
+          <el-button class="filter-item restoreButton" style="margin-left: 10px;" type="warning" @click="handleRefreshPhase(currPhase)">
             Restore
           </el-button>
         </div>
@@ -42,13 +57,13 @@
 
     <div style="display: grid; width: 100%; height: 100%; grid-template-columns: 50% 50%">
       <div style="display: grid; width: 100%; height: 100%; grid-column: 1 / span 1; grid-template-rows: 50% 50%">
-<!--    @current-change="handleCardChoose"-->
         <div style="display: grid; grid-row: 1 / span 1; width: 100%; grid-template-columns: 50% 50%">
           <el-table
             style="grid-column: 1 / span 1"
             :key="tableKey"
             v-loading="listLoading"
             :data="itemList"
+            class="itemAwardTable"
             border
             fit
             highlight-current-row
@@ -66,18 +81,15 @@
                 <span class="link-type">{{ row.itemName }}</span>
               </template>
             </el-table-column>
-<!--            <el-table-column label="Description" width="80" align="center">-->
-<!--              <template slot-scope="{row}">-->
-<!--                <span>{{ row.itemDescription }}</span>-->
-<!--              </template>-->
-<!--            </el-table-column>-->
             <el-table-column label="Phase" align="center">
               <template slot-scope="scope">
                 <el-button
                   size="mini"
+                  class="phaseAddItemButton"
                   @click="phaseAddItem(scope.$index, scope.row)">+</el-button>
                 <el-button
                   size="mini"
+                  class="phaseMinusItemButton"
                   @click="phaseMinusItem(scope.$index, scope.row)">-</el-button>
               </template>
             </el-table-column>
@@ -85,9 +97,11 @@
               <template slot-scope="scope">
                 <el-button
                   size="mini"
+                  class="chapterAddItemButton"
                   @click="chapterAddItem(scope.$index, scope.row)">+</el-button>
                 <el-button
                   size="mini"
+                  class="chapterMinusItemButton"
                   @click="chapterMinusItem(scope.$index, scope.row)">-</el-button>
               </template>
             </el-table-column>
@@ -97,7 +111,8 @@
             :key="tableKey"
           v-loading="listLoading"
           :data="cardList"
-          border
+            class="cardAwardTable"
+            border
           fit
           highlight-current-row
             height="350"
@@ -114,51 +129,15 @@
               <span>{{ row.cardName }}</span>
             </template>
           </el-table-column>
-<!--          <el-table-column label="HP" width="80" align="center">-->
-<!--            <template slot-scope="{row}">-->
-<!--              <span>{{ row.healthPoint }}</span>-->
-<!--            </template>-->
-<!--          </el-table-column>-->
-<!--          <el-table-column label="ATK" width="80">-->
-<!--            <template slot-scope="{row}">-->
-<!--              <span>{{ row.attack }}</span>-->
-<!--            </template>-->
-<!--          </el-table-column>-->
-<!--          <el-table-column label="DEF" align="center" width="80">-->
-<!--            <template slot-scope="{row}">-->
-<!--              <span>{{ row.defense }}</span>-->
-<!--            </template>-->
-<!--          </el-table-column>-->
-<!--          <el-table-column label="RANGE" class-name="status-col" width="80">-->
-<!--            <template slot-scope="{row}">-->
-<!--              <span>{{ row.attackRange }}</span>-->
-<!--            </template>-->
-<!--          </el-table-column>-->
-<!--          <el-table-column label="CD" class-name="status-col" width="80">-->
-<!--            <template slot-scope="{row}">-->
-<!--              <span>{{ row.cd }}</span>-->
-<!--            </template>-->
-<!--          </el-table-column>-->
-<!--          <el-table-column label="SPD" class-name="status-col" width="80">-->
-<!--            <template slot-scope="{row}">-->
-<!--              <span>{{ row.speed }}</span>-->
-<!--            </template>-->
-<!--          </el-table-column>-->
-<!--          <el-table-column label="Cover" min-width="150px">-->
-<!--            <template slot-scope="{row}">-->
-<!--              <el-image-->
-<!--                style="width: 40px; height: 40px"-->
-<!--                :src="row.cardImg"-->
-<!--              />-->
-<!--            </template>-->
-<!--          </el-table-column>-->
           <el-table-column label="Phase" align="center">
             <template slot-scope="scope">
               <el-button
                 size="mini"
+                class="phaseAddCardButton"
                 @click="phaseAddCard(scope.$index, scope.row)">+</el-button>
               <el-button
                 size="mini"
+                class="phaseMinusCardButton"
                 @click="phaseMinusCard(scope.$index, scope.row)">-</el-button>
             </template>
           </el-table-column>
@@ -166,9 +145,11 @@
             <template slot-scope="scope">
               <el-button
                 size="mini"
+                class="chapterAddCardButton"
                 @click="chapterAddCard(scope.$index, scope.row)">+</el-button>
               <el-button
                 size="mini"
+                class="chapterMinusCardButton"
                 @click="chapterMinusCard(scope.$index, scope.row)">-</el-button>
             </template>
           </el-table-column>
@@ -176,13 +157,12 @@
         </div>
 
         <div style="display: grid; grid-row: 2 / span 1; width: 100%; height: 100%; grid-template-columns: 50% 50%">
-  <!--        PhaseAwards-->
-  <!--        Phase-->
           <div style="display: grid; height: 100%; grid-template-columns: 50% 50%">
             <el-table
               :key="tableKey"
               v-loading="listLoading"
               :data="phaseAwardItems"
+              class="phaseAwardItemsTable"
               border
               fit
               highlight-current-row
@@ -206,6 +186,7 @@
             :key="tableKey"
             v-loading="listLoading"
             :data="phaseAwardCards"
+            class="phaseAwardCardsTable"
             border
             fit
             highlight-current-row
@@ -221,12 +202,12 @@
             </el-table-column>
           </el-table>
           </div>
-  <!--        Chapter-->
           <div style="display: grid; height: 100%; grid-template-columns: 50% 50%">
             <el-table
               :key="tableKey"
               v-loading="listLoading"
               :data="chapterAwardItems"
+              class="chapterAwardItemsTable"
               border
               fit
               highlight-current-row
@@ -250,6 +231,7 @@
           :key="tableKey"
           v-loading="listLoading"
           :data="chapterAwardCards"
+          class="chapterAwardCardsTable"
           border
           fit
           highlight-current-row
@@ -267,8 +249,8 @@
           </div>
         </div>
         <div style="display: grid; grid-template-columns: 50% 50%">
-          <el-button @click="handlePhaseAwardConfirm">Confirm Phase</el-button>
-          <el-button @click="handleChapterAwardConfirm">Confirm Chapter</el-button>
+          <el-button class="confirmPhaseAwardButton" @click="handlePhaseAwardConfirm">Confirm Phase</el-button>
+          <el-button class="confirmChapterAwardButton" @click="handleChapterAwardConfirm">Confirm Chapter</el-button>
         </div>
       </div>
 
