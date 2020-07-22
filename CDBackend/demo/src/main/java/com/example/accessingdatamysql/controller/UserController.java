@@ -1,8 +1,11 @@
 package com.example.accessingdatamysql.controller;
 
+import com.example.accessingdatamysql.Security.JwtUtil;
 import com.example.accessingdatamysql.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+// import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 // import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,8 +21,14 @@ import com.example.accessingdatamysql.service.UserService;
 public class UserController {
 
   @Autowired
+  private AuthenticationManager authenticationManager;
+
+  @Autowired
+  private JwtUtil jwtUtil;
+
+  @Autowired
   private UserService userService;
-  private BCryptPasswordEncoder bCryptPasswordEncoder;
+  // private BCryptPasswordEncoder bCryptPasswordEncoder;
 
   // 获取一个用户信息
   @GetMapping(value = "/getUser")
@@ -33,7 +42,7 @@ public class UserController {
   public @ResponseBody User addNewUser(@RequestParam("userName") String userName, @RequestParam("email") String email,
       @RequestParam("password") String password, @RequestParam("phoneNumber") String phoneNumber) {
     // 加密密码
-    password = bCryptPasswordEncoder.encode(password);
+    // password = bCryptPasswordEncoder.encode(password);
     return userService.addNewUser(userName, email, password, phoneNumber);
   }
 
@@ -48,7 +57,7 @@ public class UserController {
       @RequestParam("grade") Double grade, @RequestParam("engKnowledge") Integer engKnowledge,
       @RequestParam("mathKnowledge") Integer mathKnowledge, @RequestParam("chiKnowledge") Integer chiKnowledge) {
     // 加密密码
-    password = bCryptPasswordEncoder.encode(password);
+    // password = bCryptPasswordEncoder.encode(password);
     return userService.updateUser(userId, userName, email, password, phoneNumber, credits, access, level, curExpPoint,
         stamina, money, grade, engKnowledge, mathKnowledge, chiKnowledge);
   }
@@ -72,9 +81,15 @@ public class UserController {
   }
 
   // 登录逻辑
-  @RequestMapping(value = "/identifyUser")
-  public Integer identifyUser(@RequestParam("userName") String userName, @RequestParam("password") String password) {
-    return userService.identifyUser(userName, password);
+  @PostMapping("/identifyUser")
+  public String identifyUser(@RequestBody AuthRequest authRequest) {
+    try {
+      authenticationManager
+          .authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUserName(), authRequest.getPassword()));
+    } catch (Exception ex) {
+      throw ex;
+    }
+    return jwtUtil.generateToken(authRequest.getUserName());
   }
 
   // 删除一个指定用户
