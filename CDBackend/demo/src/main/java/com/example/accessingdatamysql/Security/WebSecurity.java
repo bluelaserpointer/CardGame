@@ -17,8 +17,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import static com.example.accessingdatamysql.Security.SecurityConstants.SIGN_UP_URL;
+
+import com.mongodb.ReflectionDBObject.JavaWrapper;
 
 @Configuration
 @EnableWebSecurity
@@ -26,6 +29,9 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
+
+    @Autowired
+    private JwtFilter jwtFilter;
     // @Autowired
     // private BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -39,12 +45,12 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests().antMatchers(HttpMethod.POST, "/user/identifyUser")
-                .permitAll().anyRequest().authenticated();
-        // .and()
-        // .addFilter(new JWTAuthenticationFilter(authenticationManager()))
-        // .addFilter(new JWTAuthorizationFilter(authenticationManager()))
-        // // this disables session creation on Spring Security
-        // .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .permitAll().anyRequest().authenticated().and().exceptionHandling().and()
+                // .addFilter(new JWTAuthenticationFilter(authenticationManager()))
+                // .addFilter(new JWTAuthorizationFilter(authenticationManager()))
+                // // this disables session creation on Spring Security
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override
