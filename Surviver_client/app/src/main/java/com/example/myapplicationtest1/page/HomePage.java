@@ -1,13 +1,12 @@
 package com.example.myapplicationtest1.page;
 
 import android.os.Bundle;
-import android.widget.Button;
+import android.widget.TextView;
 
-import com.example.myapplicationtest1.HttpClient;
 import com.example.myapplicationtest1.R;
 import com.example.myapplicationtest1.game.core.GHQ;
+import com.example.myapplicationtest1.utils.Utils;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,26 +17,20 @@ public class HomePage extends Page {
         setContentView(R.layout.home);
         super.setJump(R.id.toBattle_button, MapPage.class);
         super.setJump(R.id.toOption_button, OptionPage.class);
-        super.setJump(R.id.toShop_button, ShopPage.class);
+        super.setJump(R.id.toShop_button, LottePage.class);
         super.setJump(R.id.toMail_button, MailPage.class);
         super.setJump(R.id.toAnnounce_button, AnnouncePage.class);
         super.setJump(R.id.toBag_button, TeamPage.class);
+        super.setJump(R.id.toUserInfo_button, UserInfoPage.class);
         GHQ.setResource(getResources());
-        //data fetch
         try {
-            fetchData();
+            final JSONObject userInfo = Utils.getUserInfo();
+            Utils.setUserTopBarInfo(this, userInfo);
+            ((TextView)findViewById(R.id.userName)).setText(Utils.getUserName());
+            ((TextView)findViewById(R.id.userLevel)).setText("LV: " + userInfo.getInt("level"));
+            ((TextView)findViewById(R.id.userExp)).setText("exp: " + userInfo.getInt("curExpPoint"));
         } catch(JSONException e) {
             e.printStackTrace();
         }
-    }
-    public void fetchData() throws JSONException {
-        // Fetching data of the current logged in user
-        final JSONArray arr = new JSONArray(HttpClient.doGetShort("user/getAllUsers"));
-        final JSONObject userInfo = arr.getJSONObject(0);
-        // Sets the text of corresponding values
-        ((Button)findViewById(R.id.grade_button)).setText(userInfo.get("grade").toString());
-        ((Button)findViewById(R.id.stamina_button)).setText(userInfo.get("stamina").toString());
-        ((Button)findViewById(R.id.money_button)).setText(userInfo.get("money").toString());
-
     }
 }

@@ -31,8 +31,10 @@ public class CardStoragePageTest {
     public ActivityTestRule<CardStoragePage> rule = new ActivityTestRule<>(CardStoragePage.class);
 
     @Before
-    public void setUp() throws Exception {
-        Utils.saveUserInfo(rule.getActivity(), "1", "1");
+    public void setUp() {
+        Utils.setSharedPreference(rule.getActivity());
+        Utils.saveUserInfo("1", "1");
+        Utils.saveUserId(0);
     }
 
     @Test

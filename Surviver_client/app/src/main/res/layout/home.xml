@@ -167,79 +167,140 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/contents"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="8"
-            android:baselineAligned="false"
-            android:orientation="vertical">
+            android:layout_weight="8">
 
             <LinearLayout
-                android:id="@+id/addBetButtons"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="4"
-                android:baselineAligned="false"
-                android:orientation="horizontal">
-
-                <FrameLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="65">
-
-                </FrameLayout>
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:id="@+id/mainButtons"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="30"
-                    android:orientation="vertical">
+                    android:id="@+id/addBetButtons"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="8"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
+
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="65">
+
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:id="@+id/mainButtons"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="30"
+                        android:orientation="vertical">
+
+                        <Button
+                            android:id="@+id/toBattle_button"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="100"
+                            android:background="@drawable/button"
+                            android:text="@string/toBattle" />
+
+                        <Button
+                            android:id="@+id/toBag_button"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="100"
+                            android:background="@drawable/button"
+                            android:text="@string/toBag" />
+
+                        <Button
+                            android:id="@+id/toShop_button"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="100"
+                            android:background="@drawable/button"
+                            android:text="@string/toLibrary" />
+
+                        <Button
+                            android:id="@+id/button"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="100"
+                            android:background="@drawable/button"
+                            android:text="@string/toMission" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1.2" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="7" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="3"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
                     <Button
-                        android:id="@+id/toBattle_button"
-                        android:layout_width="match_parent"
+                        android:id="@+id/toUserInfo_button"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="100"
-                        android:background="@drawable/button"
-                        android:text="@string/toBattle" />
+                        android:layout_weight="1"
+                        android:background="@drawable/chi_n3" />
 
-                    <Button
-                        android:id="@+id/toBag_button"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="100"
-                        android:background="@drawable/button"
-                        android:text="@string/toBag" />
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="13"
+                        android:orientation="vertical">
 
-                    <Button
-                        android:id="@+id/toShop_button"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="100"
-                        android:background="@drawable/button"
-                        android:text="@string/toLibrary" />
+                        <TextView
+                            android:id="@+id/userName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="UnknownPlayerName"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="18sp" />
 
-                    <Button
-                        android:id="@+id/button"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="100"
-                        android:background="@drawable/button"
-                        android:text="@string/toMission" />
+                        <TextView
+                            android:id="@+id/userLevel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="LV: ?/?"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/userExp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="EXP: ?/?"
+                            android:textColor="@color/colorAccent" />
+
+                    </LinearLayout>
+
                 </LinearLayout>
 
             </LinearLayout>
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1">
-
-            </FrameLayout>
-
-        </LinearLayout>
+        </FrameLayout>
 
     </LinearLayout>
 

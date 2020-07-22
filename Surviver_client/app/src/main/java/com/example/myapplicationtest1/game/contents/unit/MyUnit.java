@@ -138,14 +138,15 @@ public abstract class MyUnit extends Unit implements HasDotPaint {
 		return enemyParameter;
 	}
 
-	public static Knowledge.KnowledgeParameter loadAsKnowledge(String fetchURL) {
+	public static Knowledge.KnowledgeParameter loadAsKnowledge(int ownCardId, String fetchURL) {
 		Knowledge.KnowledgeParameter enemyParameter = null;
 		try {
 			final JSONObject enemyInfo = new JSONObject(HttpClient.doGetShort(fetchURL));
 			enemyParameter = new Knowledge.KnowledgeParameter(
+					ownCardId,
 					Subject.CHI, //Subject.valueOf(enemyInfo.getString("subject")),
 					enemyInfo.getString("cardName"),
-					ImageFrame.create(R.drawable.tongyongc),
+					R.drawable.tongyongc,
 					enemyInfo.getInt("healthPoint"),
 					enemyInfo.getInt("attack"),
 					enemyInfo.getInt("defense"),

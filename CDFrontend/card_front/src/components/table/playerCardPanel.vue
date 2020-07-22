@@ -60,7 +60,7 @@
     </el-table>
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="panelVisible" top="5vh" class="editDialog">
-      <el-form ref="dataForm" :rules="rules" :model="temp" style="margin: auto 50px auto 50px; display:grid; grid-template-columns: 50% 50%; grid-column-gap: 10px" class="demo-form-inline">
+      <el-form ref="temp" :rules="rules" :model="temp" style="margin: auto 50px auto 50px; display:grid; grid-template-columns: 50% 50%; grid-column-gap: 10px" class="demo-form-inline">
         <el-form-item label="ID" prop="ownCardId" v-if="dialogStatus==='update'">
           <el-input v-model="temp.ownCardId" disabled/>
         </el-form-item>
@@ -111,7 +111,7 @@
         <el-button class="cancelOuterButton" @click="panelVisible = false">
           Cancel
         </el-button>
-        <el-button class="confirmOuterButton" type="primary" @click="dialogStatus==='create'?createData():updateData()">
+        <el-button class="confirmOuterButton" type="primary" @click="dialogStatus==='create'?createData('temp'):updateData('temp')">
           Confirm
         </el-button>
       </div>
@@ -240,60 +240,76 @@ export default {
       this.dialogStatus = 'create';
       this.panelVisible = true;
       this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
+        this.$refs['temp'].clearValidate()
       })
     },
-    createData() {
-      let postData = new FormData();
-      postData.append('cardId', this.temp.cardId);
-      postData.append('userId', this.temp.userId);
+    createData(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          let postData = new FormData();
+          postData.append('cardId', this.temp.cardId);
+          postData.append('userId', this.temp.userId);
 
-      axios.post(`http://localhost:8080/ownCard/addOwnCard`, postData).then(response => {
-        if (response.data) {
-          this.getList();
-          this.panelVisible = false;
+          axios.post(`http://localhost:8080/ownCard/addOwnCard`, postData).then(response => {
+            if (response.data) {
+              this.getList();
+              this.panelVisible = false;
+            } else {
+              this.$message.error('Creating Data failed!');
+            }
+          })
+            .catch(error =>
+              {
+                this.$message.error('Creating Data failed!');
+              }
+            );
         } else {
-          this.$message.error('Creating Data failed!');
+          this.$message.error('Form Invalid!');
+          return false;
         }
-      })
-        .catch(error =>
-          {
-            this.$message.error('Creating Data failed!');
-          }
-        );
+      });
+
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row); // copy obj
       this.dialogStatus = 'update';
       this.panelVisible = true;
       this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
+        this.$refs['temp'].clearValidate()
       })
     },
-    updateData() {
-      let postData = new FormData();
-      postData.append('cardId', this.temp.cardId);
-      postData.append('userId', this.temp.userId);
-      postData.append('cardLevel', this.temp.cardLevel);
-      postData.append('cardCurExp', this.temp.cardCurExp);
-      postData.append('cardLevelLimit', this.temp.cardLevelLimit);
-      postData.append('repetitiveOwns', this.temp.repetitiveOwns);
-      postData.append('accquireDate', this.formatDate(this.temp.accquireDate));
-      console.log(this.formatDate(this.temp.accquireDate));
-      axios.post(`http://localhost:8080/ownCard/updateOwnCard`, postData).then(response => {
-        if (response.data) {
-          this.getList();
-          this.panelVisible = false;
-          this.resetTemp();
+    updateData(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          let postData = new FormData();
+          postData.append('cardId', this.temp.cardId);
+          postData.append('userId', this.temp.userId);
+          postData.append('cardLevel', this.temp.cardLevel);
+          postData.append('cardCurExp', this.temp.cardCurExp);
+          postData.append('cardLevelLimit', this.temp.cardLevelLimit);
+          postData.append('repetitiveOwns', this.temp.repetitiveOwns);
+          postData.append('accquireDate', this.formatDate(this.temp.accquireDate));
+          console.log(this.formatDate(this.temp.accquireDate));
+          axios.post(`http://localhost:8080/ownCard/updateOwnCard`, postData).then(response => {
+            if (response.data) {
+              this.getList();
+              this.panelVisible = false;
+              this.resetTemp();
+            } else {
+              this.$message.error('Updating Data failed!');
+            }
+          })
+            .catch(error =>
+              {
+                this.$message.error('Updating Data failed!');
+              }
+            );
         } else {
-          this.$message.error('Updating Data failed!');
+          this.$message.error('Form Invalid!');
+          return false;
         }
-      })
-      .catch(error =>
-        {
-          this.$message.error('Updating Data failed!');
-        }
-      );
+      });
+
     },
     confirmIdentity() {
       let postData = new FormData();

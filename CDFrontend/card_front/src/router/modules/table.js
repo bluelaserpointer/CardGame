@@ -13,10 +13,10 @@ const tableRouter = {
   },
   children: [
     {
-      path: 'phase-entity-table',
-      component: () => import('@/components/table/phaseEntityPanel'),
-      name: 'PhaseEntityPanel',
-      meta: { title: 'Phase Entity Panel' }
+      path: 'phase-table',
+      component: () => import('@/components/table/phasePanel'),
+      name: 'PhasePanel',
+      meta: { title: 'Phase Panel' }
     },
     {
       path: 'item-entity-table',

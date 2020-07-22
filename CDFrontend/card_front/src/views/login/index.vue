@@ -11,6 +11,7 @@
           <svg-icon icon-class="user" />
         </span>
         <el-input
+          class="username-input"
           ref="username"
           v-model="loginForm.username"
           placeholder="Username"
@@ -27,6 +28,7 @@
             <svg-icon icon-class="password" />
           </span>
           <el-input
+            class="password-input"
             :key="passwordType"
             ref="password"
             v-model="loginForm.password"
@@ -45,7 +47,7 @@
         </el-form-item>
       </el-tooltip>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
+      <el-button class="login-button" :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
 
       <div style="position:relative">
         <div class="tips">

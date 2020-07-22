@@ -3,15 +3,9 @@ package com.example.myapplicationtest1.game.contents.unit;
 import com.example.myapplicationtest1.R;
 import com.example.myapplicationtest1.game.contents.engine.Subject;
 import com.example.myapplicationtest1.game.core.GHQ;
-import com.example.myapplicationtest1.game.core.GHQObject;
 import com.example.myapplicationtest1.game.paint.ImageFrame;
 import com.example.myapplicationtest1.game.paint.dot.DotPaint;
-import com.example.myapplicationtest1.game.physics.HitGroup;
-import com.example.myapplicationtest1.game.preset.bullet.Bullet;
 import com.example.myapplicationtest1.game.preset.unit.Unit;
-import com.example.myapplicationtest1.game.weapon.Weapon;
-
-import java.util.List;
 
 public class Knowledge extends MyUnit {
 	public final KnowledgeParameter PARAM;
@@ -74,18 +68,21 @@ public class Knowledge extends MyUnit {
 		{
 			lotteSpring[subject.ordinal()][rarity] = members;
 		}
-
+		public int ownCardId;
 		public Subject SUBJECT;
 		public String NAME;
+		public int drawableId;
 		public DotPaint PAINT;
 		public int iniHP, iniATK, iniDEF, iniCD;
 		public double iniATKRange, iniSPD;
 		public String appendTalk, description;
 		
-		public KnowledgeParameter(Subject subject, String name, DotPaint paint, int hp, int atk, int def, double atkRange, int cd, double spd, String appendTalk, String description) {
+		public KnowledgeParameter(int ownCardId, Subject subject, String name, int drawableId, int hp, int atk, int def, double atkRange, int cd, double spd, String appendTalk, String description) {
+			this.ownCardId = ownCardId;
 			SUBJECT = subject;
 			NAME = name;
-			PAINT = paint;
+			this.drawableId = drawableId;
+			PAINT = ImageFrame.create(drawableId);
 			iniHP = hp;
 			iniATK = atk;
 			iniDEF = def;

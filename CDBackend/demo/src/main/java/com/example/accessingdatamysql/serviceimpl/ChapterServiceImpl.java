@@ -41,6 +41,10 @@ public class ChapterServiceImpl implements ChapterService {
         return chapterDao.deleteChapter(chapterId);
     }
 
+    public List<Chapter> updateChapter(Integer chapterId, Integer phaseNo, Integer phaseType) {
+        return chapterDao.updateChapter(chapterId, phaseNo, phaseType);
+    }
+
     public List<ChapterDetails> getChapterDetailsByChapterAndByPhase(Integer chapterId, Integer phaseId) {
         return chapterDao.getChapterDetailsByChapterAndByPhase(chapterId, phaseId);
     }
@@ -49,7 +53,15 @@ public class ChapterServiceImpl implements ChapterService {
         return chapterDao.getChapterDetailsByChapter(chapterId);
     }
 
+    public List<ChapterPhase> getChapterPhasesByChapter(Integer chapterId) {
+        return chapterDao.getChapterPhasesByChapter(chapterId);
+    }
+
     public List<ChapterDetails> getAllChapterDetails() {
         return chapterDao.getAllChapterDetails();
+    }
+
+    public List<Chapter> addChapter(Integer phaseNo, Integer phaseType){
+        return chapterDao.addChapter(phaseNo, phaseType);
     }
 }

@@ -1,0 +1,5 @@
+{
+   "pluginsFile": "@cypress/code-coverage/plugins",
+   "supportFile": "@cypress/code-coverage/support",
+   "fixturesFolder": false
+}
