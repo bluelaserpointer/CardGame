@@ -148,3 +148,12 @@
 目前进展： WebSecurity 需要进一步调试来正确运行
 
 明天计划： 将 webSecurity 调试完成。
+
+---
+
+### 7 月 22 日
+
+1. 完成了 webSecurity 后端的调试
+
+目前进展： User 的登陆 API 限制做好了，现在是需要做两个不同的 configuration class 来分开 admin 跟 user 的权限
+明天计划： 实现 admin 跟 user 的不同 API authorization。
