@@ -7,12 +7,18 @@ import android.widget.Button;
 
 import com.example.myapplicationtest1.HttpClient;
 import com.example.myapplicationtest1.R;
+import com.example.myapplicationtest1.game.contents.engine.Subject;
+import com.example.myapplicationtest1.game.contents.unit.Knowledge;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Utils {
     public static SharedPreferences sp;
+    public static int userId;
     public static void setSharedPreference(Context context) {
         sp = context.getSharedPreferences("data", Context.MODE_PRIVATE); //数据自己可用
     }
@@ -23,20 +29,22 @@ public class Utils {
         edit.commit();
     }
     public static void saveUserId(int id) {
-        final SharedPreferences.Editor edit = sp.edit();
-        edit.putString("userId", String.valueOf(id));
-        edit.commit();
+//        final SharedPreferences.Editor edit = sp.edit();
+//        edit.putString("userId", String.valueOf(id));
+//        edit.commit();
+        userId = id;
     }
 
     // 从data.xml中获取用户名称
     public static String getUserName() {
-        return sp.getString("userName", "NOT_LOGGED");
+        return sp == null ? "SP_NULL" : sp.getString("userName", "NOT_LOGGED");
     }
     public static String getPassword() {
-        return sp.getString("password", "NOT_LOGGED");
+        return sp == null ? "SP_NULL" : sp.getString("password", "NOT_LOGGED");
     }
-    public static String getUserId() {
-        return sp.getString("userId", "-1");
+    public static Integer getUserId() {
+        //return sp.getString("userId", "-1");
+        return userId;
     }
     public static boolean identifyUser() {
         return identifyUser(getUserName(), getPassword());
@@ -69,5 +77,30 @@ public class Utils {
         } catch(JSONException e) {
             e.printStackTrace();
         }
+    }
+    public static HashMap<Integer, Knowledge.KnowledgeParameter> ownCardRemoteRecords = new HashMap<>();
+    public static HashMap<Integer, Knowledge.KnowledgeParameter> cardsInfoRemoteRecords = new HashMap<>();
+    static {
+        //TODO: This is dummy! Switch this to downloaded data.
+        ownCardRemoteRecords.put(0, new Knowledge.KnowledgeParameter(
+                0,
+                Subject.MAT,
+                "testFriendUnit",
+                R.drawable.tongyongm,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                "",
+                ""
+        ));
+    }
+    public static void loadAllCardsInfo() {
+
+    }
+    public static Knowledge.KnowledgeParameter getKnowledgeParameter(int ownCardId) {
+        return ownCardRemoteRecords.get(ownCardId);
     }
 }
