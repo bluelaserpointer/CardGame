@@ -1,6 +1,6 @@
 package com.example.myapplicationtest1.pageParts;
 
-import android.content.Context;
+import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,25 +19,31 @@ import com.example.myapplicationtest1.page.TeamPage;
 import com.example.myapplicationtest1.utils.Utils;
 
 public class TeamTableAdapter extends RecyclerView.Adapter<TeamTableAdapter.TeamTableLine> {
-    private final Context context;
+    private final Activity activity;
 
-    public TeamTableAdapter(Context context) {
-        this.context = context;
+    public TeamTableAdapter(Activity activity) {
+        this.activity = activity;
     }
     @NonNull
     @Override
     public TeamTableAdapter.TeamTableLine onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new TeamTableAdapter.TeamTableLine(LayoutInflater.from(context).inflate(R.layout.team_line, parent, false));
+        return new TeamTableAdapter.TeamTableLine(LayoutInflater.from(activity).inflate(R.layout.team_line, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull TeamTableAdapter.TeamTableLine holder, int position) {
+        //TODO: make it square
+        //final int itemHeight = activity.findViewById(R.id.teamTableContent).getMinimumWidth()/this.getItemCount();
+        final int itemHeight = 130;
         for(int i = 0; i < 5; ++i) {
+            ViewGroup.LayoutParams params = holder.itemView.getLayoutParams();
+            params.height = itemHeight;
+            holder.itemView.setLayoutParams(params);
             final int cardSetPos = position * this.getItemCount() + i;
             if(TeamPage.formation.containsKey(cardSetPos)) { //set button bg to card icon
                 System.out.println("TeamTableAdapter: found card at " + cardSetPos);
                 final Knowledge.KnowledgeParameter param = Utils.getKnowledgeParameter(TeamPage.formation.get(cardSetPos));
-                holder.buttons[i].setBackground(ContextCompat.getDrawable(context, param.drawableId));
+                holder.buttons[i].setBackground(ContextCompat.getDrawable(activity, param.drawableId));
             } else {
                 System.out.println("TeamTableAdapter: not found any card at " + cardSetPos);
             }
@@ -46,7 +52,7 @@ public class TeamTableAdapter extends RecyclerView.Adapter<TeamTableAdapter.Team
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     TeamPage.setOnEditPos(position*getItemCount() + finalI);
                     System.out.println("TeamTableAdapter: " + (position*getItemCount() + finalI));
-                    Page.jump(context, CardStoragePage.class);
+                    Page.jump(activity, CardStoragePage.class);
                 }
                 return false;
             });

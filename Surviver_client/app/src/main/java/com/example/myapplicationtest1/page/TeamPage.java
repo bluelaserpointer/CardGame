@@ -23,7 +23,6 @@ public class TeamPage extends Page {
         super.setJump(R.id.toGallery_Button, GalleryPage.class);
         super.setJump(R.id.return_button, HomePage.class);
         Utils.setUserTopBarInfo(this);
-
         //formation edit
         final RecyclerView teamTable = findViewById(R.id.teamTableContent);
         teamTable.setLayoutManager(new LinearLayoutManager(TeamPage.this));
