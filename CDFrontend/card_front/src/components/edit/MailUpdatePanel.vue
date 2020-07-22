@@ -224,10 +224,17 @@
       submitForm() {
         let postData = new FormData();
         let _this = this;
+
+        if(this.postForm.title === undefined || this.postForm.content === undefined || this.postForm.title === '' || this.postForm.content === '')
+        {
+          this.$message.error('Data From Invalid!');
+          return false;
+        }
+
         postData.append('mailId', this.updateContent.mailId);
         postData.append('mailImg', this.postForm.image_uri === undefined ? '' : this.postForm.image_uri);
-        postData.append('mailName', this.postForm.title === undefined ? '' : this.postForm.title);
-        postData.append('mailDescription', this.postForm.content === undefined ? '' : this.postForm.content);
+        postData.append('mailName', this.postForm.title);
+        postData.append('mailDescription', this.postForm.content);
 
         axios.post(`http://localhost:8080/mail/updateMail`, postData).then(response => {
           if (response.data) {

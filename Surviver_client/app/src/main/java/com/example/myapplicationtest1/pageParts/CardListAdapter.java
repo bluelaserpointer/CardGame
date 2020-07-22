@@ -2,6 +2,7 @@ package com.example.myapplicationtest1.pageParts;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -14,6 +15,8 @@ import com.example.myapplicationtest1.HttpClient;
 import com.example.myapplicationtest1.R;
 import com.example.myapplicationtest1.game.contents.unit.Knowledge;
 import com.example.myapplicationtest1.game.contents.unit.MyUnit;
+import com.example.myapplicationtest1.page.Page;
+import com.example.myapplicationtest1.page.TeamPage;
 import com.example.myapplicationtest1.utils.Utils;
 
 import org.json.JSONArray;
@@ -33,17 +36,17 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardLi
 
     public void fetch() {
         knowledgeParameters.clear();
-        System.out.println("!!!fetch " + "ownCard/getAllOwnCardsByUserId?userId=" + Utils.getUserName(context));
-        if(Utils.getUserName(context).equals("NOT_LOGGED")) {
+        System.out.println("!!!fetch " + "ownCard/getAllOwnCardsByUserId?userId=" + Utils.getUserId());
+        if(Utils.getUserName().equals("NOT_LOGGED")) {
             System.out.println("!!!CardListAdapter: not login");
             return;
         }
         try {
-            final JSONArray arr = new JSONArray(HttpClient.doGetShort("ownCard/getAllOwnCardsByUserId?userId=" + Utils.getUserName(context)));
+            final JSONArray arr = new JSONArray(HttpClient.doGetShort("ownCard/getAllOwnCardsByUserId?userId=" + Utils.getUserId()));
             for(int i = 0; i < arr.length(); ++i) {
                 final JSONObject object = arr.getJSONObject(i);
                 final int cardId = object.getInt("cardId");
-                knowledgeParameters.add(MyUnit.loadAsKnowledge("card/getCard?cardId=" + cardId));
+                knowledgeParameters.add(MyUnit.loadAsKnowledge(object.getInt("ownCardId"), "card/getCard?cardId=" + cardId));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -63,6 +66,16 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardLi
         holder.cardRarityTextView.setText("SSR");
         holder.cardLevelTextView.setText("Lv: " + 12 + "/" + 50);
         holder.cardExpTextView.setText("exp: " + 12 + "/" + 100);
+        holder.itemView.setOnTouchListener((v, motionEvent) -> {
+            v.performClick();
+            if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                if(TeamPage.getOnEditPos() != -1) {
+                    TeamPage.setFormationToOnEditPos(knowledgeParameters.get(position).ownCardId);
+                    Page.jump(context, TeamPage.class);
+                }
+            }
+            return false;
+        });
     }
 
     @Override

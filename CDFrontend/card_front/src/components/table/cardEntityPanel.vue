@@ -94,7 +94,7 @@
     </el-table>
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="panelVisible" top="5vh" class="editDialog">
-      <el-form ref="dataForm" :rules="rules" :model="temp" style="margin: auto 50px auto 50px; display:grid; grid-template-columns: 50% 50%; grid-column-gap: 10px" class="demo-form-inline">
+      <el-form ref="temp" :rules="rules" :model="temp" style="margin: auto 50px auto 50px; display:grid; grid-template-columns: 50% 50%; grid-column-gap: 10px" class="demo-form-inline">
         <el-form-item label="ID" prop="cardId" v-if="dialogStatus==='update'">
           <el-input v-model="temp.cardId" disabled />
         </el-form-item>
@@ -161,7 +161,7 @@
         <el-button class="cancelOuterButton" @click="panelVisible = false">
           Cancel
         </el-button>
-        <el-button class="confirmOuterButton" type="primary" @click="dialogStatus==='create'?createData():updateData()">
+        <el-button class="confirmOuterButton" type="primary" @click="dialogStatus==='create'?createData('temp'):updateData('temp')">
           Confirm
         </el-button>
       </div>
@@ -331,79 +331,97 @@ export default {
       this.dialogStatus = 'create';
       this.panelVisible = true;
       this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
+        this.$refs['temp'].clearValidate()
       })
     },
-    createData() {
-      const postData = new FormData();
+    createData(formName) {
       const _this = this;
-      postData.append('cardName', this.temp.cardName);
-      postData.append('rarity', this.temp.rarity);
-      postData.append('healthPoint', this.temp.healthPoint);
-      postData.append('attack', this.temp.attack);
-      postData.append('defense', this.temp.defense);
-      postData.append('attackRange', this.temp.attackRange);
-      postData.append('cd', this.temp.cd);
-      postData.append('speed', this.temp.speed);
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          const postData = new FormData();
+          postData.append('cardName', this.temp.cardName);
+          postData.append('rarity', this.temp.rarity);
+          postData.append('healthPoint', this.temp.healthPoint);
+          postData.append('attack', this.temp.attack);
+          postData.append('defense', this.temp.defense);
+          postData.append('attackRange', this.temp.attackRange);
+          postData.append('cd', this.temp.cd);
+          postData.append('speed', this.temp.speed);
 
-      postData.append('cardImg', this.temp.cardImg);
-      postData.append('cardDescription', this.temp.cardDescription);
-      postData.append('shortDescription', this.temp.shortDescription);
+          postData.append('cardImg', this.temp.cardImg);
+          postData.append('cardDescription', this.temp.cardDescription);
+          postData.append('shortDescription', this.temp.shortDescription);
+          console.log("Within createData");
+          axios.post(`http://localhost:8080/card/addCard`, postData).then(response => {
+            if (response.data) {
+              // TODO: SHORTEN THE REQUESTS
+              _this.getList();
+              _this.panelVisible = false;
+              _this.resetTemp();
+            }else {
+              this.$message.error('Creating Data failed!');
+            }
+          })
+            .catch(error =>
+              {
+                this.$message.error('Creating Data failed!');
+              }
+            );
+        } else {
+          this.$message.error('Form Invalid!');
+          return false;
+        }
+      });
 
-      axios.post(`http://localhost:8080/card/addCard`, postData).then(response => {
-        if (response.data) {
-          // TODO: SHORTEN THE REQUESTS
-          _this.getList();
-          _this.panelVisible = false;
-          _this.resetTemp();
-        }else {
-          this.$message.error('Creating Data failed!');
-        }
-      })
-      .catch(error =>
-        {
-          this.$message.error('Creating Data failed!');
-        }
-      );
+
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row); // copy obj
       this.dialogStatus = 'update';
       this.panelVisible = true;
       this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
+        this.$refs['temp'].clearValidate()
       })
     },
-    updateData() {
-      const postData = new FormData();
-      const _this = this;
-      postData.append('cardId', this.temp.cardId);
-      postData.append('cardName', this.temp.cardName);
-      postData.append('rarity', this.temp.rarity);
-      postData.append('healthPoint', this.temp.healthPoint);
-      postData.append('attack', this.temp.attack);
-      postData.append('defense', this.temp.defense);
-      postData.append('attackRange', this.temp.attackRange);
-      postData.append('cd', this.temp.cd);
-      postData.append('speed', this.temp.speed);
-      postData.append('cardImg', this.temp.cardImg);
-      postData.append('cardDescription', this.temp.cardDescription);
-      postData.append('shortDescription', this.temp.shortDescription);
+    updateData(formName) {
 
-      axios.post(`http://localhost:8080/card/updateCard`, postData).then(response => {
-        if(response.data) {
-          _this.getList();
-          _this.panelVisible = false;
-          _this.resetTemp();
-        }else {
-          this.$message.error('Updating Data failed!');
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          const postData = new FormData();
+          const _this = this;
+          postData.append('cardId', this.temp.cardId);
+          postData.append('cardName', this.temp.cardName);
+          postData.append('rarity', this.temp.rarity);
+          postData.append('healthPoint', this.temp.healthPoint);
+          postData.append('attack', this.temp.attack);
+          postData.append('defense', this.temp.defense);
+          postData.append('attackRange', this.temp.attackRange);
+          postData.append('cd', this.temp.cd);
+          postData.append('speed', this.temp.speed);
+          postData.append('cardImg', this.temp.cardImg);
+          postData.append('cardDescription', this.temp.cardDescription);
+          postData.append('shortDescription', this.temp.shortDescription);
+
+          axios.post(`http://localhost:8080/card/updateCard`, postData).then(response => {
+            if(response.data) {
+              _this.getList();
+              _this.panelVisible = false;
+              _this.resetTemp();
+            }else {
+              this.$message.error('Updating Data failed!');
+            }
+          })
+            .catch(error =>
+              {
+                this.$message.error('Updating Data failed!');
+              }
+            );
+        } else {
+          this.$message.error('Form Invalid!');
+          return false;
         }
-      })
-      .catch(error =>
-        {
-          this.$message.error('Updating Data failed!');
-        }
-      );
+      });
+
 
     },
 

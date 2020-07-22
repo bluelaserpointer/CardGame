@@ -141,10 +141,16 @@
         this.$refs.editor.setContent('');
       },
       submitForm() {
+        if(this.postForm.title === undefined || this.postForm.content === undefined || this.postForm.title === '' || this.postForm.content === '')
+        {
+          this.$message.error('Data From Invalid!');
+          return false;
+        }
+
         const postData = new FormData();
         postData.append('mailImg', this.postForm.image_uri === undefined ? '' : this.postForm.image_uri);
-        postData.append('mailName', this.postForm.title === undefined ? '' : this.postForm.title);
-        postData.append('mailDescription', this.postForm.content === undefined ? '' : this.postForm.content);
+        postData.append('mailName', this.postForm.title);
+        postData.append('mailDescription', this.postForm.content);
 
         axios.post(`http://localhost:8080/mail/addMail`, postData).then(response => {
           if (response.data) {

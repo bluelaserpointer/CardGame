@@ -23,7 +23,7 @@ import org.json.JSONException;
 
 public class ChapterListAdapter extends RecyclerView.Adapter <ChapterListAdapter.ChapterListViewHolder> {
     private final Context context;
-    class ChapterInfo {
+    static class ChapterInfo {
         int phaseAmount;
         int phaseType;
         public ChapterInfo(int phaseAmount, int phaseType) {

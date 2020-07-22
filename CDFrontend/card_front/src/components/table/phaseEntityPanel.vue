@@ -35,7 +35,7 @@
     </el-table>
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="panelVisible" top="5vh" class="editDialog">
-      <el-form ref="dataForm" :rules="rules" :model="temp" style="margin: auto 50px auto 50px; display:grid; grid-template-columns: 50% 50%; grid-column-gap: 10px" class="demo-form-inline">
+      <el-form ref="temp" :rules="rules" :model="temp" style="margin: auto 50px auto 50px; display:grid; grid-template-columns: 50% 50%; grid-column-gap: 10px" class="demo-form-inline">
         <el-form-item label="ID" prop="chapterId" v-if="dialogStatus==='update'">
           <el-input v-model="temp.chapterId" disabled />
         </el-form-item>
@@ -74,7 +74,7 @@
         <el-button class="cancelOuterButton" @click="panelVisible = false">
           Cancel
         </el-button>
-        <el-button class="confirmOuterButton" type="primary" @click="dialogStatus==='create'?createData():updateData()">
+        <el-button class="confirmOuterButton" type="primary" @click="dialogStatus==='create'?createData('temp'):updateData('temp')">
           Confirm
         </el-button>
       </div>
@@ -209,61 +209,77 @@
         this.dialogStatus = 'create';
         this.panelVisible = true;
         this.$nextTick(() => {
-          this.$refs['dataForm'].clearValidate()
+          this.$refs['temp'].clearValidate()
         })
       },
-      createData() {
-        const postData = new FormData();
-        const _this = this;
+      createData(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            const postData = new FormData();
+            const _this = this;
 
-        postData.append('phaseNo', this.temp.phaseNo);
-        postData.append('phaseType', this.temp.phaseType);
+            postData.append('phaseNo', this.temp.phaseNo);
+            postData.append('phaseType', this.temp.phaseType);
 
-        axios.post(`http://localhost:8080/chapter/addChapter`, postData).then(response => {
-          if (response.data) {
-            _this.list = response.data;
-            _this.panelVisible = false;
-            _this.resetTemp();
-          }else {
-            this.$message.error('Creating Data failed!');
+            axios.post(`http://localhost:8080/chapter/addChapter`, postData).then(response => {
+              if (response.data) {
+                _this.list = response.data;
+                _this.panelVisible = false;
+                _this.resetTemp();
+              }else {
+                this.$message.error('Creating Data failed!');
+              }
+            })
+              .catch(error =>
+                {
+                  this.$message.error('Creating Data failed!');
+                }
+              );
+          } else {
+            this.$message.error('Form Invalid!');
+            return false;
           }
-        })
-          .catch(error =>
-            {
-              this.$message.error('Creating Data failed!');
-            }
-          );
+        });
+
       },
       handleUpdate(row) {
         this.temp = Object.assign({}, row); // copy obj
         this.dialogStatus = 'update';
         this.panelVisible = true;
         this.$nextTick(() => {
-          this.$refs['dataForm'].clearValidate()
+          this.$refs['temp'].clearValidate()
         })
       },
-      updateData() {
-        const postData = new FormData();
-        const _this = this;
+      updateData(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            const postData = new FormData();
+            const _this = this;
 
-        postData.append('chapterId', this.temp.chapterId);
-        postData.append('phaseNo', this.temp.phaseNo);
-        postData.append('phaseType', this.temp.phaseType);
+            postData.append('chapterId', this.temp.chapterId);
+            postData.append('phaseNo', this.temp.phaseNo);
+            postData.append('phaseType', this.temp.phaseType);
 
-        axios.post(`http://localhost:8080/chapter/updateChapter`, postData).then(response => {
-          if (response.data) {
-            _this.list = response.data;
-            _this.panelVisible = false;
-            _this.resetTemp();
-          }else {
-            this.$message.error('Updating Data failed!');
+            axios.post(`http://localhost:8080/chapter/updateChapter`, postData).then(response => {
+              if (response.data) {
+                _this.list = response.data;
+                _this.panelVisible = false;
+                _this.resetTemp();
+              }else {
+                this.$message.error('Updating Data failed!');
+              }
+            })
+              .catch(error =>
+                {
+                  this.$message.error('Updating Data failed!');
+                }
+              );
+          } else {
+            this.$message.error('Form Invalid!');
+            return false;
           }
-        })
-          .catch(error =>
-            {
-              this.$message.error('Updating Data failed!');
-            }
-          );
+        });
+
       },
 
       sortChange(data) {

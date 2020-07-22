@@ -1,14 +1,12 @@
 package com.example.myapplicationtest1.page;
 
 import android.os.Bundle;
-import android.widget.Button;
 
-import com.example.myapplicationtest1.HttpClient;
 import com.example.myapplicationtest1.R;
 import com.example.myapplicationtest1.game.core.GHQ;
+import com.example.myapplicationtest1.utils.Utils;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 public class HomePage extends Page {
     @Override
@@ -22,21 +20,6 @@ public class HomePage extends Page {
         super.setJump(R.id.toAnnounce_button, AnnouncePage.class);
         super.setJump(R.id.toBag_button, TeamPage.class);
         GHQ.setResource(getResources());
-        //data fetch
-        try {
-            fetchData();
-        } catch(JSONException e) {
-            e.printStackTrace();
-        }
-    }
-    public void fetchData() throws JSONException {
-        // Fetching data of the current logged in user
-        //TODO: switch that to get userId from Utils.getUserId
-        //final JSONArray arr = new JSONArray(HttpClient.doGetShort("user/getUser?userId=" + Utils.getUserId(this)));
-        final JSONObject userInfo = new JSONObject(HttpClient.doGetShort("user/getUser?userId=0"));
-        // Sets the text of corresponding values
-        ((Button)findViewById(R.id.grade_button)).setText(userInfo.get("grade").toString());
-        ((Button)findViewById(R.id.stamina_button)).setText(userInfo.get("stamina").toString());
-        ((Button)findViewById(R.id.money_button)).setText(userInfo.get("money").toString());
+        Utils.setUserTopBarInfo(this);
     }
 }
