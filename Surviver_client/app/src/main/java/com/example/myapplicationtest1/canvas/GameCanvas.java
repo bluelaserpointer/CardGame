@@ -66,9 +66,10 @@ public class GameCanvas extends MyCanvas {
             //load friend formation
             //TODO: this is dummy!
             stage.addUnit(new Knowledge(new Knowledge.KnowledgeParameter(
+                    0,
                             Subject.MAT,
                     "testFriendUnit",
-                    ImageFrame.create(R.drawable.tongyongm),
+                    R.drawable.tongyongm,
                     100,
                     100,
                     100,

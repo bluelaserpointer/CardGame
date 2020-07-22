@@ -10,4 +10,5 @@
     <string name="toMission">任务</string>
     <string name="userLvUp">用户升级</string>
     <string name="battleResult">战斗结果</string>
+    <string name="buy_text">购买</string>
 </resources>
