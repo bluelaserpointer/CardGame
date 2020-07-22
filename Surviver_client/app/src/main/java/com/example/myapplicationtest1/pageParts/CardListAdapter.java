@@ -68,7 +68,7 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardLi
         holder.cardExpTextView.setText("exp: " + 12 + "/" + 100);
         holder.itemView.setOnTouchListener((v, motionEvent) -> {
             v.performClick();
-            if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
+            if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                 if(TeamPage.getOnEditPos() != -1) {
                     TeamPage.setFormationToOnEditPos(knowledgeParameters.get(position).ownCardId);
                     Page.jump(context, TeamPage.class);

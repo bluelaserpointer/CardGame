@@ -7,6 +7,7 @@ import android.widget.Button;
 
 import com.example.myapplicationtest1.HttpClient;
 import com.example.myapplicationtest1.R;
+import com.example.myapplicationtest1.game.contents.engine.Subject;
 import com.example.myapplicationtest1.game.contents.unit.Knowledge;
 
 import org.json.JSONException;
@@ -79,6 +80,23 @@ public class Utils {
     }
     public static HashMap<Integer, Knowledge.KnowledgeParameter> ownCardRemoteRecords = new HashMap<>();
     public static HashMap<Integer, Knowledge.KnowledgeParameter> cardsInfoRemoteRecords = new HashMap<>();
+    static {
+        //TODO: This is dummy! Switch this to downloaded data.
+        ownCardRemoteRecords.put(0, new Knowledge.KnowledgeParameter(
+                0,
+                Subject.MAT,
+                "testFriendUnit",
+                R.drawable.tongyongm,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                "",
+                ""
+        ));
+    }
     public static void loadAllCardsInfo() {
 
     }

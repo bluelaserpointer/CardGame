@@ -2,7 +2,11 @@ package com.example.myapplicationtest1.page;
 
 import android.os.Bundle;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.myapplicationtest1.R;
+import com.example.myapplicationtest1.pageParts.TeamTableAdapter;
 import com.example.myapplicationtest1.utils.Utils;
 
 import java.util.HashMap;
@@ -21,29 +25,31 @@ public class TeamPage extends Page {
         Utils.setUserTopBarInfo(this);
 
         //formation edit
-        super.setTouchEvent(R.id.button1_1, () -> jumpToSelectCard(0));
-        super.setTouchEvent(R.id.button1_2, () -> jumpToSelectCard(1));
-        super.setTouchEvent(R.id.button1_3, () -> jumpToSelectCard(2));
-        super.setTouchEvent(R.id.button1_4, () -> jumpToSelectCard(3));
-        super.setTouchEvent(R.id.button1_5, () -> jumpToSelectCard(4));
-    }
-    private void jumpToSelectCard(int onEditPos) {
-        TeamPage.onEditPos = onEditPos;
-        Page.jump(this, CardStoragePage.class);
+        final RecyclerView teamTable = findViewById(R.id.teamTableContent);
+        teamTable.setLayoutManager(new LinearLayoutManager(TeamPage.this));
+        teamTable.setAdapter(new TeamTableAdapter(TeamPage.this));
     }
     public static int getOnEditPos() {
         return onEditPos;
     }
+    public static int setOnEditPos(int pos) {
+        return onEditPos = pos;
+    }
     public static HashMap<Integer, Integer> formation = new HashMap<>();
     public static void setFormationToOnEditPos(int ownCardId) {
+        System.out.println("TeamPage: onEditPos(" + onEditPos + ")");
         for(Map.Entry<Integer, Integer> entry : formation.entrySet()) { //remove oldPosition
             if(entry.getValue().equals(ownCardId)) {
-                if(entry.getKey().equals(onEditPos)) //no effect edit
+                if(entry.getKey().equals(onEditPos)) { //no effect edit
+                    System.out.println("TeamPage: duplicated edit");
                     return;
+                }
+                System.out.println("TeamPage: moving the same at " + entry.getKey());
                 formation.remove(entry.getKey());
                 break;
             }
         }
+        System.out.println("TeamPage: set at " + onEditPos);
         formation.put(onEditPos, ownCardId);
         onEditPos = -1;
     }
