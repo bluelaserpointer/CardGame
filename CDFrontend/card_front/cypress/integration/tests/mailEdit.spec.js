@@ -34,7 +34,7 @@ context('MailEdit', () => {
 
     cy.get('.login-button').click();
 
-    cy.get('.hamburger').click();
+    // cy.get('.hamburger').click();
 
     cy.get(':nth-child(4) > .el-submenu > .el-submenu__title').click();
 
@@ -43,20 +43,20 @@ context('MailEdit', () => {
   });
 
   it('Mail Edit Invalid Form', () => {
-    cy.get('.el-button--success > span').click();
+    cy.get('.mailEditPublishButton').click();
     cy.get('.material-input')
       .type('Test Title');
-    cy.get('.el-button--success > span').click();
+    cy.get('.mailEditPublishButton').click();
     cy.get('iframe').its('0.contentDocument.body')
       .type('Test Content');
     cy.get('.material-input').clear();
-    cy.get('.el-button--success > span').click();
+    cy.get('.mailEditPublishButton').click();
   });
 
   it('Mail Edit Publish', () => {
     cy.get('.material-input')
       .type('Test Title');
-    cy.get('.el-button--success > span').click();
+    cy.get('.mailEditPublishButton').click();
 
   });
 
@@ -65,7 +65,7 @@ context('MailEdit', () => {
     cy.get(':nth-child(2) > .el-table_1_column_2 > .cell > .link-type').click();
     cy.get('.el-dialog__body > .el-form > .createPost-main-container > [style="grid-area: 1 / 1 / span 1 / span 2;"] > .el-col-24 > [style="margin-bottom: 40px;"] > .el-form-item__content > .material-input__component > div > .material-input')
       .clear();
-    cy.get('[data-v-6dc435d2=""][style="z-index: 10; height: 50px;"] > .sub-navbar > .el-button--success').click();
+    cy.get('.mailUpdatePublishButton').click();
     cy.get('.el-dialog__body > .el-form > .createPost-main-container > [style="grid-area: 1 / 1 / span 1 / span 2;"] > .el-col-24 > [style="margin-bottom: 40px;"] > .el-form-item__content > .material-input__component > div > .material-input')
       .type('New Title');
     // cy.get('iframe').its('0.contentDocument.body')
@@ -78,7 +78,7 @@ context('MailEdit', () => {
   it('Mail Update Normal', () => {
     // cy.get('iframe').its('0.contentDocument.body')
     //   .type('Test Content');
-    cy.get('[data-v-6dc435d2=""][style="z-index: 10; height: 50px;"] > .sub-navbar > .el-button--success').click();
+    cy.get('.mailUpdatePublishButton').click();
   });
 
   it('Mail Delete', () => {
