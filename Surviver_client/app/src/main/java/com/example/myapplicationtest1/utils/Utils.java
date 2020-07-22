@@ -60,23 +60,32 @@ public class Utils {
             return true;
         } else {
             loginFailReason = userId;
+            System.out.println("Utils: identification result: " + userId);
         }
         return false;
     }
-    /**
-     * Fetching data of the current logged in user
-     * @param activity current activity
-     */
-    public static void setUserTopBarInfo(Activity activity){
-        try{
-            final JSONObject userInfo = new JSONObject(HttpClient.doGetShort("user/getUser?userId=" + Utils.getUserId()));
-            // Sets the text of corresponding values
+    public static void setUserTopBarInfo(Activity activity, JSONObject userInfo) {
+        try {
             ((Button)activity.findViewById(R.id.grade_button)).setText(userInfo.get("grade").toString());
             ((Button)activity.findViewById(R.id.stamina_button)).setText(userInfo.get("stamina").toString());
             ((Button)activity.findViewById(R.id.money_button)).setText(userInfo.get("money").toString());
         } catch(JSONException e) {
             e.printStackTrace();
         }
+    }
+    /**
+     * Fetching data of the current logged in user
+     * @param activity current activity
+     */
+    public static void setUserTopBarInfo(Activity activity) {
+        try{
+            setUserTopBarInfo(activity, getUserInfo());
+        } catch(JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    public static JSONObject getUserInfo() throws JSONException {
+        return new JSONObject(HttpClient.doGetShort("user/getUser?userId=" + Utils.getUserId()));
     }
     public static HashMap<Integer, Knowledge.KnowledgeParameter> ownCardRemoteRecords = new HashMap<>();
     public static HashMap<Integer, Knowledge.KnowledgeParameter> cardsInfoRemoteRecords = new HashMap<>();

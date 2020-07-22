@@ -37,9 +37,9 @@ public class CardDaoImpl implements CardDao {
 
     public String addNewCard(String cardName, String rarity, Integer healthPoint, Integer attack, Integer defense,
             Integer attackRange, Double cd, Integer speed, String cardImg, String shortDescription,
-            String cardDescription) {
+            String cardDescription, Integer type) {
 
-        Card card = new Card(rarity, cardName, healthPoint, attack, defense, attackRange, cd, speed);
+        Card card = new Card(rarity, cardName, healthPoint, attack, defense, attackRange, cd, speed, type);
         // System.out.println("new Card has an Id of : " + n.getCardId());
         CardRepository.save(card);
         CardDetails cardDetails = new CardDetails(card.getCardId(), cardImg, shortDescription, cardDescription);
@@ -50,10 +50,10 @@ public class CardDaoImpl implements CardDao {
 
     public String updateCard(Integer cardId, String cardName, String rarity, Integer healthPoint, Integer attack,
             Integer defense, Integer attackRange, Double cd, Integer speed, String cardImg, String shortDescription,
-            String cardDescription) {
+            String cardDescription, Integer type) {
         Card card = CardRepository.getOne(cardId);
         // System.out.println("old Card has an Id of : " + n.getCardId());
-        card.setCard(rarity, cardName, healthPoint, attack, defense, attackRange, cd, speed);
+        card.setCard(rarity, cardName, healthPoint, attack, defense, attackRange, cd, speed, type);
 
         CardRepository.updateCardStatus(card, cardId);
         Optional<CardDetails> optCardDetails = CardDetailsRepository.findCardDetailsByCardIdEquals(cardId);

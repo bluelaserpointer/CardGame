@@ -3,6 +3,10 @@
 CDFrontend/.idea/vcs.xml
 CDFrontend/.idea/workspace.xml
 CDFrontend/card_front/tests/unit
+/CDBackend/demo/target/*
+Surviver_client/app/.classpath
+Surviver_client/app/.project
+Surviver_client/app/.settings/org.eclipse.buildship.core.prefs
 CDFrontend/card_front/cypress/integration/examples
 CDFrontend/card_front/lib
 CDFrontend/card_front/coverage/lcov-report

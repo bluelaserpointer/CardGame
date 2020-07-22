@@ -14,12 +14,12 @@ public interface CardDao {
         // void modifyStorage(Card Card);
 
         String addNewCard(String cardName, String rarity, Integer healthPoint, Integer attack, Integer defense,
-                          Integer attackRange, Double cd, Integer speed, String cardImg, String shortDescription,
-                          String cardDescription);
+                        Integer attackRange, Double cd, Integer speed, String cardImg, String shortDescription,
+                        String cardDescription, Integer type);
 
         String updateCard(Integer cardId, String cardName, String rarity, Integer healthPoint, Integer attack,
-                          Integer defense, Integer attackRange, Double cd, Integer speed, String cardImg,
-                          String shortDescription, String cardDescription);
+                        Integer defense, Integer attackRange, Double cd, Integer speed, String cardImg,
+                        String shortDescription, String cardDescription, Integer type);
 
         List<Card> getAllCards();
 
