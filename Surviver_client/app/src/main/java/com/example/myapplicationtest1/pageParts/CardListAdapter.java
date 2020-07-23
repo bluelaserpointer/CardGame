@@ -15,6 +15,7 @@ import com.example.myapplicationtest1.HttpClient;
 import com.example.myapplicationtest1.R;
 import com.example.myapplicationtest1.game.contents.unit.Knowledge;
 import com.example.myapplicationtest1.game.contents.unit.MyUnit;
+import com.example.myapplicationtest1.page.CardDetailPage;
 import com.example.myapplicationtest1.page.Page;
 import com.example.myapplicationtest1.page.TeamPage;
 import com.example.myapplicationtest1.utils.Utils;
@@ -72,6 +73,8 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardLi
                 if(TeamPage.getOnEditPos() != -1) {
                     TeamPage.setFormationToOnEditPos(knowledgeParameters.get(position).ownCardId);
                     Page.jump(context, TeamPage.class);
+                } else {
+                    Page.jump(context, CardDetailPage.class);
                 }
             }
             return false;

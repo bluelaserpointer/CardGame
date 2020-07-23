@@ -18,7 +18,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/return_button2"
+                android:id="@+id/return_button"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="15"
