@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "test:cov": "vue-cli-service test:unit --coverage",
-    "test:unit": "vue-cli-service test:unit --watch",
+    "test:watch": "vue-cli-service test:unit --watch",
+    "test:unit": "vue-cli-service test:unit",
     "lint": "eslint --ext .js,.vue src",
     "build:prod": "vue-cli-service build",
     "build:stage": "vue-cli-service build --mode staging",
