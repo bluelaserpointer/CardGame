@@ -84,6 +84,7 @@
   import waves from '@/directive/waves' // waves directive
   import Pagination from '@/components/Pagination/index'
   import axios from 'axios' // secondary package based on el-pagination
+  import request from '@/utils/request'
 
   export default {
     name: 'PhaseEntityPanel',
@@ -135,25 +136,36 @@
       } // untested
     },
     created() {
+
       this.getList()
     },
     methods: {
       getList() {
         console.log("In getList");
-        let _this = this;
-        axios.get('http://localhost:8080/chapter/getAllChapters')
-          .then(response => {
-            if(response.data) {
-              _this.list = response.data;
-            }else
-            {
-              this.$message.error('Fetching Data Failed!');
-            }
-          })
-          .catch(error =>
-          {
-            this.$message.error('Fetching Data Failed!');
-          });
+
+
+        console.log(
+          request({
+          url: '/chapter/getAllChapters',
+          method: 'get',
+        })
+        );
+
+
+        // let _this = this;
+        // axios.get('http://localhost:8080/chapter/getAllChapters')
+        //   .then(response => {
+        //     if(response.data) {
+        //       _this.list = response.data;
+        //     }else
+        //     {
+        //       this.$message.error('Fetching Data Failed!');
+        //     }
+        //   })
+        //   .catch(error =>
+        //   {
+        //     this.$message.error('Fetching Data Failed!');
+        //   });
       },
 
       confirmIdentity() {

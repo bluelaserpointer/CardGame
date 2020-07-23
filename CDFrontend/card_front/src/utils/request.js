@@ -19,8 +19,11 @@ service.interceptors.request.use(
       // let each request carry token
       // ['X-Token'] is a custom headers key
       // please modify it according to the actual situation
-      config.headers['X-Token'] = getToken()
+      config.headers['X-Token'] = getToken();
+      console.log("Within token-if");
     }
+    config.headers['Content-Type'] = 'Application/x-www-form-urlencoded;charset=UTF-8';
+
     console.log("Before sending request");
     console.log(config);
     return config
@@ -46,7 +49,8 @@ service.interceptors.response.use(
    */
   response => {
     const res = response.data;
-
+    console.log("Within response");
+    console.log(res);
     // if the custom code is not 20000, it is judged as an error.
     if (res.code !== 20000) {
       Message({

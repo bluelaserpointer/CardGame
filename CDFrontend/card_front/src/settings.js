@@ -1,5 +1,5 @@
 module.exports = {
-  title: 'Vue Element Admin',
+  title: 'SE Card Control Panel',
 
   /**
    * @type {boolean} true | false

@@ -36,7 +36,7 @@ const actions = {
       console.log("Within login inside modules/usr.js");
       console.log(commit);
       console.log(userInfo);
-      login({ username: username.trim(), password: password }).then(response => {
+      login({ adminName: username.trim(), password: password }).then(response => {
         const { data } = response;
         console.log("response");
         console.log(response);

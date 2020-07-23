@@ -4,15 +4,15 @@ export function login(data) {
   console.log('In api login');
   console.log(data);
 
-  console.log(request({
-    url: '/vue-element-admin/user/login',
-    method: 'post',
-    data
-  }));
+  const postData = new FormData();
+  console.log(data);
+  postData.append('adminName', 'admin1');
+  postData.append('password', '111111');
+
   return (request({
-    url: '/vue-element-admin/user/login',
+    url: '/admin/identifyAdmin',
     method: 'post',
-    data
+    postData
   }))
 }
 
