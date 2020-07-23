@@ -31,43 +31,15 @@ context('CardPanel', () => {
       .type('admin1');
 
     cy.get('.password-input')
-      .type('222222');
-
-    cy.get('.login-button').click();
-
-    cy.get('.username-input > .el-input__inner')
-      .clear();
-
-    cy.get('.password-input > .el-input__inner')
-      .clear();
-
-    cy.get('.username-input')
-      .type('admin999');
-
-    cy.get('.password-input')
       .type('111111');
 
     cy.get('.login-button').click();
 
-    cy.get('.username-input > .el-input__inner')
-      .clear();
-
-    cy.get('.password-input > .el-input__inner')
-      .clear();
-
-    cy.get('.username-input')
-      .type('admin1');
-
-    cy.get('.password-input')
-      .type('111111');
-
-    cy.get('.login-button').click();
-
-    cy.get('.hamburger').click();
+    // cy.get('.hamburger').click();
 
     cy.get(':nth-child(3) > .el-submenu > .el-submenu__title > .el-submenu__icon-arrow').click();
 
-    cy.get(':nth-child(4) > a > .el-menu-item').click();
+    cy.get(':nth-child(3) > .el-submenu > .el-menu > :nth-child(3) > a > .el-menu-item > span').click();
 
   });
 

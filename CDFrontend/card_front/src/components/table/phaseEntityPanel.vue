@@ -39,9 +39,6 @@
         <el-form-item label="ID" prop="chapterId" v-if="dialogStatus==='update'">
           <el-input v-model="temp.chapterId" disabled />
         </el-form-item>
-        <el-form-item label="ID" prop="chapterId" v-if="dialogStatus==='create'">
-          <el-input v-model="temp.chapterId" />
-        </el-form-item>
         <el-form-item label="PhaseCount" prop="phaseNo">
           <el-input v-model="temp.phaseNo" />
         </el-form-item>
@@ -142,6 +139,7 @@
     },
     methods: {
       getList() {
+        console.log("In getList");
         let _this = this;
         axios.get('http://localhost:8080/chapter/getAllChapters')
           .then(response => {
