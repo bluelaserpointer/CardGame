@@ -9,7 +9,7 @@ jobs:
   test_pull_request:
     runs-on: ubuntu-latest
     env:
-      working-directory: ../../CDFrontend/card_front
+      working-directory: ./CDFrontend/card_front
 
     steps:
       - uses: actions/checkout@v2
