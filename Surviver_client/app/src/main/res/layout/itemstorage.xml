@@ -160,14 +160,13 @@
                 android:layout_height="0dp"
                 android:layout_weight="1.5">
 
-                <EditText
-                    android:id="@+id/editTextTextPersonName"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:ems="10"
-                    android:inputType="textPersonName"
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="角色仓库界面"
-                    android:textColor="#FFFFFF" />
+                    android:textColor="@color/design_default_color_background"
+                    android:textSize="18sp" />
             </FrameLayout>
 
             <LinearLayout

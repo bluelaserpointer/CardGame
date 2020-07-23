@@ -1,6 +1,7 @@
 package com.example.myapplicationtest1.pageParts;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -61,15 +62,20 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardLi
 
     @Override
     public void onBindViewHolder(@NonNull CardListViewHolder holder, int position) {
+        ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
+        layoutParams.height = 500;
+        holder.itemView.setLayoutParams(layoutParams);
         final Knowledge.KnowledgeParameter params = knowledgeParameters.get(position);
         holder.cardImageView.setImageResource(R.drawable.greentmp);
         holder.cardNameTextView.setText(params.NAME);
         holder.cardRarityTextView.setText("SSR");
         holder.cardLevelTextView.setText("Lv: " + 12 + "/" + 50);
         holder.cardExpTextView.setText("exp: " + 12 + "/" + 100);
+        holder.itemView.setOnClickListener(v -> {}); //???I don't know why, but it helps itself receive more kinds of motionEvent.
         holder.itemView.setOnTouchListener((v, motionEvent) -> {
             v.performClick();
-            if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+            System.out.println("CardListAdapter: action: " + motionEvent.getAction());
+            if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
                 if(TeamPage.getOnEditPos() != -1) {
                     TeamPage.setFormationToOnEditPos(knowledgeParameters.get(position).ownCardId);
                     Page.jump(context, TeamPage.class);
