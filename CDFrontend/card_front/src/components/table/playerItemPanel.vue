@@ -183,6 +183,7 @@ export default {
     //   this.list = list
     // },
     formatDate(date){
+      console.log("In formatData");
       return moment(new Date(date)).format('YYYY-MM-DD HH:mm:ss');
     },
     getList() {
