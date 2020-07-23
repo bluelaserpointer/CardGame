@@ -6,47 +6,55 @@
     android:background="@drawable/unselected_tab"
     android:orientation="horizontal">
 
-    <ImageView
-        android:id="@+id/cardIcon"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="5"
-        app:srcCompat="@drawable/greentmp" />
-
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_weight="5"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/cardName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="-Not named-"
-            android:textSize="40sp" />
+        <ImageView
+            android:id="@+id/cardIcon"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:adjustViewBounds="true"
+            app:srcCompat="@drawable/greentmp" />
 
-        <TextView
-            android:id="@+id/cardRarity"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="UnknownRarity"
-            android:textSize="35sp" />
+            android:layout_gravity="center_vertical"
+            android:layout_weight="5"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/cardLevel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="UnknownLevel"
-            android:textSize="30sp" />
+            <TextView
+                android:id="@+id/cardName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="-Not named-"
+                android:textSize="40sp" />
 
-        <TextView
-            android:id="@+id/cardExp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="UnknownExp"
-            android:textSize="30sp" />
+            <TextView
+                android:id="@+id/cardRarity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="UnknownRarity"
+                android:textSize="35sp" />
+
+            <TextView
+                android:id="@+id/cardLevel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="UnknownLevel"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/cardExp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="UnknownExp"
+                android:textSize="30sp" />
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

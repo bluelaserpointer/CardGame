@@ -9,9 +9,10 @@
         <Button
             android:id="@+id/phase0"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@drawable/map_site"
-            android:text="Button" />
+            android:text="STAGE1"
+            android:textColor="@color/design_default_color_background" />
 
     </TableRow>
 
@@ -24,7 +25,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/map_site"
-            android:text="Button" />
+            android:text="STAGE2"
+            android:textColor="@color/design_default_color_background" />
     </TableRow>
 
     <TableRow
@@ -36,7 +38,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/map_site"
-            android:text="Button" />
+            android:text="STAGE3"
+            android:textColor="@color/design_default_color_background" />
 
     </TableRow>
 
@@ -49,7 +52,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/map_site"
-            android:text="Button" />
+            android:text="STAGE4"
+            android:textColor="@color/design_default_color_background" />
     </TableRow>
 
     <TableRow
