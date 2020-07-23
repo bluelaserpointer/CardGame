@@ -14,9 +14,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class Utils {
+    public static final double CLIENT_VERSION = 0.1;
+
     public static SharedPreferences sp;
     public static int userId;
     public static void setSharedPreference(Context context) {
