@@ -19,12 +19,12 @@ public class AdminServiceImpl implements AdminService {
         return AdminDao.getOneAdmin(AdminId);
     }
 
-    public String addNewAdmin(String adminName, String password, Integer role) {
-        return AdminDao.addNewAdmin(adminName, password, role);
+    public Admin addNewAdmin(Admin registerAdmin) {
+        return AdminDao.addNewAdmin(registerAdmin);
     }
 
-    public String updateAdmin(Integer AdminId, String adminName, String password, Integer role) {
-        return AdminDao.updateAdmin(AdminId, adminName, password, role);
+    public Admin updateAdmin(Admin updateAdmin) {
+        return AdminDao.updateAdmin(updateAdmin);
     }
 
     public List<Admin> getAllAdmins() {
@@ -39,8 +39,7 @@ public class AdminServiceImpl implements AdminService {
         return AdminDao.deleteAll();
     }
 
-
-    public boolean identifyAdmin(String adminName, String password){
+    public boolean identifyAdmin(String adminName, String password) {
         Admin fetchAdmin = AdminDao.getOneAdminByAdminName(adminName);
         System.out.println();
         System.out.println(fetchAdmin.getPassword());
@@ -51,7 +50,7 @@ public class AdminServiceImpl implements AdminService {
         return AdminDao.deleteAdmin(adminId);
     }
 
-    public List<String> getAllAdminNames(){
+    public List<String> getAllAdminNames() {
         return AdminDao.getAllAdminNames();
     };
 

@@ -49,7 +49,7 @@ public class UserController {
   // }
 
   @PostMapping("/register")
-  public @ResponseBody User identifyUser(@RequestBody User registerUser) {
+  public @ResponseBody User register(@RequestBody User registerUser) {
     return userService.addNewUser(registerUser.getUserName(), registerUser.getEmail(), registerUser.getPassword(),
         registerUser.getPhoneNumber());
   }

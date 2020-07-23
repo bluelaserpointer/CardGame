@@ -1,6 +1,6 @@
 package com.example.accessingdatamysql.entity;
 
-import java.util.Map;
+// import java.util.Map;
 
 import javax.persistence.*;
 
@@ -63,7 +63,7 @@ public class User {
         this.access = true;
         this.level = 1;
         this.curExpPoint = 0; // 初始时应该等级为1且经验值为0
-        // 这里需要确定一下每个等级的stamina是多少来确定初始化时的stamina值
+        // TODO 这里需要确定一下每个等级的stamina是多少来确定初始化时的stamina值
         this.money = 0;
         this.grade = 0.0;
         this.engKnowledge = 0;

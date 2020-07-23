@@ -21,22 +21,22 @@ public class AdminDaoImpl implements AdminDao {
         return AdminRepository.getOne(AdminId);
     }
 
-    public String addNewAdmin(String adminName, String password, Integer role) {
-        Admin Admin = new Admin(adminName, password, role);
+    public Admin addNewAdmin(Admin registerAdmin) {
+        Admin Admin = new Admin(registerAdmin.getAdminName(), registerAdmin.getPassword(), registerAdmin.getRole());
         // System.out.println("new Admin has an Id of : " + n.getAdminId());
         AdminRepository.save(Admin);
-        return "Saved Admin";
+        return Admin;
     }
 
-    public String updateAdmin(Integer AdminId, String adminName, String password, Integer role) {
+    public Admin updateAdmin(Admin updateAdmin) {
 
-        Admin Admin = AdminRepository.getOne(AdminId);
+        Admin Admin = AdminRepository.getOne(updateAdmin.getAdminId());
         // System.out.println("old Admin has an Id of : " + n.getAdminId());
-        Admin.setAdmin(adminName, password, role);
+        Admin.setAdmin(updateAdmin.getAdminName(), updateAdmin.getPassword(), updateAdmin.getRole());
 
-        AdminRepository.updateAdminStatus(Admin, AdminId);
+        AdminRepository.updateAdminStatus(Admin, updateAdmin.getAdminId());
         // return "Modified Admin";
-        return "modified Admin: " + Admin.getAdminName();
+        return Admin;
 
     }
 
@@ -57,7 +57,7 @@ public class AdminDaoImpl implements AdminDao {
         return "Deleted All Admins";
     }
 
-    public Admin getOneAdminByAdminName(String adminName){
+    public Admin getOneAdminByAdminName(String adminName) {
         System.out.println(adminName);
         System.out.println("In AdminDao");
         return AdminRepository.findAdminByAdminNameEquals(adminName);
@@ -68,19 +68,18 @@ public class AdminDaoImpl implements AdminDao {
         return getAllAdmins();
     }
 
-    public List<String> getAllAdminNames(){
+    public List<String> getAllAdminNames() {
         List<Admin> adminList = AdminRepository.findAll();
-        List<String> nameList = new LinkedList<>();;
-        for(int i = 0; i < adminList.size(); i++)
-        {
+        List<String> nameList = new LinkedList<>();
+        ;
+        for (int i = 0; i < adminList.size(); i++) {
             nameList.add(adminList.get(i).getAdminName());
         }
         System.out.println(nameList);
         return nameList;
     };
 
-    public Integer getAdminRole(String adminName)
-    {
+    public Integer getAdminRole(String adminName) {
         return AdminRepository.findAdminByAdminNameEquals(adminName).getRole();
     }
 }

@@ -9,9 +9,9 @@ import com.example.accessingdatamysql.entity.*;
 public interface AdminDao {
         Admin getOneAdmin(Integer AdminId);
 
-        String addNewAdmin(String adminName, String password, Integer role);
+        Admin addNewAdmin(Admin registerAdmin);
 
-        String updateAdmin(Integer AdminId, String adminName, String password, Integer role);
+        Admin updateAdmin(Admin updateAdmin);
 
         List<Admin> getAllAdmins();
 
