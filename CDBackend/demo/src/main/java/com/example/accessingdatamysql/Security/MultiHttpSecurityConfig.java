@@ -28,6 +28,17 @@ import static com.example.accessingdatamysql.Security.SecurityConstants.SIGN_UP_
 @EnableWebSecurity
 public class MultiHttpSecurityConfig {
 
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        try {
+            auth.inMemoryAuthentication().withUser("user").password("password").roles("USER").and().withUser("admin")
+                    .password("password").roles("USER", "ADMIN");
+        } catch (Exception ex) {
+            throw ex;
+        }
+
+    }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return NoOpPasswordEncoder.getInstance();
@@ -35,7 +46,7 @@ public class MultiHttpSecurityConfig {
 
     // 先验证他是不是玩家
     @Configuration
-    @Order(1)
+    @Order(3)
     public static class UserWebSecurity extends WebSecurityConfigurerAdapter {
         @Autowired
         private UserDetailsServiceImpl userDetailsService;
@@ -43,10 +54,11 @@ public class MultiHttpSecurityConfig {
         @Autowired
         private JwtUserFilter jwtFilter;
 
+        @Override
         protected void configure(HttpSecurity http) throws Exception {
             http.cors().and().csrf().disable().authorizeRequests().antMatchers(HttpMethod.POST, "/user/register")
-                    .permitAll().antMatchers(HttpMethod.POST, "/user/identifyUser").permitAll().anyRequest()
-                    .authenticated().and().exceptionHandling().and()
+                    .permitAll().antMatchers(HttpMethod.POST, "/user/identifyUser").permitAll().and()
+                    .exceptionHandling().and()
                     // .addFilter(new JWTAuthenticationFilter(authenticationManager()))
                     // .addFilter(new JWTAuthorizationFilter(authenticationManager()))
                     // // this disables session creation on Spring Security
@@ -78,7 +90,7 @@ public class MultiHttpSecurityConfig {
 
     // 再验证是否是admin
     @Configuration
-    @Order(2)
+    @Order(4)
     public static class AdminWebSecurity extends WebSecurityConfigurerAdapter {
         @Autowired
         private AdminDetailsServiceImpl adminDetailsService;
@@ -111,6 +123,12 @@ public class MultiHttpSecurityConfig {
         @Override
         public void configure(AuthenticationManagerBuilder auth) throws Exception {
             auth.userDetailsService(adminDetailsService);
+        }
+
+        @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
+        @Override
+        public AuthenticationManager authenticationManagerBean() throws Exception {
+            return super.authenticationManagerBean();
         }
 
         // @Bean
