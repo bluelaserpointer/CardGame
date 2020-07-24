@@ -313,6 +313,11 @@
               <span>{{ row.speed }}</span>
             </template>
           </el-table-column>
+          <el-table-column label="Type" class-name="status-col" width="100">
+            <template slot-scope="{row}">
+              <span>{{ row.type }}</span>
+            </template>
+          </el-table-column>
           <el-table-column label="Cover" min-width="100px">
             <template slot-scope="{row}">
               <el-image

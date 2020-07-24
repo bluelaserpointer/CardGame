@@ -17,7 +17,7 @@ describe('CardEntityPanel.vue', () => {
       localVue
     });
 
-  it('Card Entity Panel Nulls created',  async () => {
+  it('Card Entity Panel Nulls created',   async () => {
     expect(wrapper.vm.list).toStrictEqual(null);
     expect(axios.get).toHaveBeenCalledTimes(1);
     expect(axios.get).toBeCalledWith('http://localhost:8080/card/getAllCards');
@@ -51,13 +51,13 @@ describe('CardEntityPanel.vue', () => {
 
   it('Card Entity Panel Nulls createData', async () => {
     wrapper.vm.panelVisible = true;
-    await wrapper.vm.createData();
+    await wrapper.vm.createData('temp');
     expect(wrapper.vm.panelVisible).toBeTruthy();
   });
 
   it('Card Entity Panel Nulls updateData', async () => {
     wrapper.vm.panelVisible = true;
-    await wrapper.vm.updateData();
+    await wrapper.vm.updateData('temp');
     expect(wrapper.vm.panelVisible).toBeTruthy();
   });
 

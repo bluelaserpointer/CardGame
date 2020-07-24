@@ -7,7 +7,14 @@ jest.mock('axios', () => ({
       email: '1',
       credits: 1,
       access: true,
-      level: 1
+      level: 1,
+      curExpPoint: 1,
+      stamina: 1,
+      money: 1,
+      grade: 1.0,
+      engKnowledge: 1,
+      mathKnowledge: 1,
+      chiKnowledge: 1
     }]})),
   post: jest.fn(() => Promise.resolve({data: true}))
 }));
@@ -21,10 +28,13 @@ const localVue = createLocalVue();
 localVue.use(Element);
 
 describe('PlayerEntityPanel.vue', () => {
-  const wrapper = mount(PlayerEntityPanel,
-    {
-      localVue
-    });
+  let wrapper;
+  beforeEach(() => {
+    wrapper = shallowMount(PlayerEntityPanel,
+      {
+        localVue
+      });
+  });
 
   it('Player Entity Panel Resolves created',  async () => {
     expect(wrapper.vm.list).toStrictEqual([{
@@ -35,7 +45,14 @@ describe('PlayerEntityPanel.vue', () => {
       email: '1',
       credits: 1,
       access: true,
-      level: 1
+      level: 1,
+      curExpPoint: 1,
+      stamina: 1,
+      money: 1,
+      grade: 1.0,
+      engKnowledge: 1,
+      mathKnowledge: 1,
+      chiKnowledge: 1
     }]);
     expect(axios.get).toHaveBeenCalledTimes(1);
     expect(axios.get).toBeCalledWith('http://localhost:8080/user/getAllUsers');
@@ -53,7 +70,14 @@ describe('PlayerEntityPanel.vue', () => {
       email: '1',
       credits: 1,
       access: true,
-      level: 1
+      level: 1,
+      curExpPoint: 1,
+      stamina: 1,
+      money: 1,
+      grade: 1.0,
+      engKnowledge: 1,
+      mathKnowledge: 1,
+      chiKnowledge: 1
     }]);
     expect(axios.get).toHaveBeenCalledTimes(2);
     expect(axios.get).toBeCalledWith('http://localhost:8080/user/getAllUsers');
@@ -92,7 +116,14 @@ describe('PlayerEntityPanel.vue', () => {
       email: '1',
       credits: 1,
       access: true,
-      level: 1
+      level: 1,
+      curExpPoint: 1,
+      stamina: 1,
+      money: 1,
+      grade: 1.0,
+      engKnowledge: 1,
+      mathKnowledge: 1,
+      chiKnowledge: 1
     };
 
     wrapper.vm.resetTemp();
@@ -105,7 +136,14 @@ describe('PlayerEntityPanel.vue', () => {
         email: '',
         credits: 0,
         access: true,
-        level: 0
+        level: 0,
+        curExpPoint: 0,
+        stamina: 0,
+        money: 0,
+        grade: 0.0,
+        engKnowledge: 0,
+        mathKnowledge: 0,
+        chiKnowledge: 0
       }
     );
   });
@@ -129,12 +167,12 @@ describe('PlayerEntityPanel.vue', () => {
   });
 
   it('Player Entity Panel Resolves createData', async () => {
-    await wrapper.vm.createData();
+    await wrapper.vm.createData('temp');
     expect(wrapper.vm.panelVisible).toBeFalsy();
   });
 
   it('Player Entity Panel Resolves updateData', async () => {
-    await wrapper.vm.updateData();
+    await wrapper.vm.updateData('temp');
     expect(wrapper.vm.panelVisible).toBeFalsy();
   });
 

@@ -3,7 +3,7 @@
   "plugins": ["istanbul"],
   "env": {
     "test": {
-      "plugins": [ "istanbul" ]
+      "plugins": [ "istanbul", "@babel/plugin-transform-runtime" ]
     }
   }
 }

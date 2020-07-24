@@ -12,10 +12,13 @@ const localVue = createLocalVue();
 localVue.use(Element);
 
 describe('PlayerEntityPanel.vue', () => {
-  const wrapper = mount(PlayerEntityPanel,
-    {
-      localVue
-    });
+  let wrapper;
+  beforeEach(() => {
+    wrapper = shallowMount(PlayerEntityPanel,
+      {
+        localVue
+      });
+  });
 
   it('Player Entity Panel Nulls created',  async () => {
     expect(wrapper.vm.list).toStrictEqual(null);
@@ -34,12 +37,12 @@ describe('PlayerEntityPanel.vue', () => {
 
   it('Player Entity Panel Nulls createData', async () => {
     wrapper.vm.panelVisible = true;
-    await wrapper.vm.createData();
+    await wrapper.vm.createData('temp');
     expect(wrapper.vm.panelVisible).toBeTruthy();
   });
 
   it('Player Entity Panel Nulls updateData', async () => {
-    await wrapper.vm.updateData();
+    await wrapper.vm.updateData('temp');
     expect(wrapper.vm.panelVisible).toBeTruthy();
   });
 
