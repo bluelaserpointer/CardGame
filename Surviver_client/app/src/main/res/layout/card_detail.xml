@@ -18,7 +18,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/return_button2"
+                android:id="@+id/return_button"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="15"
@@ -158,13 +158,15 @@
                             android:id="@+id/addHP"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1" />
+                            android:layout_weight="1"
+                            android:background="@drawable/upgrade_button" />
 
                         <Button
                             android:id="@+id/subHP"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1" />
+                            android:layout_weight="1"
+                            android:background="@drawable/downgrade_button" />
                     </TableRow>
 
                     <TableRow
@@ -193,13 +195,15 @@
                             android:id="@+id/addATK"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1" />
+                            android:layout_weight="1"
+                            android:background="@drawable/upgrade_button" />
 
                         <Button
                             android:id="@+id/subATK"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1" />
+                            android:layout_weight="1"
+                            android:background="@drawable/downgrade_button" />
 
                     </TableRow>
 
@@ -229,13 +233,15 @@
                             android:id="@+id/addDEF"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1" />
+                            android:layout_weight="1"
+                            android:background="@drawable/upgrade_button" />
 
                         <Button
                             android:id="@+id/subDEF"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1" />
+                            android:layout_weight="1"
+                            android:background="@drawable/downgrade_button" />
                     </TableRow>
 
                     <TableRow
@@ -264,13 +270,15 @@
                             android:id="@+id/addATKRange"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1" />
+                            android:layout_weight="1"
+                            android:background="@drawable/upgrade_button" />
 
                         <Button
                             android:id="@+id/subATKRange"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1" />
+                            android:layout_weight="1"
+                            android:background="@drawable/downgrade_button" />
 
                     </TableRow>
 
@@ -300,13 +308,15 @@
                             android:id="@+id/addCD"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1" />
+                            android:layout_weight="1"
+                            android:background="@drawable/upgrade_button" />
 
                         <Button
                             android:id="@+id/subCD"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1" />
+                            android:layout_weight="1"
+                            android:background="@drawable/downgrade_button" />
                     </TableRow>
 
                 </TableLayout>

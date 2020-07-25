@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplicationtest1.R;
 import com.example.myapplicationtest1.pageParts.ChapterListAdapter;
+import com.example.myapplicationtest1.utils.Utils;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -21,13 +22,6 @@ public class MapPage extends Page {
         final RecyclerView chapterRecyclerView = findViewById(R.id.chapterList);
         chapterRecyclerView.setLayoutManager(new LinearLayoutManager(MapPage.this));
         chapterRecyclerView.setAdapter(new ChapterListAdapter(MapPage.this));
-
-        final View mapSelector = findViewById(R.id.mapSelector);
-        new Timer().schedule(new TimerTask() {
-            public void run() {
-                if(mapSelector != null)
-                    mapSelector.invalidate();
-            }
-        },200,50);
+        Utils.setUserTopBarInfo(this);
     }
 }

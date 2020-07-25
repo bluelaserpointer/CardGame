@@ -70,12 +70,16 @@ public class ChapterListAdapter extends RecyclerView.Adapter <ChapterListAdapter
 
     @Override
     public void onBindViewHolder(@NonNull ChapterListViewHolder holder, int position) {
+        ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
+        layoutParams.height = 600;
+        holder.itemView.setLayoutParams(layoutParams);
         //设置外貌
         holder.chapterNameTextView.setText("第" + (position + 1) + "章");
         //添加点击后切换地图事件
+        holder.itemView.setOnClickListener(v -> {}); //???I don't know why, but it helps itself receive more kinds of motionEvent.
         holder.itemView.setOnTouchListener((view, motionEvent) -> {
             view.performClick();
-            if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+            if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
                 System.out.println("ChapterListAdapter: clicked chapter is " + position);
                 TableLayout layout;
                 final FrameLayout mapContent = ((Activity)context).findViewById(R.id.mapContent);
