@@ -86,6 +86,7 @@
   import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from '../../views/example/components/Dropdown'
   import axios from 'axios'
   import moment from "moment";
+  import request from "@/utils/request"; // secondary package based on el-pagination
 
   const defaultForm = {
     status: 'draft',
@@ -192,25 +193,49 @@
         let _this = this;
         postData.append('adminName', localStorage.getItem('AdminName'));
         postData.append('password', this.confirmPassword);
-        axios.post('http://localhost:8080/admin/identifyAdmin', postData)
-          .then(response => {
-            if (response.data) {
-              _this.confirmDelete = true
-            } else {
-              this.$message.error('Identification failed!');
-            }
-          })
+
+        request({
+          url: '/admin/identifyAdmin',
+          method: 'post',
+          data: postData
+        }).then(response => {
+          if (response.data) {
+            _this.confirmDelete = true
+          } else {
+            this.$message.error('Identification failed!');
+          }
+        })
           .catch(error =>
             {
               this.$message.error('Identification failed!');
             }
           );
+
+
+        // axios.post('http://localhost:8080/admin/identifyAdmin', postData)
+        //   .then(response => {
+        //     if (response.data) {
+        //       _this.confirmDelete = true
+        //     } else {
+        //       this.$message.error('Identification failed!');
+        //     }
+        //   })
+        //   .catch(error =>
+        //     {
+        //       this.$message.error('Identification failed!');
+        //     }
+        //   );
       },
       deleteData() {
         let postData = new FormData();
         let _this = this;
         postData.append('activityId', this.updateContent.activityId);
-        axios.post('http://localhost:8080/activity/deleteActivity', postData).then(response => {
+
+        request({
+          url: '/activity/deleteActivity',
+          method: 'post',
+          data: postData
+        }).then(response => {
           if (response.data) {
             _this.deleteVisible = false;
             _this.$emit('getList');
@@ -223,6 +248,20 @@
               this.$message.error('Deleting Data failed!');
             }
           );
+
+        // axios.post('http://localhost:8080/activity/deleteActivity', postData).then(response => {
+        //   if (response.data) {
+        //     _this.deleteVisible = false;
+        //     _this.$emit('getList');
+        //   } else {
+        //     this.$message.error('Deleting Data failed!');
+        //   }
+        // })
+        //   .catch(error =>
+        //     {
+        //       this.$message.error('Deleting Data failed!');
+        //     }
+        //   );
       },
       submitForm() {
         let postData = new FormData();
@@ -249,7 +288,12 @@
 
         postData.append('type', this.limit === true ? "true" : "false");
 
-        axios.post(`http://localhost:8080/activity/updateActivity`, postData).then(response => {
+
+        request({
+          url: '/activity/updateActivity',
+          method: 'post',
+          data: postData
+        }).then(response => {
           if (response.data) {
             //
             _this.$emit('getList');
@@ -263,6 +307,21 @@
               this.$message.error('Updating Data failed!');
             }
           );
+
+        // axios.post(`http://localhost:8080/activity/updateActivity`, postData).then(response => {
+        //   if (response.data) {
+        //     //
+        //     _this.$emit('getList');
+        //   } else {
+        //     //
+        //     this.$message.error('Updating Data failed!');
+        //   }
+        // })
+        //   .catch(error =>
+        //     {
+        //       this.$message.error('Updating Data failed!');
+        //     }
+        //   );
       },
       delayDate(days){
         let newDate = new Date();

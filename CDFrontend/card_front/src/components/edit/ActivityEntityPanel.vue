@@ -67,6 +67,7 @@ import Pagination from '@/components/Pagination/index'
 import axios from 'axios'
 import moment from "moment"; // secondary package based on el-pagination
 import ActivityUpdatePanel from "@/components/edit/ActivityUpdatePanel";
+import request from "@/utils/request"; // secondary package based on el-pagination
 
 export default {
   name: 'ActivityEntityPanel',
@@ -145,8 +146,11 @@ export default {
       this.list = list;
     },
     getList() {
-      axios.get('http://localhost:8080/activity/getAllActivities')
-        .then(response => {
+
+      request({
+        url: '/activity/getAllActivities',
+        method: 'get',
+      }).then(response => {
         if(response.data) {
           this.panelVisible = false;
           this.list = response.data;
@@ -160,6 +164,22 @@ export default {
         {
           this.$message.error('Fetching Data Failed!');
         });
+
+      // axios.get('http://localhost:8080/activity/getAllActivities')
+      //   .then(response => {
+      //   if(response.data) {
+      //     this.panelVisible = false;
+      //     this.list = response.data;
+      //     this.watchList();
+      //   }else
+      //   {
+      //     this.$message.error('Fetching Data Failed!');
+      //   }
+      // })
+      //   .catch(error =>
+      //   {
+      //     this.$message.error('Fetching Data Failed!');
+      //   });
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row); // copy obj

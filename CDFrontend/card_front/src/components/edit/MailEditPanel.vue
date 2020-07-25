@@ -47,6 +47,7 @@
   import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from '../../views/example/components/Dropdown'
   import axios from 'axios'
   import moment from "moment";
+  import request from "@/utils/request"; // secondary package based on el-pagination
 
   const defaultForm = {
     status: 'draft',
@@ -152,7 +153,12 @@
         postData.append('mailName', this.postForm.title);
         postData.append('mailDescription', this.postForm.content);
 
-        axios.post(`http://localhost:8080/mail/addMail`, postData).then(response => {
+
+        request({
+          url: '/mail/addMail',
+          method: 'post',
+          data: postData
+        }).then(response => {
           if (response.data) {
             //
             this.resetArticle();
@@ -165,6 +171,20 @@
               this.$message.error('Publishing Mail failed!');
             }
           );
+
+        // axios.post(`http://localhost:8080/mail/addMail`, postData).then(response => {
+        //   if (response.data) {
+        //     //
+        //     this.resetArticle();
+        //   } else {
+        //     this.$message.error('Publishing Mail failed!');
+        //   }
+        // })
+        //   .catch(error =>
+        //     {
+        //       this.$message.error('Publishing Mail failed!');
+        //     }
+        //   );
 
       },
 

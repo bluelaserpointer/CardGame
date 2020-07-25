@@ -76,6 +76,7 @@ import Warning from './Warning'
 import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from '../../views/example/components/Dropdown'
 import axios from 'axios'
 import moment from "moment";
+import request from "@/utils/request"; // secondary package based on el-pagination
 
 const defaultForm = {
   status: 'draft',
@@ -198,7 +199,11 @@ export default {
 
       postData.append('type', this.limit === true ? "true" : "false");
 
-      axios.post(`http://localhost:8080/activity/addActivity`, postData).then(response => {
+      request({
+        url: '/activity/addActivity',
+        method: 'post',
+        data: postData
+      }).then(response => {
         if (response.data) {
           //
           this.resetArticle();
@@ -206,11 +211,25 @@ export default {
           this.$message.error('Publishing Activity failed!');
         }
       })
-      .catch(error =>
-        {
-          this.$message.error('Publishing Activity failed!');
-        }
-      );
+        .catch(error =>
+          {
+            this.$message.error('Publishing Activity failed!');
+          }
+        );
+
+      // axios.post(`http://localhost:8080/activity/addActivity`, postData).then(response => {
+      //   if (response.data) {
+      //     //
+      //     this.resetArticle();
+      //   } else {
+      //     this.$message.error('Publishing Activity failed!');
+      //   }
+      // })
+      // .catch(error =>
+      //   {
+      //     this.$message.error('Publishing Activity failed!');
+      //   }
+      // );
     },
     uploadCover() {
       const _this = this;

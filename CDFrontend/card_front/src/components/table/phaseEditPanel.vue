@@ -331,6 +331,7 @@
 import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination/index'
 import axios from 'axios' // secondary package based on el-pagination
+import request from '@/utils/request'
 
 export default {
   name: 'PhaseEditPanel',
@@ -559,29 +560,66 @@ export default {
         }
       }
 
-
-
-      axios.post('http://localhost:8080/chapter/getChapterDetailsByChapter', postData).then(response => {
+      request({
+        url: '/chapter/getChapterDetailsByChapter',
+        method: 'post',
+        data: postData
+      }).then(response => {
         if (response.data) {
 
           _this.chapterData = response.data;
           // console.log(response.data);
-          axios.post('http://localhost:8080/chapter/getChapterPhasesByChapter', postData).then(res => {
+
+          request({
+            url: '/chapter/getChapterPhasesByChapter',
+            method: 'post',
+            data: postData
+          }).then(res => {
             console.log(res.data);
-              _this.chapterPhaseData = res.data;
-              _this.handleRefreshPhase(1);
+            _this.chapterPhaseData = res.data;
+            _this.handleRefreshPhase(1);
           })
+
+          // axios.post('http://localhost:8080/chapter/getChapterPhasesByChapter', postData).then(res => {
+          //   console.log(res.data);
+          //   _this.chapterPhaseData = res.data;
+          //   _this.handleRefreshPhase(1);
+          // })
           // .catch(error => {
           //   this.$message.error('Fetching ChapterPhases Failed!');
           // });
 
-        }else{
+        } else {
           // this.$message.error('Fetching Data Failed!');
         }
-      })
-      .catch(error => {
+      }).catch(error => {
         this.$message.error('Fetching ChapterDetails Failed!');
       });
+
+
+      // axios.post('http://localhost:8080/chapter/getChapterDetailsByChapter', postData).then(response => {
+      //   if (response.data) {
+      //
+      //     _this.chapterData = response.data;
+      //     // console.log(response.data);
+      //     axios.post('http://localhost:8080/chapter/getChapterPhasesByChapter', postData).then(res => {
+      //       console.log(res.data);
+      //         _this.chapterPhaseData = res.data;
+      //         _this.handleRefreshPhase(1);
+      //     })
+      //     // .catch(error => {
+      //     //   this.$message.error('Fetching ChapterPhases Failed!');
+      //     // });
+      //
+      //   }else{
+      //     // this.$message.error('Fetching Data Failed!');
+      //   }
+      // })
+      // .catch(error => {
+      //   this.$message.error('Fetching ChapterDetails Failed!');
+      // });
+
+
     },
 
     handleChangePhase() {
@@ -637,7 +675,12 @@ export default {
       postData.append('chapterId', this.currChapter);
       postData.append('phaseId', this.currPhase);
       postData.append('phaseData', JSON.stringify(chapterPhaseData));
-      axios.post(`http://localhost:8080/chapter/updateChapter`, postData).then(response => {
+
+      request({
+        url: '/chapter/updateChapte',
+        method: 'post',
+        data: postData
+      }).then(response => {
         if (response.data) {
           _this.chapterData = response.data
         }else{
@@ -648,6 +691,18 @@ export default {
         .catch(error => {
           this.$message.error('Updating Data Failed!');
         })
+
+      // axios.post(`http://localhost:8080/chapter/updateChapter`, postData).then(response => {
+      //   if (response.data) {
+      //     _this.chapterData = response.data
+      //   }else{
+      //     this.$message.error('Updating Data Failed!');
+      //   }
+      //   this.handleRefreshPhase(this.currPhase)
+      // })
+      //   .catch(error => {
+      //     this.$message.error('Updating Data Failed!');
+      //   })
     },
 
     transObjToMap(arr)
@@ -670,7 +725,11 @@ export default {
       postData.append('awardItems', JSON.stringify(this.transObjToMap(this.chapterAwardItems)));
       postData.append('awardCards', JSON.stringify(this.chapterAwardCards));
 
-      axios.post(`http://localhost:8080/chapter/updateChapterAwards`, postData).then(response => {
+      request({
+        url: '/chapter/updateChapterAwards',
+        method: 'post',
+        data: postData
+      }).then(response => {
         if (response.data) {
           this.chapterList = response.data;
         }else{
@@ -680,7 +739,19 @@ export default {
       })
         .catch(error => {
           this.$message.error('Updating Data Failed!');
-        })
+        });
+
+      // axios.post(`http://localhost:8080/chapter/updateChapterAwards`, postData).then(response => {
+      //   if (response.data) {
+      //     this.chapterList = response.data;
+      //   }else{
+      //     this.$message.error('Updating Data Failed!');
+      //   }
+      //   this.handleRefreshPhase(this.currPhase)
+      // })
+      //   .catch(error => {
+      //     this.$message.error('Updating Data Failed!');
+      //   })
     },
 
     handlePhaseAwardConfirm(){
@@ -696,7 +767,12 @@ export default {
       postData.append('awardItems', JSON.stringify(this.transObjToMap(this.phaseAwardItems)));
       postData.append('awardCards', JSON.stringify(this.phaseAwardCards));
 
-      axios.post(`http://localhost:8080/chapter/updateChapterPhaseAwards`, postData).then(response => {
+
+      request({
+        url: '/chapter/updateChapterPhaseAwards',
+        method: 'post',
+        data: postData
+      }).then(response => {
         if (response.data) {
           this.chapterPhaseData = response.data;
         }else{
@@ -707,22 +783,57 @@ export default {
         .catch(error => {
           this.$message.error('Updating Data Failed!');
         })
+
+      // axios.post(`http://localhost:8080/chapter/updateChapterPhaseAwards`, postData).then(response => {
+      //   if (response.data) {
+      //     this.chapterPhaseData = response.data;
+      //   }else{
+      //     this.$message.error('Updating Data Failed!');
+      //   }
+      //   this.handleRefreshPhase(this.currPhase)
+      // })
+      //   .catch(error => {
+      //     this.$message.error('Updating Data Failed!');
+      //   })
     },
 
 
 
 
     getList() {
-      axios.get('http://localhost:8080/chapter/getAllChapters').then(response => {
+
+      request({
+        url: '/chapter/getAllChapters',
+        method: 'get',
+      }).then(response => {
         if(response.data)
         {
-          console.log(response.data);
           this.chapterList = response.data;
 
-          axios.get('http://localhost:8080/card/getAllCards')
-            .then(res => {
+
+          request({
+            url: '/card/getAllCards',
+            method: 'get',
+          }).then(res => {
+            if(res.data) {
+              this.cardList = res.data;
+              this.watchList()
+            }else
+            {
+              this.$message.error('Fetching Data Failed!');
+            }
+          })
+            .catch(error =>
+            {
+              this.$message.error('Fetching Data Failed!');
+            });
+
+          request({
+            url: '/item/getAllItems',
+            method: 'get',
+          }).then(res => {
               if(res.data) {
-                this.cardList = res.data;
+                this.itemList = res.data;
                 this.watchList()
               }else
               {
@@ -734,31 +845,62 @@ export default {
               this.$message.error('Fetching Data Failed!');
             });
 
-          axios.get('http://localhost:8080/item/getAllItems')
-            .then(res => {
-              if(res.data) {
-                this.itemList = res.data;
-                this.watchList()
-              }else
-              {
-                this.$message.error('Fetching Data Failed!');
-              }
-            })
-            .catch(error =>
-            {
-                this.$message.error('Fetching Data Failed!');
-              });
-
-
         }else{
           this.$message.error('Fetching Data Failed!');
         }
       })
         .catch(error =>
-        {
-          this.$message.error('Fetching Data Failed!');
-        }
-      );
+          {
+            this.$message.error('Fetching Data Failed!');
+          }
+        );
+
+      // axios.get('http://localhost:8080/chapter/getAllChapters').then(response => {
+      //   if(response.data)
+      //   {
+      //     console.log(response.data);
+      //     this.chapterList = response.data;
+      //
+      //     axios.get('http://localhost:8080/card/getAllCards')
+      //       .then(res => {
+      //         if(res.data) {
+      //           this.cardList = res.data;
+      //           this.watchList()
+      //         }else
+      //         {
+      //           this.$message.error('Fetching Data Failed!');
+      //         }
+      //       })
+      //       .catch(error =>
+      //       {
+      //         this.$message.error('Fetching Data Failed!');
+      //       });
+      //
+      //     axios.get('http://localhost:8080/item/getAllItems')
+      //       .then(res => {
+      //         if(res.data) {
+      //           this.itemList = res.data;
+      //           this.watchList()
+      //         }else
+      //         {
+      //           this.$message.error('Fetching Data Failed!');
+      //         }
+      //       })
+      //       .catch(error =>
+      //       {
+      //           this.$message.error('Fetching Data Failed!');
+      //         });
+      //
+      //
+      //   }else{
+      //     this.$message.error('Fetching Data Failed!');
+      //   }
+      // })
+      //   .catch(error =>
+      //   {
+      //     this.$message.error('Fetching Data Failed!');
+      //   }
+      // );
     },
     watchList() {
       // let list = this.cardList;

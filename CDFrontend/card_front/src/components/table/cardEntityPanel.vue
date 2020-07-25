@@ -324,6 +324,7 @@ export default {
       //     this.$message.error('Identification failed!');
       //   }
       // );
+
     },
     deleteData() {
       const postData = new FormData();

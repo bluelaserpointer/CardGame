@@ -141,16 +141,22 @@
     },
     methods: {
       getList() {
-        console.log("In getList");
-
-
-        console.log(
-          request({
+        let _this = this;
+        request({
           url: '/chapter/getAllChapters',
           method: 'get',
+        }).then(response => {
+          if(response.data) {
+            _this.list = response.data;
+          }else
+          {
+            this.$message.error('Fetching Data Failed!');
+          }
         })
-        );
-
+          .catch(error =>
+          {
+            this.$message.error('Fetching Data Failed!');
+          });
 
         // let _this = this;
         // axios.get('http://localhost:8080/chapter/getAllChapters')
@@ -173,14 +179,17 @@
         const _this = this;
         postData.append('adminName', localStorage.getItem('AdminName'));
         postData.append('password', this.confirmPassword);
-        axios.post('http://localhost:8080/admin/identifyAdmin', postData)
-          .then(response => {
-            if (response.data) {
-              _this.confirmDelete = true
-            } else {
-              this.$message.error('Identification failed!');
-            }
-          })
+        request({
+          url: '/admin/identifyAdmin',
+          method: 'post',
+          data: postData
+        }).then(response => {
+          if (response.data) {
+            _this.confirmDelete = true
+          } else {
+            this.$message.error('Identification failed!');
+          }
+        })
           .catch(error =>
             {
               this.$message.error('Identification failed!');
@@ -191,7 +200,12 @@
         const postData = new FormData();
         const _this = this;
         postData.append('chapterId', this.temp.chapterId);
-        axios.post('http://localhost:8080/chapter/deleteChapter', postData).then(response => {
+
+        request({
+          url: '/chapter/deleteChapter',
+          method: 'post',
+          data: postData
+        }).then(response => {
           if (response.data) {
             _this.list = response.data;
             _this.panelVisible = false;
@@ -205,6 +219,21 @@
               this.$message.error('Deleting Data failed!');
             }
           );
+
+        // axios.post('http://localhost:8080/chapter/deleteChapter', postData).then(response => {
+        //   if (response.data) {
+        //     _this.list = response.data;
+        //     _this.panelVisible = false;
+        //     _this.deleteVisible = false;
+        //   } else {
+        //     this.$message.error('Deleting Data failed!');
+        //   }
+        // })
+        //   .catch(error =>
+        //     {
+        //       this.$message.error('Deleting Data failed!');
+        //     }
+        //   );
       },
 
       resetTemp() {
@@ -223,7 +252,7 @@
         })
       },
       createData(formName) {
-        this.$refs[formName].validate((valid) => {
+        this.$refs.temp.validate((valid) => {
           if (valid) {
             const postData = new FormData();
             const _this = this;
@@ -231,7 +260,12 @@
             postData.append('phaseNo', this.temp.phaseNo);
             postData.append('phaseType', this.temp.phaseType);
 
-            axios.post(`http://localhost:8080/chapter/addChapter`, postData).then(response => {
+
+            request({
+              url: '/chapter/addChapter',
+              method: 'post',
+              data: postData
+            }).then(response => {
               if (response.data) {
                 _this.list = response.data;
                 _this.panelVisible = false;
@@ -245,6 +279,22 @@
                   this.$message.error('Creating Data failed!');
                 }
               );
+
+            // axios.post(`http://localhost:8080/chapter/addChapter`, postData).then(response => {
+            //   if (response.data) {
+            //     _this.list = response.data;
+            //     _this.panelVisible = false;
+            //     _this.resetTemp();
+            //   }else {
+            //     this.$message.error('Creating Data failed!');
+            //   }
+            // })
+            //   .catch(error =>
+            //     {
+            //       this.$message.error('Creating Data failed!');
+            //     }
+            //   );
+
           } else {
             this.$message.error('Form Invalid!');
             return false;
@@ -261,7 +311,7 @@
         })
       },
       updateData(formName) {
-        this.$refs[formName].validate((valid) => {
+        this.$refs.temp.validate((valid) => {
           if (valid) {
             const postData = new FormData();
             const _this = this;
@@ -270,7 +320,11 @@
             postData.append('phaseNo', this.temp.phaseNo);
             postData.append('phaseType', this.temp.phaseType);
 
-            axios.post(`http://localhost:8080/chapter/updateChapter`, postData).then(response => {
+            request({
+              url: '/chapter/updateChapter',
+              method: 'post',
+              data: postData
+            }).then(response => {
               if (response.data) {
                 _this.list = response.data;
                 _this.panelVisible = false;
@@ -284,6 +338,24 @@
                   this.$message.error('Updating Data failed!');
                 }
               );
+
+
+            // axios.post(`http://localhost:8080/chapter/updateChapter`, postData).then(response => {
+            //   if (response.data) {
+            //     _this.list = response.data;
+            //     _this.panelVisible = false;
+            //     _this.resetTemp();
+            //   }else {
+            //     this.$message.error('Updating Data failed!');
+            //   }
+            // })
+            //   .catch(error =>
+            //     {
+            //       this.$message.error('Updating Data failed!');
+            //     }
+            //   );
+
+
           } else {
             this.$message.error('Form Invalid!');
             return false;
