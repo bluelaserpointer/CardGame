@@ -9,6 +9,7 @@ jest.mock('axios', () => ({
       attackRange: 0,
       cd: 0,
       speed: 0,
+      type: 1,
       cardDetails: {
         cardImg: 'testImg',
         cardDescription: 'testCardText',
@@ -27,12 +28,12 @@ const localVue = createLocalVue();
 localVue.use(Element);
 
 describe('CardEntityPanel.vue', () => {
-  const wrapper = mount(CardEntityPanel,
+  const wrapper = shallowMount(CardEntityPanel,
     {
       localVue
     });
 
-  it('Card Entity Panel Resolves created',  async () => {
+  it('Card Entity Panel Resolves created',   async () => {
     expect(wrapper.vm.list).toStrictEqual([{
       cardId: 0,
       cardName: '',
@@ -43,6 +44,7 @@ describe('CardEntityPanel.vue', () => {
       attackRange: 0,
       cd: 0,
       speed: 0,
+      type: 1,
       cardImg: 'testImg',
       cardDescription: 'testCardText',
       shortDescription: 'testShortText',
@@ -70,6 +72,7 @@ describe('CardEntityPanel.vue', () => {
       attackRange: 0,
       cd: 0,
       speed: 0,
+      type: 1,
       cardImg: 'testImg',
       cardDescription: 'testCardText',
       shortDescription: 'testShortText',
@@ -118,6 +121,7 @@ describe('CardEntityPanel.vue', () => {
       attackRange: 1,
       cd: 1,
       speed: 1,
+      type: 1,
       cardImg: '1',
       cardDescription: '1',
       shortDescription: '1'
@@ -135,6 +139,7 @@ describe('CardEntityPanel.vue', () => {
         attackRange: 0,
         cd: 0,
         speed: 0,
+        type: 1,
         cardImg: '',
         cardDescription: 'No description yet.',
         shortDescription: 'No description yet.'
@@ -161,12 +166,12 @@ describe('CardEntityPanel.vue', () => {
   });
 
   it('Card Entity Panel Resolves createData', async () => {
-    await wrapper.vm.createData();
+    await wrapper.vm.createData('temp');
     expect(wrapper.vm.panelVisible).toBeFalsy();
   });
 
   it('Card Entity Panel Resolves updateData', async () => {
-    await wrapper.vm.updateData();
+    await wrapper.vm.updateData('temp');
     expect(wrapper.vm.panelVisible).toBeFalsy();
   });
 

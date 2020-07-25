@@ -124,12 +124,12 @@ describe('ItemEntityPanel.vue', () => {
   });
 
   it('Item Entity Panel resolves Resolves createData', async () => {
-    await wrapper.vm.createData();
+    await wrapper.vm.createData('temp');
     expect(wrapper.vm.panelVisible).toBeFalsy();
   });
 
   it('Item Entity Panel resolves Resolves updateData', async () => {
-    await wrapper.vm.updateData();
+    await wrapper.vm.updateData('temp');
     expect(wrapper.vm.panelVisible).toBeFalsy();
   });
 

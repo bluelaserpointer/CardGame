@@ -18,6 +18,7 @@ context('PhasePanel', () => {
 
   beforeEach(() => {
     cy.restoreLocalStorage();
+    cy.wait(2000);
   });
 
   afterEach(() => {

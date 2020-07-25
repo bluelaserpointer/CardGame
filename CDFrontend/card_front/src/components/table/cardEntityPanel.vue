@@ -73,6 +73,11 @@
           <span>{{ row.speed }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="Type" class-name="status-col" width="100">
+        <template slot-scope="{row}">
+          <span>{{ row.type }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="Card-Description" min-width="150px">
         <template slot-scope="{row}">
           <span>{{ row.cardDescription }}</span>
@@ -121,6 +126,9 @@
         </el-form-item>
         <el-form-item label="SPD" prop="speed">
           <el-input v-model="temp.speed" />
+        </el-form-item>
+        <el-form-item label="Type" prop="type">
+          <el-input v-model="temp.type" />
         </el-form-item>
         <el-form-item label="Description" prop="cardDescription">
           <el-input v-model="temp.cardDescription" />
@@ -193,6 +201,7 @@ export default {
         attackRange: 0,
         cd: 0,
         speed: 0,
+        type: 1,
         cardImg: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
         cardDescription: ''
       },
@@ -208,7 +217,8 @@ export default {
         defense: [{ required: true, message: 'Defense is required', trigger: 'change' }],
         attackRange: [{ required: true, message: 'AttackRange is required', trigger: 'change' }],
         cd: [{ required: true, message: 'Cd is required', trigger: 'change' }],
-        speed: [{ required: true, message: 'Speed is required', trigger: 'change' }]
+        speed: [{ required: true, message: 'Speed is required', trigger: 'change' }],
+        type: [{ required: true, message: 'Type is required', trigger: 'change' }]
       },
       list: null,
       panelVisible: false,
@@ -294,6 +304,8 @@ export default {
       const postData = new FormData();
       const _this = this;
       postData.append('cardId', this.temp.cardId);
+      console.log(this.temp.cardId);
+      console.log(this.temp);
       axios.post('http://localhost:8080/card/deleteCard', postData).then(response => {
         if (response.data) {
           _this.panelVisible = false;
@@ -321,6 +333,7 @@ export default {
         attackRange: 0,
         cd: 0,
         speed: 0,
+        type: 1,
         cardImg: '',
         cardDescription: 'No description yet.',
         shortDescription: 'No description yet.'
@@ -347,6 +360,7 @@ export default {
           postData.append('attackRange', this.temp.attackRange);
           postData.append('cd', this.temp.cd);
           postData.append('speed', this.temp.speed);
+          postData.append('type', this.temp.type);
 
           postData.append('cardImg', this.temp.cardImg);
           postData.append('cardDescription', this.temp.cardDescription);
@@ -398,6 +412,7 @@ export default {
           postData.append('attackRange', this.temp.attackRange);
           postData.append('cd', this.temp.cd);
           postData.append('speed', this.temp.speed);
+          postData.append('type', this.temp.type);
           postData.append('cardImg', this.temp.cardImg);
           postData.append('cardDescription', this.temp.cardDescription);
           postData.append('shortDescription', this.temp.shortDescription);

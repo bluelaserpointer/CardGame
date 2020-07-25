@@ -6,7 +6,6 @@ jest.mock('axios', () => ({
 import {createLocalVue, mount, shallowMount} from '@vue/test-utils'
 import CardEntityPanel from '@/components/table/cardEntityPanel'
 import Element from 'element-ui';
-import flushPromises from "flush-promises";
 import axios from 'axios';
 
 const localVue = createLocalVue();
@@ -18,7 +17,7 @@ describe('CardEntityPanel.vue', () => {
       localVue
     });
 
-  it('Card Entity Panel Rejects created',  async () => {
+  it('Card Entity Panel Rejects created',   async () => {
     expect(wrapper.vm.list).toStrictEqual(null);
     expect(axios.get).toHaveBeenCalledTimes(1);
     expect(axios.get).toBeCalledWith('http://localhost:8080/card/getAllCards');
@@ -62,13 +61,13 @@ describe('CardEntityPanel.vue', () => {
 
   it('Card Entity Panel Rejects createData', async () => {
     wrapper.vm.panelVisible = true;
-    await wrapper.vm.createData();
+    await wrapper.vm.createData('temp');
     expect(wrapper.vm.panelVisible).toBeTruthy();
   });
 
   it('Card Entity Panel Rejects updateData', async () => {
     wrapper.vm.panelVisible = true;
-    await wrapper.vm.updateData();
+    await wrapper.vm.updateData('temp');
     expect(wrapper.vm.panelVisible).toBeTruthy();
   });
 

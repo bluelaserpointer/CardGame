@@ -18,6 +18,7 @@ context('CardPanel', () => {
 
   beforeEach(() => {
     cy.restoreLocalStorage();
+    cy.wait(2000);
   });
 
   afterEach(() => {
@@ -114,6 +115,14 @@ context('CardPanel', () => {
     cy.get(':nth-child(8) > .el-form-item__content > .el-input > .el-input__inner')
       .type('999');
 
+    cy.get(':nth-child(9) > .el-form-item__content > .el-input > .el-input__inner')
+      .clear();
+
+    cy.get('.confirmOuterButton > span').click();
+
+    cy.get(':nth-child(9) > .el-form-item__content > .el-input > .el-input__inner')
+      .type('2');
+
     cy.get('.confirmOuterButton > span').click({force: true});
   });
 
@@ -185,11 +194,20 @@ context('CardPanel', () => {
     cy.get(':nth-child(9) > .el-form-item__content > .el-input > .el-input__inner')
       .type('111');
 
+    cy.get(':nth-child(10) > .el-form-item__content > .el-input > .el-input__inner')
+      .clear();
+
+    cy.get('.confirmOuterButton > span').click();
+
+    cy.get(':nth-child(10) > .el-form-item__content > .el-input > .el-input__inner')
+      .type('3');
+
     cy.get('.confirmOuterButton > span').click({force: true});
 
   });
 
   it('Card Panel Delete Data', () => {
+
     cy.get(':nth-child(3) > .el-table_1_column_2 > .cell > .link-type').click({force: true});
 
     cy.get('.deleteOuterButton').click();
