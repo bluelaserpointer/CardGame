@@ -102,18 +102,19 @@ export default {
       const postData = new FormData();
       postData.append('adminName', this.loginForm.username);
       postData.append('password', this.loginForm.password);
-      axios.post(`http://localhost:8080/admin/identifyAdmin`, postData).then(res => {
-        if (res.data) {
-          valid = true;
-          if (!validPassword(value) || !valid) {
+      // axios.post(`http://localhost:8080/admin/identifyAdmin`, postData).then(res => {
+      //   if (res.data) {
+      //     valid = true;
+      //     if (!validPassword(value) || !valid) {
+          if (!validPassword(value)) {
             callback(new Error('Please enter Passwords that meet the standard.'))
           } else {
             callback()
           }
-        } else {
-          callback(new Error('Please enter Passwords that meet the standard.'))
-        }
-      })
+      //   } else {
+      //     callback(new Error('Please enter Passwords that meet the standard.'))
+      //   }
+      // })
     };
     return {
       loginForm: {
@@ -177,13 +178,6 @@ export default {
       })
     },
     handleLogin() {
-      // let postData = new FormData();
-      // postData.append('adminName', this.loginForm.username);
-      // axios.post(`http://localhost:8080/admin/getAdminRole`, postData).then(res=>{
-      //   localStorage.setItem('AdminRole', res.data);
-      // });
-      removeToken();
-      console.log("Right before removing Token");
       this.$refs.loginForm.validate(async valid => {
         if (valid) {
           this.loading = true;

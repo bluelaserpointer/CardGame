@@ -15,7 +15,7 @@ const name = defaultSettings.title || 'SE Card Control Panel'; // page title
 // port = 9527 npm run dev OR npm run dev --port = 9527
 
 // const port = process.env.port || process.env.npm_config_port || 9527; // dev port
-  const port = 8080;
+  const port = 8081;
 
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
@@ -32,19 +32,17 @@ module.exports = {
   lintOnSave: process.env.NODE_ENV === 'development',
   productionSourceMap: false,
 
-  devServer: {
-    port: port, // 端口
-    proxy: {
-      '/': {
-        target: 'http://localhost:8080/',
-        changeOrigin: true,
-        ws: true,
-        pathRewrite: {
-          '^/': ''
-        }
-      }
-    }
-  },
+  // devServer: {
+  //   open: true,
+  //   proxy: {
+  //     '/': {
+  //       target: 'http://localhost:8080',
+  //       changeOrigin: true,
+  //     }
+  //   }
+  // },
+
+
   // devServer: {
   //   proxy: {
   //     [process.env.VUE_APP_BASE_API]: {
