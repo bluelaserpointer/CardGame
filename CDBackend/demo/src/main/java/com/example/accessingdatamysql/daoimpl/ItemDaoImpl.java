@@ -35,27 +35,30 @@ public class ItemDaoImpl implements ItemDao {
     // return ItemDetailsRepository.findById(id);
     // }
 
-    public String addNewItem(String itemName, Integer price, String itemImg, String itemDescription) {
+    public Item addNewItem(Item newItem) {
 
-        Item Item = new Item(itemName, price);
+        Item Item = new Item(newItem.getItemName(), newItem.getPrice());
         // System.out.println("new Item has an Id of : " + n.getItemId());
         ItemRepository.save(Item);
-        ItemDetails ItemDetails = new ItemDetails(Item.getItemId(), itemImg, itemDescription);
+        ItemDetails ItemDetails = new ItemDetails(Item.getItemId(), newItem.getItemDetails().getItemImg(),
+                newItem.getItemDetails().getItemDescription());
         ItemDetailsRepository.save(ItemDetails);
-        return "Saved Item";
+        Item.setItemDetails(ItemDetails);
+        return Item;
 
     }
 
-    public String updateItem(Integer ItemId, String itemName, Integer price, String itemImg, String itemDescription) {
+    public Item updateItem(Item updateItem) {
 
-        Item Item = ItemRepository.getOne(ItemId);
+        Item Item = ItemRepository.getOne(updateItem.getItemId());
         // System.out.println("old Item has an Id of : " + n.getItemId());
-        Item.setItem(itemName, price);
+        Item.setItem(updateItem.getItemName(), updateItem.getPrice());
 
-        ItemRepository.updateItemStatus(Item, ItemId);
+        ItemRepository.updateItemStatus(Item, updateItem.getItemId());
 
-        Optional<ItemDetails> optItemDetails = ItemDetailsRepository.findItemDetailsByItemIdEquals(ItemId);
-        ItemDetails itemDetails = new ItemDetails(ItemId, "", "");
+        Optional<ItemDetails> optItemDetails = ItemDetailsRepository
+                .findItemDetailsByItemIdEquals(updateItem.getItemId());
+        ItemDetails itemDetails = new ItemDetails(updateItem.getItemId(), "", "");
         if (optItemDetails.isPresent()) {
             System.out.println("Item Exists");
             itemDetails = optItemDetails.get();
@@ -63,10 +66,11 @@ public class ItemDaoImpl implements ItemDao {
             System.out.println("Item doesn't exist");
         }
 
-        itemDetails.setItemDescription(itemDescription);
-        itemDetails.setItemImg(itemImg);
+        itemDetails.setItemDescription(updateItem.getItemDetails().getItemDescription());
+        itemDetails.setItemImg(updateItem.getItemDetails().getItemImg());
         ItemDetailsRepository.save(itemDetails);
-        return "modified Item: " + Item.getItemName();
+        Item.setItemDetails(itemDetails);
+        return Item;
 
     }
 
@@ -95,10 +99,9 @@ public class ItemDaoImpl implements ItemDao {
         return "Deleted All Items";
     }
 
-    public List<Item> deleteItem(Integer itemId)
-    {
-      ItemRepository.deleteById(itemId);
-      ItemDetailsRepository.deleteItemDetailsByItemIdEquals(itemId);
-      return getAllItems();
+    public List<Item> deleteItem(Integer itemId) {
+        ItemRepository.deleteById(itemId);
+        ItemDetailsRepository.deleteItemDetailsByItemIdEquals(itemId);
+        return getAllItems();
     };
 }

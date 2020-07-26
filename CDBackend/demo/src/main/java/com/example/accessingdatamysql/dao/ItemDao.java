@@ -7,6 +7,7 @@ import java.util.List;
 import com.example.accessingdatamysql.entity.*;
 
 public interface ItemDao {
+
         Item getOneItem(Integer ItemId);
 
         // Optional<ItemDetails> findOneDetail(Integer id);

@@ -23,24 +23,26 @@ public class OwnItemDaoImpl implements OwnItemDao {
         return OwnItem;
     }
 
-    public OwnItem addNewOwnItem(Integer userId, Integer itemId, Integer ItemCount) {
+    public OwnItem addNewOwnItem(OwnItem newOwnItem) {
 
         Timestamp accquireDate = new Timestamp(System.currentTimeMillis());
 
-        OwnItem ownItem = new OwnItem(userId, itemId, ItemCount, accquireDate);
+        OwnItem ownItem = new OwnItem(newOwnItem.getUserId(), newOwnItem.getItemId(), newOwnItem.getItemCount(),
+                accquireDate);
         // System.out.println("new OwnItem has an Id of : " + n.getOwnItemId());
         OwnItemRepository.save(ownItem);
         return ownItem;
 
     }
 
-    public OwnItem updateOwnItem(Integer OwnItemId, Integer userId, Integer itemId, Integer ItemCount) {
+    public OwnItem updateOwnItem(OwnItem updateOwnItem) {
         Timestamp accquireDate = new Timestamp(System.currentTimeMillis());
-        OwnItem OwnItem = OwnItemRepository.getOne(OwnItemId);
+        OwnItem OwnItem = OwnItemRepository.getOne(updateOwnItem.getOwnItemId());
         // System.out.println("old Card has an Id of : " + n.getCardId());
-        OwnItem.setOwnItem(userId, itemId, ItemCount, accquireDate);
+        OwnItem.setOwnItem(updateOwnItem.getUserId(), updateOwnItem.getItemId(), updateOwnItem.getItemCount(),
+                accquireDate);
 
-        OwnItemRepository.updateOwnItemStatus(OwnItem, OwnItemId);
+        OwnItemRepository.updateOwnItemStatus(OwnItem, updateOwnItem.getOwnItemId());
         // return "Modified Card";
         // Image = Image.replace(' ', '+');
         return OwnItem;

@@ -8,6 +8,8 @@ import com.example.accessingdatamysql.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javassist.expr.NewArray;
+
 // import java.io.Console;
 import java.util.*;
 
@@ -24,8 +26,9 @@ public class UserDaoImpl implements UserDao {
 
     // 添加一个新用户
     @Override
-    public User addNewUser(String userName, String email, String password, String phoneNumber, String identity) {
-        User User = new User(userName, email, password, phoneNumber, identity);
+    public User addNewUser(User newUser) {
+        User User = new User(newUser.getUserName(), newUser.getEmail(), newUser.getPassword(), newUser.getPhoneNumber(),
+                newUser.getIdentity());
         // System.out.println("new User has an Id of : " + n.getUserId());
         UserRepository.save(User);
         return User;
@@ -33,16 +36,16 @@ public class UserDaoImpl implements UserDao {
 
     // 更新一个用户信息
     @Override
-    public User updateUser(Integer UserId, String userName, String email, String password, String phoneNumber,
-            Integer credits, Boolean access, Integer level, Integer curExpPoint, Integer stamina, Integer money,
-            Double grade, Integer engKnowledge, Integer mathKnowledge, Integer chiKnowledge, String identity) {
+    public User updateUser(User newUser) {
 
-        User User = UserRepository.getOne(UserId);
+        User User = UserRepository.getOne(newUser.getUserId());
         // System.out.println("old User has an Id of : " + n.getUserId());
-        User.updateUser(userName, email, password, phoneNumber, credits, access, level, curExpPoint, stamina, money,
-                grade, engKnowledge, mathKnowledge, chiKnowledge, identity);
+        User.updateUser(newUser.getUserName(), newUser.getEmail(), newUser.getPassword(), newUser.getPhoneNumber(),
+                newUser.getCredits(), newUser.getAccess(), newUser.getLevel(), newUser.getCurExpPoint(),
+                newUser.getStamina(), newUser.getMoney(), newUser.getGrade(), newUser.getEngKnowledge(),
+                newUser.getMathKnowledge(), newUser.getChiKnowledge(), newUser.getIdentity());
 
-        UserRepository.updateUserStatus(User, UserId);
+        UserRepository.updateUserStatus(User, newUser.getUserId());
         // return "Modified User";
         return User;
 

@@ -17,8 +17,6 @@ public class MissionDaoImpl implements MissionDao {
     @Autowired
     private MissionRepository MissionRepository;
     @Autowired
-    private ItemDao ItemDao;
-    @Autowired
     private MissionDetailsRepository MissionDetailsRepository;
 
     @Override
@@ -40,32 +38,32 @@ public class MissionDaoImpl implements MissionDao {
     // return MissionDetailsRepository.findById(id);
     // }
 
-    public String addNewMission(String type, String MissionName, String MissionDescription,
-            List<Integer> awardItemIds) {
+    public Mission addNewMission(Mission newMission) {
         // System.out.println(MissionDescription);
-        Mission Mission = new Mission(type, MissionName);
-        Mission.setAwardItems(awardItemIds);
+        Mission Mission = new Mission(newMission.getType(), newMission.getMissionName());
+        Mission.setAwardItems(newMission.getAwardItems());
         // System.out.println("new Mission has an Id of : " + n.getMissionId());
         MissionRepository.save(Mission);
-        MissionDetails MissionDetails = new MissionDetails(Mission.getMissionId(), MissionDescription);
+        MissionDetails MissionDetails = new MissionDetails(Mission.getMissionId(),
+                newMission.getMissionDetails().getMissionDescription());
         MissionDetailsRepository.save(MissionDetails);
-        return "Saved Mission";
+        Mission.setMissionDetails(MissionDetails);
+        return Mission;
 
     }
 
-    public String updateMission(Integer MissionId, String type, String MissionName, String MissionDescription,
-            List<Integer> awardItemIds) {
+    public Mission updateMission(Mission updateMission) {
 
-        Mission Mission = MissionRepository.getOne(MissionId);
+        Mission Mission = MissionRepository.getOne(updateMission.getMissionId());
         // System.out.println("old Mission has an Id of : " + n.getMissionId());
-        Mission.setMission(type, MissionName);
-        Mission.setAwardItems(awardItemIds);
+        Mission.setMission(updateMission.getType(), updateMission.getMissionName());
+        Mission.setAwardItems(updateMission.getAwardItems());
 
-        MissionRepository.updateMissionStatus(Mission, MissionId);
+        MissionRepository.updateMissionStatus(Mission, updateMission.getMissionId());
 
         Optional<MissionDetails> optMissionDetails = MissionDetailsRepository
-                .findMissionDetailsByMissionIdEquals(MissionId);
-        MissionDetails MissionDetails = new MissionDetails(MissionId, "");
+                .findMissionDetailsByMissionIdEquals(updateMission.getMissionId());
+        MissionDetails MissionDetails = new MissionDetails(updateMission.getMissionId(), "");
         if (optMissionDetails.isPresent()) {
             System.out.println("Mission Exists");
             MissionDetails = optMissionDetails.get();
@@ -73,9 +71,10 @@ public class MissionDaoImpl implements MissionDao {
             System.out.println("Mission doesn't exist");
         }
 
-        MissionDetails.setMissionDescription(MissionDescription);
+        MissionDetails.setMissionDescription(updateMission.getMissionDetails().getMissionDescription());
         MissionDetailsRepository.save(MissionDetails);
-        return "modified Mission: " + Mission.getMissionName();
+        Mission.setMissionDetails(MissionDetails);
+        return Mission;
 
     }
 

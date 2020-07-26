@@ -23,7 +23,7 @@ public class OwnItemServiceImpl implements OwnItemService {
         if (OwnItemDao.findOwnItemByUserIdEqualsAndItemIdEquals(newOwnItem.getUserId(),
                 newOwnItem.getItemId()) != null) {
             // 用户本身就拥有该道具
-            return OwnItemDao.repeatOwnItem(newOwnItem);
+            return OwnItemDao.repeatOwnItem(newOwnItem, newOwnItem.getItemCount() + 1);
 
         }
         return OwnItemDao.addNewOwnItem(newOwnItem);

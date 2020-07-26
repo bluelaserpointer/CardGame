@@ -26,38 +26,31 @@ public class CardDaoImpl implements CardDao {
         return card;
     }
 
-    // public void modifyStorage(Card Card) {
-    // CardRepository.updateStorageStatus(Card.getStorage(), Card.getCardId());
-    // return;
-    // }
+    public Card addNewCard(Card newCard) {
 
-    // public CardDetails findOneDetail(Integer id) {
-    // return CardDetailsRepository.findById(id);
-    // }
-
-    public String addNewCard(String cardName, String rarity, Integer healthPoint, Integer attack, Integer defense,
-            Integer attackRange, Double cd, Integer speed, String cardImg, String shortDescription,
-            String cardDescription, Integer type) {
-
-        Card card = new Card(rarity, cardName, healthPoint, attack, defense, attackRange, cd, speed, type);
+        Card card = new Card(newCard.getRarity(), newCard.getCardName(), newCard.getHealthPoint(), newCard.getAttack(),
+                newCard.getDefense(), newCard.getAttackRange(), newCard.getCd(), newCard.getSpeed(), newCard.getType());
         // System.out.println("new Card has an Id of : " + n.getCardId());
         CardRepository.save(card);
-        CardDetails cardDetails = new CardDetails(card.getCardId(), cardImg, shortDescription, cardDescription);
+        CardDetails cardDetails = new CardDetails(card.getCardId(), newCard.getCardDetails().getCardImg(),
+                newCard.getCardDetails().getShortDescription(), newCard.getCardDetails().getCardDescription());
         CardDetailsRepository.save(cardDetails);
-        return "Saved Card";
+        card.setCardDetails(cardDetails);
+        return card;
 
     }
 
-    public String updateCard(Integer cardId, String cardName, String rarity, Integer healthPoint, Integer attack,
-            Integer defense, Integer attackRange, Double cd, Integer speed, String cardImg, String shortDescription,
-            String cardDescription, Integer type) {
-        Card card = CardRepository.getOne(cardId);
+    public Card updateCard(Card updateCard) {
+        Card card = CardRepository.getOne(updateCard.getCardId());
         // System.out.println("old Card has an Id of : " + n.getCardId());
-        card.setCard(rarity, cardName, healthPoint, attack, defense, attackRange, cd, speed, type);
+        card.setCard(updateCard.getRarity(), updateCard.getCardName(), updateCard.getHealthPoint(),
+                updateCard.getAttack(), updateCard.getDefense(), updateCard.getAttackRange(), updateCard.getCd(),
+                updateCard.getSpeed(), updateCard.getType());
 
-        CardRepository.updateCardStatus(card, cardId);
-        Optional<CardDetails> optCardDetails = CardDetailsRepository.findCardDetailsByCardIdEquals(cardId);
-        CardDetails cardDetails = new CardDetails(cardId, "", "", "");
+        CardRepository.updateCardStatus(card, updateCard.getCardId());
+        Optional<CardDetails> optCardDetails = CardDetailsRepository
+                .findCardDetailsByCardIdEquals(updateCard.getCardId());
+        CardDetails cardDetails = new CardDetails(updateCard.getCardId(), "", "", "");
         if (optCardDetails.isPresent()) {
             System.out.println("Card Exists");
             cardDetails = optCardDetails.get();
@@ -65,12 +58,14 @@ public class CardDaoImpl implements CardDao {
             System.out.println("Card doesn't exist");
         }
 
-        cardDetails.setCardDescription(cardDescription);
-        cardDetails.setShortDescription(shortDescription);
-        cardDetails.setCardImg(cardImg);
+        cardDetails.setCardDescription(updateCard.getCardDetails().getCardDescription());
+        cardDetails.setShortDescription(updateCard.getCardDetails().getShortDescription());
+        cardDetails.setCardImg(updateCard.getCardDetails().getCardImg());
         CardDetailsRepository.save(cardDetails);
 
-        return "modified card: " + card.getCardName();
+        card.setCardDetails(cardDetails);
+
+        return card;
     }
 
     public List<Card> getAllCards() {

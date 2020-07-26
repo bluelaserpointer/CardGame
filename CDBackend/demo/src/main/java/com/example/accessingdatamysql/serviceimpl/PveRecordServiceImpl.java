@@ -17,12 +17,14 @@ public class PveRecordServiceImpl implements PveRecordService {
     private PveRecordDao pveRecordDao;
 
     @Override
-    public PveRecord addPveRecord(PveRecord newPveRecord) throws JsonProcessingException {
-        return pveRecordDao.addPveRecord(newPveRecord);
+    public PveRecord addPveRecord(Integer userId, Integer chapterId, Integer phaseId, Integer result, String posRecord)
+            throws JsonProcessingException {
+        return pveRecordDao.addPveRecord(userId, chapterId, phaseId, result, posRecord);
     }
 
-    public PveRecord updatePveRecord(PveRecord updatePveRecord) throws JsonProcessingException {
-        return pveRecordDao.updatePveRecord(updatePveRecord);
+    public PveRecord updatePveRecord(Integer pveRecordId, Integer userId, Integer chapterId, Integer phaseId,
+            Integer result, Timestamp recordTime, String posRecord) throws JsonProcessingException {
+        return pveRecordDao.updatePveRecord(pveRecordId, userId, chapterId, phaseId, result, recordTime, posRecord);
     }
 
     public List<PveRecord> getAllPveRecords() {

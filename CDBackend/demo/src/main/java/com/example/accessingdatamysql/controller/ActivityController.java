@@ -35,7 +35,7 @@ public class ActivityController {
 
   @RequestMapping(value = "/updateActivity")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public @ResponseBody String updateActivity(@RequestBody Activity updateActivity) {
+  public @ResponseBody Activity updateActivity(@RequestBody Activity updateActivity) {
     return ActivityService.updateActivity(updateActivity);
   }
 

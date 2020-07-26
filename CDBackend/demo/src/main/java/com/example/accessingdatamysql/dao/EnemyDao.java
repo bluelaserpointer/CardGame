@@ -7,6 +7,7 @@ import java.util.List;
 import com.example.accessingdatamysql.entity.*;
 
 public interface EnemyDao {
+
         Enemy getOneEnemy(Integer enemyId);
 
         Enemy addNewEnemy(Enemy newEnemy);
