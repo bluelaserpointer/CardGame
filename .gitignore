@@ -2,7 +2,8 @@
 
 CDFrontend/.idea/vcs.xml
 CDFrontend/.idea/workspace.xml
-CDFrontend/card_front/tests/unit
+CDFrontend/card_front/tests/unit/coverage
+CDFrontend/card_front/tests/unit/lib
 /CDBackend/demo/target/*
 Surviver_client/app/.classpath
 Surviver_client/app/.project
