@@ -2,75 +2,61 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input v-model="search" placeholder="Title" style="width: 200px;" class="filter-card" />
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" />
     </div>
 
-<!--    :data="list.filter(data => !search || data.activityName.toLowerCase().includes(search.toLowerCase()))"-->
+<!--    :data="list.filter(data => !search || data.mailName.toLowerCase().includes(search.toLowerCase()))"-->
     <el-table
       :key="tableKey"
       v-loading="listLoading"
-      :data="list"
       border
       fit
+      :data="list"
       highlight-current-row
       style="width: 100%;"
       @sort-change="sortChange"
     >
-      <el-table-column label="ID" prop="id" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
+      <el-table-column label="MailId" prop="mailId" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
         <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.activityId }}</span>
+          <span class="link-type" @click="handleUpdate(row)">{{ row.mailId }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Name" min-width="150px">
         <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.activityName }}</span>
+          <span class="link-type" @click="handleUpdate(row)">{{ row.mailName }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Description" min-width="150px">
         <template slot-scope="{row}">
-          <span>{{ row.activityDescription }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Limited" min-width="150px">
-        <template slot-scope="{row}">
-          <span>{{ row.type }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="StartTime" min-width="150px">
-        <template slot-scope="{row}">
-          <span>{{ formatDate(row.start) }}</span>
+          <span :id="row.mailId">{{ row.mailDescription }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Cover" min-width="150px">
         <template slot-scope="{row}">
           <el-image
             style="width: 100px; height: 100px"
-            :src="row.activityImg"
+            :src="row.mailImg"
           />
         </template>
       </el-table-column>
     </el-table>
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="panelVisible" top="5vh" class="editDialog">
-      <ActivityUpdatePanel v-bind:update-content="temp" @getList="getList"/>
+      <MailUpdatePanel v-bind:update-content="temp" @getList="getList" />
     </el-dialog>
 
   </div>
-
-
-
 </template>
 
 <script>
 import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination/index'
-import axios from 'axios'
-import moment from "moment"; // secondary package based on el-pagination
-import ActivityUpdatePanel from "@/components/edit/ActivityUpdatePanel";
+import axios from 'axios' // secondary package based on el-pagination;
+import MailUpdatePanel from "@/components/article/MailUpdatePanel";
+import request from "@/utils/request"; // secondary package based on el-pagination
 
 export default {
-  name: 'ActivityEntityPanel',
-  components: {ActivityUpdatePanel, Pagination },
+  name: 'MailEntityPanel',
+  components: {MailUpdatePanel, Pagination },
   directives: { waves },
   // filters: {
   //   statusFilter(status) {
@@ -85,13 +71,12 @@ export default {
   data() {
     return {
       search: '',
+      mailImg: '',
       temp: {
-        activityId: undefined,
-        activityName: '',
-        activityImg: '',
-        activityDescription: '',
-        start: this.delayDate(7),
-        type: false,
+        mailId: undefined,
+        mailName: '',
+        mailImg: '',
+        mailDescription: ''
       },
       tableKey: 0,
       list: null,
@@ -120,37 +105,35 @@ export default {
     this.getList()
   },
   methods: {
-    delayDate(days){
-      let newDate = new Date();
-      let showDate;
-      for (let i = 1; i <= days; i++) { //后7天
-        let date = newDate.getDate() < 10 ? '0' + newDate.getDate() : newDate.getDate();
-        let yue = (newDate.getMonth() + 1) < 10 ? '0' + (newDate.getMonth() + 1) : (newDate.getMonth() + 1);
-        showDate = newDate.getFullYear() + '-' + yue + '-' + date;
-        newDate.setDate(newDate.getDate() + 1);
-      }
-      return showDate + ' 00:00:00';
-    },
-    formatDate(date){
-      return moment(new Date(date)).format('YYYY-MM-DD HH:mm:ss');
-    },
     watchList() {
-      const list = this.list;
+      let list = this.list;
       for (const i in list) {
-        const details = list[i].activityDetails;
+        const details = list[i].mailDetails;
         if (details === null) { continue }
-        list[i].activityImg = details.activityImg;
-        list[i].activityDescription = details.activityDescription;
+        list[i].mailImg = details.mailImg;
+        list[i].mailDescription = details.mailDescription
       }
       this.list = list;
     },
+    uploadCover() {
+      const _this = this;
+      var file = this.$refs.img;
+      var reader = new FileReader();
+      reader.readAsDataURL(file.files[0]);
+      reader.onload = function() {
+        _this.temp.mailImg = this.result
+      }
+    },
     getList() {
-      axios.get('http://localhost:8080/activity/getAllActivities')
-        .then(response => {
+
+      request({
+        url: '/mail/getAllMails',
+        method: 'get',
+      }).then(response => {
         if(response.data) {
           this.panelVisible = false;
           this.list = response.data;
-          this.watchList();
+          this.watchList()
         }else
         {
           this.$message.error('Fetching Data Failed!');
@@ -160,12 +143,31 @@ export default {
         {
           this.$message.error('Fetching Data Failed!');
         });
+
+      // axios.get('http://localhost:8080/mail/getAllMails')
+      //   .then(response => {
+      //     if(response.data) {
+      //       this.panelVisible = false;
+      //       this.list = response.data;
+      //       this.watchList()
+      //     }else
+      //     {
+      //       this.$message.error('Fetching Data Failed!');
+      //     }
+      //   })
+      //   .catch(error =>
+      //   {
+      //     this.$message.error('Fetching Data Failed!');
+      //   });
+
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row); // copy obj
       this.dialogStatus = 'update';
       this.panelVisible = true;
     },
+
+
 
 
 
@@ -198,7 +200,6 @@ export default {
       const sort = this.listQuery.sort;
       return sort === `+${key}` ? 'ascending' : 'descending'
     },
-
   }
 }
 </script>

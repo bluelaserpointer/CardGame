@@ -182,7 +182,10 @@
 import waves from '@/directive/waves' // waves directive
 // import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination/index'
-import axios from 'axios' // secondary package based on el-pagination
+// import axios from 'axios' // secondary package based on el-pagination
+import request from '@/utils/request'
+
+
 
 export default {
   name: 'CardEntityPanel',
@@ -255,8 +258,10 @@ export default {
   methods: {
     getList() {
       let _this = this;
-      axios.get('http://localhost:8080/card/getAllCards')
-      .then(response => {
+      request({
+        url: '/card/getAllCards',
+        method: 'get',
+      }).then( response => {
         if(response.data) {
           _this.list = response.data;
           _this.watchList();
@@ -264,11 +269,23 @@ export default {
         {
           this.$message.error('Fetching Data Failed!');
         }
-      })
-      .catch(error =>
-      {
+      }).catch( error => {
         this.$message.error('Fetching Data Failed!');
       });
+      // axios.get('http://localhost:8080/card/getAllCards')
+      // .then(response => {
+      //   if(response.data) {
+      //     _this.list = response.data;
+      //     _this.watchList();
+      //   }else
+      //   {
+      //     this.$message.error('Fetching Data Failed!');
+      //   }
+      // })
+      // .catch(error =>
+      // {
+      //   this.$message.error('Fetching Data Failed!');
+      // });
     },
     watchList() {
       const list = this.list;
@@ -286,27 +303,49 @@ export default {
       const _this = this;
       postData.append('adminName', localStorage.getItem('AdminName'));
       postData.append('password', this.confirmPassword);
-      axios.post('http://localhost:8080/admin/identifyAdmin', postData)
-      .then(response => {
+
+      request({
+        url: '/admin/identifyAdmin',
+        method: 'post',
+        data: postData
+      }).then(response => {
         if (response.data) {
           _this.confirmDelete = true
         } else {
           this.$message.error('Identification failed!');
         }
       })
-      .catch(error =>
-        {
-          this.$message.error('Identification failed!');
-        }
-      );
+        .catch(error =>
+          {
+            this.$message.error('Identification failed!');
+          }
+        );
+
+      // axios.post('http://localhost:8080/admin/identifyAdmin', postData)
+      // .then(response => {
+      //   if (response.data) {
+      //     _this.confirmDelete = true
+      //   } else {
+      //     this.$message.error('Identification failed!');
+      //   }
+      // })
+      // .catch(error =>
+      //   {
+      //     this.$message.error('Identification failed!');
+      //   }
+      // );
+
     },
     deleteData() {
       const postData = new FormData();
       const _this = this;
       postData.append('cardId', this.temp.cardId);
-      console.log(this.temp.cardId);
-      console.log(this.temp);
-      axios.post('http://localhost:8080/card/deleteCard', postData).then(response => {
+
+      request({
+        url: '/card/deleteCard',
+        method: 'post',
+        data: postData
+      }).then(response => {
         if (response.data) {
           _this.panelVisible = false;
           _this.deleteVisible = false;
@@ -315,11 +354,26 @@ export default {
           this.$message.error('Deleting Data failed!');
         }
       })
-      .catch(error =>
-        {
-          this.$message.error('Deleting Data failed!');
-        }
-      );
+        .catch(error =>
+          {
+            this.$message.error('Deleting Data failed!');
+          }
+        );
+
+      // axios.post('http://localhost:8080/card/deleteCard', postData).then(response => {
+      //   if (response.data) {
+      //     _this.panelVisible = false;
+      //     _this.deleteVisible = false;
+      //     _this.getList()
+      //   } else {
+      //     this.$message.error('Deleting Data failed!');
+      //   }
+      // })
+      // .catch(error =>
+      //   {
+      //     this.$message.error('Deleting Data failed!');
+      //   }
+      // );
     },
 
     resetTemp() {
@@ -340,16 +394,17 @@ export default {
       }
     },
     handleCreate() {
+      let _this = this;
       this.resetTemp();
       this.dialogStatus = 'create';
       this.panelVisible = true;
       this.$nextTick(() => {
-        this.$refs['temp'].clearValidate()
+        _this.$refs.temp.clearValidate()
       })
     },
     createData(formName) {
       const _this = this;
-      this.$refs[formName].validate((valid) => {
+      this.$refs.temp.validate((valid) => {
         if (valid) {
           const postData = new FormData();
           postData.append('cardName', this.temp.cardName);
@@ -366,7 +421,12 @@ export default {
           postData.append('cardDescription', this.temp.cardDescription);
           postData.append('shortDescription', this.temp.shortDescription);
           console.log("Within createData");
-          axios.post(`http://localhost:8080/card/addCard`, postData).then(response => {
+
+          request({
+            url: '/card/addCard',
+            method: 'post',
+            data: postData
+          }).then(response => {
             if (response.data) {
               // TODO: SHORTEN THE REQUESTS
               _this.getList();
@@ -388,18 +448,41 @@ export default {
       });
 
 
+      //     axios.post(`http://localhost:8080/card/addCard`, postData).then(response => {
+      //       if (response.data) {
+      //         // TODO: SHORTEN THE REQUESTS
+      //         _this.getList();
+      //         _this.panelVisible = false;
+      //         _this.resetTemp();
+      //       }else {
+      //         this.$message.error('Creating Data failed!');
+      //       }
+      //     })
+      //       .catch(error =>
+      //         {
+      //           this.$message.error('Creating Data failed!');
+      //         }
+      //       );
+      //   } else {
+      //     this.$message.error('Form Invalid!');
+      //     return false;
+      //   }
+      // });
+
+
     },
     handleUpdate(row) {
+      let _this = this;
       this.temp = Object.assign({}, row); // copy obj
       this.dialogStatus = 'update';
       this.panelVisible = true;
       this.$nextTick(() => {
-        this.$refs['temp'].clearValidate()
+        _this.$refs.temp.clearValidate()
       })
     },
     updateData(formName) {
 
-      this.$refs[formName].validate((valid) => {
+      this.$refs.temp.validate((valid) => {
         if (valid) {
           const postData = new FormData();
           const _this = this;
@@ -417,7 +500,11 @@ export default {
           postData.append('cardDescription', this.temp.cardDescription);
           postData.append('shortDescription', this.temp.shortDescription);
 
-          axios.post(`http://localhost:8080/card/updateCard`, postData).then(response => {
+          request({
+            url: '/card/updateCard',
+            method: 'post',
+            data: postData
+          }).then(response => {
             if(response.data) {
               _this.getList();
               _this.panelVisible = false;
@@ -436,6 +523,27 @@ export default {
           return false;
         }
       });
+
+
+      //     axios.post(`http://localhost:8080/card/updateCard`, postData).then(response => {
+      //       if(response.data) {
+      //         _this.getList();
+      //         _this.panelVisible = false;
+      //         _this.resetTemp();
+      //       }else {
+      //         this.$message.error('Updating Data failed!');
+      //       }
+      //     })
+      //       .catch(error =>
+      //         {
+      //           this.$message.error('Updating Data failed!');
+      //         }
+      //       );
+      //   } else {
+      //     this.$message.error('Form Invalid!');
+      //     return false;
+      //   }
+      // });
 
 
     },

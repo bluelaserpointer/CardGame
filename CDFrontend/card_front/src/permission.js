@@ -26,15 +26,20 @@ router.beforeEach(async(to, from, next) => {
 
   if (hasToken) {
     if (to.path === '/login') {
+      console.log("to login");
       // if is logged in, redirect to the home page
       next({ path: '/' });
-      NProgress.done() // hack: https://github.com/PanJiaChen/vue-element-admin/pull/2939
+      NProgress.done(); // hack: https://github.com/PanJiaChen/vue-element-admin/pull/2939
+      console.log("after NProgress.done");
     } else {
       // determine whether the user has obtained his permission roles through getInfo
+      console.log("to others");
       const hasRoles = store.getters.roles && store.getters.roles.length > 0;
       if (hasRoles) {
+        console.log("In hasRoles, before next");
         next()
       } else {
+        console.log("In hasRoles, before try");
         try {
           // get user info
           // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
@@ -49,7 +54,7 @@ router.beforeEach(async(to, from, next) => {
 
           // dynamically add accessible routes
           router.addRoutes(accessRoutes);
-
+          console.log(accessRoutes);
           // hack method to ensure that addRoutes is complete
           // set the replace: true, so the navigation will not leave a history record
           next({ ...to, replace: true })

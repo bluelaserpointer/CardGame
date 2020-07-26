@@ -125,6 +125,7 @@ import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination/index'
 import axios from 'axios' // secondary package based on el-pagination
 import moment from "moment"
+import request from "@/utils/request";
 
 export default {
   name: 'PlayerCardPanel',
@@ -214,14 +215,26 @@ export default {
       return moment(new Date(date)).format('YYYY-MM-DD HH:mm:ss');
     },
     getList() {
-      axios.get('http://localhost:8080/ownCard/getAllOwnCards')
-        .then(response => {
-          this.list = response.data
-        })
+
+      request({
+        url: '/ownCard/getAllOwnCards',
+        method: 'get',
+      }).then(response => {
+        this.list = response.data
+      })
         .catch(error =>
         {
           this.$message.error('Fetching Data Failed!');
         });
+
+      // axios.get('http://localhost:8080/ownCard/getAllOwnCards')
+      //   .then(response => {
+      //     this.list = response.data
+      //   })
+      //   .catch(error =>
+      //   {
+      //     this.$message.error('Fetching Data Failed!');
+      //   });
     },
     resetTemp() {
       this.temp = {
@@ -240,17 +253,21 @@ export default {
       this.dialogStatus = 'create';
       this.panelVisible = true;
       this.$nextTick(() => {
-        this.$refs['temp'].clearValidate()
+        this.$refs.temp.clearValidate()
       })
     },
     createData(formName) {
-      this.$refs[formName].validate((valid) => {
+      this.$refs.temp.validate((valid) => {
         if (valid) {
           let postData = new FormData();
           postData.append('cardId', this.temp.cardId);
           postData.append('userId', this.temp.userId);
 
-          axios.post(`http://localhost:8080/ownCard/addOwnCard`, postData).then(response => {
+          request({
+            url: '/ownCard/addOwnCard',
+            method: 'post',
+            data: postData
+          }).then(response => {
             if (response.data) {
               this.getList();
               this.panelVisible = false;
@@ -263,6 +280,21 @@ export default {
                 this.$message.error('Creating Data failed!');
               }
             );
+
+          // axios.post(`http://localhost:8080/ownCard/addOwnCard`, postData).then(response => {
+          //   if (response.data) {
+          //     this.getList();
+          //     this.panelVisible = false;
+          //   } else {
+          //     this.$message.error('Creating Data failed!');
+          //   }
+          // })
+          //   .catch(error =>
+          //     {
+          //       this.$message.error('Creating Data failed!');
+          //     }
+          //   );
+
         } else {
           this.$message.error('Form Invalid!');
           return false;
@@ -275,11 +307,11 @@ export default {
       this.dialogStatus = 'update';
       this.panelVisible = true;
       this.$nextTick(() => {
-        this.$refs['temp'].clearValidate()
+        this.$refs.temp.clearValidate()
       })
     },
     updateData(formName) {
-      this.$refs[formName].validate((valid) => {
+      this.$refs.temp.validate((valid) => {
         if (valid) {
           let postData = new FormData();
           postData.append('cardId', this.temp.cardId);
@@ -290,7 +322,12 @@ export default {
           postData.append('repetitiveOwns', this.temp.repetitiveOwns);
           postData.append('accquireDate', this.formatDate(this.temp.accquireDate));
           console.log(this.formatDate(this.temp.accquireDate));
-          axios.post(`http://localhost:8080/ownCard/updateOwnCard`, postData).then(response => {
+
+          request({
+            url: '/ownCard/updateOwnCard',
+            method: 'post',
+            data: postData
+          }).then(response => {
             if (response.data) {
               this.getList();
               this.panelVisible = false;
@@ -304,6 +341,22 @@ export default {
                 this.$message.error('Updating Data failed!');
               }
             );
+
+          // axios.post(`http://localhost:8080/ownCard/updateOwnCard`, postData).then(response => {
+          //   if (response.data) {
+          //     this.getList();
+          //     this.panelVisible = false;
+          //     this.resetTemp();
+          //   } else {
+          //     this.$message.error('Updating Data failed!');
+          //   }
+          // })
+          //   .catch(error =>
+          //     {
+          //       this.$message.error('Updating Data failed!');
+          //     }
+          //   );
+
         } else {
           this.$message.error('Form Invalid!');
           return false;
@@ -316,25 +369,48 @@ export default {
       let _this = this;
       postData.append('adminName', localStorage.getItem('AdminName'));
       postData.append('password', this.confirmPassword);
-      axios.post('http://localhost:8080/admin/identifyAdmin', postData).then(response => {
+
+      request({
+        url: '/admin/identifyAdmin',
+        method: 'post',
+        data: postData
+      }).then(response => {
         if (response.data) {
           _this.confirmDelete = true
         } else {
           this.$message.error('Identification failed!');
         }
       })
-      .catch(error =>
-        {
-          this.$message.error('Identification failed!');
-        }
-      );
+        .catch(error =>
+          {
+            this.$message.error('Identification failed!');
+          }
+        );
+      // axios.post('http://localhost:8080/admin/identifyAdmin', postData).then(response => {
+      //   if (response.data) {
+      //     _this.confirmDelete = true
+      //   } else {
+      //     this.$message.error('Identification failed!');
+      //   }
+      // })
+      // .catch(error =>
+      //   {
+      //     this.$message.error('Identification failed!');
+      //   }
+      // );
     },
     deleteData() {
       let postData = new FormData();
       let _this = this;
       postData.append('userId', this.temp.userId);
       postData.append('cardId', this.temp.cardId);
-      axios.post('http://localhost:8080/ownCard/deleteOwnCard', postData).then(response => {
+
+
+      request({
+        url: '/ownCard/deleteOwnCard',
+        method: 'post',
+        data: postData
+      }).then(response => {
         if (response.data) {
           _this.panelVisible = false;
           _this.deleteVisible = false;
@@ -348,6 +424,21 @@ export default {
             this.$message.error('Deleting Data failed!');
           }
         );
+
+      // axios.post('http://localhost:8080/ownCard/deleteOwnCard', postData).then(response => {
+      //   if (response.data) {
+      //     _this.panelVisible = false;
+      //     _this.deleteVisible = false;
+      //     _this.getList()
+      //   } else {
+      //     this.$message.error('Deleting Data failed!');
+      //   }
+      // })
+      //   .catch(error =>
+      //     {
+      //       this.$message.error('Deleting Data failed!');
+      //     }
+      //   );
     },
 
     handleFilter() {

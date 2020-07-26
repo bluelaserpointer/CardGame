@@ -1,9 +1,19 @@
 {
   "presets": ["@babel/preset-env"],
-  "plugins": ["istanbul"],
+  "plugins": [
+    "istanbul",
+    "@babel/transform-runtime"
+  ],
   "env": {
     "test": {
-      "plugins": [ "istanbul", "@babel/plugin-transform-runtime" ]
+      "plugins": [
+        "istanbul",
+        "require-context-hook",
+        "transform-require-context",
+        "@babel/plugin-transform-modules-commonjs",
+        "babel-plugin-dynamic-import-node",
+        "@babel/plugin-transform-runtime"
+      ]
     }
   }
 }

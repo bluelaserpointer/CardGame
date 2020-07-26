@@ -9,8 +9,10 @@ import Layout from '@/layout'
 /* Router Modules */
 // import componentsRouter from './modules/components'
 // import chartsRouter from './modules/charts'
-import tableRouter from './modules/table'
 // import nestedRouter from './modules/nested'
+
+import tableRouter from './modules/table'
+import articleRouter from "@/router/modules/article";
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -171,6 +173,13 @@ export const asyncRoutes = [
     ]
   },
 
+  /** when your routing map is too long, you can split it into small modules **/
+  // componentsRouter,
+  // chartsRouter,
+  // nestedRouter,
+  tableRouter,
+  articleRouter,
+
   // {
   //   path: '/icon',
   //   component: Layout,
@@ -183,43 +192,6 @@ export const asyncRoutes = [
   //     }
   //   ]
   // },
-
-  /** when your routing map is too long, you can split it into small modules **/
-  // componentsRouter,
-  // chartsRouter,
-  // nestedRouter,
-  tableRouter,
-
-  {
-    path: '/edit',
-    component: Layout,
-    redirect: '/edit/list',
-    name: 'Edit',
-    meta: {
-      title: 'Edit',
-      icon: 'el-icon-s-help'
-    },
-    children: [
-      {
-        path: 'activity',
-        component: () => import('@/components/edit/ActivityPanel'),
-        name: 'Activity Panel',
-        meta: { title: 'Activity Panel', icon: 'edit' }
-      },
-      {
-        path: 'mail',
-        component: () => import('@/components/edit/MailPanel'),
-        name: 'Mail Panel',
-        meta: { title: 'Mail Panel', icon: 'edit' }
-      },
-      // {
-      //   path: 'list',
-      //   component: () => import('@/views/example/list'),
-      //   name: 'ArticleList',
-      //   meta: { title: 'Article List', icon: 'list' }
-      // }
-    ]
-  },
 
   //
   // {

@@ -2,7 +2,6 @@
  * Created by PanJiaChen on 16/11/18.
  */
 
-import axios from 'axios'
 
 /**
  * @param {string} path

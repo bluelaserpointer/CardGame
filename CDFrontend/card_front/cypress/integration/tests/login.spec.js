@@ -2,8 +2,8 @@
 
 context('Login', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:9527/#/login?redirect=%2Fdashboard')
-  });
+    cy.visit('http://localhost:8081/');
+v  });
 
 
   it('.type() - type into login form', () => {
