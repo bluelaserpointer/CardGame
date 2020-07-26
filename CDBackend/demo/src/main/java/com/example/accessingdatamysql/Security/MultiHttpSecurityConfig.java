@@ -46,10 +46,8 @@ public class MultiHttpSecurityConfig {
         return NoOpPasswordEncoder.getInstance();
     }
 
-    // 先验证他是不是玩家
     @Configuration
-    @EnableGlobalMethodSecurity(prePostEnabled = true)
-    // @Order(3)
+    @EnableGlobalMethodSecurity(prePostEnabled = true) // Enables PreAuthorization
     public static class UserWebSecurity extends WebSecurityConfigurerAdapter {
         @Autowired
         private UserDetailsServiceImpl userDetailsService;
@@ -80,10 +78,7 @@ public class MultiHttpSecurityConfig {
         public AuthenticationManager authenticationManagerBean() throws Exception {
             return super.authenticationManagerBean();
         }
-        
 
     }
-
-    
 
 }

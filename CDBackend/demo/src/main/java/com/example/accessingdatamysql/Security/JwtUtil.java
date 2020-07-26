@@ -11,10 +11,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import static com.example.accessingdatamysql.Security.SecurityConstants.EXPIRATION_TIME;
+
+//Utilizations regarding the jwt dependency
 @Service
 public class JwtUtil {
 
-    private String secret = "javatechie";
+    private String secret = "cardgameproject";
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -45,7 +48,7 @@ public class JwtUtil {
     private String createToken(Map<String, Object> claims, String subject) {
 
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS256, secret).compact();
     }
 
