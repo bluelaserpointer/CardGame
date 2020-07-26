@@ -124,6 +124,9 @@ context('ActivityEdit', () => {
       cy.get('.deleteInnerButton').click({ multiple: true, force: true });
       cy.wait(500);
     }
+
+    cy.clearCookies()
+
   })
 
 });

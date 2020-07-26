@@ -29,14 +29,14 @@ context('UserPanel', () => {
 
   it('Login',  () => {
     cy.visit('http://localhost:8081/');
-
-    cy.get('.username-input')
-      .type('admin1');
-
-    cy.get('.password-input')
-      .type('111111');
-
-    cy.get('.login-button').click();
+    //
+    // cy.get('.username-input')
+    //   .type('admin1');
+    //
+    // cy.get('.password-input')
+    //   .type('111111');
+    //
+    // cy.get('.login-button').click();
 
     cy.get(':nth-child(3) > .el-submenu > .el-submenu__title > .el-submenu__icon-arrow').click();
 
@@ -270,7 +270,7 @@ context('UserPanel', () => {
   });
 
   it('User Panel OwnItem Update Data', () => {
-    cy.get(':nth-child(2) > .el-table_2_column_16 > .cell > .link-type').click();
+    cy.get(':nth-child(2) > .el-table_2_column_17 > .cell > .link-type').click();
 
     cy.get('.userIdOwnItemInput > .el-input__inner').clear();
 
@@ -298,7 +298,7 @@ context('UserPanel', () => {
   });
 
   it('User Panel OwnItem Delete Data', () => {
-    cy.get(':nth-child(2) > .el-table_2_column_16 > .cell > .link-type').click();
+    cy.get(':nth-child(2) > .el-table_2_column_17 > .cell > .link-type').click();
 
     cy.get(':nth-child(3) > .outerDialog > .deleteOwnItemOuterButton').click({force: true});
 
@@ -340,7 +340,7 @@ context('UserPanel', () => {
   });
 
   it('User Panel OwnCard Update Data', () => {
-    cy.get(':nth-child(2) > .el-table_3_column_21 > .cell > .link-type').click();
+    cy.get(':nth-child(2) > .el-table_3_column_22 > .cell > .link-type').click();
 
     cy.get('.userIdOwnCardInput > .el-input__inner').clear();
     cy.get('.cardIdOwnCardInput > .el-input__inner').clear();
@@ -374,7 +374,7 @@ context('UserPanel', () => {
   });
 
   it('User Panel OwnCard Delete Data', () => {
-    cy.get(':nth-child(2) > .el-table_3_column_21 > .cell > .link-type').click();
+    cy.get(':nth-child(2) > .el-table_3_column_22 > .cell > .link-type').click();
 
     cy.get(':nth-child(3) > .outerDialog > .deleteOwnCardOuterButton').click();
 
@@ -394,6 +394,10 @@ context('UserPanel', () => {
     cy.get('.confirmOwnCardInnerButton').click();
 
     cy.get('.deleteOwnCardInnerButton').click({ multiple: true, force: true });
+
+    cy.clearCookies()
+
   });
+
 
 });

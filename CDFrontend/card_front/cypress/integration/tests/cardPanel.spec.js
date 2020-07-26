@@ -29,14 +29,14 @@ context('CardPanel', () => {
 
   it('Login',  () => {
     cy.visit('http://localhost:8081/');
-
-    cy.get('.username-input')
-      .type('admin1');
-
-    cy.get('.password-input')
-      .type('111111');
-
-    cy.get('.login-button').click();
+    //
+    // cy.get('.username-input')
+    //   .type('admin1');
+    //
+    // cy.get('.password-input')
+    //   .type('111111');
+    //
+    // cy.get('.login-button').click();
 
     // cy.get('.hamburger').click();
 
@@ -231,6 +231,9 @@ context('CardPanel', () => {
     cy.wait(500);
     cy.get('.deleteInnerButton').click({ multiple: true, force: true });
     cy.wait(500);
+
+    cy.clearCookies()
+
   })
 
 

@@ -255,7 +255,7 @@ export default {
         email: [{ required: true, message: 'Email is required', trigger: 'change' }],
         credits: [{ required: true, message: 'Credits is required', trigger: 'change' }],
         level: [{ required: true, message: 'Level is required', trigger: 'change' }],
-
+        identity: [{ required: true, message: 'Identity is required', trigger: 'change' }],
         curExpPoint: [{ required: true, message: 'CurExpPoint is required', trigger: 'change' }],
         stamina: [{ required: true, message: 'Stamina is required', trigger: 'change' }],
         money: [{ required: true, message: 'Money is required', trigger: 'change' }],
@@ -326,21 +326,23 @@ export default {
     createData(formName) {
       this.$refs.temp.validate((valid) => {
         if (valid) {
-          const postData = new FormData();
           const _this = this;
-          postData.append('userName', this.temp.userName);
-          postData.append('password', this.temp.password);
-          postData.append('phoneNumber', this.temp.phoneNumber);
-          postData.append('credits', this.temp.credits);
-          postData.append('access', this.temp.access);
-          postData.append('level', this.temp.level);
-          postData.append('email', this.temp.email);
-          postData.append('identity', this.temp.identity);
+
+          let postData = {
+            userName: this.temp.userName,
+            password: this.temp.password,
+            phoneNumber: this.temp.phoneNumber,
+            credits: this.temp.credits,
+            access: this.temp.access,
+            level: this.temp.level,
+            email: this.temp.email,
+            identity: this.temp.identity
+          };
 
           request({
             url: '/user/register',
             method: 'post',
-            data: postData
+            data: JSON.stringify(postData)
           }).then(response => {
             if (response.data) {
               _this.getList();
@@ -375,30 +377,31 @@ export default {
     updateData(formName) {
       this.$refs.temp.validate((valid) => {
         if (valid) {
-          const postData = new FormData();
           const _this = this;
-          postData.append('userId', this.temp.userId);
-          postData.append('userName', this.temp.userName);
-          postData.append('password', this.temp.password);
-          postData.append('phoneNumber', this.temp.phoneNumber);
-          postData.append('credits', this.temp.credits);
-          postData.append('access', this.temp.access);
-          postData.append('level', this.temp.level);
-          postData.append('email', this.temp.email);
 
-          postData.append('curExpPoint', this.temp.curExpPoint);
-          postData.append('stamina', this.temp.stamina);
-          postData.append('money', this.temp.money);
-          postData.append('grade', this.temp.grade);
-          postData.append('engKnowledge', this.temp.engKnowledge);
-          postData.append('mathKnowledge', this.temp.mathKnowledge);
-          postData.append('chiKnowledge', this.temp.chiKnowledge);
-          postData.append('identity', this.temp.identity);
+          let postData = {
+            userId: this.temp.userId,
+            userName: this.temp.userName,
+            password: this.temp.password,
+            phoneNumber: this.temp.phoneNumber,
+            credits: this.temp.credits,
+            access: this.temp.access,
+            level: this.temp.level,
+            email: this.temp.email,
+            curExpPoint: this.temp.curExpPoint,
+            stamina: this.temp.stamina,
+            money: this.temp.money,
+            grade: this.temp.grade,
+            engKnowledge: this.temp.engKnowledge,
+            mathKnowledge: this.temp.mathKnowledge,
+            chiKnowledge: this.temp.chiKnowledge,
+            identity: this.temp.identity
+          };
 
           request({
             url: '/user/updateUser',
             method: 'post',
-            data: postData
+            data: JSON.stringify(postData)
           }).then(response => {
             if (response.data) {
               _this.getList();
