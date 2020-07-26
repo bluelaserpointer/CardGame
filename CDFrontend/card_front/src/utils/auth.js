@@ -7,12 +7,12 @@ export function getToken() {
 }
 
 export function setToken(token) {
-  return Cookies.set(TokenKey, "token")
+  return Cookies.set(TokenKey, token)
 }
 
 export function removeToken() {
   console.log(Cookies.get(TokenKey));
-  Cookies.remove(TokenKey)
+  Cookies.remove(TokenKey);
   console.log(Cookies.get(TokenKey));
 
 }

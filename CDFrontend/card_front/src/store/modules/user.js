@@ -38,7 +38,8 @@ const actions = {
       console.log(userInfo);
       login({ adminName: username.trim(), password: password }).then(response => {
         const { data } = response;
-        let token = "Bearer " + data.token;
+        console.log(data);
+        let token = "Bearer " + data;
         commit('SET_TOKEN', token);
         setToken(token);
         resolve()

@@ -25,7 +25,7 @@ service.interceptors.request.use(
       // console.log("Within token-if");
     }
     // config.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
-    // config.headers['Content-Type'] = 'multipart/form-data';
+    config.headers['Content-Type'] = 'application/json';
       // console.log("Before sending request");
       // console.log(config);
     return config
