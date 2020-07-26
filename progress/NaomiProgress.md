@@ -156,4 +156,15 @@
 1. 完成了 webSecurity 后端的调试
 
 目前进展： User 的登陆 API 限制做好了，现在是需要做两个不同的 configuration class 来分开 admin 跟 user 的权限
+
 明天计划： 实现 admin 跟 user 的不同 API authorization。
+
+---
+
+### 7 月 23 日
+
+1. 增加了 multiHttpConfig 来完成对不同 entity 的身份判定
+
+目前进展：想要实现用不同的 webConfig 去给予不同用户群体权限
+
+明天计划：实现 multiHttpConfig
