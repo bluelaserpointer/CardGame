@@ -9,19 +9,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import static com.example.accessingdatamysql.Security.SecurityConstants.SIGN_UP_URL;
 
 // import com.mongodb.ReflectionDBObject.JavaWrapper;
 
@@ -46,10 +39,8 @@ public class MultiHttpSecurityConfig {
         return NoOpPasswordEncoder.getInstance();
     }
 
-    // 先验证他是不是玩家
     @Configuration
-    @EnableGlobalMethodSecurity(prePostEnabled = true)
-    // @Order(3)
+    @EnableGlobalMethodSecurity(prePostEnabled = true) // Enables PreAuthorization
     public static class UserWebSecurity extends WebSecurityConfigurerAdapter {
         @Autowired
         private UserDetailsServiceImpl userDetailsService;
@@ -80,10 +71,7 @@ public class MultiHttpSecurityConfig {
         public AuthenticationManager authenticationManagerBean() throws Exception {
             return super.authenticationManagerBean();
         }
-        
 
     }
-
-    
 
 }

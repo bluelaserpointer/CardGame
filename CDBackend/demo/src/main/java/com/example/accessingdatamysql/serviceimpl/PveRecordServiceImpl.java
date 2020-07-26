@@ -17,41 +17,33 @@ public class PveRecordServiceImpl implements PveRecordService {
     private PveRecordDao pveRecordDao;
 
     @Override
-    public PveRecord addPveRecord(Integer userId, Integer chapterId,
-                         Integer phaseId, Integer result,
-                         String posRecord) throws JsonProcessingException {
+    public PveRecord addPveRecord(Integer userId, Integer chapterId, Integer phaseId, Integer result, String posRecord)
+            throws JsonProcessingException {
         return pveRecordDao.addPveRecord(userId, chapterId, phaseId, result, posRecord);
     }
 
-    public PveRecord updatePveRecord(Integer pveRecordId, Integer userId,
-                            Integer chapterId, Integer phaseId,
-                            Integer result, Timestamp recordTime,
-                            String posRecord) throws JsonProcessingException {
+    public PveRecord updatePveRecord(Integer pveRecordId, Integer userId, Integer chapterId, Integer phaseId,
+            Integer result, Timestamp recordTime, String posRecord) throws JsonProcessingException {
         return pveRecordDao.updatePveRecord(pveRecordId, userId, chapterId, phaseId, result, recordTime, posRecord);
     }
 
-    public List<PveRecord> getAllPveRecords()
-    {
+    public List<PveRecord> getAllPveRecords() {
         return pveRecordDao.getAllPveRecords();
     }
 
-    public Map<String, Integer> getPveRecordStatistics()
-    {
+    public Map<String, Integer> getPveRecordStatistics() {
         return pveRecordDao.getPveRecordStatistics();
     }
 
-    public List<PveRecord> getAllPveRecordsByUser(Integer userId)
-    {
+    public List<PveRecord> getAllPveRecordsByUser(Integer userId) {
         return pveRecordDao.getAllPveRecordsByUser(userId);
     }
 
-    public boolean deleteAllPveRecordsByUser(Integer userId)
-    {
+    public boolean deleteAllPveRecordsByUser(Integer userId) {
         return pveRecordDao.deleteAllPveRecordsByUser(userId);
     }
 
-    public boolean deletePveRecords(List<Integer> pveRecordIds)
-    {
+    public boolean deletePveRecords(List<Integer> pveRecordIds) {
         return pveRecordDao.deletePveRecords(pveRecordIds);
     }
 }

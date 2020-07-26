@@ -20,14 +20,12 @@ public class ActivityServiceImpl implements ActivityService {
         return ActivityDao.getOneActivity(ActivityId);
     }
 
-    public String addNewActivity(String type, String activityName, String activityImg, String activityDescription,
-            Timestamp start) {
-        return ActivityDao.addNewActivity(type, activityName, activityImg, activityDescription, start);
+    public Activity addNewActivity(Activity addNewActivity) {
+        return ActivityDao.addNewActivity(addNewActivity);
     }
 
-    public String updateActivity(Integer ActivityId, String type, String activityName, String activityImg,
-            String activityDescription, Timestamp start) {
-        return ActivityDao.updateActivity(ActivityId, type, activityName, activityImg, activityDescription, start);
+    public Activity updateActivity(Activity updateActivity) {
+        return ActivityDao.updateActivity(updateActivity);
     }
 
     public List<Activity> getAllActivities() {

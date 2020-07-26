@@ -27,29 +27,29 @@ public class EnemyDaoImpl implements EnemyDao {
     }
 
     @Override
-    public Enemy addNewEnemy(String enemyName, Integer healthPoint, Integer attack, Integer defense,
-            Integer attackRange, Double cd, Integer speed, String enemyImg, String shortDescription,
-            String enemyDescription) {
-        Enemy enemy = new Enemy(enemyName, healthPoint, attack, defense, attackRange, cd, speed);
+    public Enemy addNewEnemy(Enemy newEnemy) {
+        Enemy enemy = new Enemy(newEnemy.getEnemyName(), newEnemy.getHealthPoint(), newEnemy.getAttack(),
+                newEnemy.getDefense(), newEnemy.getAttackRange(), newEnemy.getCd(), newEnemy.getSpeed());
         EnemyRepository.save(enemy);
         System.out.println(enemy.getEnemyName());
 
-        EnemyDetails enemyDetails = new EnemyDetails(enemy.getEnemyId(), enemyImg, shortDescription, enemyDescription);
+        EnemyDetails enemyDetails = new EnemyDetails(enemy.getEnemyId(), newEnemy.getEnemyDetails().getEnemyImg(),
+                newEnemy.getEnemyDetails().getShortDescription(), newEnemy.getEnemyDetails().getEnemyDescription());
         EnemyDetailsRepository.save(enemyDetails);
         enemy.setEnemyDetails(enemyDetails);
         System.out.println(enemyDetails.getEnemyDescription());
         return enemy;
     }
 
-    public Enemy updateEnemy(Integer enemyId, String enemyName, Integer healthPoint, Integer attack, Integer defense,
-            Integer attackRange, Double cd, Integer speed, String enemyImg, String shortDescription,
-            String enemyDescription) {
-        Enemy Enemy = EnemyRepository.getOne(enemyId);
-        Enemy.setEnemy(enemyName, healthPoint, attack, defense, attackRange, cd, speed);
+    public Enemy updateEnemy(Enemy updateEnemy) {
+        Enemy Enemy = EnemyRepository.getOne(updateEnemy.getEnemyId());
+        Enemy.setEnemy(updateEnemy.getEnemyName(), updateEnemy.getHealthPoint(), updateEnemy.getAttack(),
+                updateEnemy.getDefense(), updateEnemy.getAttackRange(), updateEnemy.getCd(), updateEnemy.getSpeed());
 
-        EnemyRepository.updateEnemyStatus(Enemy, enemyId);
-        Optional<EnemyDetails> optEnemyDetails = EnemyDetailsRepository.findEnemyDetailsByEnemyIdEquals(enemyId);
-        EnemyDetails EnemyDetails = new EnemyDetails(enemyId, "", "", "");
+        EnemyRepository.updateEnemyStatus(Enemy, updateEnemy.getEnemyId());
+        Optional<EnemyDetails> optEnemyDetails = EnemyDetailsRepository
+                .findEnemyDetailsByEnemyIdEquals(Enemy.getEnemyId());
+        EnemyDetails EnemyDetails = new EnemyDetails(Enemy.getEnemyId(), "", "", "");
         if (optEnemyDetails.isPresent()) {
             System.out.println("Enemy Exists");
             EnemyDetails = optEnemyDetails.get();
@@ -57,9 +57,9 @@ public class EnemyDaoImpl implements EnemyDao {
             System.out.println("Enemy doesn't exist");
         }
 
-        EnemyDetails.setEnemyDescription(enemyDescription);
-        EnemyDetails.setShortDescription(shortDescription);
-        EnemyDetails.setEnemyImg(enemyImg);
+        EnemyDetails.setEnemyDescription(Enemy.getEnemyDetails().getEnemyDescription());
+        EnemyDetails.setShortDescription(Enemy.getEnemyDetails().getShortDescription());
+        EnemyDetails.setEnemyImg(Enemy.getEnemyDetails().getEnemyImg());
         EnemyDetailsRepository.save(EnemyDetails);
         Enemy.setEnemyDetails(EnemyDetails);
 

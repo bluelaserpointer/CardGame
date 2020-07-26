@@ -22,28 +22,28 @@ public class UserServiceImpl implements UserService {
 
     // 添加一个新用户
     @Override
-    public User addNewUser(String userName, String email, String password, String phoneNumber, String identity) {
-        return userDao.addNewUser(userName, email, password, phoneNumber, identity);
+    public User addNewUser(User newUser) {
+        return userDao.addNewUser(newUser);
     }
 
     // 更新一个用户信息
     @Override
-    public User updateUser(Integer UserId, String userName, String email, String password, String phoneNumber,
-            Integer credits, Boolean access, Integer level, Integer curExpPoint, Integer stamina, Integer money,
-            Double grade, Integer engKnowledge, Integer mathKnowledge, Integer chiKnowledge, String identity) {
-        return userDao.updateUser(UserId, userName, email, password, phoneNumber, credits, access, level, curExpPoint,
-                stamina, money, grade, engKnowledge, mathKnowledge, chiKnowledge, identity);
+    public User updateUser(User updateUser) {
+        return userDao.updateUser(updateUser);
     }
 
     // 只是一个更新的wrapper
-    @Override
-    public User updateUserByUser(Integer userId, User user) {
-        userDao.updateUser(userId, user.getUserName(), user.getEmail(), user.getPassword(), user.getPhoneNumber(),
-                user.getCredits(), user.getAccess(), user.getLevel(), user.getCurExpPoint(), user.getStamina(),
-                user.getMoney(), user.getGrade(), user.getEngKnowledge(), user.getMathKnowledge(),
-                user.getChiKnowledge(), user.getIdentity());
-        return user;
-    }
+    // @Override
+    // public User updateUserByUser(Integer userId, User user) {
+    // userDao.updateUser(userId, user.getUserName(), user.getEmail(),
+    // user.getPassword(), user.getPhoneNumber(),
+    // user.getCredits(), user.getAccess(), user.getLevel(), user.getCurExpPoint(),
+    // user.getStamina(),
+    // user.getMoney(), user.getGrade(), user.getEngKnowledge(),
+    // user.getMathKnowledge(),
+    // user.getChiKnowledge(), user.getIdentity());
+    // return user;
+    // }
 
     // 获取所有用户信息
     @Override
@@ -101,7 +101,7 @@ public class UserServiceImpl implements UserService {
             user.setLevel(user.getLevel() + 1);
         }
         user.setCurExpPoint(newExp);
-        updateUserByUser(userId, user);
+        updateUser(user);
         System.out.println("After Modification: ");
         System.out.println("User: userId = " + userId + " userName = " + user.getUserName() + " level = "
                 + user.getLevel() + " curExpPoint = " + user.getCurExpPoint());

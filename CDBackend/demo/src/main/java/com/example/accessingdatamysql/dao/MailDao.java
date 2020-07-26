@@ -13,9 +13,9 @@ public interface MailDao {
 
         // void modifyStorage(Mail Mail);
 
-        String addNewMail(String MailName, String mailImg, String mailDescription);
+        Mail addNewMail(Mail newMail);
 
-        String updateMail(Integer MailId, String MailName, String mailImg, String mailDescription);
+        Mail updateMail(Mail updateMail);
 
         List<Mail> getAllMails();
 

@@ -34,12 +34,8 @@ public class OwnCardController {
 
   // 更新一个用户拥有卡牌关系
   @RequestMapping(value = "/updateOwnCard")
-  public @ResponseBody OwnCard updateOwnCard(@RequestParam("userId") Integer userId,
-      @RequestParam("cardId") Integer cardId, @RequestParam("cardLevel") Integer cardLevel,
-      @RequestParam("cardCurExp") Integer cardCurExp, @RequestParam("cardLevelLimit") Integer cardLevelLimit,
-      @RequestParam("repetitiveOwns") Integer repetitiveOwns, @RequestParam("accquireDate") Timestamp accquireDate) {
-    return OwnCardService.updateOwnCard(userId, cardId, cardLevel, cardCurExp, cardLevelLimit, repetitiveOwns,
-        accquireDate);
+  public @ResponseBody OwnCard updateOwnCard(@RequestBody OwnCard updateOwnCard) {
+    return OwnCardService.updateOwnCard(updateOwnCard);
   }
 
   // 用户拥有的卡片升级

@@ -27,7 +27,6 @@ public class ChapterDaoImpl implements ChapterDao {
     @Autowired
     private ChapterDetailsRepository chapterDetailsRepository;
 
-
     public List<ChapterDetails> updateChapterPhaseStrategy(Integer chapterId, Integer phaseId, String phaseData)
             throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -55,7 +54,7 @@ public class ChapterDaoImpl implements ChapterDao {
         ChapterPhase chapterPhase;
         if (optChapterPhase.isPresent()) {
             chapterPhase = optChapterPhase.get();
-        }else{
+        } else {
             chapterPhase = new ChapterPhase();
             chapterPhase.setChapterId(chapterId);
             chapterPhase.setPhaseId(phaseId);
@@ -75,16 +74,15 @@ public class ChapterDaoImpl implements ChapterDao {
     public Map<Integer, Integer> parseAwardItems(String awardItems) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         TypeFactory typeFactory = objectMapper.getTypeFactory();
-        List<List<Integer>> mappedList = objectMapper.readValue(awardItems, typeFactory.constructCollectionType(List.class, List.class));
+        List<List<Integer>> mappedList = objectMapper.readValue(awardItems,
+                typeFactory.constructCollectionType(List.class, List.class));
         Map<Integer, Integer> transMap = new HashMap<>();
-        for(int i = 0; i < mappedList.size(); i++)
-        {
+        for (int i = 0; i < mappedList.size(); i++) {
             Integer id = mappedList.get(i).get(0);
             Integer quantity = mappedList.get(i).get(1);
             transMap.put(id, quantity);
         }
-        if(transMap.size() <= 0)
-        {
+        if (transMap.size() <= 0) {
             return null;
         }
         return transMap;
@@ -128,10 +126,9 @@ public class ChapterDaoImpl implements ChapterDao {
     public List<Chapter> updateChapter(Integer chapterId, Integer phaseNo, Integer phaseType) {
         Optional<Chapter> optChapter = chapterRepository.findById(chapterId);
         Chapter chapter;
-        if(optChapter.isPresent())
-        {
+        if (optChapter.isPresent()) {
             chapter = optChapter.get();
-        }else{
+        } else {
             chapter = new Chapter();
             chapter.setChapterId(chapterId);
         }
@@ -162,8 +159,7 @@ public class ChapterDaoImpl implements ChapterDao {
         return chapterDetailsRepository.findAll();
     }
 
-    public List<Chapter> addChapter(Integer phaseNo, Integer phaseType)
-    {
+    public List<Chapter> addChapter(Integer phaseNo, Integer phaseType) {
         Chapter chapter = new Chapter();
         chapter.setPhaseNo(phaseNo);
         chapter.setPhaseType(phaseType);

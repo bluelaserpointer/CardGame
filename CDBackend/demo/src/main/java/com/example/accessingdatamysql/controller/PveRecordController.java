@@ -3,8 +3,8 @@ package com.example.accessingdatamysql.controller;
 import com.example.accessingdatamysql.entity.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -53,11 +53,13 @@ public class PveRecordController {
     }
 
     @RequestMapping(value = "/deleteAllPveRecordsByUser")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public boolean deleteAllPveRecordsByUser(@RequestParam("userId") Integer userId) {
         return pveRecordService.deleteAllPveRecordsByUser(userId);
     }
 
     @RequestMapping(value = "/deletePveRecords")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public boolean deletePveRecords(@RequestParam("pveRecordIds") List<Integer> pveRecordIds) {
         return pveRecordService.deletePveRecords(pveRecordIds);
     }

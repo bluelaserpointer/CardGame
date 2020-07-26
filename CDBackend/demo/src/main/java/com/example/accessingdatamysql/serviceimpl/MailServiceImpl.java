@@ -19,12 +19,12 @@ public class MailServiceImpl implements MailService {
         return MailDao.getOneMail(MailId);
     }
 
-    public String addNewMail(String MailName, String mailImg, String mailDescription) {
-        return MailDao.addNewMail(MailName, mailImg, mailDescription);
+    public Mail addNewMail(Mail newMail) {
+        return MailDao.addNewMail(newMail);
     }
 
-    public String updateMail(Integer MailId, String MailName, String mailImg, String mailDescription) {
-        return MailDao.updateMail(MailId, MailName, mailImg, mailDescription);
+    public Mail updateMail(Mail updateMail) {
+        return MailDao.updateMail(updateMail);
     }
 
     public List<Mail> getAllMails() {
