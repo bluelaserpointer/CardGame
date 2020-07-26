@@ -123,4 +123,10 @@ public class UserServiceImpl implements UserService {
         return (int) result;
     }
 
+    // 用户名查找用户
+    @Override
+    public User getOneUserByUserName(String userName) {
+        return userDao.getOneUserByUserName(userName);
+    }
+
 }

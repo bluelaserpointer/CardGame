@@ -31,6 +31,9 @@ public interface UserService {
     // 登录逻辑
     Integer identifyUser(String userName, String password);
 
+    // 用户查找
+    User getOneUserByUserName(String userName);
+
     // 删除一个指定用户
     List<User> deleteUser(Integer userId);
 

@@ -80,76 +80,10 @@ public class MultiHttpSecurityConfig {
         public AuthenticationManager authenticationManagerBean() throws Exception {
             return super.authenticationManagerBean();
         }
-        // @Bean
-        // CorsConfigurationSource corsConfigurationSource() {
-        // final UrlBasedCorsConfigurationSource source = new
-        // UrlBasedCorsConfigurationSource();
-        // source.registerCorsConfiguration("/**", new
-        // CorsConfiguration().applyPermitDefaultValues());
-        // return source;
-        // }
+        
 
     }
 
-    // 再验证是否是admin
-    // @Configuration
-    // @Order(4)
-    // public static class AdminWebSecurity extends WebSecurityConfigurerAdapter {
-    // @Autowired
-    // private AdminDetailsServiceImpl adminDetailsService;
-
-    // @Autowired
-    // private JwtAdminFilter jwtFilter;
-    // // @Autowired
-    // // private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    // // public WebSecurity(UserDetailsServiceImpl userDetailsService,
-    // // BCryptPasswordEncoder bCryptPasswordEncoder) {
-    // // this.userDetailsService = userDetailsService;
-    // // this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-    // // }
-
-    // // SIGN_UP_URL
-    // @Override
-    // protected void configure(HttpSecurity http) throws Exception {
-    // http.cors().and().csrf().disable().authorizeRequests().antMatchers(HttpMethod.POST,
-    // "/admin/register")
-    // .permitAll().antMatchers(HttpMethod.POST,
-    // "/admin/login").permitAll().anyRequest().authenticated()
-    // .and().exceptionHandling().and()
-    // // .addFilter(new JWTAuthenticationFilter(authenticationManager()))
-    // // .addFilter(new JWTAuthorizationFilter(authenticationManager()))
-    // // // this disables session creation on Spring Security
-    // .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-    // http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-    // System.out.println("Admin Configuration");
-    // }
-
-    // @Override
-    // public void configure(AuthenticationManagerBuilder auth) throws Exception {
-    // auth.userDetailsService(adminDetailsService);
-    // }
-
-    // @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
-    // @Override
-    // public AuthenticationManager authenticationManagerBean() throws Exception {
-    // return super.authenticationManagerBean();
-    // }
-
-    // // @Bean
-    // // public PasswordEncoder passwordEncoder() {
-    // // return NoOpPasswordEncoder.getInstance();
-    // // }
-
-    // // @Bean
-    // // CorsConfigurationSource corsConfigurationSource() {
-    // // final UrlBasedCorsConfigurationSource source = new
-    // // UrlBasedCorsConfigurationSource();
-    // // source.registerCorsConfiguration("/**", new
-    // // CorsConfiguration().applyPermitDefaultValues());
-    // // return source;
-    // // }
-
-    // }
+    
 
 }

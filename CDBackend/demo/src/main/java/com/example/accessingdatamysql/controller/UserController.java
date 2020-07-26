@@ -40,16 +40,10 @@ public class UserController {
     return userService.getOneUser(userId);
   }
 
-  // 添加一个新用户
-  // @RequestMapping(value = "/addUser")
-  // public @ResponseBody User addNewUser(@RequestParam("userName") String
-  // userName, @RequestParam("email") String email,
-  // @RequestParam("password") String password, @RequestParam("phoneNumber")
-  // String phoneNumber) {
-  // // 加密密码
-  // // password = bCryptPasswordEncoder.encode(password);
-  // return userService.addNewUser(userName, email, password, phoneNumber);
-  // }
+  @RequestMapping(value = "/getUserByUserName")
+  public @ResponseBody User findUserByUserName(@RequestParam("userName") String userName) {
+    return userService.getOneUserByUserName(userName);
+  }
 
   @PostMapping("/register")
   public @ResponseBody User register(@RequestBody User registerUser) {
@@ -78,12 +72,14 @@ public class UserController {
 
   // 删除部分用户
   @RequestMapping(value = "/deleteUsers")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public String deleteUsers(@RequestParam("userIds") List<Integer> userIds) {
     return userService.deleteUsers(userIds);
   }
 
   // 删除所有用户
   @RequestMapping(value = "/deleteAllUsers")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public String deleteAll() {
     return userService.deleteAll();
   }
@@ -102,6 +98,7 @@ public class UserController {
 
   // 删除一个指定用户
   @RequestMapping(value = "/deleteUser")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public List<User> deleteUser(@RequestParam("userId") Integer userId) {
     return userService.deleteUser(userId);
   }
