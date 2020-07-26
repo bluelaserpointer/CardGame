@@ -18,6 +18,7 @@ context('UserPanel', () => {
 
   beforeEach(() => {
     cy.restoreLocalStorage();
+    cy.wait(2000);
   });
 
   afterEach(() => {

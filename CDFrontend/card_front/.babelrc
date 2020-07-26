@@ -11,7 +11,8 @@
         "require-context-hook",
         "transform-require-context",
         "@babel/plugin-transform-modules-commonjs",
-        "babel-plugin-dynamic-import-node"
+        "babel-plugin-dynamic-import-node",
+        "@babel/plugin-transform-runtime"
       ]
     }
   }
