@@ -28,7 +28,7 @@ public interface UserService {
     // 删除所有用户
     String deleteAll();
 
-    // 登录逻辑
+    // 确认用户身份
     Integer identifyUser(String userName, String password);
 
     // 用户查找

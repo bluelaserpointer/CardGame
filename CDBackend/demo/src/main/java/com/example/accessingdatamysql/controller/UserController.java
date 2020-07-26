@@ -47,8 +47,7 @@ public class UserController {
 
   @PostMapping("/register")
   public @ResponseBody User register(@RequestBody User registerUser) {
-    return userService.addNewUser(registerUser.getUserName(), registerUser.getEmail(), registerUser.getPassword(),
-        registerUser.getPhoneNumber(), registerUser.getIdentity());
+    return userService.addNewUser(registerUser);
   }
 
   // 更新一个用户信息
@@ -56,11 +55,7 @@ public class UserController {
   public @ResponseBody User updateUser(@RequestBody User updateUser) {
     // 加密密码
     // password = bCryptPasswordEncoder.encode(password);
-    return userService.updateUser(updateUser.getUserId(), updateUser.getUserName(), updateUser.getEmail(),
-        updateUser.getPassword(), updateUser.getPhoneNumber(), updateUser.getCredits(), updateUser.getAccess(),
-        updateUser.getLevel(), updateUser.getCurExpPoint(), updateUser.getStamina(), updateUser.getMoney(),
-        updateUser.getGrade(), updateUser.getEngKnowledge(), updateUser.getMathKnowledge(),
-        updateUser.getChiKnowledge(), updateUser.getIdentity());
+    return userService.updateUser(updateUser);
   }
 
   // 获取所有用户信息
@@ -82,6 +77,13 @@ public class UserController {
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public String deleteAll() {
     return userService.deleteAll();
+  }
+
+  // 确认用户身份
+  @RequestMapping(value = "/confirmDelete")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  public Integer identifyUser(@RequestParam("userName") String userName, @RequestParam("password") String password) {
+    return userService.identifyUser(userName, password);
   }
 
   // 登录逻辑
