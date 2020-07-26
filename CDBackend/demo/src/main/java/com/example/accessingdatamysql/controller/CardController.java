@@ -27,30 +27,16 @@ public class CardController {
   }
 
   @RequestMapping(value = "/addCard")
-  public @ResponseBody String addNewCard(@RequestParam("cardName") String cardName,
-      @RequestParam("rarity") String rarity, @RequestParam("healthPoint") Integer healthPoint,
-      @RequestParam("attack") Integer attack, @RequestParam("defense") Integer defense,
-      @RequestParam("attackRange") Integer attackRange, @RequestParam("cd") Double cd,
-      @RequestParam("speed") Integer speed, @RequestParam("cardImg") String cardImg,
-      @RequestParam("shortDescription") String shortDescription,
-      @RequestParam("cardDescription") String cardDescription, @RequestParam("type") Integer type) {
-    return CardService.addNewCard(cardName, rarity, healthPoint, attack, defense, attackRange, cd, speed, cardImg,
-        shortDescription, cardDescription, type);
+  public @ResponseBody String addNewCard(@RequestBody Card newCard) {
+    return CardService.addNewCard(newCard);
   }
 
   @RequestMapping(value = "/updateCard")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public @ResponseBody String updateCard(@RequestParam("cardId") Integer cardId,
-      @RequestParam("cardName") String cardName, @RequestParam("rarity") String rarity,
-      @RequestParam("healthPoint") Integer healthPoint, @RequestParam("attack") Integer attack,
-      @RequestParam("defense") Integer defense, @RequestParam("attackRange") Integer attackRange,
-      @RequestParam("cd") Double cd, @RequestParam("speed") Integer speed, @RequestParam("cardImg") String cardImg,
-      @RequestParam("shortDescription") String shortDescription,
-      @RequestParam("cardDescription") String cardDescription, @RequestParam("type") Integer type) {
-    System.out.println("In controller");
+  public @ResponseBody String updateCard(@RequestBody Card updateCard) {
+    // System.out.println("In controller");
 
-    return CardService.updateCard(cardId, cardName, rarity, healthPoint, attack, defense, attackRange, cd, speed,
-        cardImg, shortDescription, cardDescription, type);
+    return CardService.updateCard(updateCard);
   }
 
   @RequestMapping(value = "/getAllCards")

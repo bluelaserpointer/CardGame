@@ -27,31 +27,18 @@ public class EnemyController {
 
   @RequestMapping(value = "/addEnemy")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public @ResponseBody Enemy addNewEnemy(@RequestParam("enemyName") String enemyName,
-      @RequestParam("healthPoint") Integer healthPoint, @RequestParam("attack") Integer attack,
-      @RequestParam("defense") Integer defense, @RequestParam("attackRange") Integer attackRange,
-      @RequestParam("cd") Double cd, @RequestParam("speed") Integer speed, @RequestParam("enemyImg") String enemyImg,
-      @RequestParam("shortDescription") String shortDescription,
-      @RequestParam("enemyDescription") String enemyDescription) {
-    System.out.println("Class: EnemyController Method: addNewEnemy Param: ");
+  public @ResponseBody Enemy addNewEnemy(@RequestBody Enemy newEnemy) {
+    // System.out.println("Class: EnemyController Method: addNewEnemy Param: ");
 
-    return EnemyService.addNewEnemy(enemyName, healthPoint, attack, defense, attackRange, cd, speed, enemyImg,
-        shortDescription, enemyDescription);
+    return EnemyService.addNewEnemy(newEnemy);
   }
 
   @RequestMapping(value = "/updateEnemy")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public @ResponseBody Enemy updateEnemy(@RequestParam("enemyId") Integer EnemyId,
-      @RequestParam("enemyName") String EnemyName, @RequestParam("healthPoint") Integer healthPoint,
-      @RequestParam("attack") Integer attack, @RequestParam("defense") Integer defense,
-      @RequestParam("attackRange") Integer attackRange, @RequestParam("cd") Double cd,
-      @RequestParam("speed") Integer speed, @RequestParam("enemyImg") String EnemyImg,
-      @RequestParam("shortDescription") String shortDescription,
-      @RequestParam("enemyDescription") String EnemyDescription) {
-    System.out.println("In controller");
+  public @ResponseBody Enemy updateEnemy(@RequestBody Enemy updateEnemy) {
+    // System.out.println("In controller");
 
-    return EnemyService.updateEnemy(EnemyId, EnemyName, healthPoint, attack, defense, attackRange, cd, speed, EnemyImg,
-        shortDescription, EnemyDescription);
+    return EnemyService.updateEnemy(updateEnemy);
   }
 
   @RequestMapping(value = "/getAllEnemies")

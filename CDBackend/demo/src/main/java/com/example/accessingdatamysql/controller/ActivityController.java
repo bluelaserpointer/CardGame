@@ -28,20 +28,15 @@ public class ActivityController {
 
   @RequestMapping(value = "/addActivity")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public @ResponseBody String addNewActivity(@RequestParam("activityName") String activityName,
-      @RequestParam("activityImg") String activityImg, @RequestParam("activityDescription") String activityDescription,
-      @RequestParam("start") Timestamp start, @RequestParam("type") String type) {
-    return ActivityService.addNewActivity(type, activityName, activityImg, activityDescription, start);
+  public @ResponseBody Activity addNewActivity(@RequestBody Activity newAcitivity) {
+    return ActivityService.addNewActivity(newAcitivity);
 
   }
 
   @RequestMapping(value = "/updateActivity")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public @ResponseBody String updateActivity(@RequestParam("activityId") Integer activityId,
-      @RequestParam("activityName") String activityName, @RequestParam("activityImg") String activityImg,
-      @RequestParam("activityDescription") String activityDescription, @RequestParam("start") Timestamp start,
-      @RequestParam("type") String type) {
-    return ActivityService.updateActivity(activityId, type, activityName, activityImg, activityDescription, start);
+  public @ResponseBody String updateActivity(@RequestBody Activity updateActivity) {
+    return ActivityService.updateActivity(updateActivity);
   }
 
   @RequestMapping(value = "/getAllActivities")

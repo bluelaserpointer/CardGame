@@ -28,18 +28,14 @@ public class ItemController {
 
   @RequestMapping(value = "/addItem")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public @ResponseBody String addNewItem(@RequestParam("itemName") String itemName,
-      @RequestParam("price") Integer price, @RequestParam("itemImg") String itemImg,
-      @RequestParam("itemDescription") String itemDescription) {
-    return ItemService.addNewItem(itemName, price, itemImg, itemDescription);
+  public @ResponseBody String addNewItem(@RequestBody Item newItem) {
+    return ItemService.addNewItem(newItem);
   }
 
   @RequestMapping(value = "/updateItem")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public @ResponseBody String updateItem(@RequestParam("itemId") Integer itemId,
-      @RequestParam("itemName") String itemName, @RequestParam("price") Integer price,
-      @RequestParam("itemImg") String itemImg, @RequestParam("itemDescription") String itemDescription) {
-    return ItemService.updateItem(itemId, itemName, price, itemImg, itemDescription);
+  public @ResponseBody String updateItem(@RequestBody Item updateItem) {
+    return ItemService.updateItem(updateItem);
   }
 
   @RequestMapping(value = "/getAllItems")
