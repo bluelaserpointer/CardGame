@@ -1,5 +1,7 @@
 /// <reference types="cypress" />
-
+Cypress.Cookies.defaults({
+  whitelist: 'Admin-Token'
+});
 context('ActivityEdit', () => {
   let LOCAL_STORAGE_MEMORY = {};
 

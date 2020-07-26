@@ -1,5 +1,7 @@
 /// <reference types="cypress" />
-
+Cypress.Cookies.defaults({
+  whitelist: 'Admin-Token'
+});
 context('Login', () => {
   beforeEach(() => {
     cy.visit('http://localhost:8081/');
