@@ -3,6 +3,7 @@ package com.example.accessingdatamysql.controller;
 import com.example.accessingdatamysql.entity.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
@@ -20,25 +21,28 @@ public class PveRecordController {
 
     @RequestMapping(value = "/addPveRecord")
     public PveRecord addPveRecord(@RequestParam("userId") Integer userId, @RequestParam("chapterId") Integer chapterId,
-                                  @RequestParam("phaseId") Integer phaseId, @RequestParam("result") Integer result,
-                                  @RequestParam("posRecord") String posRecord) throws JsonProcessingException {
+            @RequestParam("phaseId") Integer phaseId, @RequestParam("result") Integer result,
+            @RequestParam("posRecord") String posRecord) throws JsonProcessingException {
         return pveRecordService.addPveRecord(userId, chapterId, phaseId, result, posRecord);
     }
 
     @RequestMapping(value = "/updatePveRecord")
-    public PveRecord addPveRecord(@RequestParam("pveRecordId") Integer pveRecordId, @RequestParam("userId") Integer userId,
-                                  @RequestParam("chapterId") Integer chapterId, @RequestParam("phaseId") Integer phaseId,
-                                  @RequestParam("result") Integer result, @RequestParam("recordTime")Timestamp recordTime,
-                                  @RequestParam("posRecord") String posRecord) throws JsonProcessingException {
+    public PveRecord addPveRecord(@RequestParam("pveRecordId") Integer pveRecordId,
+            @RequestParam("userId") Integer userId, @RequestParam("chapterId") Integer chapterId,
+            @RequestParam("phaseId") Integer phaseId, @RequestParam("result") Integer result,
+            @RequestParam("recordTime") Timestamp recordTime, @RequestParam("posRecord") String posRecord)
+            throws JsonProcessingException {
         return pveRecordService.updatePveRecord(pveRecordId, userId, chapterId, phaseId, result, recordTime, posRecord);
     }
 
     @RequestMapping(value = "/getAllPveRecords")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<PveRecord> getAllPveRecords() {
         return pveRecordService.getAllPveRecords();
     }
 
     @RequestMapping(value = "/getPveRecordStatistics")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Map<String, Integer> getPveRecordStatistics() {
         return pveRecordService.getPveRecordStatistics();
     }

@@ -2,6 +2,7 @@ package com.example.accessingdatamysql.controller;
 
 import com.example.accessingdatamysql.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 // import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +39,7 @@ public class CardController {
   }
 
   @RequestMapping(value = "/updateCard")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public @ResponseBody String updateCard(@RequestParam("cardId") Integer cardId,
       @RequestParam("cardName") String cardName, @RequestParam("rarity") String rarity,
       @RequestParam("healthPoint") Integer healthPoint, @RequestParam("attack") Integer attack,
@@ -57,16 +59,19 @@ public class CardController {
   }
 
   @RequestMapping(value = "/deleteCards")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public String deleteCards(@RequestParam("cardIds") List<Integer> cardIds) {
     return CardService.deleteCards(cardIds);
   }
 
   @RequestMapping(value = "/deleteAllCards")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public String deleteAll() {
     return CardService.deleteAll();
   }
 
   @RequestMapping(value = "/deleteCard")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public List<Card> deleteCard(@RequestParam("cardId") Integer cardId) {
     return CardService.deleteCard(cardId);
   }

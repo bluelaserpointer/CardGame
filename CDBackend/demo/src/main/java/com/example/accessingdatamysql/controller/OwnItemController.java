@@ -2,6 +2,7 @@ package com.example.accessingdatamysql.controller;
 
 import com.example.accessingdatamysql.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 // import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,6 +40,7 @@ public class OwnItemController {
   }
 
   @RequestMapping(value = "/getAllOwnItems")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public List<OwnItem> getAllOwnItems() {
     return OwnItemService.getAllOwnItems();
   }
@@ -49,6 +51,7 @@ public class OwnItemController {
   }
 
   @RequestMapping(value = "/deleteAllOwnItems")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public String deleteAll() {
     return OwnItemService.deleteAll();
   }

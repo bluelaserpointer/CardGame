@@ -2,6 +2,7 @@ package com.example.accessingdatamysql.controller;
 
 import com.example.accessingdatamysql.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 // import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,12 +27,14 @@ public class MailController {
   }
 
   @RequestMapping(value = "/addMail")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public @ResponseBody String addNewMail(@RequestParam("mailName") String mailName,
       @RequestParam("mailImg") String mailImg, @RequestParam("mailDescription") String mailDescription) {
     return MailService.addNewMail(mailName, mailImg, mailDescription);
   }
 
   @RequestMapping(value = "/updateMail")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public @ResponseBody String updateMail(@RequestParam("mailId") Integer mailId,
       @RequestParam("mailName") String mailName, @RequestParam("mailImg") String mailImg,
       @RequestParam("mailDescription") String mailDescription) {
@@ -39,23 +42,26 @@ public class MailController {
   }
 
   @RequestMapping(value = "/getAllMails")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public List<Mail> getAllMails() {
     return MailService.getAllMails();
   }
 
   @RequestMapping(value = "/deleteMails")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public String deleteMails(@RequestParam("mailIds") List<Integer> mailIds) {
     return MailService.deleteMails(mailIds);
   }
 
   @RequestMapping(value = "/deleteAllMails")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public String deleteAll() {
     return MailService.deleteAll();
   }
 
   @RequestMapping(value = "/deleteMail")
-  public List<Mail> deleteMail(@RequestParam("mailId") Integer mailId)
-  {
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  public List<Mail> deleteMail(@RequestParam("mailId") Integer mailId) {
     return MailService.deleteMail(mailId);
   }
 }
