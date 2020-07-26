@@ -16,25 +16,25 @@ const tableRouter = {
       path: 'phase-table',
       component: () => import('@/components/table/phasePanel'),
       name: 'PhasePanel',
-      meta: { title: 'Phase Panel' }
+      meta: { title: 'Phase Panel' , icon: 'table'}
     },
     {
       path: 'item-entity-table',
       component: () => import('@/components/table/itemEntityPanel'),
       name: 'ItemEntityPanel',
-      meta: { title: 'Item Entity Panel' }
+      meta: { title: 'Item Entity Panel', icon: 'table' }
     },
     {
       path: 'card-entity-table',
       component: () => import('@/components/table/cardEntityPanel'),
       name: 'CardEntityPanel',
-      meta: { title: 'Card Entity Panel' }
+      meta: { title: 'Card Entity Panel', icon: 'table' }
     },
     {
       path: 'player-panel',
       component: () => import('@/components/table/playerPanel'),
       name: 'PlayerPanel',
-      meta: { title: 'Player Panel' }
+      meta: { title: 'Player Panel' , icon: 'table'}
     }
   ]
 };

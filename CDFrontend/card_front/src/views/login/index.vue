@@ -170,11 +170,13 @@ export default {
           this.loading = true;
           this.$store.dispatch('user/login', this.loginForm)
             .then(() => {
+              console.log("In handleLogin-then");
               this.$router.push({ path: this.redirect || '/', query: this.otherQuery });
               localStorage.setItem('AdminName', this.loginForm.username);
               this.loading = false
             })
             .catch(() => {
+              console.log("In handleLogin-catch");
               this.loading = false
             })
         } else {

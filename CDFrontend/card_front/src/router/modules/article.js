@@ -8,21 +8,21 @@ const articleRouter = {
   redirect: '/article/list',
   name: 'article',
   meta: {
-    title: 'article',
-    icon: 'el-icon-s-help'
+    title: 'Article',
+    icon: 'edit'
   },
   children: [
     {
       path: 'activity',
       component: () => import('@/components/article/ActivityPanel'),
       name: 'Activity Panel',
-      meta: { title: 'Activity Panel', icon: 'article' }
+      meta: { title: 'Activity Panel', icon: 'edit' }
     },
     {
       path: 'mail',
       component: () => import('@/components/article/MailPanel'),
       name: 'Mail Panel',
-      meta: { title: 'Mail Panel', icon: 'article' }
+      meta: { title: 'Mail Panel', icon: 'edit' }
     }
   ]
 };

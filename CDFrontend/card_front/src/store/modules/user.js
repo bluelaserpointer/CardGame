@@ -58,13 +58,23 @@ const actions = {
         console.log("Within promise");
         console.log(response);
 
+
+        response.data.roles = ['admin', 'editor'];
+        response.data.name = 'admin1';
+
         const { data } = response;
 
         if (!data) {
+          console.log("In !data");
           reject('Verification failed, please Login again.')
         }
 
+        console.log(data);
+
         const { roles, name, avatar, introduction } = data;
+
+
+
         console.log("roles " + roles);
         console.log("name " + name);
 
@@ -74,10 +84,11 @@ const actions = {
         }
 
         commit('SET_ROLES', roles);
-        commit('SET_NAME', name);
-        commit('SET_AVATAR', avatar);
-        commit('SET_INTRODUCTION', introduction);
-        resolve(data)
+        // commit('SET_ROLES', roles);
+        commit('SET_NAME', "");
+        commit('SET_AVATAR', "");
+        commit('SET_INTRODUCTION', "");
+        resolve(data);
       }).catch(error => {
         reject(error)
       })

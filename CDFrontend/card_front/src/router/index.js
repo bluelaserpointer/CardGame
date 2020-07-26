@@ -193,8 +193,6 @@ export const asyncRoutes = [
   //   ]
   // },
 
-  ,
-
   //
   // {
   //   path: '/tab',
