@@ -22,17 +22,17 @@ public class UserServiceImpl implements UserService {
 
     // 添加一个新用户
     @Override
-    public User addNewUser(String userName, String email, String password, String phoneNumber) {
-        return userDao.addNewUser(userName, email, password, phoneNumber);
+    public User addNewUser(String userName, String email, String password, String phoneNumber, String identity) {
+        return userDao.addNewUser(userName, email, password, phoneNumber, identity);
     }
 
     // 更新一个用户信息
     @Override
     public User updateUser(Integer UserId, String userName, String email, String password, String phoneNumber,
             Integer credits, Boolean access, Integer level, Integer curExpPoint, Integer stamina, Integer money,
-            Double grade, Integer engKnowledge, Integer mathKnowledge, Integer chiKnowledge) {
+            Double grade, Integer engKnowledge, Integer mathKnowledge, Integer chiKnowledge, String identity) {
         return userDao.updateUser(UserId, userName, email, password, phoneNumber, credits, access, level, curExpPoint,
-                stamina, money, grade, engKnowledge, mathKnowledge, chiKnowledge);
+                stamina, money, grade, engKnowledge, mathKnowledge, chiKnowledge, identity);
     }
 
     // 只是一个更新的wrapper
@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
         userDao.updateUser(userId, user.getUserName(), user.getEmail(), user.getPassword(), user.getPhoneNumber(),
                 user.getCredits(), user.getAccess(), user.getLevel(), user.getCurExpPoint(), user.getStamina(),
                 user.getMoney(), user.getGrade(), user.getEngKnowledge(), user.getMathKnowledge(),
-                user.getChiKnowledge());
+                user.getChiKnowledge(), user.getIdentity());
         return user;
     }
 
@@ -121,6 +121,12 @@ public class UserServiceImpl implements UserService {
         double result = Math.round(Math.pow(IncreaseRate, userLevel - 1) * base); // 小数采用四舍五入法
         System.out.println(result);
         return (int) result;
+    }
+
+    // 用户名查找用户
+    @Override
+    public User getOneUserByUserName(String userName) {
+        return userDao.getOneUserByUserName(userName);
     }
 
 }

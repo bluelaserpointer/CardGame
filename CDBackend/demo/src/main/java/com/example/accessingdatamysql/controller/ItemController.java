@@ -2,6 +2,7 @@ package com.example.accessingdatamysql.controller;
 
 import com.example.accessingdatamysql.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 // import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +27,7 @@ public class ItemController {
   }
 
   @RequestMapping(value = "/addItem")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public @ResponseBody String addNewItem(@RequestParam("itemName") String itemName,
       @RequestParam("price") Integer price, @RequestParam("itemImg") String itemImg,
       @RequestParam("itemDescription") String itemDescription) {
@@ -33,6 +35,7 @@ public class ItemController {
   }
 
   @RequestMapping(value = "/updateItem")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public @ResponseBody String updateItem(@RequestParam("itemId") Integer itemId,
       @RequestParam("itemName") String itemName, @RequestParam("price") Integer price,
       @RequestParam("itemImg") String itemImg, @RequestParam("itemDescription") String itemDescription) {
@@ -40,23 +43,26 @@ public class ItemController {
   }
 
   @RequestMapping(value = "/getAllItems")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public List<Item> getAllItems() {
     return ItemService.getAllItems();
   }
 
   @RequestMapping(value = "/deleteItems")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public String deleteItems(@RequestParam("itemIds") List<Integer> itemIds) {
     return ItemService.deleteItems(itemIds);
   }
 
   @RequestMapping(value = "/deleteAllItems")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public String deleteAll() {
     return ItemService.deleteAll();
   }
 
   @RequestMapping(value = "/deleteItem")
-  public List<Item> deleteItem(@RequestParam("itemId") Integer itemId)
-  {
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  public List<Item> deleteItem(@RequestParam("itemId") Integer itemId) {
     return ItemService.deleteItem(itemId);
   }
 

@@ -2,6 +2,7 @@ package com.example.accessingdatamysql.controller;
 
 import com.example.accessingdatamysql.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 // import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,6 +59,7 @@ public class OwnCardController {
 
   // 获取所有用户拥有卡牌关系
   @RequestMapping(value = "/getAllOwnCards")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public List<OwnCard> getAllOwnCards() {
     return OwnCardService.getAllOwnCards();
   }
@@ -76,6 +78,7 @@ public class OwnCardController {
 
   // 删除所有用户拥有卡牌关系
   @RequestMapping(value = "/deleteAllOwnCards")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public String deleteAll() {
     return OwnCardService.deleteAll();
   }

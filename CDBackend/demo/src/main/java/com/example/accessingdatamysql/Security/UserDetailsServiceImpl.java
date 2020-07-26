@@ -1,6 +1,8 @@
 package com.example.accessingdatamysql.Security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.example.accessingdatamysql.repository.UserRepository;
 
@@ -29,6 +32,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (applicationUser == null) {
             throw new UsernameNotFoundException(username);
         }
-        return new User(applicationUser.getUserName(), applicationUser.getPassword(), new ArrayList<>());
+
+        // Identity 要写成 "ROLE_ADMIN","ROLE_USER"
+        System.out.println(applicationUser.getIdentity());
+        List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(applicationUser.getIdentity());
+
+        return new User(applicationUser.getUserName(), applicationUser.getPassword(), authorities);
     }
 }

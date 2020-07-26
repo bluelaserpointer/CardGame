@@ -1,6 +1,6 @@
 package com.example.accessingdatamysql.entity;
 
-import java.util.Map;
+// import java.util.Map;
 
 import javax.persistence.*;
 
@@ -47,6 +47,8 @@ public class User {
     private Integer mathKnowledge;
     // 中文知识点
     private Integer chiKnowledge;
+    // Identity 要写成 "ROLE_ADMIN","ROLE_USER"
+    private String identity;
 
     public User() {
         this.credits = 0;
@@ -54,7 +56,7 @@ public class User {
         this.level = 1;
     };
 
-    public User(String userName, String email, String password, String phoneNumber) {
+    public User(String userName, String email, String password, String phoneNumber, String identity) {
         this.userName = userName;
         this.email = email;
         this.password = password;
@@ -63,17 +65,18 @@ public class User {
         this.access = true;
         this.level = 1;
         this.curExpPoint = 0; // 初始时应该等级为1且经验值为0
-        // 这里需要确定一下每个等级的stamina是多少来确定初始化时的stamina值
+        // TODO 这里需要确定一下每个等级的stamina是多少来确定初始化时的stamina值
         this.money = 0;
         this.grade = 0.0;
         this.engKnowledge = 0;
         this.mathKnowledge = 0;
         this.chiKnowledge = 0;
+        this.identity = identity;
     }
 
     public void updateUser(String userName, String email, String password, String phoneNumber, Integer credits,
             Boolean access, Integer level, Integer curExpPoint, Integer stamina, Integer money, Double grade,
-            Integer engKnowledge, Integer mathKnowledge, Integer chiKnowledge) {
+            Integer engKnowledge, Integer mathKnowledge, Integer chiKnowledge, String identity) {
         this.userName = userName;
         this.email = email;
         this.password = password;
@@ -88,6 +91,7 @@ public class User {
         this.engKnowledge = engKnowledge;
         this.mathKnowledge = mathKnowledge;
         this.chiKnowledge = chiKnowledge;
+        this.identity = identity;
     }
 
     public Integer getUserId() {
@@ -200,6 +204,14 @@ public class User {
 
     public void setChiKnowledge(Integer chiKnowledge) {
         this.chiKnowledge = chiKnowledge;
+    }
+
+    public String getIdentity() {
+        return identity;
+    }
+
+    public void setIdentity(String identity) {
+        this.identity = identity;
     }
 
     public Double getGrade() {
