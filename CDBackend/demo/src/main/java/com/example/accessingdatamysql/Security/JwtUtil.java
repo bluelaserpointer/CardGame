@@ -12,12 +12,13 @@ import java.util.Map;
 import java.util.function.Function;
 
 import static com.example.accessingdatamysql.Security.SecurityConstants.EXPIRATION_TIME;
+import static com.example.accessingdatamysql.Security.SecurityConstants.SECRET;
 
 //Utilizations regarding the jwt dependency
 @Service
 public class JwtUtil {
 
-    private String secret = "cardgameproject";
+    private String secret = SECRET;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);

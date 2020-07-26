@@ -21,8 +21,6 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static com.example.accessingdatamysql.Security.SecurityConstants.SIGN_UP_URL;
-
 // import com.mongodb.ReflectionDBObject.JavaWrapper;
 
 // @Configuration
