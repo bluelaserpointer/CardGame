@@ -207,10 +207,11 @@ export default {
     confirmIdentity() {
       const postData = new FormData();
       const _this = this;
-      postData.append('adminName', localStorage.getItem('AdminName'));
+      postData.append('userName', localStorage.getItem('AdminName'));
       postData.append('password', this.confirmPassword);
+
       request({
-        url: '/admin/identifyAdmin',
+        url: '/user/confirmDelete',
         method: 'post',
         data: postData
       }).then(response => {
