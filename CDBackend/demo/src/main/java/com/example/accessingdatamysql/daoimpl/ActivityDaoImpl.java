@@ -28,7 +28,7 @@ public class ActivityDaoImpl implements ActivityDao {
         return Activity;
     }
 
-    public String addNewActivity(String type, String activityName, String activityImg, String activityDescription,
+    public Activity addNewActivity(String type, String activityName, String activityImg, String activityDescription,
             Timestamp start) {
 
         Activity Activity = new Activity(type, activityName, start);
@@ -40,7 +40,7 @@ public class ActivityDaoImpl implements ActivityDao {
         return "Saved Activity";
     }
 
-    public String updateActivity(Integer activityId, String type, String activityName, String activityImg,
+    public Activity updateActivity(Integer activityId, String type, String activityName, String activityImg,
             String activityDescription, Timestamp start) {
 
         Activity Activity = ActivityRepository.getOne(activityId);

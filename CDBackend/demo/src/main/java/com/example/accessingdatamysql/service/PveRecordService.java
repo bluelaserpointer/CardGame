@@ -9,14 +9,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface PveRecordService {
-    PveRecord addPveRecord(Integer userId, Integer chapterId,
-                         Integer phaseId, Integer result,
-                         String posRecord) throws JsonProcessingException;
+    PveRecord addPveRecord(PveRecord newPveRecord) throws JsonProcessingException;
 
-    PveRecord updatePveRecord(Integer pveRecordId, Integer userId,
-                            Integer chapterId, Integer phaseId,
-                            Integer result, Timestamp recordTime,
-                            String posRecord) throws JsonProcessingException;
+    PveRecord updatePveRecord(PveRecord updatePveRecord) throws JsonProcessingException;
 
     List<PveRecord> getAllPveRecords();
 

@@ -28,19 +28,14 @@ public class MissionController {
 
   @RequestMapping(value = "/addMission")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public @ResponseBody String addNewMission(@RequestParam("type") String type,
-      @RequestParam("missionName") String MissionName, @RequestParam("missionDescription") String MissionDescription,
-      @RequestParam("awardItemIds") List<Integer> awardItemIds) {
-    return MissionService.addNewMission(type, MissionName, MissionDescription, awardItemIds);
+  public @ResponseBody Mission addNewMission(@RequestBody Mission newMission) {
+    return MissionService.addNewMission(newMission);
   }
 
   @RequestMapping(value = "/updateMission")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public @ResponseBody String updateMission(@RequestParam("missionId") Integer MissionId,
-      @RequestParam("type") String type, @RequestParam("missionName") String MissionName,
-      @RequestParam("missionDescription") String MissionDescription,
-      @RequestParam("awardItemIds") List<Integer> awardItemIds) {
-    return MissionService.updateMission(MissionId, type, MissionName, MissionDescription, awardItemIds);
+  public @ResponseBody Mission updateMission(@RequestBody Mission updateMission) {
+    return MissionService.updateMission(updateMission);
   }
 
   @RequestMapping(value = "/getAllMissions")

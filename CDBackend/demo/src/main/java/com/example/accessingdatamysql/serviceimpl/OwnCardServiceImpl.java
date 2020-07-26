@@ -57,10 +57,8 @@ public class OwnCardServiceImpl implements OwnCardService {
 
     // 更新一个用户拥有某张卡牌的所有信息
     @Override
-    public OwnCard updateOwnCard(Integer userId, Integer cardId, Integer cardLevel, Integer cardCurExp,
-            Integer cardLevelLimit, Integer repetitiveOwns, Timestamp accquireDate) {
-        return OwnCardDao.updateOwnCard(userId, cardId, cardLevel, cardCurExp, cardLevelLimit, repetitiveOwns,
-                accquireDate);
+    public OwnCard updateOwnCard(OwnCard updateOwnCard) {
+        return OwnCardDao.updateOwnCard(updateOwnCard);
     }
 
     // 用户拥有的某张卡牌升级

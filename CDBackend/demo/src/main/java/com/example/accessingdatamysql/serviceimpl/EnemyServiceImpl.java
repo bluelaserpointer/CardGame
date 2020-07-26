@@ -20,19 +20,13 @@ public class EnemyServiceImpl implements EnemyService {
     }
 
     @Override
-    public Enemy addNewEnemy(String enemyName, Integer healthPoint, Integer attack, Integer defense,
-            Integer attackRange, Double cd, Integer speed, String enemyImg, String shortDescription,
-            String enemyDescription) {
-        return EnemyDao.addNewEnemy(enemyName, healthPoint, attack, defense, attackRange, cd, speed, enemyImg,
-                shortDescription, enemyDescription);
+    public Enemy addNewEnemy(Enemy newEnemy) {
+        return EnemyDao.addNewEnemy(newEnemy);
     }
 
     @Override
-    public Enemy updateEnemy(Integer enemyId, String enemyName, Integer healthPoint, Integer attack, Integer defense,
-            Integer attackRange, Double cd, Integer speed, String enemyImg, String shortDescription,
-            String enemyDescription) {
-        return EnemyDao.updateEnemy(enemyId, enemyName, healthPoint, attack, defense, attackRange, cd, speed, enemyImg,
-                shortDescription, enemyDescription);
+    public Enemy updateEnemy(Enemy updateEnemy) {
+        return EnemyDao.updateEnemy(updateEnemy);
     }
 
     @Override

@@ -19,14 +19,12 @@ public class MissionServiceImpl implements MissionService {
         return MissionDao.getOneMission(MissionId);
     }
 
-    public String addNewMission(String type, String MissionName, String MissionDescription,
-            List<Integer> awardItemIds) {
-        return MissionDao.addNewMission(type, MissionName, MissionDescription, awardItemIds);
+    public Mission addNewMission(Mission newMission) {
+        return MissionDao.addNewMission(newMission);
     }
 
-    public String updateMission(Integer MissionId, String type, String MissionName, String MissionDescription,
-            List<Integer> awardItemIds) {
-        return MissionDao.updateMission(MissionId, type, MissionName, MissionDescription, awardItemIds);
+    public Mission updateMission(Mission updateMission) {
+        return MissionDao.updateMission(updateMission);
     }
 
     public List<Mission> getAllMissions() {

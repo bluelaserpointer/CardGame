@@ -19,22 +19,22 @@ public class OwnItemServiceImpl implements OwnItemService {
         return OwnItemDao.getOneOwnItem(OwnItemId);
     }
 
-    public OwnItem addNewOwnItem(Integer userId, Integer itemId, Integer ItemCount) {
-        if (OwnItemDao.findOwnItemByUserIdEqualsAndItemIdEquals(userId, itemId) != null) {
+    public OwnItem addNewOwnItem(OwnItem newOwnItem) {
+        if (OwnItemDao.findOwnItemByUserIdEqualsAndItemIdEquals(newOwnItem.getUserId(),
+                newOwnItem.getItemId()) != null) {
             // 用户本身就拥有该道具
-            return OwnItemDao.repeatOwnItem(OwnItemDao.findOwnItemByUserIdEqualsAndItemIdEquals(userId, itemId),
-                    ItemCount);
+            return OwnItemDao.repeatOwnItem(newOwnItem);
 
         }
-        return OwnItemDao.addNewOwnItem(userId, itemId, ItemCount);
+        return OwnItemDao.addNewOwnItem(newOwnItem);
     }
 
     public List<OwnItem> getAllOwnItemsByUserId(Integer userId) {
         return OwnItemDao.getAllOwnItemsByUserId(userId);
     }
 
-    public OwnItem updateOwnItem(Integer OwnItemId, Integer userId, Integer itemId, Integer ItemCount) {
-        return OwnItemDao.updateOwnItem(OwnItemId, userId, itemId, ItemCount);
+    public OwnItem updateOwnItem(OwnItem updateOwnItem) {
+        return OwnItemDao.updateOwnItem(updateOwnItem);
     }
 
     public List<OwnItem> getAllOwnItems() {

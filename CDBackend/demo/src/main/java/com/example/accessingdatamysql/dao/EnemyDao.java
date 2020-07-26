@@ -9,12 +9,9 @@ import com.example.accessingdatamysql.entity.*;
 public interface EnemyDao {
         Enemy getOneEnemy(Integer enemyId);
 
-        Enemy addNewEnemy(String enemyName, Integer healthPoint, Integer attack, Integer defense, Integer attackRange,
-                        Double cd, Integer speed, String enemyImg, String shortDescription, String enemyDescription);
+        Enemy addNewEnemy(Enemy newEnemy);
 
-        Enemy updateEnemy(Integer enemyId, String enemyName, Integer healthPoint, Integer attack, Integer defense,
-                        Integer attackRange, Double cd, Integer speed, String enemyImg, String shortDescription,
-                        String enemyDescription);
+        Enemy updateEnemy(Enemy updateEnemy);
 
         List<Enemy> getAllEnemies();
 

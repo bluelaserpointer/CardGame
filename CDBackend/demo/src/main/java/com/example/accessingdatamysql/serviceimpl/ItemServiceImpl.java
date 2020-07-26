@@ -19,12 +19,12 @@ public class ItemServiceImpl implements ItemService {
         return ItemDao.getOneItem(ItemId);
     }
 
-    public String addNewItem(String itemName, Integer price, String itemImg, String itemDescription) {
-        return ItemDao.addNewItem(itemName, price, itemImg, itemDescription);
+    public Item addNewItem(Item newItem) {
+        return ItemDao.addNewItem(newItem);
     }
 
-    public String updateItem(Integer ItemId, String itemName, Integer price, String itemImg, String itemDescription) {
-        return ItemDao.updateItem(ItemId, itemName, price, itemImg, itemDescription);
+    public Item updateItem(Item updateItem) {
+        return ItemDao.updateItem(updateItem);
     }
 
     public List<Item> getAllItems() {

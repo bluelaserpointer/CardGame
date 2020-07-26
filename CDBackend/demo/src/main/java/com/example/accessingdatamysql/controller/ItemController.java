@@ -28,13 +28,13 @@ public class ItemController {
 
   @RequestMapping(value = "/addItem")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public @ResponseBody String addNewItem(@RequestBody Item newItem) {
+  public @ResponseBody Item addNewItem(@RequestBody Item newItem) {
     return ItemService.addNewItem(newItem);
   }
 
   @RequestMapping(value = "/updateItem")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public @ResponseBody String updateItem(@RequestBody Item updateItem) {
+  public @ResponseBody Item updateItem(@RequestBody Item updateItem) {
     return ItemService.updateItem(updateItem);
   }
 

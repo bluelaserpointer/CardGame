@@ -27,13 +27,13 @@ public class CardController {
   }
 
   @RequestMapping(value = "/addCard")
-  public @ResponseBody String addNewCard(@RequestBody Card newCard) {
+  public @ResponseBody Card addNewCard(@RequestBody Card newCard) {
     return CardService.addNewCard(newCard);
   }
 
   @RequestMapping(value = "/updateCard")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public @ResponseBody String updateCard(@RequestBody Card updateCard) {
+  public @ResponseBody Card updateCard(@RequestBody Card updateCard) {
     // System.out.println("In controller");
 
     return CardService.updateCard(updateCard);

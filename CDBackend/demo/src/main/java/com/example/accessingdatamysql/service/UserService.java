@@ -9,15 +9,13 @@ public interface UserService {
     User getOneUser(Integer UserId);
 
     // 添加一个新用户
-    User addNewUser(String userName, String email, String password, String phoneNumber, String identity);
+    User addNewUser(User newUser);
 
     // 更新一个用户信息
-    User updateUser(Integer UserId, String userName, String email, String password, String phoneNumber, Integer credits,
-            Boolean access, Integer level, Integer curExpPoint, Integer stamina, Integer money, Double grade,
-            Integer engKnowledge, Integer mathKnowledge, Integer chiKnowledge, String identity);
+    User updateUser(User updateUser);
 
-    // 只是一个更新的wrapper
-    User updateUserByUser(Integer userId, User user);
+    // // 只是一个更新的wrapper
+    // User updateUserByUser(Integer userId, User user);
 
     // 获取所有用户信息
     List<User> getAllUsers();

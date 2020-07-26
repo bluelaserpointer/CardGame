@@ -28,16 +28,14 @@ public class MailController {
 
   @RequestMapping(value = "/addMail")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public @ResponseBody String addNewMail(@RequestBody Mail newMail) {
-    return MailService.addNewMail(mailName, mailImg, mailDescription);
+  public @ResponseBody Mail addNewMail(@RequestBody Mail newMail) {
+    return MailService.addNewMail(newMail);
   }
 
   @RequestMapping(value = "/updateMail")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public @ResponseBody String updateMail(@RequestParam("mailId") Integer mailId,
-      @RequestParam("mailName") String mailName, @RequestParam("mailImg") String mailImg,
-      @RequestParam("mailDescription") String mailDescription) {
-    return MailService.updateMail(mailId, mailName, mailImg, mailDescription);
+  public @ResponseBody Mail updateMail(@RequestBody Mail updateMail) {
+    return MailService.updateMail(updateMail);
   }
 
   @RequestMapping(value = "/getAllMails")

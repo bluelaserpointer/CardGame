@@ -27,16 +27,13 @@ public class OwnItemController {
   }
 
   @RequestMapping(value = "/addOwnItem")
-  public @ResponseBody OwnItem addNewOwnItem(@RequestParam("userId") Integer userId,
-      @RequestParam("itemId") Integer itemId, @RequestParam("itemCount") Integer itemCount) {
-    return OwnItemService.addNewOwnItem(userId, itemId, itemCount);
+  public @ResponseBody OwnItem addNewOwnItem(@RequestBody OwnItem newOwnItem) {
+    return OwnItemService.addNewOwnItem(newOwnItem);
   }
 
   @RequestMapping(value = "/updateOwnItem")
-  public @ResponseBody OwnItem updateOwnItem(@RequestParam("ownItemId") Integer ownItemId,
-      @RequestParam("userId") Integer userId, @RequestParam("itemId") Integer itemId,
-      @RequestParam("itemCount") Integer itemCount) {
-    return OwnItemService.updateOwnItem(ownItemId, userId, itemId, itemCount);
+  public @ResponseBody OwnItem updateOwnItem(@RequestBody OwnItem updateOwnItem) {
+    return OwnItemService.updateOwnItem(updateOwnItem);
   }
 
   @RequestMapping(value = "/getAllOwnItems")

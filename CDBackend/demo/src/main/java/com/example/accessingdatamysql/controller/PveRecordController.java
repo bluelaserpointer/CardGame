@@ -20,19 +20,13 @@ public class PveRecordController {
     private PveRecordService pveRecordService;
 
     @RequestMapping(value = "/addPveRecord")
-    public PveRecord addPveRecord(@RequestParam("userId") Integer userId, @RequestParam("chapterId") Integer chapterId,
-            @RequestParam("phaseId") Integer phaseId, @RequestParam("result") Integer result,
-            @RequestParam("posRecord") String posRecord) throws JsonProcessingException {
-        return pveRecordService.addPveRecord(userId, chapterId, phaseId, result, posRecord);
+    public PveRecord addPveRecord(@RequestBody PveRecord newPveRecord) throws JsonProcessingException {
+        return pveRecordService.addPveRecord(newPveRecord);
     }
 
     @RequestMapping(value = "/updatePveRecord")
-    public PveRecord addPveRecord(@RequestParam("pveRecordId") Integer pveRecordId,
-            @RequestParam("userId") Integer userId, @RequestParam("chapterId") Integer chapterId,
-            @RequestParam("phaseId") Integer phaseId, @RequestParam("result") Integer result,
-            @RequestParam("recordTime") Timestamp recordTime, @RequestParam("posRecord") String posRecord)
-            throws JsonProcessingException {
-        return pveRecordService.updatePveRecord(pveRecordId, userId, chapterId, phaseId, result, recordTime, posRecord);
+    public PveRecord updatePveRecord(@RequestBody PveRecord updatePveRecord) throws JsonProcessingException {
+        return pveRecordService.updatePveRecord(updatePveRecord);
     }
 
     @RequestMapping(value = "/getAllPveRecords")

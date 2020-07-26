@@ -60,6 +60,7 @@ public class ActivityController {
   @RequestMapping(value = "/deleteActivity")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public List<Activity> deleteActivity(@RequestParam("activityId") Integer activityId) {
-    return ActivityService.deleteActivity(activityId);
+      return ActivityService.deleteActivity(activityId);
   }
 }
+ 

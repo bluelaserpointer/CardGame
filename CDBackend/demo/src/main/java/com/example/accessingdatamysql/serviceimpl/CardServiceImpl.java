@@ -19,19 +19,13 @@ public class CardServiceImpl implements CardService {
         return CardDao.getOneCard(CardId);
     }
 
-    public String addNewCard(String cardName, String rarity, Integer healthPoint, Integer attack, Integer defense,
-            Integer attackRange, Double cd, Integer speed, String cardImg, String shortDescription,
-            String cardDescription, Integer type) {
-        return CardDao.addNewCard(cardName, rarity, healthPoint, attack, defense, attackRange, cd, speed, cardImg,
-                shortDescription, cardDescription, type);
+    public Card addNewCard(Card newCard) {
+        return CardDao.addNewCard(newCard);
     }
 
-    public String updateCard(Integer cardId, String cardName, String rarity, Integer healthPoint, Integer attack,
-            Integer defense, Integer attackRange, Double cd, Integer speed, String cardImg, String shortDescription,
-            String cardDescription, Integer type) {
-        System.out.println("In service");
-        return CardDao.updateCard(cardId, cardName, rarity, healthPoint, attack, defense, attackRange, cd, speed,
-                cardImg, shortDescription, cardDescription, type);
+    public Card updateCard(Card updateCard) {
+        // System.out.println("In service");
+        return CardDao.updateCard(updateCard);
     }
 
     public List<Card> getAllCards() {
