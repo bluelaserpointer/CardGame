@@ -24,7 +24,7 @@ context('ActivityEdit', () => {
   });
 
   it('Login',  () => {
-    cy.visit('http://localhost:9527/#/login?redirect=%2Fdashboard');
+    cy.visit('http://localhost:8081/');
 
     cy.get('.username-input')
       .type('admin1');
