@@ -171,8 +171,8 @@ export default {
           this.$store.dispatch('user/login', this.loginForm)
             .then(() => {
               console.log("In handleLogin-then");
-              this.$router.push({ path: this.redirect || '/', query: this.otherQuery });
               localStorage.setItem('AdminName', this.loginForm.username);
+              this.$router.push({ path: this.redirect || '/', query: this.otherQuery });
               this.loading = false
             })
             .catch(() => {

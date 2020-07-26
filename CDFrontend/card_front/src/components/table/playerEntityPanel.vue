@@ -93,6 +93,11 @@
           <span>{{ row.chiKnowledge }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="Role" class-name="status-col" width="100">
+        <template slot-scope="{row}">
+          <span>{{ row.identity }}</span>
+        </template>
+      </el-table-column>
 
     </el-table>
 
@@ -148,6 +153,9 @@
         <el-form-item label="ChiKnowledge" prop="chiKnowledge" v-if="dialogStatus==='update'">
           <el-input v-model="temp.chiKnowledge" />
         </el-form-item>
+        <el-form-item label="Role" prop="identity">
+          <el-input v-model="temp.identity" />
+        </el-form-item>
 
       </el-form>
 
@@ -186,7 +194,6 @@
 
 <script>
 import waves from '@/directive/waves' // waves directive
-import axios from 'axios'
 import request from "@/utils/request"; // secondary package based on el-pagination
 
 export default {
@@ -226,7 +233,8 @@ export default {
         grade: 0.0,
         engKnowledge: 0,
         mathKnowledge: 0,
-        chiKnowledge: 0
+        chiKnowledge: 0,
+        identity: 'ROLE_USER'
       },
       panelVisible: false,
       dialogStatus: '',
@@ -269,7 +277,6 @@ export default {
   },
   methods: {
     getList() {
-
       request({
         url: '/user/getAllUsers',
         method: 'get',
@@ -286,19 +293,6 @@ export default {
         this.$message.error('Fetching Data failed!');
       });
 
-      // axios.get('http://localhost:8080/user/getAllUsers')
-      //   .then(response =>
-      //   {
-      //     if(response.data)
-      //     {
-      //       console.log(response.data);
-      //       this.list = response.data;
-      //     }else{
-      //       this.$message.error('Fetching Data failed!');
-      //     }
-      //   }).catch(error => {
-      //   this.$message.error('Fetching Data failed!');
-      // });
     },
 
     resetTemp() {
@@ -317,7 +311,8 @@ export default {
         grade: 0.0,
         engKnowledge: 0,
         mathKnowledge: 0,
-        chiKnowledge: 0
+        chiKnowledge: 0,
+        identity: 'ROLE_USER'
       }
     },
     handleCreate() {
@@ -340,14 +335,14 @@ export default {
           postData.append('access', this.temp.access);
           postData.append('level', this.temp.level);
           postData.append('email', this.temp.email);
+          postData.append('identity', this.temp.identity);
 
           request({
-            url: '/user/addUser',
+            url: '/user/register',
             method: 'post',
             data: postData
           }).then(response => {
             if (response.data) {
-              //
               _this.getList();
               _this.panelVisible = false;
               _this.resetTemp();
@@ -360,22 +355,6 @@ export default {
                 this.$message.error('Adding Data failed!');
               }
             );
-
-          // axios.post(`http://localhost:8080/user/addUser`, postData).then(response => {
-          //   if (response.data) {
-          //     //
-          //     _this.getList();
-          //     _this.panelVisible = false;
-          //     _this.resetTemp();
-          //   }else {
-          //     this.$message.error('Adding Data failed!');
-          //   }
-          // })
-          //   .catch(error =>
-          //     {
-          //       this.$message.error('Adding Data failed!');
-          //     }
-          //   );
 
         } else {
           this.$message.error('Form Invalid!');
@@ -414,6 +393,7 @@ export default {
           postData.append('engKnowledge', this.temp.engKnowledge);
           postData.append('mathKnowledge', this.temp.mathKnowledge);
           postData.append('chiKnowledge', this.temp.chiKnowledge);
+          postData.append('identity', this.temp.identity);
 
           request({
             url: '/user/updateUser',
@@ -432,23 +412,6 @@ export default {
                 this.$message.error('Updating Data failed!');
               }
             );
-
-          // axios.post(`http://localhost:8080/user/updateUser`, postData).then(response => {
-          //   if (response.data) {
-          //     //
-          //     axios.get('http://localhost:8080/user/getAllUsers')
-          //       .then(response => this.list = response.data);
-          //     _this.panelVisible = false
-          //   } else {
-          //     this.$message.error('Updating Data failed!');
-          //   }
-          // })
-          //   .catch(error =>
-          //     {
-          //       this.$message.error('Updating Data failed!');
-          //     }
-          //   );
-
         } else {
           this.$message.error('Form Invalid!');
           return false;
@@ -480,20 +443,6 @@ export default {
           }
         );
 
-      // axios.post('http://localhost:8080/admin/identifyAdmin', postData)
-      //   .then(response => {
-      //     console.log(response);
-      //     if (response.data) {
-      //       _this.confirmDelete = true
-      //     } else {
-      //       this.$message.error('Identification failed!');
-      //     }
-      //   })
-      //   .catch(error =>
-      //     {
-      //       this.$message.error('Identification failed!');
-      //     }
-      //   );
     },
     deleteData() {
       const postData = new FormData();
@@ -518,21 +467,6 @@ export default {
             this.$message.error('Deleting Data failed!');
           }
         );
-
-      // axios.post('http://localhost:8080/user/deleteUser', postData).then(response => {
-      //   if (response.data) {
-      //     _this.panelVisible = false;
-      //     _this.deleteVisible = false;
-      //     _this.getList()
-      //   } else {
-      //     this.$message.error('Deleting Data failed!');
-      //   }
-      // })
-      //   .catch(error =>
-      //     {
-      //       this.$message.error('Deleting Data failed!');
-      //     }
-      //   );
     },
 
 
