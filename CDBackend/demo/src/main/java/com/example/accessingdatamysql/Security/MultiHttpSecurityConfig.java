@@ -4,6 +4,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -28,16 +29,17 @@ import static com.example.accessingdatamysql.Security.SecurityConstants.SIGN_UP_
 @EnableWebSecurity
 public class MultiHttpSecurityConfig {
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        try {
-            auth.inMemoryAuthentication().withUser("user").password("password").roles("USER").and().withUser("admin")
-                    .password("password").roles("USER", "ADMIN");
-        } catch (Exception ex) {
-            throw ex;
-        }
+    // @Autowired
+    // public void configureGlobal(AuthenticationManagerBuilder auth) throws
+    // Exception {
+    // try {
+    // auth.inMemoryAuthentication().withUser("user").password("password").roles("USER").and().withUser("admin")
+    // .password("password").roles("USER", "ADMIN");
+    // } catch (Exception ex) {
+    // throw ex;
+    // }
 
-    }
+    // }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -46,7 +48,8 @@ public class MultiHttpSecurityConfig {
 
     // 先验证他是不是玩家
     @Configuration
-    @Order(3)
+    @EnableGlobalMethodSecurity(prePostEnabled = true)
+    // @Order(3)
     public static class UserWebSecurity extends WebSecurityConfigurerAdapter {
         @Autowired
         private UserDetailsServiceImpl userDetailsService;
@@ -89,62 +92,64 @@ public class MultiHttpSecurityConfig {
     }
 
     // 再验证是否是admin
-    @Configuration
-    @Order(4)
-    public static class AdminWebSecurity extends WebSecurityConfigurerAdapter {
-        @Autowired
-        private AdminDetailsServiceImpl adminDetailsService;
+    // @Configuration
+    // @Order(4)
+    // public static class AdminWebSecurity extends WebSecurityConfigurerAdapter {
+    // @Autowired
+    // private AdminDetailsServiceImpl adminDetailsService;
 
-        @Autowired
-        private JwtAdminFilter jwtFilter;
-        // @Autowired
-        // private BCryptPasswordEncoder bCryptPasswordEncoder;
+    // @Autowired
+    // private JwtAdminFilter jwtFilter;
+    // // @Autowired
+    // // private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-        // public WebSecurity(UserDetailsServiceImpl userDetailsService,
-        // BCryptPasswordEncoder bCryptPasswordEncoder) {
-        // this.userDetailsService = userDetailsService;
-        // this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        // }
+    // // public WebSecurity(UserDetailsServiceImpl userDetailsService,
+    // // BCryptPasswordEncoder bCryptPasswordEncoder) {
+    // // this.userDetailsService = userDetailsService;
+    // // this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    // // }
 
-        // SIGN_UP_URL
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http.cors().and().csrf().disable().authorizeRequests().antMatchers(HttpMethod.POST, "/admin/register")
-                    .permitAll().antMatchers(HttpMethod.POST, "/admin/login").permitAll().anyRequest().authenticated()
-                    .and().exceptionHandling().and()
-                    // .addFilter(new JWTAuthenticationFilter(authenticationManager()))
-                    // .addFilter(new JWTAuthorizationFilter(authenticationManager()))
-                    // // this disables session creation on Spring Security
-                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-            http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-            System.out.println("Admin Configuration");
-        }
+    // // SIGN_UP_URL
+    // @Override
+    // protected void configure(HttpSecurity http) throws Exception {
+    // http.cors().and().csrf().disable().authorizeRequests().antMatchers(HttpMethod.POST,
+    // "/admin/register")
+    // .permitAll().antMatchers(HttpMethod.POST,
+    // "/admin/login").permitAll().anyRequest().authenticated()
+    // .and().exceptionHandling().and()
+    // // .addFilter(new JWTAuthenticationFilter(authenticationManager()))
+    // // .addFilter(new JWTAuthorizationFilter(authenticationManager()))
+    // // // this disables session creation on Spring Security
+    // .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    // http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+    // System.out.println("Admin Configuration");
+    // }
 
-        @Override
-        public void configure(AuthenticationManagerBuilder auth) throws Exception {
-            auth.userDetailsService(adminDetailsService);
-        }
+    // @Override
+    // public void configure(AuthenticationManagerBuilder auth) throws Exception {
+    // auth.userDetailsService(adminDetailsService);
+    // }
 
-        @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
-        @Override
-        public AuthenticationManager authenticationManagerBean() throws Exception {
-            return super.authenticationManagerBean();
-        }
+    // @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
+    // @Override
+    // public AuthenticationManager authenticationManagerBean() throws Exception {
+    // return super.authenticationManagerBean();
+    // }
 
-        // @Bean
-        // public PasswordEncoder passwordEncoder() {
-        // return NoOpPasswordEncoder.getInstance();
-        // }
+    // // @Bean
+    // // public PasswordEncoder passwordEncoder() {
+    // // return NoOpPasswordEncoder.getInstance();
+    // // }
 
-        // @Bean
-        // CorsConfigurationSource corsConfigurationSource() {
-        // final UrlBasedCorsConfigurationSource source = new
-        // UrlBasedCorsConfigurationSource();
-        // source.registerCorsConfiguration("/**", new
-        // CorsConfiguration().applyPermitDefaultValues());
-        // return source;
-        // }
+    // // @Bean
+    // // CorsConfigurationSource corsConfigurationSource() {
+    // // final UrlBasedCorsConfigurationSource source = new
+    // // UrlBasedCorsConfigurationSource();
+    // // source.registerCorsConfiguration("/**", new
+    // // CorsConfiguration().applyPermitDefaultValues());
+    // // return source;
+    // // }
 
-    }
+    // }
 
 }

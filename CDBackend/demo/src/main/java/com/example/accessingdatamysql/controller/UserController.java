@@ -3,6 +3,8 @@ package com.example.accessingdatamysql.controller;
 import com.example.accessingdatamysql.Security.JwtUtil;
 import com.example.accessingdatamysql.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 // import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,6 +20,7 @@ import com.example.accessingdatamysql.service.UserService;
 @CrossOrigin(origins = "*")
 @RestController() // This means that this class is a Controller
 @RequestMapping(value = "/user") // This means URL's start with /demo (after Application path)
+@EnableAutoConfiguration
 public class UserController {
 
   @Autowired
@@ -67,7 +70,8 @@ public class UserController {
   }
 
   // 获取所有用户信息
-  @RequestMapping(value = "/getAllUsers")
+  @RequestMapping(value = "/getAllUsers", method = RequestMethod.POST, consumes = "Application/json")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public List<User> getAllUsers() {
     return userService.getAllUsers();
   }
@@ -85,7 +89,7 @@ public class UserController {
   }
 
   // 登录逻辑
-  @PostMapping("/identifyUser")
+  @PostMapping("/login")
   public String identifyUser(@RequestBody AuthRequest authRequest) {
     try {
       authenticationManager

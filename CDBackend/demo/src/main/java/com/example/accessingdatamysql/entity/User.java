@@ -48,6 +48,7 @@ public class User {
     // 中文知识点
     private Integer chiKnowledge;
     // 用户身份("admin" "editor" "user")
+    // Identity 要写成 "ROLE_ADMIN","ROLE_USER"
     private String identity;
 
     public User() {
