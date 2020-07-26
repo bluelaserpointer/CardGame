@@ -7,15 +7,16 @@ import java.util.List;
 import com.example.accessingdatamysql.entity.*;
 
 public interface ItemDao {
+
         Item getOneItem(Integer ItemId);
 
         // Optional<ItemDetails> findOneDetail(Integer id);
 
         // void modifyStorage(Item Item);
 
-        String addNewItem(String itemName, Integer price, String itemImg, String itemDescription);
+        Item addNewItem(Item newItem);
 
-        String updateItem(Integer ItemId, String itemName, Integer price, String itemImg, String itemDescription);
+        Item updateItem(Item updateItem);
 
         List<Item> getAllItems();
 

@@ -13,10 +13,9 @@ public interface MissionDao {
 
         // void modifyStorage(Mission Mission);
 
-        String addNewMission(String type, String MissionName, String MissionDescription, List<Integer> awardItemIds);
+        Mission addNewMission(Mission newMission);
 
-        String updateMission(Integer MissionId, String type, String MissionName, String MissionDescription,
-                        List<Integer> awardItemIds);
+        Mission updateMission(Mission updateMission);
 
         List<Mission> getAllMissions();
 

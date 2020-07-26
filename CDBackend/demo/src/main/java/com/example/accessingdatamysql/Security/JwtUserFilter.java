@@ -1,7 +1,5 @@
 package com.example.accessingdatamysql.Security;
 
-import com.example.accessingdatamysql.Security.UserDetailsServiceImpl;
-import com.example.accessingdatamysql.Security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,6 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.example.accessingdatamysql.Security.SecurityConstants.HEADER_STRING;
+import static com.example.accessingdatamysql.Security.SecurityConstants.TOKEN_PREFIX;
+
 @Component
 public class JwtUserFilter extends OncePerRequestFilter {
 
@@ -27,21 +28,21 @@ public class JwtUserFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
             FilterChain filterChain) throws ServletException, IOException {
-
-        String authorizationHeader = httpServletRequest.getHeader("Authorization");
+        // 从request中提取出Authorization Header
+        String authorizationHeader = httpServletRequest.getHeader(HEADER_STRING);
 
         String token = null;
         String userName = null;
-
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            token = authorizationHeader.substring(7);
-            userName = jwtUtil.extractUsername(token);
+        // 如果Authorization Header不为空且有Bearer作为开头
+        if (authorizationHeader != null && authorizationHeader.startsWith(TOKEN_PREFIX)) {
+            token = authorizationHeader.substring(7); // 获取token
+            userName = jwtUtil.extractUsername(token); // 调用jwtUtil来从token中解析出用户名
         }
-
+        // 如果解析成功
         if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-
+            // 调用UserDetailsServiceImpl从repository中找出该用户
             UserDetails userDetails = service.loadUserByUsername(userName);
-
+            // 核实token与该用户名再一次重新生成的token是否吻合
             if (jwtUtil.validateToken(token, userDetails)) {
 
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(

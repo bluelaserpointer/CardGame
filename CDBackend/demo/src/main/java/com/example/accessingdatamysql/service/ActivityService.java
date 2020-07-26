@@ -8,11 +8,9 @@ import java.util.List;
 public interface ActivityService {
         Activity getOneActivity(Integer activityId);
 
-        String addNewActivity(String type, String activityName, String activityImg, String activityDescription,
-                              Timestamp start);
+        Activity addNewActivity(Activity newActivity);
 
-        String updateActivity(Integer ActivityId, String type, String activityName, String activityImg,
-                              String activityDescription, Timestamp start);
+        Activity updateActivity(Activity updateActivity);
 
         List<Activity> getAllActivities();
 

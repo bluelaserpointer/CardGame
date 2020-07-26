@@ -35,27 +35,29 @@ public class MailDaoImpl implements MailDao {
     // return MailDetailsRepository.findById(id);
     // }
 
-    public String addNewMail(String MailName, String mailImg, String mailDescription) {
-        System.out.println(mailDescription);
-        Mail Mail = new Mail(MailName);
+    public Mail addNewMail(Mail newMail) {
+        Mail Mail = new Mail(newMail.getMailName());
         // System.out.println("new Mail has an Id of : " + n.getMailId());
         MailRepository.save(Mail);
-        MailDetails MailDetails = new MailDetails(Mail.getMailId(), mailImg, mailDescription);
+        MailDetails MailDetails = new MailDetails(Mail.getMailId(), newMail.getMailDetails().getMailImg(),
+                newMail.getMailDetails().getMailDescription());
         MailDetailsRepository.save(MailDetails);
-        return "Saved Mail";
+        Mail.setMailDetails(MailDetails);
+        return Mail;
 
     }
 
-    public String updateMail(Integer MailId, String MailName, String mailImg, String mailDescription) {
+    public Mail updateMail(Mail updateMail) {
 
-        Mail Mail = MailRepository.getOne(MailId);
+        Mail Mail = MailRepository.getOne(updateMail.getMailId());
         // System.out.println("old Mail has an Id of : " + n.getMailId());
-        Mail.setMailName(MailName);
+        Mail.setMailName(updateMail.getMailName());
 
-        MailRepository.updateMailStatus(Mail, MailId);
+        MailRepository.updateMailStatus(Mail, updateMail.getMailId());
 
-        Optional<MailDetails> optMailDetails = MailDetailsRepository.findMailDetailsByMailIdEquals(MailId);
-        MailDetails mailDetails = new MailDetails(MailId, "", "");
+        Optional<MailDetails> optMailDetails = MailDetailsRepository
+                .findMailDetailsByMailIdEquals(updateMail.getMailId());
+        MailDetails mailDetails = new MailDetails(updateMail.getMailId(), "", "");
         if (optMailDetails.isPresent()) {
             System.out.println("Mail Exists");
             mailDetails = optMailDetails.get();
@@ -63,10 +65,11 @@ public class MailDaoImpl implements MailDao {
             System.out.println("Mail doesn't exist");
         }
 
-        mailDetails.setMailDescription(mailDescription);
-        mailDetails.setMailImg(mailImg);
+        mailDetails.setMailDescription(updateMail.getMailDetails().getMailDescription());
+        mailDetails.setMailImg(updateMail.getMailDetails().getMailImg());
         MailDetailsRepository.save(mailDetails);
-        return "modified Mail: " + Mail.getMailName();
+        updateMail.setMailDetails(mailDetails);
+        return updateMail;
 
     }
 
@@ -95,7 +98,7 @@ public class MailDaoImpl implements MailDao {
         return "Deleted All Mails";
     }
 
-    public List<Mail> deleteMail(Integer mailId){
+    public List<Mail> deleteMail(Integer mailId) {
         MailRepository.deleteById(mailId);
         MailDetailsRepository.deleteMailDetailsByMailIdEquals(mailId);
         return getAllMails();

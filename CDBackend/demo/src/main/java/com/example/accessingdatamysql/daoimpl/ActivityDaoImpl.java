@@ -8,7 +8,7 @@ import com.example.accessingdatamysql.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Timestamp;
+// import java.sql.Timestamp;
 // import java.io.Console;
 import java.util.*;
 
@@ -28,30 +28,30 @@ public class ActivityDaoImpl implements ActivityDao {
         return Activity;
     }
 
-    public String addNewActivity(String type, String activityName, String activityImg, String activityDescription,
-            Timestamp start) {
+    public Activity addNewActivity(Activity newActivity) {
 
-        Activity Activity = new Activity(type, activityName, start);
+        Activity Activity = new Activity(newActivity.getType(), newActivity.getActivityName(), newActivity.getStart());
         // System.out.println("new Activity has an Id of : " + n.getActivityId());
         ActivityRepository.save(Activity);
-        ActivityDetails ActivityDetails = new ActivityDetails(Activity.getActivityId(), activityImg,
-                activityDescription);
+        ActivityDetails ActivityDetails = new ActivityDetails(Activity.getActivityId(),
+                newActivity.getActivityDetails().getActivityImg(),
+                newActivity.getActivityDetails().getActivityDescription());
         ActivityDetailsRepository.save(ActivityDetails);
-        return "Saved Activity";
+        return Activity;
     }
 
-    public String updateActivity(Integer activityId, String type, String activityName, String activityImg,
-            String activityDescription, Timestamp start) {
+    public Activity updateActivity(Activity updateActivity) {
 
-        Activity Activity = ActivityRepository.getOne(activityId);
+        Activity Activity = ActivityRepository.getOne(updateActivity.getActivityId());
+
         // System.out.println("old Activity has an Id of : " + n.getActivityId());
-        Activity.setActivity(type, activityName, start);
+        Activity.setActivity(updateActivity.getType(), updateActivity.getActivityName(), updateActivity.getStart());
 
-        ActivityRepository.updateActivityStatus(Activity, activityId);
+        ActivityRepository.updateActivityStatus(Activity, updateActivity.getActivityId());
 
         Optional<ActivityDetails> optActivityDetails = ActivityDetailsRepository
-                .findActivityDetailsByActivityIdEquals(activityId);
-        ActivityDetails activityDetails = new ActivityDetails(activityId, "", "");
+                .findActivityDetailsByActivityIdEquals(updateActivity.getActivityId());
+        ActivityDetails activityDetails = new ActivityDetails(updateActivity.getActivityId(), "", "");
 
         if (optActivityDetails.isPresent()) {
             System.out.println("Activity Exists");
@@ -60,10 +60,11 @@ public class ActivityDaoImpl implements ActivityDao {
             System.out.println("Activity doesn't exist");
         }
 
-        activityDetails.setActivityDescription(activityDescription);
-        activityDetails.setActivityImg(activityImg);
+        activityDetails.setActivityDescription(updateActivity.getActivityDetails().getActivityDescription());
+        activityDetails.setActivityImg(updateActivity.getActivityDetails().getActivityImg());
         ActivityDetailsRepository.save(activityDetails);
-        return "modified Activity: " + Activity.getActivityName();
+        Activity.setActivityDetails(activityDetails);
+        return Activity;
 
     }
 

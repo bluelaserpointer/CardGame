@@ -9,9 +9,9 @@ import com.example.accessingdatamysql.entity.*;
 public interface OwnItemDao {
         OwnItem getOneOwnItem(Integer OwnItemId);
 
-        OwnItem addNewOwnItem(Integer userId, Integer itemId, Integer ItemCount);
+        OwnItem addNewOwnItem(OwnItem newOwnItem);
 
-        OwnItem updateOwnItem(Integer OwnItemId, Integer userId, Integer itemId, Integer ItemCount);
+        OwnItem updateOwnItem(OwnItem updateOwnItem);
 
         List<OwnItem> getAllOwnItems();
 

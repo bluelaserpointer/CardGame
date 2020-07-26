@@ -1,6 +1,5 @@
 package com.example.accessingdatamysql.service;
 
-import com.example.accessingdatamysql.entity.Card;
 import com.example.accessingdatamysql.entity.Item;
 
 import java.util.List;
@@ -8,9 +7,9 @@ import java.util.List;
 public interface ItemService {
         Item getOneItem(Integer ItemId);
 
-        String addNewItem(String itemName, Integer price, String itemImg, String itemDescription);
+        Item addNewItem(Item newItem);
 
-        String updateItem(Integer ItemId, String itemName, Integer price, String itemImg, String itemDescription);
+        Item updateItem(Item updateItem);
 
         List<Item> getAllItems();
 

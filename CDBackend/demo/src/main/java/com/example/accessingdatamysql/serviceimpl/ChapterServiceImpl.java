@@ -20,19 +20,22 @@ public class ChapterServiceImpl implements ChapterService {
     ChapterDao chapterDao;
 
     @Override
-    public List<ChapterDetails> updateChapterPhaseStrategy(Integer chapterId, Integer phaseId, String phaseData) throws JsonProcessingException {
+    public List<ChapterDetails> updateChapterPhaseStrategy(Integer chapterId, Integer phaseId, String phaseData)
+            throws JsonProcessingException {
         return chapterDao.updateChapterPhaseStrategy(chapterId, phaseId, phaseData);
     };
 
-    public List<ChapterPhase> updateChapterPhaseAwards(Integer chapterId, Integer phaseId, String awardItems, String awardCards) throws JsonProcessingException {
+    public List<ChapterPhase> updateChapterPhaseAwards(Integer chapterId, Integer phaseId, String awardItems,
+            String awardCards) throws JsonProcessingException {
         return chapterDao.updateChapterPhaseAwards(chapterId, phaseId, awardItems, awardCards);
     }
 
-    public List<Chapter> updateChapterAwards(Integer chapterId, String awardItems, String awardCards) throws JsonProcessingException {
+    public List<Chapter> updateChapterAwards(Integer chapterId, String awardItems, String awardCards)
+            throws JsonProcessingException {
         return chapterDao.updateChapterAwards(chapterId, awardItems, awardCards);
     }
 
-    public List<Chapter> getAllChapters(){
+    public List<Chapter> getAllChapters() {
         System.out.println("In service");
         return chapterDao.getAllChapters();
     }
@@ -61,7 +64,7 @@ public class ChapterServiceImpl implements ChapterService {
         return chapterDao.getAllChapterDetails();
     }
 
-    public List<Chapter> addChapter(Integer phaseNo, Integer phaseType){
+    public List<Chapter> addChapter(Integer phaseNo, Integer phaseType) {
         return chapterDao.addChapter(phaseNo, phaseType);
     }
 }
