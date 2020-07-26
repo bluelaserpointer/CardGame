@@ -11,12 +11,13 @@ public interface UserDao {
         User getOneUser(Integer UserId);
 
         // 添加一个新用户
-        User addNewUser(String userName, String email, String password, String phoneNumber);
+        User addNewUser(String userName, String email, String password, String phoneNumber, String identity);
 
         // 更新一个用户信息
         User updateUser(Integer UserId, String userName, String email, String password, String phoneNumber,
                         Integer credits, Boolean access, Integer level, Integer curExpPoint, Integer stamina,
-                        Integer money, Double grade, Integer engKnowledge, Integer mathKnowledge, Integer chiKnowledge);
+                        Integer money, Double grade, Integer engKnowledge, Integer mathKnowledge, Integer chiKnowledge,
+                        String identity);
 
         // 获取所有用户信息
         List<User> getAllUsers();

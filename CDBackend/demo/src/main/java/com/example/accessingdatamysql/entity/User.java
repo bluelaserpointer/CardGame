@@ -47,6 +47,8 @@ public class User {
     private Integer mathKnowledge;
     // 中文知识点
     private Integer chiKnowledge;
+    // 用户身份("admin" "editor" "user")
+    private String identity;
 
     public User() {
         this.credits = 0;
@@ -54,7 +56,7 @@ public class User {
         this.level = 1;
     };
 
-    public User(String userName, String email, String password, String phoneNumber) {
+    public User(String userName, String email, String password, String phoneNumber, String identity) {
         this.userName = userName;
         this.email = email;
         this.password = password;
@@ -69,11 +71,12 @@ public class User {
         this.engKnowledge = 0;
         this.mathKnowledge = 0;
         this.chiKnowledge = 0;
+        this.identity = identity;
     }
 
     public void updateUser(String userName, String email, String password, String phoneNumber, Integer credits,
             Boolean access, Integer level, Integer curExpPoint, Integer stamina, Integer money, Double grade,
-            Integer engKnowledge, Integer mathKnowledge, Integer chiKnowledge) {
+            Integer engKnowledge, Integer mathKnowledge, Integer chiKnowledge, String identity) {
         this.userName = userName;
         this.email = email;
         this.password = password;
@@ -88,6 +91,7 @@ public class User {
         this.engKnowledge = engKnowledge;
         this.mathKnowledge = mathKnowledge;
         this.chiKnowledge = chiKnowledge;
+        this.identity = identity;
     }
 
     public Integer getUserId() {
@@ -200,6 +204,14 @@ public class User {
 
     public void setChiKnowledge(Integer chiKnowledge) {
         this.chiKnowledge = chiKnowledge;
+    }
+
+    public String getIdentity() {
+        return identity;
+    }
+
+    public void setIdentity(String identity) {
+        this.identity = identity;
     }
 
     public Double getGrade() {

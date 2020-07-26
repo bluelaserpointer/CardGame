@@ -51,23 +51,19 @@ public class UserController {
   @PostMapping("/register")
   public @ResponseBody User register(@RequestBody User registerUser) {
     return userService.addNewUser(registerUser.getUserName(), registerUser.getEmail(), registerUser.getPassword(),
-        registerUser.getPhoneNumber());
+        registerUser.getPhoneNumber(), registerUser.getIdentity());
   }
 
   // 更新一个用户信息
   @RequestMapping(value = "/updateUser")
-  public @ResponseBody User updateUser(@RequestParam("userId") Integer userId,
-      @RequestParam("userName") String userName, @RequestParam("email") String email,
-      @RequestParam("password") String password, @RequestParam("phoneNumber") String phoneNumber,
-      @RequestParam("credits") Integer credits, @RequestParam("access") Boolean access,
-      @RequestParam("level") Integer level, @RequestParam("curExpPoint") Integer curExpPoint,
-      @RequestParam("stamina") Integer stamina, @RequestParam("money") Integer money,
-      @RequestParam("grade") Double grade, @RequestParam("engKnowledge") Integer engKnowledge,
-      @RequestParam("mathKnowledge") Integer mathKnowledge, @RequestParam("chiKnowledge") Integer chiKnowledge) {
+  public @ResponseBody User updateUser(@RequestBody User updateUser) {
     // 加密密码
     // password = bCryptPasswordEncoder.encode(password);
-    return userService.updateUser(userId, userName, email, password, phoneNumber, credits, access, level, curExpPoint,
-        stamina, money, grade, engKnowledge, mathKnowledge, chiKnowledge);
+    return userService.updateUser(updateUser.getUserId(), updateUser.getUserName(), updateUser.getEmail(),
+        updateUser.getPassword(), updateUser.getPhoneNumber(), updateUser.getCredits(), updateUser.getAccess(),
+        updateUser.getLevel(), updateUser.getCurExpPoint(), updateUser.getStamina(), updateUser.getMoney(),
+        updateUser.getGrade(), updateUser.getEngKnowledge(), updateUser.getMathKnowledge(),
+        updateUser.getChiKnowledge(), updateUser.getIdentity());
   }
 
   // 获取所有用户信息
