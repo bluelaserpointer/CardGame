@@ -133,11 +133,6 @@ export default {
     }
   },
   created() {
-    axios.get(`http://localhost:8080/admin/getAdminName`).then(response => {
-      if (response.data) {
-        localStorage.setItem('AdminNames', JSON.stringify(response.data))
-      }
-    })
   },
   mounted() {
     if (this.loginForm.username === '') {
