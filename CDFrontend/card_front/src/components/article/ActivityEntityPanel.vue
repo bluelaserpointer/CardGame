@@ -66,7 +66,7 @@ import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination/index'
 import axios from 'axios'
 import moment from "moment"; // secondary package based on el-pagination
-import ActivityUpdatePanel from "@/components/edit/ActivityUpdatePanel";
+import ActivityUpdatePanel from "@/components/article/ActivityUpdatePanel";
 import request from "@/utils/request"; // secondary package based on el-pagination
 
 export default {

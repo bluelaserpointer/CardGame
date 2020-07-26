@@ -87,8 +87,6 @@ export default {
   components: { SocialSign },
   data() {
     const validateUsername = (rule, value, callback) => {
-      // console.log("!validUsername");
-      // console.log(!validUsername(value));
       if (!validUsername(value)) {
         callback(new Error('Please enter Usernames that meet the standard.'))
       } else {
@@ -96,25 +94,14 @@ export default {
       }
     };
     const validatePassword = (rule, value, callback) => {
-      // console.log("!validPassword");
-      // console.log(!validPassword(value));
-      let valid = false;
       const postData = new FormData();
       postData.append('adminName', this.loginForm.username);
       postData.append('password', this.loginForm.password);
-      // axios.post(`http://localhost:8080/admin/identifyAdmin`, postData).then(res => {
-      //   if (res.data) {
-      //     valid = true;
-      //     if (!validPassword(value) || !valid) {
-          if (!validPassword(value)) {
-            callback(new Error('Please enter Passwords that meet the standard.'))
-          } else {
-            callback()
-          }
-      //   } else {
-      //     callback(new Error('Please enter Passwords that meet the standard.'))
-      //   }
-      // })
+      if (!validPassword(value)) {
+        callback(new Error('Please enter Passwords that meet the standard.'))
+      } else {
+        callback()
+      }
     };
     return {
       loginForm: {

@@ -51,7 +51,7 @@
 import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination/index'
 import axios from 'axios' // secondary package based on el-pagination;
-import MailUpdatePanel from "@/components/edit/MailUpdatePanel";
+import MailUpdatePanel from "@/components/article/MailUpdatePanel";
 import request from "@/utils/request"; // secondary package based on el-pagination
 
 export default {
