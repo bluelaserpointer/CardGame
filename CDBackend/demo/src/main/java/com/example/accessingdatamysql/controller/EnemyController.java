@@ -2,6 +2,7 @@ package com.example.accessingdatamysql.controller;
 
 import com.example.accessingdatamysql.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 // import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,7 @@ public class EnemyController {
   }
 
   @RequestMapping(value = "/addEnemy")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public @ResponseBody Enemy addNewEnemy(@RequestParam("enemyName") String enemyName,
       @RequestParam("healthPoint") Integer healthPoint, @RequestParam("attack") Integer attack,
       @RequestParam("defense") Integer defense, @RequestParam("attackRange") Integer attackRange,
@@ -38,6 +40,7 @@ public class EnemyController {
   }
 
   @RequestMapping(value = "/updateEnemy")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public @ResponseBody Enemy updateEnemy(@RequestParam("enemyId") Integer EnemyId,
       @RequestParam("enemyName") String EnemyName, @RequestParam("healthPoint") Integer healthPoint,
       @RequestParam("attack") Integer attack, @RequestParam("defense") Integer defense,
@@ -52,21 +55,25 @@ public class EnemyController {
   }
 
   @RequestMapping(value = "/getAllEnemies")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public List<Enemy> getAllEnemies() {
     return EnemyService.getAllEnemies();
   }
 
   @RequestMapping(value = "/deleteEnemies")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public String deleteEnemies(@RequestParam("enemyIds") List<Integer> EnemyIds) {
     return EnemyService.deleteEnemies(EnemyIds);
   }
 
   @RequestMapping(value = "/deleteAllEnemies")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public String deleteAllEnemies() {
     return EnemyService.deleteAll();
   }
 
   @RequestMapping(value = "/deleteEnemy")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public List<Enemy> deleteEnemy(@RequestParam("enemyId") Integer EnemyId) {
     return EnemyService.deleteEnemy(EnemyId);
   }

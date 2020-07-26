@@ -3,6 +3,8 @@ package com.example.accessingdatamysql.controller;
 import com.example.accessingdatamysql.Security.JwtUtil;
 import com.example.accessingdatamysql.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 // import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,6 +20,7 @@ import com.example.accessingdatamysql.service.UserService;
 @CrossOrigin(origins = "*")
 @RestController() // This means that this class is a Controller
 @RequestMapping(value = "/user") // This means URL's start with /demo (after Application path)
+@EnableAutoConfiguration
 public class UserController {
 
   @Autowired
@@ -37,59 +40,52 @@ public class UserController {
     return userService.getOneUser(userId);
   }
 
-  // 添加一个新用户
-  // @RequestMapping(value = "/addUser")
-  // public @ResponseBody User addNewUser(@RequestParam("userName") String
-  // userName, @RequestParam("email") String email,
-  // @RequestParam("password") String password, @RequestParam("phoneNumber")
-  // String phoneNumber) {
-  // // 加密密码
-  // // password = bCryptPasswordEncoder.encode(password);
-  // return userService.addNewUser(userName, email, password, phoneNumber);
-  // }
+  @RequestMapping(value = "/getUserByUserName")
+  public @ResponseBody User findUserByUserName(@RequestParam("userName") String userName) {
+    return userService.getOneUserByUserName(userName);
+  }
 
   @PostMapping("/register")
-  public @ResponseBody User identifyUser(@RequestBody User registerUser) {
+  public @ResponseBody User register(@RequestBody User registerUser) {
     return userService.addNewUser(registerUser.getUserName(), registerUser.getEmail(), registerUser.getPassword(),
-        registerUser.getPhoneNumber());
+        registerUser.getPhoneNumber(), registerUser.getIdentity());
   }
 
   // 更新一个用户信息
   @RequestMapping(value = "/updateUser")
-  public @ResponseBody User updateUser(@RequestParam("userId") Integer userId,
-      @RequestParam("userName") String userName, @RequestParam("email") String email,
-      @RequestParam("password") String password, @RequestParam("phoneNumber") String phoneNumber,
-      @RequestParam("credits") Integer credits, @RequestParam("access") Boolean access,
-      @RequestParam("level") Integer level, @RequestParam("curExpPoint") Integer curExpPoint,
-      @RequestParam("stamina") Integer stamina, @RequestParam("money") Integer money,
-      @RequestParam("grade") Double grade, @RequestParam("engKnowledge") Integer engKnowledge,
-      @RequestParam("mathKnowledge") Integer mathKnowledge, @RequestParam("chiKnowledge") Integer chiKnowledge) {
+  public @ResponseBody User updateUser(@RequestBody User updateUser) {
     // 加密密码
     // password = bCryptPasswordEncoder.encode(password);
-    return userService.updateUser(userId, userName, email, password, phoneNumber, credits, access, level, curExpPoint,
-        stamina, money, grade, engKnowledge, mathKnowledge, chiKnowledge);
+    return userService.updateUser(updateUser.getUserId(), updateUser.getUserName(), updateUser.getEmail(),
+        updateUser.getPassword(), updateUser.getPhoneNumber(), updateUser.getCredits(), updateUser.getAccess(),
+        updateUser.getLevel(), updateUser.getCurExpPoint(), updateUser.getStamina(), updateUser.getMoney(),
+        updateUser.getGrade(), updateUser.getEngKnowledge(), updateUser.getMathKnowledge(),
+        updateUser.getChiKnowledge(), updateUser.getIdentity());
   }
 
   // 获取所有用户信息
-  @RequestMapping(value = "/getAllUsers")
+  @RequestMapping(value = "/getAllUsers", method = RequestMethod.POST, consumes = "Application/json")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public List<User> getAllUsers() {
     return userService.getAllUsers();
   }
 
   // 删除部分用户
   @RequestMapping(value = "/deleteUsers")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public String deleteUsers(@RequestParam("userIds") List<Integer> userIds) {
     return userService.deleteUsers(userIds);
   }
 
   // 删除所有用户
   @RequestMapping(value = "/deleteAllUsers")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public String deleteAll() {
     return userService.deleteAll();
   }
 
   // 登录逻辑
-  @PostMapping("/identifyUser")
+  @PostMapping("/login")
   public String identifyUser(@RequestBody AuthRequest authRequest) {
     try {
       authenticationManager
@@ -102,6 +98,7 @@ public class UserController {
 
   // 删除一个指定用户
   @RequestMapping(value = "/deleteUser")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public List<User> deleteUser(@RequestParam("userId") Integer userId) {
     return userService.deleteUser(userId);
   }

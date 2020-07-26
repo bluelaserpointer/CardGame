@@ -2,6 +2,7 @@ package com.example.accessingdatamysql.controller;
 
 import com.example.accessingdatamysql.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 // import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +27,7 @@ public class MissionController {
   }
 
   @RequestMapping(value = "/addMission")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public @ResponseBody String addNewMission(@RequestParam("type") String type,
       @RequestParam("missionName") String MissionName, @RequestParam("missionDescription") String MissionDescription,
       @RequestParam("awardItemIds") List<Integer> awardItemIds) {
@@ -33,6 +35,7 @@ public class MissionController {
   }
 
   @RequestMapping(value = "/updateMission")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public @ResponseBody String updateMission(@RequestParam("missionId") Integer MissionId,
       @RequestParam("type") String type, @RequestParam("missionName") String MissionName,
       @RequestParam("missionDescription") String MissionDescription,
@@ -41,21 +44,25 @@ public class MissionController {
   }
 
   @RequestMapping(value = "/getAllMissions")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public List<Mission> getAllMissions() {
     return MissionService.getAllMissions();
   }
 
   @RequestMapping(value = "/deleteMissions")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public String deleteMissions(@RequestParam("missionIds") List<Integer> MissionIds) {
     return MissionService.deleteMissions(MissionIds);
   }
 
   @RequestMapping(value = "/deleteAllMissions")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public String deleteAll() {
     return MissionService.deleteAll();
   }
 
   @RequestMapping(value = "/deleteMission")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public List<Mission> deleteMission(@RequestParam("missionId") Integer MissionId) {
     return MissionService.deleteMission(MissionId);
   }
