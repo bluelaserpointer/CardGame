@@ -106,8 +106,9 @@ context('PhasePanel', () => {
 
     cy.get('.el-dialog__body > .el-button').click();
 
-    cy.get('.deleteInnerButton').click({force: true});
-
+      cy.wait(500);
+      cy.get('.deleteInnerButton').click({ multiple: true, force: true });
+      cy.wait(500);
   });
 
   it('Phase Panel Edit Choose ChapterPhase Normal', () => {

@@ -93,7 +93,9 @@ context('MailEdit', () => {
       cy.get('.el-dialog__body > .el-input > .el-input__inner')
         .type('111111');
       cy.get('.el-dialog__body > .el-button').click();
-      cy.get('.deleteInnerButton').click({force: true});
+      cy.wait(500);
+      cy.get('.deleteInnerButton').click({ multiple: true, force: true });
+      cy.wait(500);
   })
 
 });

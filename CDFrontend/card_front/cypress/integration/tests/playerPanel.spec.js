@@ -166,6 +166,8 @@ context('UserPanel', () => {
       .clear();
     cy.get(':nth-child(15) > .el-form-item__content > .el-input > .el-input__inner')
       .clear();
+    cy.get(':nth-child(16) > .el-form-item__content > .el-input > .el-input__inner')
+      .clear();
 
 
     cy.get(':nth-child(3) > .outerDialog > .confirmOuterButton > span').click();
@@ -228,8 +230,6 @@ context('UserPanel', () => {
 
     cy.get('.el-dialog__body > .el-button').click();
 
-    cy.get('.deleteInnerButton').click({ multiple: true, force: true });
-
     cy.get('.cancelInnerButton').click({ multiple: true, force: true });
 
     cy.get('.deleteOuterButton').click({force: true});
@@ -239,7 +239,9 @@ context('UserPanel', () => {
 
     cy.get('.el-dialog__body > .el-button').click();
 
+    cy.wait(500);
     cy.get('.deleteInnerButton').click({ multiple: true, force: true });
+    cy.wait(500);
   });
 
   it('User Panel OwnItem Invalid Form', () => {

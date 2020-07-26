@@ -3,7 +3,7 @@
 context('Login', () => {
   beforeEach(() => {
     cy.visit('http://localhost:8081/');
-v  });
+  });
 
 
   it('.type() - type into login form', () => {
