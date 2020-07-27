@@ -320,21 +320,6 @@ export default {
             this.$message.error('Identification failed!');
           }
         );
-
-      // axios.post('http://localhost:8080/admin/identifyAdmin', postData)
-      // .then(response => {
-      //   if (response.data) {
-      //     _this.confirmDelete = true
-      //   } else {
-      //     this.$message.error('Identification failed!');
-      //   }
-      // })
-      // .catch(error =>
-      //   {
-      //     this.$message.error('Identification failed!');
-      //   }
-      // );
-
     },
     deleteData() {
       const postData = new FormData();
@@ -359,21 +344,6 @@ export default {
             this.$message.error('Deleting Data failed!');
           }
         );
-
-      // axios.post('http://localhost:8080/card/deleteCard', postData).then(response => {
-      //   if (response.data) {
-      //     _this.panelVisible = false;
-      //     _this.deleteVisible = false;
-      //     _this.getList()
-      //   } else {
-      //     this.$message.error('Deleting Data failed!');
-      //   }
-      // })
-      // .catch(error =>
-      //   {
-      //     this.$message.error('Deleting Data failed!');
-      //   }
-      // );
     },
 
     resetTemp() {
@@ -406,26 +376,27 @@ export default {
       const _this = this;
       this.$refs.temp.validate((valid) => {
         if (valid) {
-          const postData = new FormData();
-          postData.append('cardName', this.temp.cardName);
-          postData.append('rarity', this.temp.rarity);
-          postData.append('healthPoint', this.temp.healthPoint);
-          postData.append('attack', this.temp.attack);
-          postData.append('defense', this.temp.defense);
-          postData.append('attackRange', this.temp.attackRange);
-          postData.append('cd', this.temp.cd);
-          postData.append('speed', this.temp.speed);
-          postData.append('type', this.temp.type);
-
-          postData.append('cardImg', this.temp.cardImg);
-          postData.append('cardDescription', this.temp.cardDescription);
-          postData.append('shortDescription', this.temp.shortDescription);
-          console.log("Within createData");
+          let postData = {
+            cardName: this.temp.cardName,
+            rarity: this.temp.rarity,
+            healthPoint: this.temp.healthPoint,
+            attack: this.temp.attack,
+            defense: this.temp.defense,
+            attackRange: this.temp.attackRange,
+            cd: this.temp.cd,
+            speed: this.temp.speed,
+            type: this.temp.type,
+            cardDetails: {
+              cardImg: this.temp.cardImg,
+              cardDescription: this.temp.cardDescription,
+              shortDescription: this.temp.shortDescription,
+            }
+          };
 
           request({
             url: '/card/addCard',
             method: 'post',
-            data: postData
+            data: JSON.stringify(postData)
           }).then(response => {
             if (response.data) {
               // TODO: SHORTEN THE REQUESTS
@@ -446,30 +417,6 @@ export default {
           return false;
         }
       });
-
-
-      //     axios.post(`http://localhost:8080/card/addCard`, postData).then(response => {
-      //       if (response.data) {
-      //         // TODO: SHORTEN THE REQUESTS
-      //         _this.getList();
-      //         _this.panelVisible = false;
-      //         _this.resetTemp();
-      //       }else {
-      //         this.$message.error('Creating Data failed!');
-      //       }
-      //     })
-      //       .catch(error =>
-      //         {
-      //           this.$message.error('Creating Data failed!');
-      //         }
-      //       );
-      //   } else {
-      //     this.$message.error('Form Invalid!');
-      //     return false;
-      //   }
-      // });
-
-
     },
     handleUpdate(row) {
       let _this = this;
@@ -484,26 +431,31 @@ export default {
 
       this.$refs.temp.validate((valid) => {
         if (valid) {
-          const postData = new FormData();
           const _this = this;
-          postData.append('cardId', this.temp.cardId);
-          postData.append('cardName', this.temp.cardName);
-          postData.append('rarity', this.temp.rarity);
-          postData.append('healthPoint', this.temp.healthPoint);
-          postData.append('attack', this.temp.attack);
-          postData.append('defense', this.temp.defense);
-          postData.append('attackRange', this.temp.attackRange);
-          postData.append('cd', this.temp.cd);
-          postData.append('speed', this.temp.speed);
-          postData.append('type', this.temp.type);
-          postData.append('cardImg', this.temp.cardImg);
-          postData.append('cardDescription', this.temp.cardDescription);
-          postData.append('shortDescription', this.temp.shortDescription);
+
+          let postData = {
+            cardId: this.temp.cardId,
+            cardName: this.temp.cardName,
+            rarity: this.temp.rarity,
+            healthPoint: this.temp.healthPoint,
+            attack: this.temp.attack,
+            defense: this.temp.defense,
+            attackRange: this.temp.attackRange,
+            cd: this.temp.cd,
+            speed: this.temp.speed,
+            type: this.temp.type,
+            cardDetails: {
+              cardId: this.temp.cardId,
+              cardImg: this.temp.cardImg,
+              cardDescription: this.temp.cardDescription,
+              shortDescription: this.temp.shortDescription,
+            }
+          };
 
           request({
             url: '/card/updateCard',
             method: 'post',
-            data: postData
+            data: JSON.stringify(postData)
           }).then(response => {
             if(response.data) {
               _this.getList();
@@ -523,29 +475,6 @@ export default {
           return false;
         }
       });
-
-
-      //     axios.post(`http://localhost:8080/card/updateCard`, postData).then(response => {
-      //       if(response.data) {
-      //         _this.getList();
-      //         _this.panelVisible = false;
-      //         _this.resetTemp();
-      //       }else {
-      //         this.$message.error('Updating Data failed!');
-      //       }
-      //     })
-      //       .catch(error =>
-      //         {
-      //           this.$message.error('Updating Data failed!');
-      //         }
-      //       );
-      //   } else {
-      //     this.$message.error('Form Invalid!');
-      //     return false;
-      //   }
-      // });
-
-
     },
 
     uploadCover() {

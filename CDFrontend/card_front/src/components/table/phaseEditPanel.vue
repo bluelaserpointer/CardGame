@@ -745,18 +745,6 @@ export default {
         .catch(error => {
           this.$message.error('Updating Data Failed!');
         });
-
-      // axios.post(`http://localhost:8080/chapter/updateChapterAwards`, postData).then(response => {
-      //   if (response.data) {
-      //     this.chapterList = response.data;
-      //   }else{
-      //     this.$message.error('Updating Data Failed!');
-      //   }
-      //   this.handleRefreshPhase(this.currPhase)
-      // })
-      //   .catch(error => {
-      //     this.$message.error('Updating Data Failed!');
-      //   })
     },
 
     handlePhaseAwardConfirm(){
@@ -788,18 +776,6 @@ export default {
         .catch(error => {
           this.$message.error('Updating Data Failed!');
         })
-
-      // axios.post(`http://localhost:8080/chapter/updateChapterPhaseAwards`, postData).then(response => {
-      //   if (response.data) {
-      //     this.chapterPhaseData = response.data;
-      //   }else{
-      //     this.$message.error('Updating Data Failed!');
-      //   }
-      //   this.handleRefreshPhase(this.currPhase)
-      // })
-      //   .catch(error => {
-      //     this.$message.error('Updating Data Failed!');
-      //   })
     },
 
 
@@ -814,7 +790,6 @@ export default {
         if(response.data)
         {
           this.chapterList = response.data;
-
 
           request({
             url: '/card/getAllCards',
@@ -860,52 +835,6 @@ export default {
           }
         );
 
-      // axios.get('http://localhost:8080/chapter/getAllChapters').then(response => {
-      //   if(response.data)
-      //   {
-      //     console.log(response.data);
-      //     this.chapterList = response.data;
-      //
-      //     axios.get('http://localhost:8080/card/getAllCards')
-      //       .then(res => {
-      //         if(res.data) {
-      //           this.cardList = res.data;
-      //           this.watchList()
-      //         }else
-      //         {
-      //           this.$message.error('Fetching Data Failed!');
-      //         }
-      //       })
-      //       .catch(error =>
-      //       {
-      //         this.$message.error('Fetching Data Failed!');
-      //       });
-      //
-      //     axios.get('http://localhost:8080/item/getAllItems')
-      //       .then(res => {
-      //         if(res.data) {
-      //           this.itemList = res.data;
-      //           this.watchList()
-      //         }else
-      //         {
-      //           this.$message.error('Fetching Data Failed!');
-      //         }
-      //       })
-      //       .catch(error =>
-      //       {
-      //           this.$message.error('Fetching Data Failed!');
-      //         });
-      //
-      //
-      //   }else{
-      //     this.$message.error('Fetching Data Failed!');
-      //   }
-      // })
-      //   .catch(error =>
-      //   {
-      //     this.$message.error('Fetching Data Failed!');
-      //   }
-      // );
     },
     watchList() {
       // let list = this.cardList;
@@ -941,39 +870,6 @@ export default {
       const sort = this.listQuery.sort;
       return sort === `+${key}` ? 'ascending' : 'descending'
     },
-
-    // createData() {
-      //
-      // let postData = new FormData();
-      // // postData.append('cardId', this.temp.id);
-      // postData.append('cardName', this.temp.cardName);
-      // postData.append('rarity', this.temp.price);
-      // postData.append('healthPoint', this.temp.healthPoint);
-      // postData.append('attack', this.temp.attack);
-      // postData.append('defense', this.temp.defense);
-      // postData.append('attackRange', this.temp.attackRange);
-      // postData.append('cd', this.temp.cd);
-      // postData.append('speed', this.temp.speed);
-      //
-      // postData.append('cardImg', this.temp.cardImg);
-      // postData.append('cardDescription', this.temp.cardDescription);
-      //
-      //
-      // console.log(postData);
-      //
-      // axios.post(`http://localhost:8080/card/add`, postData).then(response => {
-      //   if(response.data) {
-      //     //
-      //   }
-      //   else {
-      //     //
-      //   }
-      //   axios.get('http://localhost:8080/card/get/all')
-      //     .then(response => this.cardList = response.data);
-      // })
-    // },
-    // updateData() {
-    // },
   }
 }
 </script>

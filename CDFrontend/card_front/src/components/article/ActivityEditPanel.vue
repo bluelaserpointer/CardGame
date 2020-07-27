@@ -184,25 +184,33 @@ export default {
         return false;
       }
 
-      const postData = new FormData();
-      postData.append('activityImg', this.postForm.image_uri === undefined ? '' : this.postForm.image_uri);
-      postData.append('activityName', this.postForm.title);
-      postData.append('activityDescription', this.postForm.content);
+      let start;
 
       if (this.limit === false) {
-        postData.append('start', this.formatDate(new Date()));
+        start = this.formatDate(new Date());
       } else if (this.displayTime !== null && this.displayTime !== undefined ) {
-        postData.append('start', this.formatDate(this.displayTime));
+        start = this.formatDate(this.displayTime);
       }else {
-        postData.append('start', this.delayDate(7));
+        start = this.delayDate(7);
       }
 
-      postData.append('type', this.limit === true ? "true" : "false");
+      console.log(start);
+
+      let postData = {
+        activityName: this.postForm.title,
+        type: this.limit === true ? "true" : "false",
+        start: start,
+        activityDetails: {
+          activityDescription: this.postForm.content,
+          activityImg: this.postForm.image_uri === undefined ? '' : this.postForm.image_uri
+        }
+    };
+
 
       request({
         url: '/activity/addActivity',
         method: 'post',
-        data: postData
+        data: JSON.stringify(postData)
       }).then(response => {
         if (response.data) {
           //

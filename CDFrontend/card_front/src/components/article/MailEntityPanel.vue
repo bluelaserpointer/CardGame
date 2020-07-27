@@ -143,23 +143,6 @@ export default {
         {
           this.$message.error('Fetching Data Failed!');
         });
-
-      // axios.get('http://localhost:8080/mail/getAllMails')
-      //   .then(response => {
-      //     if(response.data) {
-      //       this.panelVisible = false;
-      //       this.list = response.data;
-      //       this.watchList()
-      //     }else
-      //     {
-      //       this.$message.error('Fetching Data Failed!');
-      //     }
-      //   })
-      //   .catch(error =>
-      //   {
-      //     this.$message.error('Fetching Data Failed!');
-      //   });
-
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row); // copy obj

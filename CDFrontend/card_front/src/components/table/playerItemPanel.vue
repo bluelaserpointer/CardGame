@@ -42,7 +42,6 @@
           <span>{{ formatDate(row.accquireDate) }}</span>
         </template>
       </el-table-column>
-
     </el-table>
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="panelVisible" top="5vh" class="editDialog">
@@ -50,11 +49,17 @@
         <el-form-item label="ID" prop="ownItemId" v-if="dialogStatus==='update' ">
           <el-input v-model="temp.ownItemId" disabled/>
         </el-form-item>
-        <el-form-item label="UserId" prop="userId">
-          <el-input class="userIdOwnItemInput" v-model="temp.userId" />
+        <el-form-item label="UserId" prop="userId" v-if="dialogStatus==='create'">
+          <el-input class="userIdOwnItemInput" v-model="temp.userId"/>
         </el-form-item>
-        <el-form-item label="ItemId" prop="itemId">
-          <el-input class="itemIdOwnItemInput" v-model="temp.itemId" />
+        <el-form-item label="ItemId" prop="itemId" v-if="dialogStatus==='create'">
+          <el-input class="itemIdOwnItemInput" v-model="temp.itemId"/>
+        </el-form-item>
+        <el-form-item label="UserId" prop="userId" v-else>
+          <el-input class="userIdOwnItemInput" v-model="temp.userId" disabled/>
+        </el-form-item>
+        <el-form-item label="ItemId" prop="itemId" v-else>
+          <el-input class="itemIdOwnItemInput" v-model="temp.itemId" disabled/>
         </el-form-item>
         <el-form-item label="ItemCount" prop="itemCount">
           <el-input class="itemCountOwnItemInput" v-model="temp.itemCount" />
@@ -198,15 +203,6 @@ export default {
         {
           this.$message.error('Fetching Data Failed!');
         });
-
-      // axios.get('http://localhost:8080/ownItem/getAllOwnItems')
-      //   .then(response => {
-      //     this.list = response.data
-      //   })
-      //   .catch(error =>
-      //   {
-      //     this.$message.error('Fetching Data Failed!');
-      //   });
     },
     resetTemp() {
       this.temp = {
@@ -228,15 +224,16 @@ export default {
     createData(formName) {
       this.$refs.temp.validate((valid) => {
         if (valid) {
-          let postData = new FormData();
-          postData.append('itemId', this.temp.itemId);
-          postData.append('userId', this.temp.userId);
-          postData.append('itemCount', this.temp.itemCount);
+          let postData = {
+            itemId: this.temp.itemId,
+            userId: this.temp.userId,
+            itemCount: this.temp.itemCount
+          };
 
           request({
             url: '/ownItem/addOwnItem',
             method: 'post',
-            data: postData
+            data: JSON.stringify(postData)
           }).then(response => {
             if (response.data) {
               // TODO: SHORTEN THE REQUESTS
@@ -285,16 +282,18 @@ export default {
     updateData(formName) {
       this.$refs.temp.validate((valid) => {
         if (valid) {
-          let postData = new FormData();
-          postData.append('ownItemId', this.temp.ownItemId);
-          postData.append('itemId', this.temp.itemId);
-          postData.append('userId', this.temp.userId);
-          postData.append('itemCount', this.temp.itemCount);
+
+          let postData = {
+            ownItemId: this.temp.ownItemId,
+            itemId: this.temp.itemId,
+            userId: this.temp.userId,
+            itemCount: this.temp.itemCount
+          };
 
           request({
             url: '/ownItem/updateOwnItem',
             method: 'post',
-            data: postData
+            data: JSON.stringify(postData)
           }).then(response => {
             if (response.data) {
               // TODO: SHORTEN THE REQUESTS

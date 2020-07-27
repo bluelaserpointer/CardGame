@@ -136,7 +136,6 @@
       } // untested
     },
     created() {
-
       this.getList()
     },
     methods: {
@@ -157,21 +156,6 @@
           {
             this.$message.error('Fetching Data Failed!');
           });
-
-        // let _this = this;
-        // axios.get('http://localhost:8080/chapter/getAllChapters')
-        //   .then(response => {
-        //     if(response.data) {
-        //       _this.list = response.data;
-        //     }else
-        //     {
-        //       this.$message.error('Fetching Data Failed!');
-        //     }
-        //   })
-        //   .catch(error =>
-        //   {
-        //     this.$message.error('Fetching Data Failed!');
-        //   });
       },
 
       confirmIdentity() {
@@ -220,21 +204,6 @@
               this.$message.error('Deleting Data failed!');
             }
           );
-
-        // axios.post('http://localhost:8080/chapter/deleteChapter', postData).then(response => {
-        //   if (response.data) {
-        //     _this.list = response.data;
-        //     _this.panelVisible = false;
-        //     _this.deleteVisible = false;
-        //   } else {
-        //     this.$message.error('Deleting Data failed!');
-        //   }
-        // })
-        //   .catch(error =>
-        //     {
-        //       this.$message.error('Deleting Data failed!');
-        //     }
-        //   );
       },
 
       resetTemp() {
@@ -280,22 +249,6 @@
                   this.$message.error('Creating Data failed!');
                 }
               );
-
-            // axios.post(`http://localhost:8080/chapter/addChapter`, postData).then(response => {
-            //   if (response.data) {
-            //     _this.list = response.data;
-            //     _this.panelVisible = false;
-            //     _this.resetTemp();
-            //   }else {
-            //     this.$message.error('Creating Data failed!');
-            //   }
-            // })
-            //   .catch(error =>
-            //     {
-            //       this.$message.error('Creating Data failed!');
-            //     }
-            //   );
-
           } else {
             this.$message.error('Form Invalid!');
             return false;
@@ -339,24 +292,6 @@
                   this.$message.error('Updating Data failed!');
                 }
               );
-
-
-            // axios.post(`http://localhost:8080/chapter/updateChapter`, postData).then(response => {
-            //   if (response.data) {
-            //     _this.list = response.data;
-            //     _this.panelVisible = false;
-            //     _this.resetTemp();
-            //   }else {
-            //     this.$message.error('Updating Data failed!');
-            //   }
-            // })
-            //   .catch(error =>
-            //     {
-            //       this.$message.error('Updating Data failed!');
-            //     }
-            //   );
-
-
           } else {
             this.$message.error('Form Invalid!');
             return false;

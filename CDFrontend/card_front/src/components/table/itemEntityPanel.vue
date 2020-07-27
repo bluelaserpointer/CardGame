@@ -351,16 +351,19 @@ export default {
     createData(formName) {
       this.$refs.temp.validate((valid) => {
         if (valid) {
-          const postData = new FormData();
-          postData.append('itemName', this.temp.itemName);
-          postData.append('price', this.temp.price);
-          postData.append('itemImg', this.temp.itemImg);
-          postData.append('itemDescription', this.temp.itemDescription);
+          let postData = {
+            itemName: this.temp.itemName,
+            price: this.temp.price,
+            itemDetails: {
+              itemImg: this.temp.itemImg,
+              itemDescription: this.temp.itemDescription
+            }
+          };
 
           request({
             url: '/item/addItem',
             method: 'post',
-            data: postData
+            data: JSON.stringify(postData)
           }).then(response => {
             if (response.data) {
               // TODO: SHORTEN THE REQUESTS
@@ -375,28 +378,10 @@ export default {
                 this.$message.error('Creating Data failed!');
               }
             );
-
-          // axios.post(`http://localhost:8080/item/addItem`, postData).then(response => {
-          //   if (response.data) {
-          //     // TODO: SHORTEN THE REQUESTS
-          //     this.getList();
-          //     this.panelVisible = false;
-          //   } else {
-          //     this.$message.error('Creating Data failed!');
-          //   }
-          // })
-          //   .catch(error =>
-          //     {
-          //       this.$message.error('Creating Data failed!');
-          //     }
-          //   );
-
         } else {
           this.$message.error('Form Invalid!');
           return false;
         }
-
-
       });
 
 
@@ -412,19 +397,23 @@ export default {
     updateData(formName) {
       this.$refs.temp.validate((valid) => {
         if (valid) {
-          const postData = new FormData();
           const _this = this;
-          postData.append('itemId', this.temp.itemId);
-          postData.append('itemName', this.temp.itemName);
-          postData.append('price', this.temp.price);
-          postData.append('itemImg', this.temp.itemImg);
-          postData.append('itemDescription', this.temp.itemDescription);
-          console.log(postData);
+
+          let postData = {
+            itemId: this.temp.itemId,
+            itemName: this.temp.itemName,
+            price: this.temp.price,
+            itemDetails: {
+              itemId: this.temp.itemId,
+              itemImg: this.temp.itemImg,
+              itemDescription: this.temp.itemDescription,
+            }
+          };
 
           request({
-            url: '/card/updateCard',
+            url: '/item/updateItem',
             method: 'post',
-            data: postData
+            data: JSON.stringify(postData)
           }).then(response => {
             if (response.data) {
               this.getList();
@@ -438,20 +427,6 @@ export default {
                 this.$message.error('Updating Data failed!');
               }
             );
-
-          // axios.post(`http://localhost:8080/item/updateItem`, postData).then(response => {
-          //   if (response.data) {
-          //     this.getList();
-          //     _this.panelVisible = false
-          //   } else {
-          //     this.$message.error('Updating Data failed!');
-          //   }
-          // })
-          //   .catch(error =>
-          //     {
-          //       this.$message.error('Updating Data failed!');
-          //     }
-          //   );
         } else {
           this.$message.error('Form Invalid!');
           return false;
