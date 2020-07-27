@@ -18,4 +18,8 @@ public interface MailService {
         String deleteAll();
 
         List<Mail> deleteMail(Integer mailId);
+
+        MailBox sendMail(Integer mailId, Integer userId);
+
+        Mail sendMailToAllUsers(Integer mailId);
 }
