@@ -9,6 +9,8 @@ import android.os.Looper;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.example.myapplicationtest1.utils.Utils;
+
 import org.json.JSONObject;
 
 import java.io.File;
@@ -111,6 +113,10 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         mMessage.put("StackTrace", sw.toString());
         //build state
         collectErrorMessages();
+        //client info
+        mMessage.put("ClientVersion", String.valueOf(Utils.CLIENT_VERSION));
+        //user info
+        mMessage.put("UserId", String.valueOf(Utils.getUserId()));
         //save reports
         //saveErrorMessages(e);
         final JSONObject jsonObject = new JSONObject(mMessage);

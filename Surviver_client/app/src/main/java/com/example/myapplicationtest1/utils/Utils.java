@@ -19,7 +19,7 @@ public class Utils {
     public static final double CLIENT_VERSION = 0.1;
 
     public static SharedPreferences sp;
-    public static int userId;
+    public static int userId = -1;
     public static void setSharedPreference(Context context) {
         sp = context.getSharedPreferences("data", Context.MODE_PRIVATE); //数据自己可用
     }
@@ -80,7 +80,7 @@ public class Utils {
         }
         //TODO: waiting backend make userId provider
 //        final int userId = Integer.parseInt(data.substring(0, data.length() - 2));
-        final int usrId = 0;
+        final int userId = 0;
         if(userId >= 0) {
             Utils.saveUserId(userId);
             return true;
