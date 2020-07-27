@@ -35,6 +35,7 @@ public class ItemController {
   @RequestMapping(value = "/updateItem")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public @ResponseBody Item updateItem(@RequestBody Item updateItem) {
+    System.out.println(updateItem);
     return ItemService.updateItem(updateItem);
   }
 

@@ -33,16 +33,19 @@ public class OwnCardDaoImpl implements OwnCardDao {
 
     // 更新一个用户拥有某张卡牌的所有信息
     public OwnCard updateOwnCard(OwnCard updateOwnCard) {
+        System.out.println(updateOwnCard);
         Optional<OwnCard> optOwnCard = OwnCardRepository
                 .findOwnCardByUserIdEqualsAndCardIdEquals(updateOwnCard.getUserId(), updateOwnCard.getCardId());
         if (optOwnCard.isPresent()) {
+            System.out.println("In isPresent");
             OwnCard ownCard = optOwnCard.get();
             ownCard.setOwnCard(updateOwnCard.getUserId(), updateOwnCard.getCardId(), updateOwnCard.getCardLevel(),
                     updateOwnCard.getCardCurExp(), updateOwnCard.getCardLevelLimit(), updateOwnCard.getRepetitiveOwns(),
                     updateOwnCard.getAccquireDate());
-            OwnCardRepository.updateOwnCardStatus(ownCard, ownCard.getOwnCardId());
+            System.out.println(OwnCardRepository.updateOwnCardStatus(ownCard, ownCard.getOwnCardId()));
             return ownCard;
         }
+        System.out.println("Not In isPresent");
         return null;
     }
 

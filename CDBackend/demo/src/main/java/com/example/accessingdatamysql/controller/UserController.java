@@ -59,7 +59,7 @@ public class UserController {
   }
 
   // 获取所有用户信息
-  @RequestMapping(value = "/getAllUsers", method = RequestMethod.POST, consumes = "Application/json")
+  @RequestMapping(value = "/getAllUsers")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public List<User> getAllUsers() {
     return userService.getAllUsers();
