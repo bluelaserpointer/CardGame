@@ -36,12 +36,8 @@ public class OwnCardDaoImpl implements OwnCardDao {
         Optional<OwnCard> optOwnCard = OwnCardRepository
                 .findOwnCardByUserIdEqualsAndCardIdEquals(updateOwnCard.getUserId(), updateOwnCard.getCardId());
         if (optOwnCard.isPresent()) {
-            OwnCard ownCard = optOwnCard.get();
-            ownCard.setOwnCard(updateOwnCard.getUserId(), updateOwnCard.getCardId(), updateOwnCard.getCardLevel(),
-                    updateOwnCard.getCardCurExp(), updateOwnCard.getCardLevelLimit(), updateOwnCard.getRepetitiveOwns(),
-                    updateOwnCard.getAccquireDate());
-            OwnCardRepository.updateOwnCardStatus(ownCard, ownCard.getOwnCardId());
-            return ownCard;
+            OwnCardRepository.updateOwnCardStatus(updateOwnCard, updateOwnCard.getOwnCardId());
+            return updateOwnCard;
         }
         return null;
     }
@@ -62,7 +58,8 @@ public class OwnCardDaoImpl implements OwnCardDao {
     // 用户再一次拥有已经拥有的卡牌
     public OwnCard ownAnotherCard(OwnCard ownCard) {
         ownCard.setRepetitiveOwns(ownCard.getRepetitiveOwns() + 1);
-        // 这里还需要增加cardlevellimit的更新
+        // 一开始是50级，然后每提升卡牌张数+1
+        ownCard.setCardLevelLimit(ownCard.getCardLevelLimit() + 1);
         OwnCardRepository.updateOwnCardStatus(ownCard, ownCard.getOwnCardId());
         return ownCard;
     }

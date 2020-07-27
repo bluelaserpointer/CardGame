@@ -25,8 +25,10 @@ public class OwnCardServiceImpl implements OwnCardService {
     @Override
     public OwnCard addNewOwnCard(Integer userId, Integer cardId) {
         if (OwnCardDao.findOwnCardByUserIdEqualsAndCardIdEquals(userId, cardId) != null) {
+            // 重复获取
             return OwnCardDao.ownAnotherCard(OwnCardDao.findOwnCardByUserIdEqualsAndCardIdEquals(userId, cardId));
         }
+        // 首次获取
         return OwnCardDao.addNewOwnCard(userId, cardId);
     }
 
