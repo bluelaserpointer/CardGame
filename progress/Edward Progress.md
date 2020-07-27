@@ -164,3 +164,17 @@ Edward Raymond He 518030990022
 #### Currently working on:
 
 1. 在调试于 2020.07.21 修复的认证Bug 所引发的单元测试相关Bug（与 element-ui相关）
+
+### 2020.07.27
+
+#### Finished: 
+
+1. 根据后端替换了目前所有请求数据格式
+2. 完善了运维前端目前的登陆验证和请求发送权限（设置Token，使用封装Axios）
+3. 调试了后端接口的一些Bug
+4. 解决了除了 "封装 axios interceptors .then() .catch()操作" 以外的单元测试Bug
+
+#### Currently working on:
+
+1. 由于调试过程已经超了两天，所以单元测试中封装 axios 的bug目前先暂停
+2. e2e测试的 code coverage 网址中未覆盖 .vue文件
