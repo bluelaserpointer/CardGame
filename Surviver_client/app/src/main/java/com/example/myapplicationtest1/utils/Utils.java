@@ -61,7 +61,7 @@ public class Utils {
             requestBody.accumulate("userName", userName);
             requestBody.accumulate("password", password);
             System.out.println("Utils: " + requestBody.toString());
-            data = HttpClient.doPostShort("user/identifyUser", requestBody.toString());
+            data = HttpClient.doPostShort(Urls.identifyUser(), requestBody.toString());
             System.out.println("Utils: data: " + data);
             if(data == null)
                 return false;
@@ -71,7 +71,7 @@ public class Utils {
             requestBody = new JSONObject();
             requestBody.accumulate("userId", 0);
             System.out.println("Utils2: " + requestBody.toString());
-            data = HttpClient.doPostShort("user/getUser", requestBody.toString());
+            data = HttpClient.doPostShort(Urls.identifyUser(), requestBody.toString());
             System.out.println("Utils: data2: " + data);
         } catch (JSONException e) {
             System.out.println("Utils: failed.");
@@ -111,7 +111,7 @@ public class Utils {
         }
     }
     public static JSONObject getUserInfo() throws JSONException {
-        final String data = HttpClient.doGetShort("user/getUser?userId=" + Utils.getUserId());
+        final String data = HttpClient.doGetShort(Urls.getUser());
         System.out.println("Utils::getUerInfo: " + data + ", " + Urls.token);
         return new JSONObject(data);
     }

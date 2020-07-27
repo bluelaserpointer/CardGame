@@ -17,6 +17,7 @@ import com.example.myapplicationtest1.HttpClient;
 import com.example.myapplicationtest1.R;
 import com.example.myapplicationtest1.page.GamePage;
 import com.example.myapplicationtest1.page.Page;
+import com.example.myapplicationtest1.utils.Urls;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,7 +41,7 @@ public class ChapterListAdapter extends RecyclerView.Adapter <ChapterListAdapter
     }
     public void fetch() {
         try {
-            final JSONArray arr = new JSONArray(HttpClient.doGetShort("chapter/getAllChapters"));
+            final JSONArray arr = new JSONArray(HttpClient.doGetShort(Urls.getAllChapters()));
             chapters = new ChapterInfo[arr.length()];
             for(int i = 0; i < chapters.length; ++i) {
                 //TODO: waiting backend change its name to "phaseMaxNo"

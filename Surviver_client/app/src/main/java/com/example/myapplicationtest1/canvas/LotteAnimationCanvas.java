@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import com.example.myapplicationtest1.HttpClient;
 import com.example.myapplicationtest1.R;
 import com.example.myapplicationtest1.game.core.GHQ;
+import com.example.myapplicationtest1.utils.Urls;
 import com.example.myapplicationtest1.utils.Utils;
 
 import org.json.JSONException;
@@ -60,7 +61,7 @@ public class LotteAnimationCanvas extends MyCanvas {
         matPaint.setColor(Color.BLUE);
         matPaint.setTextSize(40);
         try {
-            JSONObject data = new JSONObject(HttpClient.doGetShort("user/getUser?userId=" + Utils.getUserId()));
+            JSONObject data = new JSONObject(HttpClient.doGetShort(Urls.getUser()));
             stockCHI = data.getInt("chiKnowledge");
             stockENG = data.getInt("engKnowledge");
             stockMAT = data.getInt("mathKnowledge");
