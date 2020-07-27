@@ -19,6 +19,7 @@ import com.example.myapplicationtest1.game.contents.unit.MyUnit;
 import com.example.myapplicationtest1.page.CardDetailPage;
 import com.example.myapplicationtest1.page.Page;
 import com.example.myapplicationtest1.page.TeamPage;
+import com.example.myapplicationtest1.utils.Urls;
 import com.example.myapplicationtest1.utils.Utils;
 
 import org.json.JSONArray;
@@ -44,11 +45,11 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardLi
             return;
         }
         try {
-            final JSONArray arr = new JSONArray(HttpClient.doGetShort("ownCard/getAllOwnCardsByUserId?userId=" + Utils.getUserId()));
+            final JSONArray arr = new JSONArray(HttpClient.doGetShort(Urls.getAllOwnCard()));
             for(int i = 0; i < arr.length(); ++i) {
                 final JSONObject object = arr.getJSONObject(i);
                 final int cardId = object.getInt("cardId");
-                knowledgeParameters.add(MyUnit.loadAsKnowledge(object.getInt("ownCardId"), "card/getCard?cardId=" + cardId));
+                knowledgeParameters.add(MyUnit.loadAsKnowledge(object.getInt("ownCardId"), Urls.getCard(cardId)));
             }
         } catch (JSONException e) {
             e.printStackTrace();

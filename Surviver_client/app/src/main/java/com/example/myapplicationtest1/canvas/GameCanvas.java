@@ -19,6 +19,7 @@ import com.example.myapplicationtest1.game.paint.ImageFrame;
 import com.example.myapplicationtest1.page.BattleFinishPage;
 import com.example.myapplicationtest1.page.Page;
 import com.example.myapplicationtest1.pageParts.ChapterListAdapter;
+import com.example.myapplicationtest1.utils.Urls;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -55,13 +56,13 @@ public class GameCanvas extends MyCanvas {
     public void fetch() {
         try {
             //load enemy formation
-            final JSONArray arr = new JSONArray(HttpClient.doGetShort("chapter/getChapterDetailsByChapter?chapterId=" + ChapterListAdapter.selectedPhase));
+            final JSONArray arr = new JSONArray(HttpClient.doGetShort(Urls.getChapterDetail(ChapterListAdapter.selectedPhase)));
             for(int i = 0; i < arr.length(); ++i) {
                 final JSONObject posInfo = arr.getJSONObject(i);
                 final int pos = posInfo.getInt("positionId");
                 final int x = 500 + pos%5*100;
                 final int y = 100 + pos/5*100;
-                stage.addUnit(new Enemy(MyUnit.loadAsEnemy("card/getCard?cardId=" + posInfo.getInt("cardId"))).respawn(x, y));
+                stage.addUnit(new Enemy(MyUnit.loadAsEnemy(Urls.getCard(posInfo.getInt("cardId")))).respawn(x, y));
             }
             //load friend formation
             //TODO: this is dummy!

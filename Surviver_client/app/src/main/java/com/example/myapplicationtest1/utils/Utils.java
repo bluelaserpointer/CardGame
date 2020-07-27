@@ -53,9 +53,34 @@ public class Utils {
     public static int loginFailReason;
     public static boolean identifyUser(String userName, String password) {
         //判断输入的用户名和密码是否正确
-        final String data = HttpClient.doGetShort("user/identifyUser?"
-                + "userName=" + userName + "&password=" + password);
-        final int userId = Integer.parseInt(data.substring(0, data.length() - 2));
+//        final String data = HttpClient.doGetShort("user/identifyUser?"
+//                + "userName=" + userName + "&password=" + password);
+        String data = null;
+        JSONObject requestBody = new JSONObject();
+        try {
+            requestBody.accumulate("userName", userName);
+            requestBody.accumulate("password", password);
+            System.out.println("Utils: " + requestBody.toString());
+            data = HttpClient.doPostShort(Urls.identifyUser(), requestBody.toString());
+            System.out.println("Utils: data: " + data);
+            if(data == null)
+                return false;
+            Urls.token = data;
+//            requestBody.remove("userName");
+//            requestBody.remove("password");
+            requestBody = new JSONObject();
+            requestBody.accumulate("userId", 0);
+            System.out.println("Utils2: " + requestBody.toString());
+            data = HttpClient.doPostShort(Urls.identifyUser(), requestBody.toString());
+            System.out.println("Utils: data2: " + data);
+        } catch (JSONException e) {
+            System.out.println("Utils: failed.");
+            e.printStackTrace();
+            return false;
+        }
+        //TODO: waiting backend make userId provider
+//        final int userId = Integer.parseInt(data.substring(0, data.length() - 2));
+        final int usrId = 0;
         if(userId >= 0) {
             Utils.saveUserId(userId);
             return true;
@@ -86,7 +111,9 @@ public class Utils {
         }
     }
     public static JSONObject getUserInfo() throws JSONException {
-        return new JSONObject(HttpClient.doGetShort("user/getUser?userId=" + Utils.getUserId()));
+        final String data = HttpClient.doGetShort(Urls.getUser());
+        System.out.println("Utils::getUerInfo: " + data + ", " + Urls.token);
+        return new JSONObject(data);
     }
     public static HashMap<Integer, Knowledge.KnowledgeParameter> ownCardRemoteRecords = new HashMap<>();
     public static HashMap<Integer, Knowledge.KnowledgeParameter> cardsInfoRemoteRecords = new HashMap<>();

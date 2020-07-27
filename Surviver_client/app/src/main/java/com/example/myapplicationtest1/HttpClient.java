@@ -2,12 +2,16 @@ package com.example.myapplicationtest1;
 
 import android.os.StrictMode;
 
+import com.example.myapplicationtest1.page.Page;
+import com.example.myapplicationtest1.utils.Urls;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
@@ -15,6 +19,9 @@ public class HttpClient {
     //Edward: 192.168.175.1
     //Jun: 192.168.254.1
     public static final String URLHead = "http://192.168.254.1:8080/";
+    private static final int CONNECT_TIMEOUT = 3000;
+    private static final int READ_TIMEOUT = 60000;
+    public static final String TIMEOUT_SIGN = "CONNECTION TIMEOUT";
     public static String doGetShort(String url) {
         return doGet(URLHead + url);
     }
@@ -30,10 +37,12 @@ public class HttpClient {
             connection = (HttpURLConnection) new URL(httpurl).openConnection();
             // 设置连接方式：get
             connection.setRequestMethod("GET");
+            if (Urls.token != null)
+                connection.setRequestProperty("Authorization", "Bearer " + Urls.token);
             // 设置连接主机服务器的超时时间：15000毫秒
-            connection.setConnectTimeout(15000);
+            connection.setConnectTimeout(CONNECT_TIMEOUT);
             // 设置读取远程返回的数据时间：60000毫秒
-            connection.setReadTimeout(60000);
+            connection.setReadTimeout(READ_TIMEOUT);
             // 发送请求
             connection.connect();
             // 通过connection连接，获取输入流
@@ -50,6 +59,9 @@ public class HttpClient {
                 }
                 result = sbf.toString();
             }
+        } catch (SocketTimeoutException e) {
+            StartPage.backWithConnectionError();
+            return TIMEOUT_SIGN;
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -75,7 +87,11 @@ public class HttpClient {
         return result;
     }
 
+    public static String doPostShort(String url, String param) {
+        return doPost(URLHead + url, param);
+    }
     public static String doPost(String httpUrl, String param) {
+        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
         HttpURLConnection connection = null;
         InputStream is = null;
         OutputStream os = null;
@@ -88,18 +104,19 @@ public class HttpClient {
             // 设置连接请求方式
             connection.setRequestMethod("POST");
             // 设置连接主机服务器超时时间：15000毫秒
-            connection.setConnectTimeout(15000);
+            connection.setConnectTimeout(CONNECT_TIMEOUT);
             // 设置读取主机服务器返回数据超时时间：60000毫秒
-            connection.setReadTimeout(60000);
+            connection.setReadTimeout(READ_TIMEOUT);
 
             // 默认值为：false，当向远程服务器传送数据/写数据时，需要设置为true
             connection.setDoOutput(true);
             // 默认值为：true，当前向远程服务读取数据时，设置为true，该参数可有可无
             connection.setDoInput(true);
             // 设置传入参数的格式:请求参数应该是 name1=value1&name2=value2 的形式。
-            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            connection.setRequestProperty("Content-Type", "application/json");
             // 设置鉴权信息：Authorization: Bearer da3efcbf-0845-4fe3-8aba-ee040be542c0
-            connection.setRequestProperty("Authorization", "Bearer da3efcbf-0845-4fe3-8aba-ee040be542c0");
+            if(Urls.token != null)
+                connection.setRequestProperty("Authorization", "Bearer " + Urls.token);
             // 通过连接对象获取一个输出流
             os = connection.getOutputStream();
             // 通过输出流对象将参数写出去/传输出去,它是通过字节数组写出的
@@ -120,6 +137,9 @@ public class HttpClient {
                 }
                 result = sbf.toString();
             }
+        } catch (SocketTimeoutException e) {
+            StartPage.backWithConnectionError();
+            return TIMEOUT_SIGN;
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
