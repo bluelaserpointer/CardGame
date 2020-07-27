@@ -7,6 +7,8 @@ import java.util.List;
 public interface MailBoxService {
         MailBox getOneMailBox(Integer MailBoxId);
 
+        List<Mail> getOneUserMails(Integer MailBoxId);
+
         String addNewMailBox(Integer userId);
 
         String updateMailBox(Integer MailBoxId, List<Integer> mails);
