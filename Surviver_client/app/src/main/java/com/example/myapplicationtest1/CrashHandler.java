@@ -103,7 +103,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
             @Override
             public void run() {
                 Looper.prepare();
-                Toast.makeText(mContext, "捕获到异常", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "捕获到异常, 尝试上传日志文件", Toast.LENGTH_SHORT).show();
                 Looper.loop();
             }
         }.start();
@@ -121,7 +121,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         //saveErrorMessages(e);
         final JSONObject jsonObject = new JSONObject(mMessage);
         System.out.println("CrashHandler: Made a crash report: " + jsonObject.toString());
-        return false;
+        return true;
     }
 
     /**
