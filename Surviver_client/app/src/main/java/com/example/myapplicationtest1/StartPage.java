@@ -7,13 +7,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
-import com.bumptech.glide.util.Util;
 import com.example.myapplicationtest1.page.HomePage;
 import com.example.myapplicationtest1.page.LoginInputPage;
 import com.example.myapplicationtest1.page.Page;
@@ -30,7 +30,8 @@ public class StartPage extends AppCompatActivity {
      * Whether or not the system UI should be auto-hidden
      */
     private static final boolean AUTO_HIDE = true;
-
+    public static Activity staticActivity;
+    private static boolean connectedTimeOutHappen = false;
     /**
      * Some older devices needs a small delay between UI widget updates
      * and a change of the status and navigation bar.
@@ -72,13 +73,14 @@ public class StartPage extends AppCompatActivity {
             if (AUTO_HIDE) {
                 hide();
             }
-            if(Utils.identifyUser()) {
-                System.out.println("Identification succeeded!!!!!!!!!!!!!!!!");
+            if (Utils.identifyUser()) {
+                System.out.println("StartPage: Identification succeed.");
                 Page.jump(this, HomePage.class);
-            }else{
-                System.out.println("Identification failed!!!!!!!!!!!!!!!");
+            } else if (connectedTimeOutHappen) {
+                System.out.println("StartPage: Connection Timeout.");
+            } else {
+                System.out.println("StartPage: Identification failed.");
                 Page.jump(this, LoginInputPage.class);
-                System.out.println("Identification done!!!!!!!!!!!!!!!");
             }
         }
         return false;
@@ -87,8 +89,10 @@ public class StartPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        staticActivity = this;
         setContentView(R.layout.login);
         Utils.setSharedPreference(this);
+        StartPage.staticActivity.findViewById(R.id.ConnectionTimeoutTip).setVisibility(connectedTimeOutHappen ? View.VISIBLE : View.INVISIBLE);
         ((TextView)findViewById(R.id.clientVersion)).setText("客户端版本号：" + Utils.CLIENT_VERSION);
 
         mVisible = true;
@@ -229,5 +233,8 @@ public class StartPage extends AppCompatActivity {
         }
         recyclerView.setAdapter(adapter);
     }
-
+    public static void backWithConnectionError() {
+        connectedTimeOutHappen = true;
+        Page.jump(StartPage.staticActivity, StartPage.class);
+    }
 }
