@@ -42,7 +42,10 @@ public class TeamTableAdapter extends RecyclerView.Adapter<TeamTableAdapter.Team
             if(TeamPage.formation.containsKey(cardSetPos)) { //set button bg to card icon
                 System.out.println("TeamTableAdapter: found card at " + cardSetPos);
                 final Knowledge.KnowledgeParameter param = Utils.getKnowledgeParameter(TeamPage.formation.get(cardSetPos));
-                holder.buttons[i].setBackground(ContextCompat.getDrawable(activity, param.drawableId));
+                if(param != null)
+                    holder.buttons[i].setBackground(ContextCompat.getDrawable(activity, param.drawableId));
+                else
+                    System.out.println("TeamTableAdapter: Not found card param at " + TeamPage.formation.get(cardSetPos));
             } else {
                 System.out.println("TeamTableAdapter: not found any card at " + cardSetPos);
             }
