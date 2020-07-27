@@ -92,6 +92,7 @@ public class StartPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         staticActivity = this;
+        CrashHandler.getInstance().init(this);
         setContentView(R.layout.login);
         Utils.setSharedPreference(this);
         StartPage.staticActivity.findViewById(R.id.ConnectionTimeoutTip).setVisibility(connectedTimeOutHappen ? View.VISIBLE : View.INVISIBLE);
