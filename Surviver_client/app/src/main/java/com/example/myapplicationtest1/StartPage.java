@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.example.myapplicationtest1.page.HomePage;
 import com.example.myapplicationtest1.page.LoginInputPage;
 import com.example.myapplicationtest1.page.Page;
+import com.example.myapplicationtest1.utils.Urls;
 import com.example.myapplicationtest1.utils.Utils;
 
 import java.util.ArrayList;
@@ -73,6 +74,7 @@ public class StartPage extends AppCompatActivity {
             if (AUTO_HIDE) {
                 hide();
             }
+            connectedTimeOutHappen = false;
             if (Utils.identifyUser()) {
                 System.out.println("StartPage: Identification succeed.");
                 Page.jump(this, HomePage.class);
@@ -235,6 +237,7 @@ public class StartPage extends AppCompatActivity {
     }
     public static void backWithConnectionError() {
         connectedTimeOutHappen = true;
+        Urls.token = null;
         Page.jump(StartPage.staticActivity, StartPage.class);
     }
 }
