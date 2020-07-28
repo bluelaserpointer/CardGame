@@ -340,6 +340,15 @@ context('UserPanel', () => {
     cy.get('.cardLevelLimitOwnCardInput > .el-input__inner').clear();
     cy.get('.repetitiveOwnsOwnCardInput > .el-input__inner').clear();
 
+    cy.get('.enhancePointInput > .el-input__inner').clear();
+    cy.get('.leftPointsInput > .el-input__inner').clear();
+    cy.get('.enhanceHPInput > .el-input__inner').clear();
+    cy.get('.enhanceAttackInput > .el-input__inner').clear();
+    cy.get('.enhanceDefenseInput > .el-input__inner').clear();
+    cy.get('.enhanceAttackRangeInput > .el-input__inner').clear();
+    cy.get('.enhanceCDInput > .el-input__inner').clear();
+    cy.get('.enhanceSpeedInput > .el-input__inner').clear();
+
     cy.get('.cardLevelOwnCardInput > .el-input__inner').type('1');
     cy.get(':nth-child(3) > .outerDialog > .confirmOwnCardOuterButton').click();
 
@@ -350,12 +359,31 @@ context('UserPanel', () => {
     cy.get(':nth-child(3) > .outerDialog > .confirmOwnCardOuterButton').click();
 
     cy.get('.repetitiveOwnsOwnCardInput > .el-input__inner').type('1');
+    cy.get(':nth-child(3) > .outerDialog > .confirmOwnCardOuterButton').click();
+
+
+    cy.get('.enhancePointInput > .el-input__inner').type(100);
+    cy.get(':nth-child(3) > .outerDialog > .confirmOwnCardOuterButton').click();
+    cy.get('.leftPointsInput > .el-input__inner').type(100);
+    cy.get(':nth-child(3) > .outerDialog > .confirmOwnCardOuterButton').click();
+    cy.get('.enhanceHPInput > .el-input__inner').type(100);
+    cy.get(':nth-child(3) > .outerDialog > .confirmOwnCardOuterButton').click();
+    cy.get('.enhanceAttackInput > .el-input__inner').type(100);
+    cy.get(':nth-child(3) > .outerDialog > .confirmOwnCardOuterButton').click();
+    cy.get('.enhanceDefenseInput > .el-input__inner').type(100);
+    cy.get(':nth-child(3) > .outerDialog > .confirmOwnCardOuterButton').click();
+    cy.get('.enhanceAttackRangeInput > .el-input__inner').type(100);
+    cy.get(':nth-child(3) > .outerDialog > .confirmOwnCardOuterButton').click();
+    cy.get('.enhanceCDInput > .el-input__inner').type(100);
+    cy.get(':nth-child(3) > .outerDialog > .confirmOwnCardOuterButton').click();
+    cy.get('.enhanceSpeedInput > .el-input__inner').type(100);
 
     cy.get('.el-date-editor > .el-input__inner').click({multiple: true, force: true});
 
     cy.get('.el-picker-panel__footer > .el-button--text > span').click({multiple: true, force: true});
 
     cy.get(':nth-child(3) > .outerDialog > .confirmOwnCardOuterButton').click();
+
   });
 
   it('User Panel OwnCard Delete Data', () => {

@@ -59,6 +59,7 @@ export default {
   methods: {
     initChart() {
       this.chart = echarts.init(this.$el, 'macarons');
+      console.log(this.chart);
       this.setOptions(this.chartData)
     },
     setOptions({ expectedData, actualData } = {}) {
