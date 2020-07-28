@@ -39,10 +39,20 @@ public class OwnCardController {
   }
 
   // 用户拥有的卡片升级
-  @RequestMapping(value = "/cardLevelUp")
-  public @ResponseBody OwnCard cardLevelUp(@RequestParam("userId") Integer userId,
-      @RequestParam("cardId") Integer cardId) {
-    return OwnCardService.cardLevelUp(userId, cardId);
+  // @RequestMapping(value = "/cardLevelUp")
+  // public @ResponseBody OwnCard cardLevelUp(@RequestParam("userId") Integer
+  // userId,
+  // @RequestParam("cardId") Integer cardId) {
+  // return OwnCardService.cardLevelUp(userId, cardId);
+  // }
+
+  // 增加用户经验值(如果累计经验值超过升级所需经验值则升级后再返回OwnCard)
+  @RequestMapping(value = "/addExp")
+  public @ResponseBody OwnCard addExp(@RequestParam("userId") Integer userId, @RequestParam("cardId") Integer cardId,
+      @RequestParam("exp") Integer exp) {
+    // System.out.println("Class: UserController Method: addExp Param: userId = " +
+    // userId + " exp = " + exp);
+    return OwnCardService.addExp(userId, cardId, exp);
   }
 
   // 用户再一次拥有已拥有的卡片

@@ -63,11 +63,56 @@ public class OwnCardServiceImpl implements OwnCardService {
         return OwnCardDao.updateOwnCard(updateOwnCard);
     }
 
-    // 用户拥有的某张卡牌升级
+    // 自动判断增加exp是是否需要升级
     @Override
-    public OwnCard cardLevelUp(Integer userId, Integer cardId) {
-        return OwnCardDao.cardLevelUp(userId, cardId);
+    public OwnCard addExp(Integer userId, Integer cardId, Integer exp) {
+        OwnCard ownCard = OwnCardDao.findOwnCardByUserIdEqualsAndCardIdEquals(userId, cardId);
+        Integer expToNextLevel = expToLevelUp(ownCard.getCardLevel());
+        // System.out.println("UserService -> addExp:");
+        // System.out.println("Before Modification: ");
+        // System.out.println("User: userId = " + userId + " userName = " +
+        // user.getUserName() + " level = "
+        // + user.getLevel() + " curExpPoint = " + user.getCurExpPoint() + " exp = " +
+        // exp);
+        // System.out.println("expToNextLevel: " + expToNextLevel);
+
+        Integer newExp = ownCard.getCardCurExp() + exp;
+        if (newExp > expToNextLevel) {
+            // 需要判断是否到达等级上限了
+            if (ownCard.getCardLevel().equals(ownCard.getCardLevelLimit())) {
+                newExp = expToNextLevel - 1; // 到达等级上限了就把newexp设置为升级所需的经验值 - 1
+            } else {
+                newExp -= expToNextLevel;
+                ownCard.setCardLevel(ownCard.getCardLevel() + 1); // 要升级
+                ownCard.setEnhancePoint(ownCard.getCardLevel() * 5); // 每次升级要增加5个强化点数
+                OwnCardDao.CaluculateLeftPoints(ownCard); // 更新剩余点数
+            }
+        }
+        ownCard.setCardCurExp(newExp);
+        updateOwnCard(ownCard);
+        // System.out.println("After Modification: ");
+        // System.out.println("User: userId = " + userId + " userName = " +
+        // user.getUserName() + " level = "
+        // + user.getLevel() + " curExpPoint = " + user.getCurExpPoint());
+
+        return ownCard;
     }
+
+    // 计算升级需要的经验值
+    @Override
+    public Integer expToLevelUp(Integer cardLevel) {
+        Integer base = 100; // 等级为1时需要100经验值
+        double IncreaseRate = 1.05;
+        double result = Math.round(Math.pow(IncreaseRate, cardLevel - 1) * base); // 小数采用四舍五入法
+        System.out.println(result);
+        return (int) result;
+    }
+
+    // 用户拥有的某张卡牌升级
+    // @Override
+    // public OwnCard cardLevelUp(Integer userId, Integer cardId) {
+    // return OwnCardDao.cardLevelUp(userId, cardId);
+    // }
 
     // 用户再一次拥有已经拥有的卡牌
     // @Override

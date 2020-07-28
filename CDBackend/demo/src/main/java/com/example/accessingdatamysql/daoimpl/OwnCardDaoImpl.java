@@ -111,4 +111,12 @@ public class OwnCardDaoImpl implements OwnCardDao {
         return getAllOwnCards();
     }
 
+    @Override
+    public Integer CaluculateLeftPoints(OwnCard ownCard) {
+        ownCard.setLeftPoints(ownCard.getEnhancePoint() - ownCard.getEnhanceAttack() - ownCard.getEnhanceAttackRange()
+                - ownCard.getEnhanceCD() - ownCard.getEnhanceDefense() - ownCard.getEnhanceHP()
+                - ownCard.getEnhanceSpeed());
+        return ownCard.getLeftPoints();
+    }
+
 }
