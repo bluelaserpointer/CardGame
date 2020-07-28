@@ -37,11 +37,11 @@ public class UserController {
 
   @Autowired
   private MailBoxService mailBoxService;
-  
-  private UserLoginRecordService userLoginRecordService;
-  
-  // private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+  @Autowired
+  private UserLoginRecordService userLoginRecordService;
+
+  // private BCryptPasswordEncoder bCryptPasswordEncoder;
 
   // 获取一个用户信息
   @GetMapping(value = "/getUser")
@@ -110,11 +110,10 @@ public class UserController {
   }
 
   @RequestMapping(value = "/logout")
-  public void userLogout(@RequestParam("userId")Integer userId, @RequestParam("type")Integer type) {
+  public void userLogout(@RequestParam("userId") Integer userId, @RequestParam("type") Integer type) {
     // Type: 1 代表正常退出， 2 代表系统IDLE踢出
     userLoginRecordService.userLogout(userId, type);
   }
-
 
   // 删除一个指定用户
   @RequestMapping(value = "/deleteUser")

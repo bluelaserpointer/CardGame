@@ -107,6 +107,28 @@ public class ActivityControllerTest {
         return TOKEN;
     }
 
+    public Activity addActivityBeforeTest() throws Exception {
+        String token = getTOKEN();
+        System.out.println(token);
+        Timestamp start = new Timestamp(System.currentTimeMillis());
+        Activity activity = new Activity("addNewActivity", "addNewActivity", start);
+        ActivityDetails activityDetails = new ActivityDetails();
+        activityDetails.setActivityDescription("addNewActivity");
+        activityDetails.setActivityImg("addNewActivity");
+        activity.setActivityDetails(activityDetails);
+
+        String body = JSON.toJSONString(activity);
+
+        // System.out.println(body);
+
+        MvcResult result = mockMvc
+                .perform(MockMvcRequestBuilders.post("/activity/addActivity")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE).content(body).header("Authorization", token))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
+        System.out.println(result.getResponse().getContentAsString());
+        return activity;
+    }
+
     @Test
     @Transactional
     @Rollback(value = true)
