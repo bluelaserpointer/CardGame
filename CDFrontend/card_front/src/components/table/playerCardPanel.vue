@@ -64,11 +64,17 @@
         <el-form-item label="ID" prop="ownCardId" v-if="dialogStatus==='update'">
           <el-input class="ownCardIdOwnCardInput" v-model="temp.ownCardId" disabled/>
         </el-form-item>
-        <el-form-item label="UserId" prop="userId">
-          <el-input class="userIdOwnCardInput" v-model="temp.userId" />
+        <el-form-item label="UserId" prop="userId" v-if="dialogStatus==='create'">
+          <el-input class="userIdOwnCardInput" v-model="temp.userId"/>
         </el-form-item>
-        <el-form-item label="CardId" prop="cardId">
-          <el-input class="cardIdOwnCardInput" v-model="temp.cardId" />
+        <el-form-item label="CardId" prop="cardId" v-if="dialogStatus==='create'">
+          <el-input class="cardIdOwnCardInput" v-model="temp.cardId"/>
+        </el-form-item>
+        <el-form-item label="UserId" prop="userId" v-else>
+          <el-input class="userIdOwnCardInput" v-model="temp.userId" disabled/>
+        </el-form-item>
+        <el-form-item label="CardId" prop="cardId" v-else>
+          <el-input class="cardIdOwnCardInput" v-model="temp.cardId" disabled/>
         </el-form-item>
         <el-form-item label="CardLevel" prop="cardLevel" v-if="dialogStatus==='update'">
           <el-input class="cardLevelOwnCardInput" v-model="temp.cardLevel" />
@@ -226,15 +232,6 @@ export default {
         {
           this.$message.error('Fetching Data Failed!');
         });
-
-      // axios.get('http://localhost:8080/ownCard/getAllOwnCards')
-      //   .then(response => {
-      //     this.list = response.data
-      //   })
-      //   .catch(error =>
-      //   {
-      //     this.$message.error('Fetching Data Failed!');
-      //   });
     },
     resetTemp() {
       this.temp = {
@@ -259,6 +256,7 @@ export default {
     createData(formName) {
       this.$refs.temp.validate((valid) => {
         if (valid) {
+
           let postData = new FormData();
           postData.append('cardId', this.temp.cardId);
           postData.append('userId', this.temp.userId);
@@ -280,21 +278,6 @@ export default {
                 this.$message.error('Creating Data failed!');
               }
             );
-
-          // axios.post(`http://localhost:8080/ownCard/addOwnCard`, postData).then(response => {
-          //   if (response.data) {
-          //     this.getList();
-          //     this.panelVisible = false;
-          //   } else {
-          //     this.$message.error('Creating Data failed!');
-          //   }
-          // })
-          //   .catch(error =>
-          //     {
-          //       this.$message.error('Creating Data failed!');
-          //     }
-          //   );
-
         } else {
           this.$message.error('Form Invalid!');
           return false;
@@ -313,15 +296,16 @@ export default {
     updateData(formName) {
       this.$refs.temp.validate((valid) => {
         if (valid) {
-          let postData = new FormData();
-          postData.append('cardId', this.temp.cardId);
-          postData.append('userId', this.temp.userId);
-          postData.append('cardLevel', this.temp.cardLevel);
-          postData.append('cardCurExp', this.temp.cardCurExp);
-          postData.append('cardLevelLimit', this.temp.cardLevelLimit);
-          postData.append('repetitiveOwns', this.temp.repetitiveOwns);
-          postData.append('accquireDate', this.formatDate(this.temp.accquireDate));
-          console.log(this.formatDate(this.temp.accquireDate));
+          let postData = {
+            ownCardId: this.temp.ownCardId,
+            cardId: this.temp.cardId,
+            userId: this.temp.userId,
+            cardLevel: this.temp.cardLevel,
+            cardCurExp: this.temp.cardCurExp,
+            cardLevelLimit: this.temp.cardLevelLimit,
+            repetitiveOwns: this.temp.repetitiveOwns,
+            accquireDate: this.formatDate(this.temp.accquireDate),
+          };
 
           request({
             url: '/ownCard/updateOwnCard',
@@ -341,22 +325,6 @@ export default {
                 this.$message.error('Updating Data failed!');
               }
             );
-
-          // axios.post(`http://localhost:8080/ownCard/updateOwnCard`, postData).then(response => {
-          //   if (response.data) {
-          //     this.getList();
-          //     this.panelVisible = false;
-          //     this.resetTemp();
-          //   } else {
-          //     this.$message.error('Updating Data failed!');
-          //   }
-          // })
-          //   .catch(error =>
-          //     {
-          //       this.$message.error('Updating Data failed!');
-          //     }
-          //   );
-
         } else {
           this.$message.error('Form Invalid!');
           return false;
@@ -367,11 +335,11 @@ export default {
     confirmIdentity() {
       let postData = new FormData();
       let _this = this;
-      postData.append('adminName', localStorage.getItem('AdminName'));
+      postData.append('userName', localStorage.getItem('AdminName'));
       postData.append('password', this.confirmPassword);
 
       request({
-        url: '/admin/identifyAdmin',
+        url: '/user/confirmDelete',
         method: 'post',
         data: postData
       }).then(response => {
@@ -386,18 +354,6 @@ export default {
             this.$message.error('Identification failed!');
           }
         );
-      // axios.post('http://localhost:8080/admin/identifyAdmin', postData).then(response => {
-      //   if (response.data) {
-      //     _this.confirmDelete = true
-      //   } else {
-      //     this.$message.error('Identification failed!');
-      //   }
-      // })
-      // .catch(error =>
-      //   {
-      //     this.$message.error('Identification failed!');
-      //   }
-      // );
     },
     deleteData() {
       let postData = new FormData();
@@ -424,21 +380,6 @@ export default {
             this.$message.error('Deleting Data failed!');
           }
         );
-
-      // axios.post('http://localhost:8080/ownCard/deleteOwnCard', postData).then(response => {
-      //   if (response.data) {
-      //     _this.panelVisible = false;
-      //     _this.deleteVisible = false;
-      //     _this.getList()
-      //   } else {
-      //     this.$message.error('Deleting Data failed!');
-      //   }
-      // })
-      //   .catch(error =>
-      //     {
-      //       this.$message.error('Deleting Data failed!');
-      //     }
-      //   );
     },
 
     handleFilter() {

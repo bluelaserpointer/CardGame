@@ -191,11 +191,11 @@
       confirmIdentity() {
         let postData = new FormData();
         let _this = this;
-        postData.append('adminName', localStorage.getItem('AdminName'));
+        postData.append('userName', localStorage.getItem('AdminName'));
         postData.append('password', this.confirmPassword);
 
         request({
-          url: '/admin/identifyAdmin',
+          url: '/user/confirmDelete',
           method: 'post',
           data: postData
         }).then(response => {
@@ -264,7 +264,6 @@
         //   );
       },
       submitForm() {
-        let postData = new FormData();
         let _this = this;
 
         if(this.postForm.title === undefined || this.postForm.content === undefined || this.postForm.title === '' || this.postForm.content === '')
@@ -273,21 +272,27 @@
           return false;
         }
 
-        postData.append('activityId', this.updateContent.activityId);
-        postData.append('activityImg', this.postForm.image_uri === undefined ? '' : this.postForm.image_uri);
-        postData.append('activityName', this.postForm.title);
-        postData.append('activityDescription', this.postForm.content);
+        let start;
 
         if (this.limit === false) {
-          postData.append('start', this.formatDate(new Date()));
+          start = this.formatDate(new Date());
         } else if (this.displayTime !== null && this.displayTime !== undefined ) {
-          postData.append('start', this.formatDate(this.displayTime));
+          start = this.formatDate(this.displayTime);
         }else {
-          postData.append('start', this.delayDate(7));
+          start = this.delayDate(7);
         }
 
-        postData.append('type', this.limit === true ? "true" : "false");
-
+        let postData = {
+        activityId: this.updateContent.activityId,
+        activityName: this.postForm.title,
+          type: this.limit === true ? "true" : "false",
+          start: start,
+          activityDetails: {
+            activityId: this.updateContent.activityId,
+            activityDescription: this.postForm.content,
+            activityImg: this.postForm.image_uri === undefined ? '' : this.postForm.image_uri
+          }
+        };
 
         request({
           url: '/activity/updateActivity',

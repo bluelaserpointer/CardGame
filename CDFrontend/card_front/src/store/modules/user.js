@@ -38,7 +38,8 @@ const actions = {
       console.log(userInfo);
       login({ adminName: username.trim(), password: password }).then(response => {
         const { data } = response;
-        let token = "Bearer " + data.token;
+        console.log(data);
+        let token = "Bearer " + data;
         commit('SET_TOKEN', token);
         setToken(token);
         resolve()
@@ -99,11 +100,11 @@ const actions = {
   logout({ commit, state, dispatch }) {
     return new Promise((resolve, reject) => {
       logout(state.token).then(() => {
+        console.log("In logout-then");
         commit('SET_TOKEN', '');
         commit('SET_ROLES', []);
         removeToken();
         resetRouter();
-
         // reset visited views and cached views
         // to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2485
         dispatch('tagsView/delAllViews', null, { root: true });

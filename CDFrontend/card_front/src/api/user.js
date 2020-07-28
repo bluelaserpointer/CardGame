@@ -4,58 +4,61 @@ export function login(data) {
   console.log('In api login');
   console.log(data);
 
-  const postData1 = new FormData();
-  postData1.append('adminName', 'admin1');
-  postData1.append('password', '111111');
+  // const postData = new FormData();
+  // postData.append('userName', data.adminName);
+  // postData.append('password', data.password);
 
-  return (request({
-    url: '/admin/identifyAdmin',
-    method: 'post',
-    data: postData1
-  }));
+  let postData = {
+    userName: data.adminName,
+    password: data.password
+  };
 
-  // console.log("--------");
-  //
-  // const postData2 = new FormData();
-  // postData2.append('adminName', 'admin1');
-  // postData2.append('password', '222222');
-  //
-  // console.log(request({
+  // return request({
   //   url: '/admin/identifyAdmin',
   //   method: 'post',
-  //   data: postData2
-  // }).then( response => {
-  //   console.log(response);
-  // }).catch( error => {
-  //   console.log(error);
-  // }));
+  //   data: postData
+  // });
+
+  return request({
+    url: '/user/login',
+    method: 'post',
+    data: JSON.stringify(postData)
+  });
+
 }
 
 export function getInfo(token) {
   console.log('In api getInfo');
   console.log(token);
 
-  return (request({
-    url: '/admin/getAdminName',
-    method: 'get',
-  }));
-
-  // console.log(request({
-  //   url: '/vue-element-admin/user/info',
+  // return (request({
+  //   url: '/admin/getAdminName',
   //   method: 'get',
-  //   params: { token }
   // }));
-  // return request({
-  //   url: '/vue-element-admin/user/info',
-  //   method: 'get',
-  //   params: { token }
-  // })
+
+  const postData = new FormData();
+  postData.append('userName', localStorage.getItem('AdminName'));
+  // postData.append('password', data.password);
+
+  return request({
+    url: '/user/getUserByUserName',
+    method: 'post',
+    data: postData
+  });
 }
 
 export function logout() {
   console.log('In api logout');
-  return request({
-    url: '/vue-element-admin/user/logout',
-    method: 'post'
-  })
+
+  return Promise.resolve();
+
+  // return (request({
+  //   url: '/admin/getAdminName',
+  //   method: 'get',
+  // }));
+
+  // return request({
+  //   url: '/vue-element-admin/user/logout',
+  //   method: 'post'
+  // })
 }

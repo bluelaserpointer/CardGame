@@ -1,9 +1,6 @@
 <template>
   <el-form ref="postForm" :model="postForm" :rules="rules" class="form-container">
     <sticky :z-index="10" :class-name="'sub-navbar ' + postForm.status">
-      <!--        <CommentDropdown v-model = "postForm.comment_disabled" />-->
-      <!--      <PlatformDropdown v-model="postForm.platforms" />-->
-      <!--        <SourceUrlDropdown v-model = "postForm.source_uri" />-->
       <el-button class="mailUpdatePublishButton" v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">
         Publish
       </el-button>
@@ -107,22 +104,6 @@
         }
       };
 
-      // const validateSourceUri = (rule, value, callback) => {
-      //   if (value) {
-      //     if (validURL(value)) {
-      //       callback()
-      //     } else {
-      //       this.$message({
-      //         message: '外链url填写不正确',
-      //         type: 'error'
-      //       });
-      //       callback(new Error('外链url填写不正确'))
-      //     }
-      //   } else {
-      //     callback()
-      //   }
-      // };
-
       return {
         deleteVisible: false,
         confirmDelete: false,
@@ -131,10 +112,8 @@
         loading: false,
         userListOptions: [],
         rules: {
-          // image_uri: [{ validator: validateRequire }],
           title: [{ validator: validateRequire }],
           content: [{ validator: validateRequire }],
-          // source_uri: [{ validator: validateSourceUri, trigger: 'blur' }]
         },
         tempRoute: {},
       }
@@ -188,11 +167,11 @@
       confirmIdentity() {
         let postData = new FormData();
         let _this = this;
-        postData.append('adminName', localStorage.getItem('AdminName'));
+        postData.append('userName', localStorage.getItem('AdminName'));
         postData.append('password', this.confirmPassword);
 
         request({
-          url: '/admin/identifyAdmin',
+          url: '/user/confirmDelete',
           method: 'post',
           data: postData
         }).then(response => {
@@ -207,21 +186,6 @@
               this.$message.error('Identification failed!');
             }
           );
-
-        // axios.post('http://localhost:8080/admin/identifyAdmin', postData)
-        //   .then(response => {
-        //     if (response.data) {
-        //       _this.confirmDelete = true
-        //     } else {
-        //       this.$message.error('Identification failed!');
-        //     }
-        //   })
-        //   .catch(error =>
-        //     {
-        //       this.$message.error('Identification failed!');
-        //     }
-        //   );
-
       },
       deleteData() {
         let postData = new FormData();
@@ -245,23 +209,8 @@
               this.$message.error('Deleting Data failed!');
             }
           );
-
-        // axios.post('http://localhost:8080/mail/deleteMail', postData).then(response => {
-        //   if (response.data) {
-        //     _this.deleteVisible = false;
-        //     _this.$emit('getList');
-        //   } else {
-        //     this.$message.error('Deleting Data failed!');
-        //   }
-        // })
-        //   .catch(error =>
-        //     {
-        //       this.$message.error('Deleting Data failed!');
-        //     }
-        //   );
       },
       submitForm() {
-        let postData = new FormData();
         let _this = this;
 
         if(this.postForm.title === undefined || this.postForm.content === undefined || this.postForm.title === '' || this.postForm.content === '')
@@ -270,15 +219,20 @@
           return false;
         }
 
-        postData.append('mailId', this.updateContent.mailId);
-        postData.append('mailImg', this.postForm.image_uri === undefined ? '' : this.postForm.image_uri);
-        postData.append('mailName', this.postForm.title);
-        postData.append('mailDescription', this.postForm.content);
+        let postData = {
+          mailId: this.updateContent.mailId,
+          mailName: this.postForm.title,
+          mailDetails: {
+            mailId: this.updateContent.mailId,
+            mailDescription: this.postForm.content,
+            mailImg: this.postForm.image_uri === undefined ? '' : this.postForm.image_uri,
+          }
+        };
 
         request({
           url: '/mail/updateMail',
           method: 'post',
-          data: postData
+          data: JSON.stringify(postData)
         }).then(response => {
           if (response.data) {
             //
@@ -292,25 +246,7 @@
           {
             this.$message.error('Fetching Data Failed!');
           });
-
-        // axios.post(`http://localhost:8080/mail/updateMail`, postData).then(response => {
-        //   if (response.data) {
-        //     //
-        //     _this.$emit('getList');
-        //   }else
-        //   {
-        //     this.$message.error('Fetching Data Failed!');
-        //   }
-        // })
-        //   .catch(error =>
-        //   {
-        //     this.$message.error('Fetching Data Failed!');
-        //   });
-
       },
-
-
-
 
       setTagsViewTitle() {
         const title = 'Edit Mail';
@@ -321,29 +257,6 @@
         const title = 'Edit Mail';
         document.title = `${title} - ${this.postForm.id}`
       },
-
-      // draftForm() {
-      //   if (this.postForm.content.length === 0 || this.postForm.title.length === 0) {
-      //     this.$message({
-      //       message: '请填写必要的标题和内容',
-      //       type: 'warning'
-      //     });
-      //     return
-      //   }
-      //   this.$message({
-      //     message: '保存成功',
-      //     type: 'success',
-      //     showClose: true,
-      //     duration: 1000
-      //   });
-      //   this.postForm.status = 'draft'
-      // },
-      // getRemoteUserList(query) {
-      //   searchUser(query).then(response => {
-      //     if (!response.data.items) return;
-      //     this.userListOptions = response.data.items.map(v => v.name)
-      //   })
-      // }
     }
   }
 </script>

@@ -133,11 +133,6 @@ export default {
     }
   },
   created() {
-    axios.get(`http://localhost:8080/admin/getAdminName`).then(response => {
-      if (response.data) {
-        localStorage.setItem('AdminNames', JSON.stringify(response.data))
-      }
-    })
   },
   mounted() {
     if (this.loginForm.username === '') {
@@ -171,8 +166,8 @@ export default {
           this.$store.dispatch('user/login', this.loginForm)
             .then(() => {
               console.log("In handleLogin-then");
-              this.$router.push({ path: this.redirect || '/', query: this.otherQuery });
               localStorage.setItem('AdminName', this.loginForm.username);
+              this.$router.push({ path: this.redirect || '/', query: this.otherQuery });
               this.loading = false
             })
             .catch(() => {

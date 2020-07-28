@@ -1,5 +1,7 @@
 /// <reference types="cypress" />
-
+Cypress.Cookies.defaults({
+  whitelist: 'Admin-Token'
+});
 context('MailEdit', () => {
   let LOCAL_STORAGE_MEMORY = {};
 
@@ -27,13 +29,13 @@ context('MailEdit', () => {
   it('Login',  () => {
     cy.visit('http://localhost:8081/');
 
-    cy.get('.username-input')
-      .type('admin1');
-
-    cy.get('.password-input')
-      .type('111111');
-
-    cy.get('.login-button').click();
+    // cy.get('.username-input')
+    //   .type('admin1');
+    //
+    // cy.get('.password-input')
+    //   .type('111111');
+    //
+    // cy.get('.login-button').click();
 
     // cy.get('.hamburger').click();
 
@@ -93,7 +95,13 @@ context('MailEdit', () => {
       cy.get('.el-dialog__body > .el-input > .el-input__inner')
         .type('111111');
       cy.get('.el-dialog__body > .el-button').click();
-      cy.get('.deleteInnerButton').click({force: true});
+      cy.wait(500);
+      cy.get('.deleteInnerButton').click({ multiple: true, force: true });
+      cy.wait(500);
+
+    cy.clearCookies()
+
   })
+
 
 });

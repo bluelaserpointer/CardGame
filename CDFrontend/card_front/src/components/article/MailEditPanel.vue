@@ -148,16 +148,18 @@
           return false;
         }
 
-        const postData = new FormData();
-        postData.append('mailImg', this.postForm.image_uri === undefined ? '' : this.postForm.image_uri);
-        postData.append('mailName', this.postForm.title);
-        postData.append('mailDescription', this.postForm.content);
-
+        let postData = {
+          mailName: this.postForm.title,
+          mailDetails: {
+            mailDescription: this.postForm.content,
+            mailImg: this.postForm.image_uri === undefined ? '' : this.postForm.image_uri,
+          }
+        };
 
         request({
           url: '/mail/addMail',
           method: 'post',
-          data: postData
+          data: JSON.stringify(postData)
         }).then(response => {
           if (response.data) {
             //
@@ -171,21 +173,6 @@
               this.$message.error('Publishing Mail failed!');
             }
           );
-
-        // axios.post(`http://localhost:8080/mail/addMail`, postData).then(response => {
-        //   if (response.data) {
-        //     //
-        //     this.resetArticle();
-        //   } else {
-        //     this.$message.error('Publishing Mail failed!');
-        //   }
-        // })
-        //   .catch(error =>
-        //     {
-        //       this.$message.error('Publishing Mail failed!');
-        //     }
-        //   );
-
       },
 
       setTagsViewTitle() {
