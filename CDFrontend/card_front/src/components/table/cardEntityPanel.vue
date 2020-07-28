@@ -184,7 +184,7 @@ import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination/index'
 // import axios from 'axios' // secondary package based on el-pagination
 import request from '@/utils/request'
-
+// const request = require('../../../src/utils/request');
 
 
 export default {

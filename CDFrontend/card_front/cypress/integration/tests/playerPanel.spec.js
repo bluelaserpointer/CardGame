@@ -30,13 +30,13 @@ context('UserPanel', () => {
   it('Login',  () => {
     cy.visit('http://localhost:8081/');
     //
-    // cy.get('.username-input')
-    //   .type('admin1');
-    //
-    // cy.get('.password-input')
-    //   .type('111111');
-    //
-    // cy.get('.login-button').click();
+    cy.get('.username-input')
+      .type('admin1');
+
+    cy.get('.password-input')
+      .type('111111');
+
+    cy.get('.login-button').click();
 
     cy.get(':nth-child(3) > .el-submenu > .el-submenu__title > .el-submenu__icon-arrow').click();
 
@@ -218,6 +218,11 @@ context('UserPanel', () => {
     cy.get(':nth-child(15) > .el-form-item__content > .el-input > .el-input__inner')
       .type('100');
 
+    cy.get(':nth-child(3) > .outerDialog > .confirmOuterButton > span').click();
+
+    cy.get(':nth-child(16) > .el-form-item__content > .el-input > .el-input__inner')
+      .type('ROLE_ADMIN');
+
     cy.get(':nth-child(3) > .outerDialog > .confirmOuterButton > span').click({force: true});
 
   });
@@ -272,14 +277,6 @@ context('UserPanel', () => {
   it('User Panel OwnItem Update Data', () => {
     cy.get(':nth-child(2) > .el-table_2_column_17 > .cell > .link-type').click();
 
-    cy.get('.userIdOwnItemInput > .el-input__inner').clear();
-
-    cy.get(':nth-child(3) > .outerDialog > .confirmOwnItemOuterButton').click();
-
-    cy.get('.itemIdOwnItemInput > .el-input__inner').clear();
-
-    cy.get(':nth-child(3) > .outerDialog > .confirmOwnItemOuterButton').click();
-
     cy.get('.itemCountOwnItemInput > .el-input__inner').clear();
 
     cy.get(':nth-child(3) > .outerDialog > .confirmOwnItemOuterButton').click();
@@ -287,10 +284,6 @@ context('UserPanel', () => {
     cy.get('.el-date-editor > .el-input__inner').click({multiple: true, force: true});
 
     cy.get('.el-picker-panel__footer > .el-button--text > span').click({multiple: true, force: true});
-
-    cy.get('.userIdOwnItemInput > .el-input__inner').type('1');
-
-    cy.get('.itemIdOwnItemInput > .el-input__inner').type('1');
 
     cy.get('.itemCountOwnItemInput > .el-input__inner').type('1');
 
@@ -342,18 +335,10 @@ context('UserPanel', () => {
   it('User Panel OwnCard Update Data', () => {
     cy.get(':nth-child(2) > .el-table_3_column_22 > .cell > .link-type').click();
 
-    cy.get('.userIdOwnCardInput > .el-input__inner').clear();
-    cy.get('.cardIdOwnCardInput > .el-input__inner').clear();
     cy.get('.cardLevelOwnCardInput > .el-input__inner').clear();
     cy.get('.cardCurExpOwnCardInput > .el-input__inner').clear();
     cy.get('.cardLevelLimitOwnCardInput > .el-input__inner').clear();
     cy.get('.repetitiveOwnsOwnCardInput > .el-input__inner').clear();
-
-    cy.get('.userIdOwnCardInput > .el-input__inner').type('1');
-    cy.get(':nth-child(3) > .outerDialog > .confirmOwnCardOuterButton').click();
-
-    cy.get('.cardIdOwnCardInput > .el-input__inner').type('2');
-    cy.get(':nth-child(3) > .outerDialog > .confirmOwnCardOuterButton').click();
 
     cy.get('.cardLevelOwnCardInput > .el-input__inner').type('1');
     cy.get(':nth-child(3) > .outerDialog > .confirmOwnCardOuterButton').click();
