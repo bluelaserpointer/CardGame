@@ -39,9 +39,6 @@
         <el-form-item label="ID" prop="chapterId" v-if="dialogStatus==='update'">
           <el-input v-model="temp.chapterId" disabled />
         </el-form-item>
-        <el-form-item label="ID" prop="chapterId" v-if="dialogStatus==='create'">
-          <el-input v-model="temp.chapterId" />
-        </el-form-item>
         <el-form-item label="PhaseCount" prop="phaseNo">
           <el-input v-model="temp.phaseNo" />
         </el-form-item>
@@ -87,6 +84,7 @@
   import waves from '@/directive/waves' // waves directive
   import Pagination from '@/components/Pagination/index'
   import axios from 'axios' // secondary package based on el-pagination
+  import request from '@/utils/request'
 
   export default {
     name: 'PhaseEntityPanel',
@@ -143,15 +141,17 @@
     methods: {
       getList() {
         let _this = this;
-        axios.get('http://localhost:8080/chapter/getAllChapters')
-          .then(response => {
-            if(response.data) {
-              _this.list = response.data;
-            }else
-            {
-              this.$message.error('Fetching Data Failed!');
-            }
-          })
+        request({
+          url: '/chapter/getAllChapters',
+          method: 'get',
+        }).then(response => {
+          if(response.data) {
+            _this.list = response.data;
+          }else
+          {
+            this.$message.error('Fetching Data Failed!');
+          }
+        })
           .catch(error =>
           {
             this.$message.error('Fetching Data Failed!');
@@ -161,16 +161,20 @@
       confirmIdentity() {
         const postData = new FormData();
         const _this = this;
-        postData.append('adminName', localStorage.getItem('AdminName'));
+        postData.append('userName', localStorage.getItem('AdminName'));
         postData.append('password', this.confirmPassword);
-        axios.post('http://localhost:8080/admin/identifyAdmin', postData)
-          .then(response => {
-            if (response.data) {
-              _this.confirmDelete = true
-            } else {
-              this.$message.error('Identification failed!');
-            }
-          })
+
+        request({
+          url: '/user/confirmDelete',
+          method: 'post',
+          data: postData
+        }).then(response => {
+          if (response.data) {
+            _this.confirmDelete = true
+          } else {
+            this.$message.error('Identification failed!');
+          }
+        })
           .catch(error =>
             {
               this.$message.error('Identification failed!');
@@ -181,7 +185,12 @@
         const postData = new FormData();
         const _this = this;
         postData.append('chapterId', this.temp.chapterId);
-        axios.post('http://localhost:8080/chapter/deleteChapter', postData).then(response => {
+
+        request({
+          url: '/chapter/deleteChapter',
+          method: 'post',
+          data: postData
+        }).then(response => {
           if (response.data) {
             _this.list = response.data;
             _this.panelVisible = false;
@@ -213,7 +222,7 @@
         })
       },
       createData(formName) {
-        this.$refs[formName].validate((valid) => {
+        this.$refs.temp.validate((valid) => {
           if (valid) {
             const postData = new FormData();
             const _this = this;
@@ -221,7 +230,12 @@
             postData.append('phaseNo', this.temp.phaseNo);
             postData.append('phaseType', this.temp.phaseType);
 
-            axios.post(`http://localhost:8080/chapter/addChapter`, postData).then(response => {
+
+            request({
+              url: '/chapter/addChapter',
+              method: 'post',
+              data: postData
+            }).then(response => {
               if (response.data) {
                 _this.list = response.data;
                 _this.panelVisible = false;
@@ -251,7 +265,7 @@
         })
       },
       updateData(formName) {
-        this.$refs[formName].validate((valid) => {
+        this.$refs.temp.validate((valid) => {
           if (valid) {
             const postData = new FormData();
             const _this = this;
@@ -260,7 +274,11 @@
             postData.append('phaseNo', this.temp.phaseNo);
             postData.append('phaseType', this.temp.phaseType);
 
-            axios.post(`http://localhost:8080/chapter/updateChapter`, postData).then(response => {
+            request({
+              url: '/chapter/updateChapter',
+              method: 'post',
+              data: postData
+            }).then(response => {
               if (response.data) {
                 _this.list = response.data;
                 _this.panelVisible = false;

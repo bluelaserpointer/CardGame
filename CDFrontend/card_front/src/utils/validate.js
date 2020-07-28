@@ -2,7 +2,6 @@
  * Created by PanJiaChen on 16/11/18.
  */
 
-import axios from 'axios'
 
 /**
  * @param {string} path
@@ -23,8 +22,9 @@ export function validUsername(str) {
   // let postData = new FormData();
   // postData.append('adminName', this.loginForm.username);
   // postData.append('password', this.loginForm.password);
-  const fetchAdmin = JSON.parse(localStorage.getItem('AdminNames'));
-  return fetchAdmin.indexOf(str.trim()) >= 0
+  // const fetchAdmin = JSON.parse(localStorage.getItem('AdminNames'));
+  // return fetchAdmin.indexOf(str.trim()) >= 0
+  return str.length >= 6
 }
 
 export function validPassword(str) {

@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -26,24 +27,25 @@ public class OwnItem {
     // 用户拥有的道具的itemId
     private Integer itemId;
     // 用户拥有道具的数量
-    private Integer ItemCount;
+    private Integer itemCount;
     // 用户（首次）拥有道具的时间（也可以修改成最新一次重复拥有的时间）
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp accquireDate;
 
     public OwnItem() {
     };
 
-    public OwnItem(Integer userId, Integer itemId, Integer ItemCount, Timestamp accquireDate) {
+    public OwnItem(Integer userId, Integer itemId, Integer itemCount, Timestamp accquireDate) {
         this.userId = userId;
         this.itemId = itemId;
-        this.ItemCount = ItemCount;
+        this.itemCount = itemCount;
         this.accquireDate = accquireDate;
     }
 
-    public void setOwnItem(Integer userId, Integer itemId, Integer ItemCount, Timestamp accquireDate) {
+    public void setOwnItem(Integer userId, Integer itemId, Integer itemCount, Timestamp accquireDate) {
         this.userId = userId;
         this.itemId = itemId;
-        this.ItemCount = ItemCount;
+        this.itemCount = itemCount;
         this.accquireDate = accquireDate;
     }
 
@@ -73,11 +75,11 @@ public class OwnItem {
     }
 
     public Integer getItemCount() {
-        return ItemCount;
+        return itemCount;
     }
 
-    public void setItemCount(Integer ItemCount) {
-        this.ItemCount = ItemCount;
+    public void setItemCount(Integer itemCount) {
+        this.itemCount = itemCount;
 
     }
 

@@ -62,25 +62,31 @@
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="panelVisible" top="5vh" class="editDialog">
       <el-form ref="temp" :rules="rules" :model="temp" style="margin: auto 50px auto 50px; display:grid; grid-template-columns: 50% 50%; grid-column-gap: 10px" class="demo-form-inline">
         <el-form-item label="ID" prop="ownCardId" v-if="dialogStatus==='update'">
-          <el-input v-model="temp.ownCardId" disabled/>
+          <el-input class="ownCardIdOwnCardInput" v-model="temp.ownCardId" disabled/>
         </el-form-item>
-        <el-form-item label="UserId" prop="userId">
-          <el-input v-model="temp.userId" />
+        <el-form-item label="UserId" prop="userId" v-if="dialogStatus==='create'">
+          <el-input class="userIdOwnCardInput" v-model="temp.userId"/>
         </el-form-item>
-        <el-form-item label="CardId" prop="cardId">
-          <el-input v-model="temp.cardId" />
+        <el-form-item label="CardId" prop="cardId" v-if="dialogStatus==='create'">
+          <el-input class="cardIdOwnCardInput" v-model="temp.cardId"/>
+        </el-form-item>
+        <el-form-item label="UserId" prop="userId" v-else>
+          <el-input class="userIdOwnCardInput" v-model="temp.userId" disabled/>
+        </el-form-item>
+        <el-form-item label="CardId" prop="cardId" v-else>
+          <el-input class="cardIdOwnCardInput" v-model="temp.cardId" disabled/>
         </el-form-item>
         <el-form-item label="CardLevel" prop="cardLevel" v-if="dialogStatus==='update'">
-          <el-input v-model="temp.cardLevel" />
+          <el-input class="cardLevelOwnCardInput" v-model="temp.cardLevel" />
         </el-form-item>
         <el-form-item label="CardCurExp" prop="cardCurExp" v-if="dialogStatus==='update'">
-          <el-input v-model="temp.cardCurExp" />
+          <el-input class="cardCurExpOwnCardInput" v-model="temp.cardCurExp" />
         </el-form-item>
         <el-form-item label="CardLevelLimit" prop="cardLevelLimit" v-if="dialogStatus==='update'">
-          <el-input v-model="temp.cardLevelLimit" />
+          <el-input class="cardLevelLimitOwnCardInput" v-model="temp.cardLevelLimit" />
         </el-form-item>
         <el-form-item label="RepetitiveOwns" prop="repetitiveOwns" v-if="dialogStatus==='update'">
-          <el-input v-model="temp.repetitiveOwns" />
+          <el-input class="repetitiveOwnsOwnCardInput" v-model="temp.repetitiveOwns" />
         </el-form-item>
         <el-form-item label-width="120px" label="AccquireDate" class="postInfo-container-item" v-if="dialogStatus==='update'">
           <el-date-picker v-model="temp.accquireDate" type="datetime" value-format="yyyy-MM-dd hh:mm:ss" placeholder="Select date and time" />
@@ -95,23 +101,23 @@
           append-to-body
           class="innerDialog"
         >
-          <el-input v-model="confirmPassword" placeholder="Identification" show-password width="60%" />
-          <el-button class="confirmInnerButton" @click="confirmIdentity">Confirm Identity</el-button>
+          <el-input class="confirmOwnCardInput" v-model="confirmPassword" placeholder="Identification" show-password width="60%" />
+          <el-button class="confirmOwnCardInnerButton" @click="confirmIdentity">Confirm Identity</el-button>
 
           <span slot="footer" class="dialog-footer">
-            <el-button class="cancelInnerButton" @click="deleteVisible = false">Cancel</el-button>
-            <el-button class="deleteInnerButton" v-if="confirmDelete === false" type="danger" disabled>Delete</el-button>
-            <el-button class="deleteInnerButton" v-else type="danger" @click="deleteData">Delete</el-button>
+            <el-button class="cancelOwnCardInnerButton" @click="deleteVisible = false">Cancel</el-button>
+            <el-button class="deleteOwnCardInnerButton" v-if="confirmDelete === false" type="danger" disabled>Delete</el-button>
+            <el-button class="deleteOwnCardInnerButton" v-else type="danger" @click="deleteData">Delete</el-button>
           </span>
         </el-dialog>
 
-        <el-button class="deleteOuterButton" type="danger" @click="deleteVisible = true">
+        <el-button class="deleteOwnCardOuterButton" type="danger" @click="deleteVisible = true">
           Delete
         </el-button>
-        <el-button class="cancelOuterButton" @click="panelVisible = false">
+        <el-button class="cancelOwnCardOuterButton" @click="panelVisible = false">
           Cancel
         </el-button>
-        <el-button class="confirmOuterButton" type="primary" @click="dialogStatus==='create'?createData('temp'):updateData('temp')">
+        <el-button class="confirmOwnCardOuterButton" type="primary" @click="dialogStatus==='create'?createData('temp'):updateData('temp')">
           Confirm
         </el-button>
       </div>
@@ -125,6 +131,7 @@ import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination/index'
 import axios from 'axios' // secondary package based on el-pagination
 import moment from "moment"
+import request from "@/utils/request";
 
 export default {
   name: 'PlayerCardPanel',
@@ -214,10 +221,13 @@ export default {
       return moment(new Date(date)).format('YYYY-MM-DD HH:mm:ss');
     },
     getList() {
-      axios.get('http://localhost:8080/ownCard/getAllOwnCards')
-        .then(response => {
-          this.list = response.data
-        })
+
+      request({
+        url: '/ownCard/getAllOwnCards',
+        method: 'get',
+      }).then(response => {
+        this.list = response.data
+      })
         .catch(error =>
         {
           this.$message.error('Fetching Data Failed!');
@@ -240,17 +250,22 @@ export default {
       this.dialogStatus = 'create';
       this.panelVisible = true;
       this.$nextTick(() => {
-        this.$refs['temp'].clearValidate()
+        this.$refs.temp.clearValidate()
       })
     },
     createData(formName) {
-      this.$refs[formName].validate((valid) => {
+      this.$refs.temp.validate((valid) => {
         if (valid) {
+
           let postData = new FormData();
           postData.append('cardId', this.temp.cardId);
           postData.append('userId', this.temp.userId);
 
-          axios.post(`http://localhost:8080/ownCard/addOwnCard`, postData).then(response => {
+          request({
+            url: '/ownCard/addOwnCard',
+            method: 'post',
+            data: postData
+          }).then(response => {
             if (response.data) {
               this.getList();
               this.panelVisible = false;
@@ -275,22 +290,28 @@ export default {
       this.dialogStatus = 'update';
       this.panelVisible = true;
       this.$nextTick(() => {
-        this.$refs['temp'].clearValidate()
+        this.$refs.temp.clearValidate()
       })
     },
     updateData(formName) {
-      this.$refs[formName].validate((valid) => {
+      this.$refs.temp.validate((valid) => {
         if (valid) {
-          let postData = new FormData();
-          postData.append('cardId', this.temp.cardId);
-          postData.append('userId', this.temp.userId);
-          postData.append('cardLevel', this.temp.cardLevel);
-          postData.append('cardCurExp', this.temp.cardCurExp);
-          postData.append('cardLevelLimit', this.temp.cardLevelLimit);
-          postData.append('repetitiveOwns', this.temp.repetitiveOwns);
-          postData.append('accquireDate', this.formatDate(this.temp.accquireDate));
-          console.log(this.formatDate(this.temp.accquireDate));
-          axios.post(`http://localhost:8080/ownCard/updateOwnCard`, postData).then(response => {
+          let postData = {
+            ownCardId: this.temp.ownCardId,
+            cardId: this.temp.cardId,
+            userId: this.temp.userId,
+            cardLevel: this.temp.cardLevel,
+            cardCurExp: this.temp.cardCurExp,
+            cardLevelLimit: this.temp.cardLevelLimit,
+            repetitiveOwns: this.temp.repetitiveOwns,
+            accquireDate: this.formatDate(this.temp.accquireDate),
+          };
+
+          request({
+            url: '/ownCard/updateOwnCard',
+            method: 'post',
+            data: postData
+          }).then(response => {
             if (response.data) {
               this.getList();
               this.panelVisible = false;
@@ -314,27 +335,38 @@ export default {
     confirmIdentity() {
       let postData = new FormData();
       let _this = this;
-      postData.append('adminName', localStorage.getItem('AdminName'));
+      postData.append('userName', localStorage.getItem('AdminName'));
       postData.append('password', this.confirmPassword);
-      axios.post('http://localhost:8080/admin/identifyAdmin', postData).then(response => {
+
+      request({
+        url: '/user/confirmDelete',
+        method: 'post',
+        data: postData
+      }).then(response => {
         if (response.data) {
           _this.confirmDelete = true
         } else {
           this.$message.error('Identification failed!');
         }
       })
-      .catch(error =>
-        {
-          this.$message.error('Identification failed!');
-        }
-      );
+        .catch(error =>
+          {
+            this.$message.error('Identification failed!');
+          }
+        );
     },
     deleteData() {
       let postData = new FormData();
       let _this = this;
       postData.append('userId', this.temp.userId);
       postData.append('cardId', this.temp.cardId);
-      axios.post('http://localhost:8080/ownCard/deleteOwnCard', postData).then(response => {
+
+
+      request({
+        url: '/ownCard/deleteOwnCard',
+        method: 'post',
+        data: postData
+      }).then(response => {
         if (response.data) {
           _this.panelVisible = false;
           _this.deleteVisible = false;

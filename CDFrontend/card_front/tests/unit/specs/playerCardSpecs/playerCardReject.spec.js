@@ -51,13 +51,13 @@ describe('PlayerCardPanel.vue', () => {
 
   it('Player Card Panel Rejects createData', async () => {
     wrapper.vm.panelVisible = true;
-    await wrapper.vm.createData();
+    await wrapper.vm.createData('temp');
     expect(wrapper.vm.panelVisible).toBeTruthy();
   });
 
   it('Player Card Panel Rejects updateData', async () => {
     wrapper.vm.panelVisible = true;
-    await wrapper.vm.updateData();
+    await wrapper.vm.updateData('temp');
     expect(wrapper.vm.panelVisible).toBeTruthy();
   });
 

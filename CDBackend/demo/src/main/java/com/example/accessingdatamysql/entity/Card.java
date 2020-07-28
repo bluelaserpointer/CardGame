@@ -150,14 +150,14 @@ public class Card {
     }
 
     @Transient
-    private CardDetails CardDetails;
+    private CardDetails cardDetails;
 
     public CardDetails getCardDetails() {
-        return CardDetails;
+        return cardDetails;
     }
 
     public void setCardDetails(CardDetails CardDetails) {
-        this.CardDetails = CardDetails;
+        this.cardDetails = CardDetails;
     }
 
     // @OneToMany(mappedBy = "Card")

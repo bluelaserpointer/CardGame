@@ -109,6 +109,8 @@ export default {
 
     // Reshape the routes structure so that it looks the same as the sidebar
     generateRoutes(routes, basePath = '/') {
+      console.log("In generateRoutes - role.vue");
+
       const res = [];
 
       for (let route of routes) {

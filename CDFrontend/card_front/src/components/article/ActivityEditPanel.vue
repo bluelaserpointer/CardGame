@@ -4,7 +4,7 @@
       <!--        <CommentDropdown v-model = "postForm.comment_disabled" />-->
       <PlatformDropdown v-model="postForm.platforms" />
       <!--        <SourceUrlDropdown v-model = "postForm.source_uri" />-->
-      <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">
+      <el-button class="activityEditPublishButton" v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">
         Publish
       </el-button>
 <!--      <el-button v-loading="loading" type="warning" @click="draftForm">-->
@@ -76,6 +76,7 @@ import Warning from './Warning'
 import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from '../../views/example/components/Dropdown'
 import axios from 'axios'
 import moment from "moment";
+import request from "@/utils/request"; // secondary package based on el-pagination
 
 const defaultForm = {
   status: 'draft',
@@ -183,22 +184,34 @@ export default {
         return false;
       }
 
-      const postData = new FormData();
-      postData.append('activityImg', this.postForm.image_uri === undefined ? '' : this.postForm.image_uri);
-      postData.append('activityName', this.postForm.title);
-      postData.append('activityDescription', this.postForm.content);
+      let start;
 
       if (this.limit === false) {
-        postData.append('start', this.formatDate(new Date()));
+        start = this.formatDate(new Date());
       } else if (this.displayTime !== null && this.displayTime !== undefined ) {
-        postData.append('start', this.formatDate(this.displayTime));
+        start = this.formatDate(this.displayTime);
       }else {
-        postData.append('start', this.delayDate(7));
+        start = this.delayDate(7);
       }
 
-      postData.append('type', this.limit === true ? "true" : "false");
+      console.log(start);
 
-      axios.post(`http://localhost:8080/activity/addActivity`, postData).then(response => {
+      let postData = {
+        activityName: this.postForm.title,
+        type: this.limit === true ? "true" : "false",
+        start: start,
+        activityDetails: {
+          activityDescription: this.postForm.content,
+          activityImg: this.postForm.image_uri === undefined ? '' : this.postForm.image_uri
+        }
+    };
+
+
+      request({
+        url: '/activity/addActivity',
+        method: 'post',
+        data: JSON.stringify(postData)
+      }).then(response => {
         if (response.data) {
           //
           this.resetArticle();
@@ -206,11 +219,25 @@ export default {
           this.$message.error('Publishing Activity failed!');
         }
       })
-      .catch(error =>
-        {
-          this.$message.error('Publishing Activity failed!');
-        }
-      );
+        .catch(error =>
+          {
+            this.$message.error('Publishing Activity failed!');
+          }
+        );
+
+      // axios.post(`http://localhost:8080/activity/addActivity`, postData).then(response => {
+      //   if (response.data) {
+      //     //
+      //     this.resetArticle();
+      //   } else {
+      //     this.$message.error('Publishing Activity failed!');
+      //   }
+      // })
+      // .catch(error =>
+      //   {
+      //     this.$message.error('Publishing Activity failed!');
+      //   }
+      // );
     },
     uploadCover() {
       const _this = this;

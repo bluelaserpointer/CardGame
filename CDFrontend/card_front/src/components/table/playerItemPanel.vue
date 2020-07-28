@@ -42,7 +42,6 @@
           <span>{{ formatDate(row.accquireDate) }}</span>
         </template>
       </el-table-column>
-
     </el-table>
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="panelVisible" top="5vh" class="editDialog">
@@ -50,17 +49,23 @@
         <el-form-item label="ID" prop="ownItemId" v-if="dialogStatus==='update' ">
           <el-input v-model="temp.ownItemId" disabled/>
         </el-form-item>
-        <el-form-item label="UserId" prop="userId">
-          <el-input v-model="temp.userId" />
+        <el-form-item label="UserId" prop="userId" v-if="dialogStatus==='create'">
+          <el-input class="userIdOwnItemInput" v-model="temp.userId"/>
         </el-form-item>
-        <el-form-item label="ItemId" prop="itemId">
-          <el-input v-model="temp.itemId" />
+        <el-form-item label="ItemId" prop="itemId" v-if="dialogStatus==='create'">
+          <el-input class="itemIdOwnItemInput" v-model="temp.itemId"/>
+        </el-form-item>
+        <el-form-item label="UserId" prop="userId" v-else>
+          <el-input class="userIdOwnItemInput" v-model="temp.userId" disabled/>
+        </el-form-item>
+        <el-form-item label="ItemId" prop="itemId" v-else>
+          <el-input class="itemIdOwnItemInput" v-model="temp.itemId" disabled/>
         </el-form-item>
         <el-form-item label="ItemCount" prop="itemCount">
-          <el-input v-model="temp.itemCount" />
+          <el-input class="itemCountOwnItemInput" v-model="temp.itemCount" />
         </el-form-item>
         <el-form-item label-width="120px" label="AccquireDate" class="postInfo-container-item" v-if="dialogStatus==='update'">
-          <el-date-picker v-model="temp.accquireDate" type="datetime" value-format="yyyy-MM-dd hh:mm:ss" placeholder="Select date and time" />
+          <el-date-picker class="dateOwnItemInput" v-model="temp.accquireDate" type="datetime" value-format="yyyy-MM-dd hh:mm:ss" placeholder="Select date and time" />
         </el-form-item>
       </el-form>
 
@@ -72,23 +77,23 @@
           append-to-body
           class="innerDialog"
         >
-          <el-input v-model="confirmPassword" placeholder="Identification" show-password width="60%" />
-          <el-button class="confirmInnerButton" @click="confirmIdentity">Confirm Identity</el-button>
+          <el-input class="confirmOwnItemInput" v-model="confirmPassword" placeholder="Identification" show-password width="60%" />
+          <el-button class="confirmOwnItemInnerButton" @click="confirmIdentity">Confirm Identity</el-button>
 
           <span slot="footer" class="dialog-footer">
-            <el-button class="cancelInnerButton" @click="deleteVisible = false">Cancel</el-button>
-            <el-button class="deleteInnerButton" v-if="confirmDelete === false" type="danger" disabled>Delete</el-button>
-            <el-button class="deleteInnerButton" v-else type="danger" @click="deleteData">Delete</el-button>
+            <el-button class="cancelOwnItemInnerButton" @click="deleteVisible = false">Cancel</el-button>
+            <el-button class="deleteOwnItemInnerButton" v-if="confirmDelete === false" type="danger" disabled>Delete</el-button>
+            <el-button class="deleteOwnItemInnerButton" v-else type="danger" @click="deleteData">Delete</el-button>
           </span>
         </el-dialog>
 
-        <el-button class="deleteOuterButton" type="danger" @click="deleteVisible = true">
+        <el-button class="deleteOwnItemOuterButton" type="danger" @click="deleteVisible = true">
           Delete
         </el-button>
-        <el-button class="cancelOuterButton" @click="panelVisible = false">
+        <el-button class="cancelOwnItemOuterButton" @click="panelVisible = false">
           Cancel
         </el-button>
-        <el-button class="confirmOuterButton" type="primary" @click="dialogStatus==='create'?createData('temp'):updateData('temp')">
+        <el-button class="confirmOwnItemOuterButton" type="primary" @click="dialogStatus==='create'?createData('temp'):updateData('temp')">
           Confirm
         </el-button>
       </div>
@@ -101,7 +106,8 @@
 import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination/index'
 import axios from 'axios'
-import moment from "moment"; // secondary package based on el-pagination
+import moment from "moment";
+import request from "@/utils/request"; // secondary package based on el-pagination
 
 export default {
   name: 'PlayerItemPanel',
@@ -186,10 +192,13 @@ export default {
       return moment(new Date(date)).format('YYYY-MM-DD HH:mm:ss');
     },
     getList() {
-      axios.get('http://localhost:8080/ownItem/getAllOwnItems')
-        .then(response => {
-          this.list = response.data
-        })
+
+      request({
+        url: '/ownItem/getAllOwnItems',
+        method: 'get',
+      }).then(response => {
+        this.list = response.data
+      })
         .catch(error =>
         {
           this.$message.error('Fetching Data Failed!');
@@ -209,18 +218,23 @@ export default {
       this.dialogStatus = 'create';
       this.panelVisible = true;
       this.$nextTick(() => {
-        this.$refs['temp'].clearValidate()
+        this.$refs.temp.clearValidate()
       })
     },
     createData(formName) {
-      this.$refs[formName].validate((valid) => {
+      this.$refs.temp.validate((valid) => {
         if (valid) {
-          let postData = new FormData();
-          postData.append('itemId', this.temp.itemId);
-          postData.append('userId', this.temp.userId);
-          postData.append('itemCount', this.temp.itemCount);
+          let postData = {
+            itemId: this.temp.itemId,
+            userId: this.temp.userId,
+            itemCount: this.temp.itemCount
+          };
 
-          axios.post(`http://localhost:8080/ownItem/addOwnItem`, postData).then(response => {
+          request({
+            url: '/ownItem/addOwnItem',
+            method: 'post',
+            data: JSON.stringify(postData)
+          }).then(response => {
             if (response.data) {
               // TODO: SHORTEN THE REQUESTS
               this.getList();
@@ -234,6 +248,22 @@ export default {
                 this.$message.error('Creating Data failed!');
               }
             );
+
+          // axios.post(`http://localhost:8080/ownItem/addOwnItem`, postData).then(response => {
+          //   if (response.data) {
+          //     // TODO: SHORTEN THE REQUESTS
+          //     this.getList();
+          //     this.panelVisible = false;
+          //   } else {
+          //     this.$message.error('Creating Data failed!');
+          //   }
+          // })
+          //   .catch(error =>
+          //     {
+          //       this.$message.error('Creating Data failed!');
+          //     }
+          //   );
+
         } else {
           this.$message.error('Form Invalid!');
           return false;
@@ -246,19 +276,25 @@ export default {
       this.dialogStatus = 'update';
       this.panelVisible = true;
       this.$nextTick(() => {
-        this.$refs['temp'].clearValidate()
+        this.$refs.temp.clearValidate()
       })
     },
     updateData(formName) {
-      this.$refs[formName].validate((valid) => {
+      this.$refs.temp.validate((valid) => {
         if (valid) {
-          let postData = new FormData();
-          postData.append('ownItemId', this.temp.ownItemId);
-          postData.append('itemId', this.temp.itemId);
-          postData.append('userId', this.temp.userId);
-          postData.append('itemCount', this.temp.itemCount);
 
-          axios.post(`http://localhost:8080/ownItem/updateOwnItem`, postData).then(response => {
+          let postData = {
+            ownItemId: this.temp.ownItemId,
+            itemId: this.temp.itemId,
+            userId: this.temp.userId,
+            itemCount: this.temp.itemCount
+          };
+
+          request({
+            url: '/ownItem/updateOwnItem',
+            method: 'post',
+            data: JSON.stringify(postData)
+          }).then(response => {
             if (response.data) {
               // TODO: SHORTEN THE REQUESTS
               this.getList();
@@ -273,6 +309,24 @@ export default {
                 this.$message.error('Updating Data failed!');
               }
             );
+
+          // axios.post(`http://localhost:8080/ownItem/updateOwnItem`, postData).then(response => {
+          //   if (response.data) {
+          //     // TODO: SHORTEN THE REQUESTS
+          //     this.getList();
+          //     this.panelVisible = false;
+          //     this.resetTemp();
+          //   } else {
+          //     this.$message.error('Updating Data failed!');
+          //   }
+          // })
+          //   .catch(error =>
+          //     {
+          //       this.$message.error('Updating Data failed!');
+          //     }
+          //   );
+
+
         } else {
           this.$message.error('Form Invalid!');
           return false;
@@ -283,27 +337,50 @@ export default {
     confirmIdentity() {
       let postData = new FormData();
       let _this = this;
-      postData.append('adminName', localStorage.getItem('AdminName'));
+      postData.append('userName', localStorage.getItem('AdminName'));
       postData.append('password', this.confirmPassword);
-      axios.post('http://localhost:8080/admin/identifyAdmin', postData).then(response => {
+
+      request({
+        url: '/user/confirmDelete',
+        method: 'post',
+        data: postData
+      }).then(response => {
         if (response.data) {
           _this.confirmDelete = true
         } else {
           this.$message.error('Identification failed!');
         }
       })
-      .catch(error =>
-        {
-          this.$message.error('Identification failed!');
-        }
-      );
+        .catch(error =>
+          {
+            this.$message.error('Identification failed!');
+          }
+        );
+
+      // axios.post('http://localhost:8080/admin/identifyAdmin', postData).then(response => {
+      //   if (response.data) {
+      //     _this.confirmDelete = true
+      //   } else {
+      //     this.$message.error('Identification failed!');
+      //   }
+      // })
+      // .catch(error =>
+      //   {
+      //     this.$message.error('Identification failed!');
+      //   }
+      // );
     },
     deleteData() {
       let postData = new FormData();
       let _this = this;
       postData.append('userId', this.temp.userId);
       postData.append('itemId', this.temp.itemId);
-      axios.post('http://localhost:8080/ownItem/deleteOwnItem', postData).then(response => {
+
+      request({
+        url: '/ownItem/deleteOwnItem',
+        method: 'post',
+        data: postData
+      }).then(response => {
         if (response.data) {
           _this.panelVisible = false;
           _this.deleteVisible = false;
@@ -312,11 +389,26 @@ export default {
           this.$message.error('Deleting Data failed!');
         }
       })
-      .catch(error =>
-        {
-          this.$message.error('Deleting Data failed!');
-        }
-      );
+        .catch(error =>
+          {
+            this.$message.error('Deleting Data failed!');
+          }
+        );
+
+      // axios.post('http://localhost:8080/ownItem/deleteOwnItem', postData).then(response => {
+      //   if (response.data) {
+      //     _this.panelVisible = false;
+      //     _this.deleteVisible = false;
+      //     _this.getList()
+      //   } else {
+      //     this.$message.error('Deleting Data failed!');
+      //   }
+      // })
+      // .catch(error =>
+      //   {
+      //     this.$message.error('Deleting Data failed!');
+      //   }
+      // );
     },
 
     handleFilter() {

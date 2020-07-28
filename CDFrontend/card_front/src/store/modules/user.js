@@ -36,15 +36,12 @@ const actions = {
       console.log("Within login inside modules/usr.js");
       console.log(commit);
       console.log(userInfo);
-      login({ username: username.trim(), password: password }).then(response => {
+      login({ adminName: username.trim(), password: password }).then(response => {
         const { data } = response;
-        console.log("response");
-        console.log(response);
-        console.log("data");
         console.log(data);
-        console.log(data.token);
-        commit('SET_TOKEN', data.token);
-        setToken(data.token);
+        let token = "Bearer " + data;
+        commit('SET_TOKEN', token);
+        setToken(token);
         resolve()
       }).catch(error => {
         reject(error)
@@ -62,13 +59,23 @@ const actions = {
         console.log("Within promise");
         console.log(response);
 
+
+        response.data.roles = ['admin', 'editor'];
+        response.data.name = 'admin1';
+
         const { data } = response;
 
         if (!data) {
+          console.log("In !data");
           reject('Verification failed, please Login again.')
         }
 
+        console.log(data);
+
         const { roles, name, avatar, introduction } = data;
+
+
+
         console.log("roles " + roles);
         console.log("name " + name);
 
@@ -78,10 +85,11 @@ const actions = {
         }
 
         commit('SET_ROLES', roles);
-        commit('SET_NAME', name);
-        commit('SET_AVATAR', avatar);
-        commit('SET_INTRODUCTION', introduction);
-        resolve(data)
+        // commit('SET_ROLES', roles);
+        commit('SET_NAME', "");
+        commit('SET_AVATAR', "");
+        commit('SET_INTRODUCTION', "");
+        resolve(data);
       }).catch(error => {
         reject(error)
       })
@@ -92,11 +100,11 @@ const actions = {
   logout({ commit, state, dispatch }) {
     return new Promise((resolve, reject) => {
       logout(state.token).then(() => {
+        console.log("In logout-then");
         commit('SET_TOKEN', '');
         commit('SET_ROLES', []);
         removeToken();
         resetRouter();
-
         // reset visited views and cached views
         // to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2485
         dispatch('tagsView/delAllViews', null, { root: true });

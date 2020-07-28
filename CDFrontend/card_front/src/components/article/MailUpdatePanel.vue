@@ -1,10 +1,7 @@
 <template>
   <el-form ref="postForm" :model="postForm" :rules="rules" class="form-container">
     <sticky :z-index="10" :class-name="'sub-navbar ' + postForm.status">
-      <!--        <CommentDropdown v-model = "postForm.comment_disabled" />-->
-      <!--      <PlatformDropdown v-model="postForm.platforms" />-->
-      <!--        <SourceUrlDropdown v-model = "postForm.source_uri" />-->
-      <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">
+      <el-button class="mailUpdatePublishButton" v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">
         Publish
       </el-button>
       <el-button class="deleteOuterButton" type="danger" @click="deleteVisible = true">
@@ -20,26 +17,6 @@
               Title
             </MDinput>
           </el-form-item>
-
-          <div class="postInfo-container">
-            <el-row>
-              <el-col :span="8">>
-                <el-switch
-                  v-model="limit"
-                  active-color="#13ce66"
-                  inactive-color="#ff4949"
-                  active-text="限时"
-                  inactive-text="常规"
-                  style="margin-left: 20px; margin-top: 5px"
-                />
-              </el-col>
-              <el-col v-if="limit" :span="10">
-                <el-form-item label-width="120px" label="Publish Time:" class="postInfo-container-item">
-                  <el-date-picker v-model="displayTime" type="datetime" value-format="yyyy-MM-dd hh:mm:ss" placeholder="Select date and time" />
-                </el-form-item>
-              </el-col>
-            </el-row>
-          </div>
         </el-col>
       </el-row>
 
@@ -70,10 +47,10 @@
       <el-button class="confirmInnerButton" @click="confirmIdentity">Confirm Identity</el-button>
 
       <span slot="footer" class="dialog-footer">
-        <el-button class="cancelInnerButton" @click="deleteVisible = false">Cancel</el-button>
-        <el-button class="deleteInnerButton" v-if="confirmDelete === false" type="danger" disabled>Delete</el-button>
-        <el-button class="deleteInnerButton" v-else type="danger" @click="deleteData">Delete</el-button>
-      </span>
+          <el-button class="cancelInnerButton" @click="deleteVisible = false">Cancel</el-button>
+          <el-button class="deleteInnerButton" v-if="confirmDelete === false" type="danger" disabled>Delete</el-button>
+          <el-button class="deleteInnerButton" v-else type="danger" @click="deleteData">Delete</el-button>
+        </span>
     </el-dialog>
   </el-form>
 </template>
@@ -86,6 +63,7 @@
   import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from '../../views/example/components/Dropdown'
   import axios from 'axios'
   import moment from "moment";
+  import request from "@/utils/request"; // secondary package based on el-pagination
 
   const defaultForm = {
     status: 'draft',
@@ -94,8 +72,6 @@
     // content_short: '', // 文章摘要
     // source_uri: '', // 文章外链
     image_uri: '', // 文章图片
-    limit: false,
-    display_time: undefined, // 前台展示时间
     id: undefined,
     platforms: ['a-platform'],
     comment_disabled: false
@@ -103,9 +79,18 @@
   };
 
   export default {
-    name: 'ActivityUpdatePanel',
+    name: 'MailUpdatePanel',
     components: { Tinymce, MDinput, Sticky, Warning, CommentDropdown, PlatformDropdown, SourceUrlDropdown },
-    props: ['updateContent'] ,
+    props: {
+      isEdit: {
+        type: Boolean,
+        default: false
+      },
+      updateContent:{
+        type: Object,
+        default: null
+      },
+    },
     data() {
       const validateRequire = (rule, value, callback) => {
         if (value === '') {
@@ -123,18 +108,14 @@
         deleteVisible: false,
         confirmDelete: false,
         confirmPassword: '',
-        limit: false,
         postForm: Object.assign({}, defaultForm),
         loading: false,
         userListOptions: [],
         rules: {
-          // image_uri: [{ validator: validateRequire }],
           title: [{ validator: validateRequire }],
           content: [{ validator: validateRequire }],
-          // source_uri: [{ validator: validateSourceUri, trigger: 'blur' }]
         },
         tempRoute: {},
-        displayTime: undefined
       }
 
     },
@@ -147,11 +128,9 @@
       updateContent:{
         handler(newVal, oldVal)
         {
-          this.postForm.image_uri = newVal.activityImg;
-          this.postForm.title = newVal.activityName;
-          this.$refs.editor.setContent(newVal.activityDescription);
-          this.limit = newVal.type === "true";
-          this.displayTime = newVal.start;
+          this.postForm.image_uri = newVal.mailImg;
+          this.postForm.title = newVal.mailName;
+          this.$refs.editor.setContent(newVal.mailDescription);
         },
         deep:true
       },
@@ -165,11 +144,9 @@
       // Because if you enter this page and quickly switch tag, may be in the execution of the setTagsViewTitle function, this.$route is no longer pointing to the current page
       // https://github.com/PanJiaChen/vue-element-admin/issues/1221
 
-      this.postForm.image_uri = this.updateContent.activityImg;
-      this.postForm.title = this.updateContent.activityName;
-      this.postForm.content = this.updateContent.activityDescription;
-      this.limit = this.updateContent.type === "true";
-      this.displayTime = this.updateContent.start;
+      this.postForm.image_uri = this.updateContent.mailImg;
+      this.postForm.title = this.updateContent.mailName;
+      this.postForm.content = this.updateContent.mailDescription;
 
       this.tempRoute = Object.assign({}, this.$route)
     },
@@ -190,16 +167,20 @@
       confirmIdentity() {
         let postData = new FormData();
         let _this = this;
-        postData.append('adminName', localStorage.getItem('AdminName'));
+        postData.append('userName', localStorage.getItem('AdminName'));
         postData.append('password', this.confirmPassword);
-        axios.post('http://localhost:8080/admin/identifyAdmin', postData)
-          .then(response => {
-            if (response.data) {
-              _this.confirmDelete = true
-            } else {
-              this.$message.error('Identification failed!');
-            }
-          })
+
+        request({
+          url: '/user/confirmDelete',
+          method: 'post',
+          data: postData
+        }).then(response => {
+          if (response.data) {
+            _this.confirmDelete = true
+          } else {
+            this.$message.error('Identification failed!');
+          }
+        })
           .catch(error =>
             {
               this.$message.error('Identification failed!');
@@ -209,8 +190,13 @@
       deleteData() {
         let postData = new FormData();
         let _this = this;
-        postData.append('activityId', this.updateContent.activityId);
-        axios.post('http://localhost:8080/activity/deleteActivity', postData).then(response => {
+        postData.append('mailId', this.updateContent.mailId);
+
+        request({
+          url: '/mail/deleteMail',
+          method: 'post',
+          data: postData
+        }).then(response => {
           if (response.data) {
             _this.deleteVisible = false;
             _this.$emit('getList');
@@ -225,7 +211,6 @@
           );
       },
       submitForm() {
-        let postData = new FormData();
         let _this = this;
 
         if(this.postForm.title === undefined || this.postForm.content === undefined || this.postForm.title === '' || this.postForm.content === '')
@@ -234,64 +219,44 @@
           return false;
         }
 
-        postData.append('activityId', this.updateContent.activityId);
-        postData.append('activityImg', this.postForm.image_uri === undefined ? '' : this.postForm.image_uri);
-        postData.append('activityName', this.postForm.title);
-        postData.append('activityDescription', this.postForm.content);
+        let postData = {
+          mailId: this.updateContent.mailId,
+          mailName: this.postForm.title,
+          mailDetails: {
+            mailId: this.updateContent.mailId,
+            mailDescription: this.postForm.content,
+            mailImg: this.postForm.image_uri === undefined ? '' : this.postForm.image_uri,
+          }
+        };
 
-        if (this.limit === false) {
-          postData.append('start', this.formatDate(new Date()));
-        } else if (this.displayTime !== null && this.displayTime !== undefined ) {
-          postData.append('start', this.formatDate(this.displayTime));
-        }else {
-          postData.append('start', this.delayDate(7));
-        }
-
-        postData.append('type', this.limit === true ? "true" : "false");
-
-        axios.post(`http://localhost:8080/activity/updateActivity`, postData).then(response => {
+        request({
+          url: '/mail/updateMail',
+          method: 'post',
+          data: JSON.stringify(postData)
+        }).then(response => {
           if (response.data) {
             //
             _this.$emit('getList');
-          } else {
-            //
-            this.$message.error('Updating Data failed!');
+          }else
+          {
+            this.$message.error('Fetching Data Failed!');
           }
         })
           .catch(error =>
-            {
-              this.$message.error('Updating Data failed!');
-            }
-          );
+          {
+            this.$message.error('Fetching Data Failed!');
+          });
       },
-      delayDate(days){
-        let newDate = new Date();
-        let showDate;
-        for (let i = 1; i <= days; i++) { //后7天
-          let date = newDate.getDate() < 10 ? '0' + newDate.getDate() : newDate.getDate();
-          let yue = (newDate.getMonth() + 1) < 10 ? '0' + (newDate.getMonth() + 1) : (newDate.getMonth() + 1);
-          showDate = newDate.getFullYear() + '-' + yue + '-' + date;
-          newDate.setDate(newDate.getDate() + 1);
-        }
-        return showDate + ' 00:00:00';
-      },
-      formatDate(date){
-        return moment(new Date(date)).format('YYYY-MM-DD HH:mm:ss');
-      },
-
-
-
 
       setTagsViewTitle() {
-        const title = 'Edit Activity';
+        const title = 'Edit Mail';
         const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` });
         this.$store.dispatch('tagsView/updateVisitedView', route)
       },
       setPageTitle() {
-        const title = 'Edit Activity';
+        const title = 'Edit Mail';
         document.title = `${title} - ${this.postForm.id}`
       },
-
     }
   }
 </script>

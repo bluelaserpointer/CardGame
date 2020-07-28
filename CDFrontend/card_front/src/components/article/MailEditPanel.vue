@@ -4,7 +4,7 @@
       <!--        <CommentDropdown v-model = "postForm.comment_disabled" />-->
       <PlatformDropdown v-model="postForm.platforms" />
       <!--        <SourceUrlDropdown v-model = "postForm.source_uri" />-->
-      <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">
+      <el-button class="mailEditPublishButton" v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">
         Publish
       </el-button>
     </sticky>
@@ -47,6 +47,7 @@
   import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from '../../views/example/components/Dropdown'
   import axios from 'axios'
   import moment from "moment";
+  import request from "@/utils/request"; // secondary package based on el-pagination
 
   const defaultForm = {
     status: 'draft',
@@ -147,12 +148,19 @@
           return false;
         }
 
-        const postData = new FormData();
-        postData.append('mailImg', this.postForm.image_uri === undefined ? '' : this.postForm.image_uri);
-        postData.append('mailName', this.postForm.title);
-        postData.append('mailDescription', this.postForm.content);
+        let postData = {
+          mailName: this.postForm.title,
+          mailDetails: {
+            mailDescription: this.postForm.content,
+            mailImg: this.postForm.image_uri === undefined ? '' : this.postForm.image_uri,
+          }
+        };
 
-        axios.post(`http://localhost:8080/mail/addMail`, postData).then(response => {
+        request({
+          url: '/mail/addMail',
+          method: 'post',
+          data: JSON.stringify(postData)
+        }).then(response => {
           if (response.data) {
             //
             this.resetArticle();
@@ -165,7 +173,6 @@
               this.$message.error('Publishing Mail failed!');
             }
           );
-
       },
 
       setTagsViewTitle() {

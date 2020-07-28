@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -22,6 +23,7 @@ public class Activity {
     // 活动类型（分为定期或限定）
     private String type;
     // 活动开始的时间
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp start;
     // 活动细节，包括描述与图片等
     @Transient

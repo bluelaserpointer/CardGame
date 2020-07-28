@@ -2,10 +2,23 @@
 
 CDFrontend/.idea/vcs.xml
 CDFrontend/.idea/workspace.xml
-CDFrontend/card_front/tests/unit
+CDFrontend/card_front/tests/unit/coverage
+CDFrontend/card_front/tests/unit/lib
 /CDBackend/demo/target/*
 Surviver_client/app/.classpath
 Surviver_client/app/.project
 Surviver_client/app/.settings/org.eclipse.buildship.core.prefs
 CDFrontend/card_front/cypress/integration/examples
 CDFrontend/card_front/lib
+CDFrontend/card_front/coverage/lcov-report
+CDBackend/demo/target
+
+CDFrontend/card_front/coverage/lcov.info
+CDFrontend/card_front/coverage/coverage-summary.json
+CDFrontend/card_front/coverage/coverage-final.json
+CDFrontend/card_front/coverage/coverage-final.json
+CDFrontend/card_front/.nyc_output/out.json
+CDFrontend/card_front/coverage/clover.xml
+CDFrontend/card_front/cypress/videos
+CDFrontend/card_front/cypress/screenshots
+CDFrontend/card_front/instrumented

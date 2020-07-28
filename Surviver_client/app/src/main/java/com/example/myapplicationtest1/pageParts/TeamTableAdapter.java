@@ -27,23 +27,25 @@ public class TeamTableAdapter extends RecyclerView.Adapter<TeamTableAdapter.Team
     @NonNull
     @Override
     public TeamTableAdapter.TeamTableLine onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new TeamTableAdapter.TeamTableLine(LayoutInflater.from(activity).inflate(R.layout.team_line, parent, false));
+        return new TeamTableAdapter.TeamTableLine(LayoutInflater.from(activity).inflate(R.layout.team_table_line, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull TeamTableAdapter.TeamTableLine holder, int position) {
         //TODO: make it square
         //final int itemHeight = activity.findViewById(R.id.teamTableContent).getMinimumWidth()/this.getItemCount();
-        final int itemHeight = 130;
         for(int i = 0; i < 5; ++i) {
             ViewGroup.LayoutParams params = holder.itemView.getLayoutParams();
-            params.height = itemHeight;
+            params.height = 130;
             holder.itemView.setLayoutParams(params);
             final int cardSetPos = position * this.getItemCount() + i;
             if(TeamPage.formation.containsKey(cardSetPos)) { //set button bg to card icon
                 System.out.println("TeamTableAdapter: found card at " + cardSetPos);
                 final Knowledge.KnowledgeParameter param = Utils.getKnowledgeParameter(TeamPage.formation.get(cardSetPos));
-                holder.buttons[i].setBackground(ContextCompat.getDrawable(activity, param.drawableId));
+                if(param != null)
+                    holder.buttons[i].setBackground(ContextCompat.getDrawable(activity, param.drawableId));
+                else
+                    System.out.println("TeamTableAdapter: Not found card param at " + TeamPage.formation.get(cardSetPos));
             } else {
                 System.out.println("TeamTableAdapter: not found any card at " + cardSetPos);
             }

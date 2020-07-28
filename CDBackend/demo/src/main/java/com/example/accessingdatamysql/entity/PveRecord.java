@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -25,6 +26,7 @@ public class PveRecord {
     private Integer chapterId;
     private Integer phaseId;
     private Integer result;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp recordTime;
 
     @Column

@@ -111,12 +111,12 @@ describe('PlayerCardPanel.vue', () => {
   });
 
   it('Player Card Panel Resolves createData', async () => {
-    await wrapper.vm.createData();
+    await wrapper.vm.createData('temp');
     expect(wrapper.vm.panelVisible).toBeFalsy();
   });
 
   it('Player Card Panel Resolves updateData', async () => {
-    await wrapper.vm.updateData();
+    await wrapper.vm.updateData('temp');
     expect(wrapper.vm.panelVisible).toBeFalsy();
   });
 

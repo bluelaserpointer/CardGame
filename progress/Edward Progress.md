@@ -129,3 +129,52 @@ Edward Raymond He 518030990022
 #### Currently working on:
 
 1. 将完成更多e2e测试
+
+### 2020.07.22
+
+#### Finished: 
+
+1. 完成了 Phase, Player, OwnItem, OwnCard, Activity, Mail 的e2e测试
+2. 修复了前端测试所需的 className
+
+#### Currently working on:
+
+1. 正在做更多与Phase相关的测试（先前遗漏了些）
+2. 正在学习认证授权相关的衔接内容
+
+### 2020.07.23
+
+#### Finished: 
+
+1. 了解了 Github Action，CI 在项目上的应用并进行了基础的实施，将在后续进行更完善的测试改动后 commit 前端的 yml 文件
+2. 了解了前端控制面板自带的验证授权流程并进行了相应测试
+
+#### Currently working on:
+
+1. 正在尝试更替前端的基础请求（使用包装过的Axios），并完成前后端交接（在更换了包装后的请求函数后，非简单请求会出现Bug，所以在调试中）
+
+### 2020.07.24
+
+#### Finished: 
+
+1. 制作了Mission相关前端页面和控制面板
+2. 已经学会了当前运维前端的请求环节（由于是采用他人的控制面板模板，因此从Mock-Server转换成本地请求发送花了近两天时间，现在已成功完成初步的请求发送，待后端将Admin合并入User后进行下一环节）
+3. 讨论了下一周的开发内容（游戏内容取舍、开发步骤等）
+
+#### Currently working on:
+
+1. 在调试于 2020.07.21 修复的认证Bug 所引发的单元测试相关Bug（与 element-ui相关）
+
+### 2020.07.27
+
+#### Finished: 
+
+1. 根据后端替换了目前所有请求数据格式
+2. 完善了运维前端目前的登陆验证和请求发送权限（设置Token，使用封装Axios）
+3. 调试了后端接口的一些Bug
+4. 解决了除了 "封装 axios interceptors .then() .catch()操作" 以外的单元测试Bug
+
+#### Currently working on:
+
+1. 由于调试过程已经超了两天，所以单元测试中封装 axios 的bug目前先暂停
+2. e2e测试的 code coverage 网址中未覆盖 .vue文件

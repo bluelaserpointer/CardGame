@@ -60,13 +60,13 @@ describe('ItemEntityPanel.vue', () => {
 
   it('Item Entity Panel Rejects createData', async () => {
     wrapper.vm.panelVisible = true;
-    await wrapper.vm.createData();
+    await wrapper.vm.createData('temp');
     expect(wrapper.vm.panelVisible).toBeTruthy();
   });
 
   it('Item Entity Panel Rejects updateData', async () => {
     wrapper.vm.panelVisible = true;
-    await wrapper.vm.updateData();
+    await wrapper.vm.updateData('temp');
     expect(wrapper.vm.panelVisible).toBeTruthy();
   });
 

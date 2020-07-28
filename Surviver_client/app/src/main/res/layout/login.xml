@@ -3,25 +3,49 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0099cc"
+    android:background="@drawable/battlebg"
     tools:context=".StartPage">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,
          TextureView, etc. -->
-    <TextView
-        android:id="@+id/fullscreen_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:keepScreenOn="true"
-        android:text="@string/dummy_content"
-        android:textColor="#33b5e5"
-        android:textSize="50sp"
-        android:textStyle="bold" />
 
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
+    <LinearLayout
+        android:id="@+id/ConnectionTimeoutTip"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="invisible">
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:background="#33000000">
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="非常抱歉，连接超时"
+                android:textSize="36sp" />
+        </FrameLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="6" />
+
+    </LinearLayout>
+
     <FrameLayout
         android:id="@+id/baseScreen"
         android:layout_width="match_parent"
@@ -54,15 +78,14 @@
 
         </FrameLayout>
 
-        <LinearLayout
-            android:id="@+id/fullscreen_content_controls"
-            style="?metaButtonBarStyle"
+        <TextView
+            android:id="@+id/clientVersion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
+            android:layout_gravity="bottom"
             android:background="@color/black_overlay"
-            android:orientation="horizontal"
-            tools:ignore="UselessParent"/>
+            android:textColor="@color/design_default_color_background"
+            android:textSize="24sp" />
 
     </FrameLayout>
 

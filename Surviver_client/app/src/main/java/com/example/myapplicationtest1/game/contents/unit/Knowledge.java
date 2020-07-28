@@ -69,8 +69,8 @@ public class Knowledge extends MyUnit {
 			lotteSpring[subject.ordinal()][rarity] = members;
 		}
 		public int ownCardId;
-		public Subject SUBJECT;
-		public String NAME;
+		public final Subject SUBJECT;
+		public final String NAME;
 		public int drawableId;
 		public DotPaint PAINT;
 		public int iniHP, iniATK, iniDEF, iniCD;

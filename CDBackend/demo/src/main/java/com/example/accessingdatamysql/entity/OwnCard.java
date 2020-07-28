@@ -28,6 +28,7 @@ public class OwnCard {
     // 用户目前重复拥有这张卡拍的数目
     private Integer repetitiveOwns;
     // 用户首次获取该卡牌的日期+时间
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp accquireDate;
     // 强化点数
     private Integer enhancePoint;

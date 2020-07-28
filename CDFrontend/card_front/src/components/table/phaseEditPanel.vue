@@ -3,10 +3,11 @@
     <div class="filter-container" style="width: 100%; grid-row: 1 / span 1; display:grid; grid-template-columns: 50% 50%; grid-column-gap: 5px;">
       <div style="grid-column: 1 / span 2; display:grid; grid-template-columns: 50% 50%; grid-column-gap: 5px">
         <div style="display:grid; grid-template-columns: 50% 50%; grid-column-gap: 5px">
-          <span style="margin-left: auto;">Chapter:
-            <el-select v-model="currChapter" placeholder="请选择" @change="handleChangeChapter">
-              <el-option-group>
+          <span style="margin-left: auto;" class="chapterSelectArea">Chapter:
+            <el-select v-model="currChapter" class="chapterSelect" placeholder="请选择" @change="handleChangeChapter">
+              <el-option-group class="chapterOption">
                 <el-option
+                  class="chapterSelectOption"
                   v-for="chapter in chapterList"
                   :key="chapter.chapterId"
                   :label="chapter.chapterId"
@@ -15,10 +16,24 @@
               </el-option-group>
             </el-select>
           </span>
-          <span v-if="currChapter !== undefined" style="margin-right: auto;">Phase:
-            <el-select v-model="currPhase" placeholder="请选择" @change="handleChangePhase">
-              <el-option-group>
+          <span v-if="currChapter !== undefined" class="phaseSelectArea" style="margin-right: auto;">Phase:
+            <el-select v-model="currPhase" class="phaseSelect" placeholder="请选择" @change="handleChangePhase">
+              <el-option-group class="phaseOption">
                 <el-option
+                  class="phaseSelectOption"
+                  v-for="phaseNo in currPhaseNo"
+                  :key="phaseNo"
+                  :label="phaseNo"
+                  :value="phaseNo"
+                />
+              </el-option-group>
+            </el-select>
+          </span>
+          <span v-else style="margin-right: auto;">Phase:
+            <el-select v-model="currPhase" class="phaseSelect" placeholder="请选择" @change="handleChangePhase" disabled>
+              <el-option-group class="phaseOption">
+                <el-option
+                  class="phaseSelectOption"
                   v-for="phaseNo in currPhaseNo"
                   :key="phaseNo"
                   :label="phaseNo"
@@ -30,10 +45,10 @@
           <span v-else style="margin-right: auto;" />
         </div>
         <div>
-          <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleConfirm">
+          <el-button class="filter-item confirmButton" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleConfirm">
             Confirm
           </el-button>
-          <el-button class="filter-item" style="margin-left: 10px;" type="warning" @click="handleRefreshPhase(currPhase)">
+          <el-button class="filter-item restoreButton" style="margin-left: 10px;" type="warning" @click="handleRefreshPhase(currPhase)">
             Restore
           </el-button>
         </div>
@@ -42,13 +57,13 @@
 
     <div style="display: grid; width: 100%; height: 100%; grid-template-columns: 50% 50%">
       <div style="display: grid; width: 100%; height: 100%; grid-column: 1 / span 1; grid-template-rows: 50% 50%">
-<!--    @current-change="handleCardChoose"-->
         <div style="display: grid; grid-row: 1 / span 1; width: 100%; grid-template-columns: 50% 50%">
           <el-table
             style="grid-column: 1 / span 1"
             :key="tableKey"
             v-loading="listLoading"
             :data="itemList"
+            class="itemAwardTable"
             border
             fit
             highlight-current-row
@@ -66,18 +81,15 @@
                 <span class="link-type">{{ row.itemName }}</span>
               </template>
             </el-table-column>
-<!--            <el-table-column label="Description" width="80" align="center">-->
-<!--              <template slot-scope="{row}">-->
-<!--                <span>{{ row.itemDescription }}</span>-->
-<!--              </template>-->
-<!--            </el-table-column>-->
             <el-table-column label="Phase" align="center">
               <template slot-scope="scope">
                 <el-button
                   size="mini"
+                  class="phaseAddItemButton"
                   @click="phaseAddItem(scope.$index, scope.row)">+</el-button>
                 <el-button
                   size="mini"
+                  class="phaseMinusItemButton"
                   @click="phaseMinusItem(scope.$index, scope.row)">-</el-button>
               </template>
             </el-table-column>
@@ -85,9 +97,11 @@
               <template slot-scope="scope">
                 <el-button
                   size="mini"
+                  class="chapterAddItemButton"
                   @click="chapterAddItem(scope.$index, scope.row)">+</el-button>
                 <el-button
                   size="mini"
+                  class="chapterMinusItemButton"
                   @click="chapterMinusItem(scope.$index, scope.row)">-</el-button>
               </template>
             </el-table-column>
@@ -97,7 +111,8 @@
             :key="tableKey"
           v-loading="listLoading"
           :data="cardList"
-          border
+            class="cardAwardTable"
+            border
           fit
           highlight-current-row
             height="350"
@@ -114,51 +129,15 @@
               <span>{{ row.cardName }}</span>
             </template>
           </el-table-column>
-<!--          <el-table-column label="HP" width="80" align="center">-->
-<!--            <template slot-scope="{row}">-->
-<!--              <span>{{ row.healthPoint }}</span>-->
-<!--            </template>-->
-<!--          </el-table-column>-->
-<!--          <el-table-column label="ATK" width="80">-->
-<!--            <template slot-scope="{row}">-->
-<!--              <span>{{ row.attack }}</span>-->
-<!--            </template>-->
-<!--          </el-table-column>-->
-<!--          <el-table-column label="DEF" align="center" width="80">-->
-<!--            <template slot-scope="{row}">-->
-<!--              <span>{{ row.defense }}</span>-->
-<!--            </template>-->
-<!--          </el-table-column>-->
-<!--          <el-table-column label="RANGE" class-name="status-col" width="80">-->
-<!--            <template slot-scope="{row}">-->
-<!--              <span>{{ row.attackRange }}</span>-->
-<!--            </template>-->
-<!--          </el-table-column>-->
-<!--          <el-table-column label="CD" class-name="status-col" width="80">-->
-<!--            <template slot-scope="{row}">-->
-<!--              <span>{{ row.cd }}</span>-->
-<!--            </template>-->
-<!--          </el-table-column>-->
-<!--          <el-table-column label="SPD" class-name="status-col" width="80">-->
-<!--            <template slot-scope="{row}">-->
-<!--              <span>{{ row.speed }}</span>-->
-<!--            </template>-->
-<!--          </el-table-column>-->
-<!--          <el-table-column label="Cover" min-width="150px">-->
-<!--            <template slot-scope="{row}">-->
-<!--              <el-image-->
-<!--                style="width: 40px; height: 40px"-->
-<!--                :src="row.cardImg"-->
-<!--              />-->
-<!--            </template>-->
-<!--          </el-table-column>-->
           <el-table-column label="Phase" align="center">
             <template slot-scope="scope">
               <el-button
                 size="mini"
+                class="phaseAddCardButton"
                 @click="phaseAddCard(scope.$index, scope.row)">+</el-button>
               <el-button
                 size="mini"
+                class="phaseMinusCardButton"
                 @click="phaseMinusCard(scope.$index, scope.row)">-</el-button>
             </template>
           </el-table-column>
@@ -166,9 +145,11 @@
             <template slot-scope="scope">
               <el-button
                 size="mini"
+                class="chapterAddCardButton"
                 @click="chapterAddCard(scope.$index, scope.row)">+</el-button>
               <el-button
                 size="mini"
+                class="chapterMinusCardButton"
                 @click="chapterMinusCard(scope.$index, scope.row)">-</el-button>
             </template>
           </el-table-column>
@@ -176,13 +157,12 @@
         </div>
 
         <div style="display: grid; grid-row: 2 / span 1; width: 100%; height: 100%; grid-template-columns: 50% 50%">
-  <!--        PhaseAwards-->
-  <!--        Phase-->
           <div style="display: grid; height: 100%; grid-template-columns: 50% 50%">
             <el-table
               :key="tableKey"
               v-loading="listLoading"
               :data="phaseAwardItems"
+              class="phaseAwardItemsTable"
               border
               fit
               highlight-current-row
@@ -206,6 +186,7 @@
             :key="tableKey"
             v-loading="listLoading"
             :data="phaseAwardCards"
+            class="phaseAwardCardsTable"
             border
             fit
             highlight-current-row
@@ -221,12 +202,12 @@
             </el-table-column>
           </el-table>
           </div>
-  <!--        Chapter-->
           <div style="display: grid; height: 100%; grid-template-columns: 50% 50%">
             <el-table
               :key="tableKey"
               v-loading="listLoading"
               :data="chapterAwardItems"
+              class="chapterAwardItemsTable"
               border
               fit
               highlight-current-row
@@ -250,6 +231,7 @@
           :key="tableKey"
           v-loading="listLoading"
           :data="chapterAwardCards"
+          class="chapterAwardCardsTable"
           border
           fit
           highlight-current-row
@@ -267,8 +249,8 @@
           </div>
         </div>
         <div style="display: grid; grid-template-columns: 50% 50%">
-          <el-button @click="handlePhaseAwardConfirm">Confirm Phase</el-button>
-          <el-button @click="handleChapterAwardConfirm">Confirm Chapter</el-button>
+          <el-button class="confirmPhaseAwardButton" @click="handlePhaseAwardConfirm">Confirm Phase</el-button>
+          <el-button class="confirmChapterAwardButton" @click="handleChapterAwardConfirm">Confirm Chapter</el-button>
         </div>
       </div>
 
@@ -331,6 +313,11 @@
               <span>{{ row.speed }}</span>
             </template>
           </el-table-column>
+          <el-table-column label="Type" class-name="status-col" width="100">
+            <template slot-scope="{row}">
+              <span>{{ row.type }}</span>
+            </template>
+          </el-table-column>
           <el-table-column label="Cover" min-width="100px">
             <template slot-scope="{row}">
               <el-image
@@ -349,6 +336,7 @@
 import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination/index'
 import axios from 'axios' // secondary package based on el-pagination
+import request from '@/utils/request'
 
 export default {
   name: 'PhaseEditPanel',
@@ -577,29 +565,66 @@ export default {
         }
       }
 
-
-
-      axios.post('http://localhost:8080/chapter/getChapterDetailsByChapter', postData).then(response => {
+      request({
+        url: '/chapter/getChapterDetailsByChapter',
+        method: 'post',
+        data: postData
+      }).then(response => {
         if (response.data) {
 
           _this.chapterData = response.data;
           // console.log(response.data);
-          axios.post('http://localhost:8080/chapter/getChapterPhasesByChapter', postData).then(res => {
+
+          request({
+            url: '/chapter/getChapterPhasesByChapter',
+            method: 'post',
+            data: postData
+          }).then(res => {
             console.log(res.data);
-              _this.chapterPhaseData = res.data;
-              _this.handleRefreshPhase(1);
+            _this.chapterPhaseData = res.data;
+            _this.handleRefreshPhase(1);
           })
+
+          // axios.post('http://localhost:8080/chapter/getChapterPhasesByChapter', postData).then(res => {
+          //   console.log(res.data);
+          //   _this.chapterPhaseData = res.data;
+          //   _this.handleRefreshPhase(1);
+          // })
           // .catch(error => {
           //   this.$message.error('Fetching ChapterPhases Failed!');
           // });
 
-        }else{
+        } else {
           // this.$message.error('Fetching Data Failed!');
         }
-      })
-      .catch(error => {
+      }).catch(error => {
         this.$message.error('Fetching ChapterDetails Failed!');
       });
+
+
+      // axios.post('http://localhost:8080/chapter/getChapterDetailsByChapter', postData).then(response => {
+      //   if (response.data) {
+      //
+      //     _this.chapterData = response.data;
+      //     // console.log(response.data);
+      //     axios.post('http://localhost:8080/chapter/getChapterPhasesByChapter', postData).then(res => {
+      //       console.log(res.data);
+      //         _this.chapterPhaseData = res.data;
+      //         _this.handleRefreshPhase(1);
+      //     })
+      //     // .catch(error => {
+      //     //   this.$message.error('Fetching ChapterPhases Failed!');
+      //     // });
+      //
+      //   }else{
+      //     // this.$message.error('Fetching Data Failed!');
+      //   }
+      // })
+      // .catch(error => {
+      //   this.$message.error('Fetching ChapterDetails Failed!');
+      // });
+
+
     },
 
     handleChangePhase() {
@@ -655,7 +680,12 @@ export default {
       postData.append('chapterId', this.currChapter);
       postData.append('phaseId', this.currPhase);
       postData.append('phaseData', JSON.stringify(chapterPhaseData));
-      axios.post(`http://localhost:8080/chapter/updateChapter`, postData).then(response => {
+
+      request({
+        url: '/chapter/updateChapte',
+        method: 'post',
+        data: postData
+      }).then(response => {
         if (response.data) {
           _this.chapterData = response.data
         }else{
@@ -666,6 +696,18 @@ export default {
         .catch(error => {
           this.$message.error('Updating Data Failed!');
         })
+
+      // axios.post(`http://localhost:8080/chapter/updateChapter`, postData).then(response => {
+      //   if (response.data) {
+      //     _this.chapterData = response.data
+      //   }else{
+      //     this.$message.error('Updating Data Failed!');
+      //   }
+      //   this.handleRefreshPhase(this.currPhase)
+      // })
+      //   .catch(error => {
+      //     this.$message.error('Updating Data Failed!');
+      //   })
     },
 
     transObjToMap(arr)
@@ -688,7 +730,11 @@ export default {
       postData.append('awardItems', JSON.stringify(this.transObjToMap(this.chapterAwardItems)));
       postData.append('awardCards', JSON.stringify(this.chapterAwardCards));
 
-      axios.post(`http://localhost:8080/chapter/updateChapterAwards`, postData).then(response => {
+      request({
+        url: '/chapter/updateChapterAwards',
+        method: 'post',
+        data: postData
+      }).then(response => {
         if (response.data) {
           this.chapterList = response.data;
         }else{
@@ -698,7 +744,7 @@ export default {
       })
         .catch(error => {
           this.$message.error('Updating Data Failed!');
-        })
+        });
     },
 
     handlePhaseAwardConfirm(){
@@ -714,7 +760,12 @@ export default {
       postData.append('awardItems', JSON.stringify(this.transObjToMap(this.phaseAwardItems)));
       postData.append('awardCards', JSON.stringify(this.phaseAwardCards));
 
-      axios.post(`http://localhost:8080/chapter/updateChapterPhaseAwards`, postData).then(response => {
+
+      request({
+        url: '/chapter/updateChapterPhaseAwards',
+        method: 'post',
+        data: postData
+      }).then(response => {
         if (response.data) {
           this.chapterPhaseData = response.data;
         }else{
@@ -731,16 +782,38 @@ export default {
 
 
     getList() {
-      axios.get('http://localhost:8080/chapter/getAllChapters').then(response => {
+
+      request({
+        url: '/chapter/getAllChapters',
+        method: 'get',
+      }).then(response => {
         if(response.data)
         {
-          console.log(response.data);
           this.chapterList = response.data;
 
-          axios.get('http://localhost:8080/card/getAllCards')
-            .then(res => {
+          request({
+            url: '/card/getAllCards',
+            method: 'get',
+          }).then(res => {
+            if(res.data) {
+              this.cardList = res.data;
+              this.watchList()
+            }else
+            {
+              this.$message.error('Fetching Data Failed!');
+            }
+          })
+            .catch(error =>
+            {
+              this.$message.error('Fetching Data Failed!');
+            });
+
+          request({
+            url: '/item/getAllItems',
+            method: 'get',
+          }).then(res => {
               if(res.data) {
-                this.cardList = res.data;
+                this.itemList = res.data;
                 this.watchList()
               }else
               {
@@ -752,31 +825,16 @@ export default {
               this.$message.error('Fetching Data Failed!');
             });
 
-          axios.get('http://localhost:8080/item/getAllItems')
-            .then(res => {
-              if(res.data) {
-                this.itemList = res.data;
-                this.watchList()
-              }else
-              {
-                this.$message.error('Fetching Data Failed!');
-              }
-            })
-            .catch(error =>
-            {
-                this.$message.error('Fetching Data Failed!');
-              });
-
-
         }else{
           this.$message.error('Fetching Data Failed!');
         }
       })
         .catch(error =>
-        {
-          this.$message.error('Fetching Data Failed!');
-        }
-      );
+          {
+            this.$message.error('Fetching Data Failed!');
+          }
+        );
+
     },
     watchList() {
       // let list = this.cardList;
@@ -812,39 +870,6 @@ export default {
       const sort = this.listQuery.sort;
       return sort === `+${key}` ? 'ascending' : 'descending'
     },
-
-    // createData() {
-      //
-      // let postData = new FormData();
-      // // postData.append('cardId', this.temp.id);
-      // postData.append('cardName', this.temp.cardName);
-      // postData.append('rarity', this.temp.price);
-      // postData.append('healthPoint', this.temp.healthPoint);
-      // postData.append('attack', this.temp.attack);
-      // postData.append('defense', this.temp.defense);
-      // postData.append('attackRange', this.temp.attackRange);
-      // postData.append('cd', this.temp.cd);
-      // postData.append('speed', this.temp.speed);
-      //
-      // postData.append('cardImg', this.temp.cardImg);
-      // postData.append('cardDescription', this.temp.cardDescription);
-      //
-      //
-      // console.log(postData);
-      //
-      // axios.post(`http://localhost:8080/card/add`, postData).then(response => {
-      //   if(response.data) {
-      //     //
-      //   }
-      //   else {
-      //     //
-      //   }
-      //   axios.get('http://localhost:8080/card/get/all')
-      //     .then(response => this.cardList = response.data);
-      // })
-    // },
-    // updateData() {
-    // },
   }
 }
 </script>

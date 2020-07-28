@@ -49,7 +49,7 @@ public class ItemDaoImpl implements ItemDao {
     }
 
     public Item updateItem(Item updateItem) {
-
+        System.out.println(updateItem);
         Item Item = ItemRepository.getOne(updateItem.getItemId());
         // System.out.println("old Item has an Id of : " + n.getItemId());
         Item.setItem(updateItem.getItemName(), updateItem.getPrice());
@@ -59,6 +59,7 @@ public class ItemDaoImpl implements ItemDao {
         Optional<ItemDetails> optItemDetails = ItemDetailsRepository
                 .findItemDetailsByItemIdEquals(updateItem.getItemId());
         ItemDetails itemDetails = new ItemDetails(updateItem.getItemId(), "", "");
+        System.out.println(itemDetails);
         if (optItemDetails.isPresent()) {
             System.out.println("Item Exists");
             itemDetails = optItemDetails.get();

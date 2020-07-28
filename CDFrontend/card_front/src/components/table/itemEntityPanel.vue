@@ -122,7 +122,7 @@
 <script>
 import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination/index' // secondary package based on el-pagination
-import axios from 'axios'
+import request from '@/utils/request'
 
 export default {
   name: 'ItemEntityPanel',
@@ -207,27 +207,36 @@ export default {
     confirmIdentity() {
       const postData = new FormData();
       const _this = this;
-      postData.append('adminName', localStorage.getItem('AdminName'));
+      postData.append('userName', localStorage.getItem('AdminName'));
       postData.append('password', this.confirmPassword);
-      axios.post('http://localhost:8080/admin/identifyAdmin', postData).then(response => {
-        console.log(response);
+
+      request({
+        url: '/user/confirmDelete',
+        method: 'post',
+        data: postData
+      }).then(response => {
         if (response.data) {
           _this.confirmDelete = true
         } else {
           this.$message.error('Identification failed!');
         }
       })
-      .catch(error =>
-        {
-          this.$message.error('Identification failed!');
-        }
-      );
+        .catch(error =>
+          {
+            this.$message.error('Identification failed!');
+          }
+        );
     },
     deleteData() {
       const postData = new FormData();
       const _this = this;
       postData.append('itemId', this.temp.itemId);
-      axios.post('http://localhost:8080/item/deleteItem', postData).then(response => {
+
+      request({
+        url: '/item/deleteItem',
+        method: 'post',
+        data: postData
+      }).then(response => {
         if (response.data) {
           _this.panelVisible = false;
           _this.deleteVisible = false;
@@ -236,11 +245,26 @@ export default {
           this.$message.error('Deleting Data failed!');
         }
       })
-      .catch(error =>
-        {
-          this.$message.error('Deleting Data failed!');
-        }
-      );
+        .catch(error =>
+          {
+            this.$message.error('Deleting Data failed!');
+          }
+        );
+
+      // axios.post('http://localhost:8080/item/deleteItem', postData).then(response => {
+      //   if (response.data) {
+      //     _this.panelVisible = false;
+      //     _this.deleteVisible = false;
+      //     _this.getList()
+      //   } else {
+      //     this.$message.error('Deleting Data failed!');
+      //   }
+      // })
+      // .catch(error =>
+      //   {
+      //     this.$message.error('Deleting Data failed!');
+      //   }
+      // );
     },
     uploadCover() {
       const _this = this;
@@ -256,15 +280,31 @@ export default {
       }
     },
     getList() {
-      axios.get('http://localhost:8080/item/getAllItems')
-        .then(response => {
-          this.list = response.data;
-          this.watchList()
-        })
-        .catch(error =>
+      let _this = this;
+      request({
+        url: '/item/getAllItems',
+        method: 'get',
+      }).then( response => {
+        if(response.data) {
+          _this.list = response.data;
+          _this.watchList();
+        }else
         {
           this.$message.error('Fetching Data Failed!');
-        });
+        }
+      }).catch( error => {
+        this.$message.error('Fetching Data Failed!');
+      });
+      //
+      // axios.get('http://localhost:8080/item/getAllItems')
+      //   .then(response => {
+      //     this.list = response.data;
+      //     this.watchList()
+      //   })
+      //   .catch(error =>
+      //   {
+      //     this.$message.error('Fetching Data Failed!');
+      //   });
     },
     handleFilter() {
       this.listQuery.page = 1;
@@ -305,19 +345,26 @@ export default {
       this.dialogStatus = 'create';
       this.panelVisible = true;
       this.$nextTick(() => {
-        this.$refs['temp'].clearValidate()
+        this.$refs.temp.clearValidate()
       })
     },
     createData(formName) {
-      this.$refs[formName].validate((valid) => {
+      this.$refs.temp.validate((valid) => {
         if (valid) {
-          const postData = new FormData();
-          postData.append('itemName', this.temp.itemName);
-          postData.append('price', this.temp.price);
-          postData.append('itemImg', this.temp.itemImg);
-          postData.append('itemDescription', this.temp.itemDescription);
+          let postData = {
+            itemName: this.temp.itemName,
+            price: this.temp.price,
+            itemDetails: {
+              itemImg: this.temp.itemImg,
+              itemDescription: this.temp.itemDescription
+            }
+          };
 
-          axios.post(`http://localhost:8080/item/addItem`, postData).then(response => {
+          request({
+            url: '/item/addItem',
+            method: 'post',
+            data: JSON.stringify(postData)
+          }).then(response => {
             if (response.data) {
               // TODO: SHORTEN THE REQUESTS
               this.getList();
@@ -344,21 +391,30 @@ export default {
       this.dialogStatus = 'update';
       this.panelVisible = true;
       this.$nextTick(() => {
-        this.$refs['temp'].clearValidate()
+        this.$refs.temp.clearValidate()
       })
     },
     updateData(formName) {
-      this.$refs[formName].validate((valid) => {
+      this.$refs.temp.validate((valid) => {
         if (valid) {
-          const postData = new FormData();
           const _this = this;
-          postData.append('itemId', this.temp.itemId);
-          postData.append('itemName', this.temp.itemName);
-          postData.append('price', this.temp.price);
-          postData.append('itemImg', this.temp.itemImg);
-          postData.append('itemDescription', this.temp.itemDescription);
-          console.log(postData);
-          axios.post(`http://localhost:8080/item/updateItem`, postData).then(response => {
+
+          let postData = {
+            itemId: this.temp.itemId,
+            itemName: this.temp.itemName,
+            price: this.temp.price,
+            itemDetails: {
+              itemId: this.temp.itemId,
+              itemImg: this.temp.itemImg,
+              itemDescription: this.temp.itemDescription,
+            }
+          };
+
+          request({
+            url: '/item/updateItem',
+            method: 'post',
+            data: JSON.stringify(postData)
+          }).then(response => {
             if (response.data) {
               this.getList();
               _this.panelVisible = false

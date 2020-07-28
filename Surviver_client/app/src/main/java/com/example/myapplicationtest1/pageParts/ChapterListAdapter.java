@@ -17,6 +17,7 @@ import com.example.myapplicationtest1.HttpClient;
 import com.example.myapplicationtest1.R;
 import com.example.myapplicationtest1.page.GamePage;
 import com.example.myapplicationtest1.page.Page;
+import com.example.myapplicationtest1.utils.Urls;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,7 +41,7 @@ public class ChapterListAdapter extends RecyclerView.Adapter <ChapterListAdapter
     }
     public void fetch() {
         try {
-            final JSONArray arr = new JSONArray(HttpClient.doGetShort("chapter/getAllChapters"));
+            final JSONArray arr = new JSONArray(HttpClient.doGetShort(Urls.getAllChapters()));
             chapters = new ChapterInfo[arr.length()];
             for(int i = 0; i < chapters.length; ++i) {
                 //TODO: waiting backend change its name to "phaseMaxNo"
@@ -70,12 +71,16 @@ public class ChapterListAdapter extends RecyclerView.Adapter <ChapterListAdapter
 
     @Override
     public void onBindViewHolder(@NonNull ChapterListViewHolder holder, int position) {
+        ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
+        layoutParams.height = 600;
+        holder.itemView.setLayoutParams(layoutParams);
         //设置外貌
         holder.chapterNameTextView.setText("第" + (position + 1) + "章");
         //添加点击后切换地图事件
+        holder.itemView.setOnClickListener(v -> {}); //???I don't know why, but it helps itself receive more kinds of motionEvent.
         holder.itemView.setOnTouchListener((view, motionEvent) -> {
             view.performClick();
-            if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+            if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
                 System.out.println("ChapterListAdapter: clicked chapter is " + position);
                 TableLayout layout;
                 final FrameLayout mapContent = ((Activity)context).findViewById(R.id.mapContent);

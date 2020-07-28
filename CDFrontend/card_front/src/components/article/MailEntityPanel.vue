@@ -51,7 +51,8 @@
 import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination/index'
 import axios from 'axios' // secondary package based on el-pagination;
-import MailUpdatePanel from "@/components/edit/MailUpdatePanel";
+import MailUpdatePanel from "@/components/article/MailUpdatePanel";
+import request from "@/utils/request"; // secondary package based on el-pagination
 
 export default {
   name: 'MailEntityPanel',
@@ -124,17 +125,20 @@ export default {
       }
     },
     getList() {
-      axios.get('http://localhost:8080/mail/getAllMails')
-        .then(response => {
-          if(response.data) {
-            this.panelVisible = false;
-            this.list = response.data;
-            this.watchList()
-          }else
-          {
-            this.$message.error('Fetching Data Failed!');
-          }
-        })
+
+      request({
+        url: '/mail/getAllMails',
+        method: 'get',
+      }).then(response => {
+        if(response.data) {
+          this.panelVisible = false;
+          this.list = response.data;
+          this.watchList()
+        }else
+        {
+          this.$message.error('Fetching Data Failed!');
+        }
+      })
         .catch(error =>
         {
           this.$message.error('Fetching Data Failed!');

@@ -59,13 +59,13 @@ public class Item {
     }
 
     @Transient
-    private ItemDetails ItemDetails;
+    private ItemDetails itemDetails;
 
     public ItemDetails getItemDetails() {
-        return ItemDetails;
+        return itemDetails;
     }
 
     public void setItemDetails(ItemDetails ItemDetails) {
-        this.ItemDetails = ItemDetails;
+        this.itemDetails = ItemDetails;
     }
 }

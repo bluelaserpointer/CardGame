@@ -1,12 +1,13 @@
 /// <reference types="cypress" />
 
 context('Login', () => {
-  beforeEach(() => {
-    cy.visit('http://localhost:9527/#/login?redirect=%2Fdashboard')
-  });
-
 
   it('.type() - type into login form', () => {
+    cy.clearCookie('Admin-Token');
+
+    cy.visit('http://localhost:8081/');
+
+
     cy.get('.username-input')
       .type('admin1');
 
@@ -43,7 +44,11 @@ context('Login', () => {
 
     cy.get('.login-button').click();
 
+
+
   })
+
+
 
   // it('.focus() - focus on a DOM element', () => {
   //   // https://on.cypress.io/focus
