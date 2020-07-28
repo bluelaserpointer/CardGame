@@ -4,8 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.alibaba.fastjson.JSON;
 import com.example.accessingdatamysql.controller.ActivityController;
+import com.example.accessingdatamysql.controller.UserController;
 import com.example.accessingdatamysql.entity.Activity;
 import com.example.accessingdatamysql.entity.ActivityDetails;
+import com.example.accessingdatamysql.entity.AuthRequest;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,9 +16,12 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.SpringBootWebSecurityConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.SpringSecurityCoreVersion;
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -26,6 +31,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
@@ -38,20 +44,39 @@ import java.util.Map;
 @AutoConfigureMockMvc
 public class ActivityControllerTest {
 
+    @Autowired
+    private WebApplicationContext context;
+
+    private MockMvc mockMvc;
+
+    private String TOKEN;
+
+    @Autowired
+    private ActivityController activityController;
+
+    @Autowired
+    private UserController userController;
+
+    // private MockMvc mvc;
+
+    // @Before
+    // public void setup() {
+    // mvc = MockMvcBuilders
+    // .webAppContextSetup(context)
+    // .apply(SecurityMockMvcConfigurers.springSecurity())
+    // .build();
+    // }
+
     @Test
     @DisplayName("File: ActivityController Method: contextLoads")
     public void contextLoads() {
         assertThat(activityController).isNotNull();
     }
 
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ActivityController activityController;
-
     @Before
     public void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(activityController).build();
+        mockMvc = MockMvcBuilders.webAppContextSetup(context).apply(SecurityMockMvcConfigurers.springSecurity())
+                .build();
     }
 
     @AfterEach
@@ -62,6 +87,24 @@ public class ActivityControllerTest {
     @AfterAll
     static void tearDownAll() {
 
+    }
+
+    public String getTOKEN() throws Exception {
+        System.out.println(TOKEN);
+        AuthRequest user = new AuthRequest();
+        user.setPassword("postTest");
+        user.setUserName("postTest");
+
+        String body = JSON.toJSONString(user);
+        System.out.println(body);
+        MvcResult result = mockMvc
+                .perform(MockMvcRequestBuilders.post("http://localhost:8080/user/login")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE).content(body))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+        TOKEN = result.getResponse().getContentAsString();
+        TOKEN = "Bearer " + TOKEN;
+        System.out.println(TOKEN);
+        return TOKEN;
     }
 
     @Test
@@ -80,6 +123,8 @@ public class ActivityControllerTest {
     // @Rollback(value = true)
     @DisplayName("File: ActivityController Method: addNewActivity")
     public void addNewActivity() throws Exception {
+        String token = getTOKEN();
+        System.out.println(token);
         Timestamp start = new Timestamp(System.currentTimeMillis());
         Activity activity = new Activity("addNewActivity", "addNewActivity", start);
         ActivityDetails activityDetails = new ActivityDetails();
@@ -93,7 +138,7 @@ public class ActivityControllerTest {
 
         MvcResult result = mockMvc
                 .perform(MockMvcRequestBuilders.post("/activity/addActivity")
-                        .contentType(MediaType.APPLICATION_JSON_VALUE).content(body))
+                        .contentType(MediaType.APPLICATION_JSON_VALUE).content(body).header("Authorization", token))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
         System.out.println(result.getResponse().getContentAsString());
     }
