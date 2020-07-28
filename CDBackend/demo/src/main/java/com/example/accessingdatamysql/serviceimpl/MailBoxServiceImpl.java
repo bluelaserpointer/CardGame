@@ -13,6 +13,8 @@ import java.util.*;
 public class MailBoxServiceImpl implements MailBoxService {
     @Autowired
     private MailBoxDao MailBoxDao;
+    @Autowired
+    private MailDao MailDao;
 
     @Override
     public MailBox getOneMailBox(Integer MailBoxId) {
@@ -37,5 +39,17 @@ public class MailBoxServiceImpl implements MailBoxService {
 
     public String deleteAll() {
         return MailBoxDao.deleteAll();
+    }
+
+    @Override
+    public List<Mail> getOneUserMails(Integer MailBoxId) {
+        List<Integer> mailIds = getOneMailBox(MailBoxId).getMailIds();
+        List<Mail> userMails = new ArrayList<Mail>();
+        for (int i = 0; i < mailIds.size(); i++) {
+            Mail userMail = MailDao.getOneMail(mailIds.get(i));
+            userMails.add(userMail);
+        }
+
+        return userMails;
     }
 }

@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+import com.example.accessingdatamysql.service.MailBoxService;
+
 // import javax.validation.constraints.Null;
 
 import com.example.accessingdatamysql.service.UserService;
@@ -34,7 +36,10 @@ public class UserController {
   private UserService userService;
 
   @Autowired
+  private MailBoxService mailBoxService;
+  
   private UserLoginRecordService userLoginRecordService;
+  
   // private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
@@ -45,11 +50,13 @@ public class UserController {
     return userService.getOneUser(userId);
   }
 
+  // 用用户名获取用户
   @RequestMapping(value = "/getUserByUserName")
   public @ResponseBody User findUserByUserName(@RequestParam("userName") String userName) {
     return userService.getOneUserByUserName(userName);
   }
 
+  // 注册用户
   @PostMapping("/register")
   public @ResponseBody User register(@RequestBody User registerUser) {
     return userService.addNewUser(registerUser);
@@ -58,8 +65,6 @@ public class UserController {
   // 更新一个用户信息
   @RequestMapping(value = "/updateUser")
   public @ResponseBody User updateUser(@RequestBody User updateUser) {
-    // 加密密码
-    // password = bCryptPasswordEncoder.encode(password);
     return userService.updateUser(updateUser);
   }
 
@@ -125,5 +130,9 @@ public class UserController {
     return userService.addExp(userId, exp);
   }
 
-
+  // 获取用户的游戏信箱
+  @RequestMapping(value = "/getMailBox")
+  public @ResponseBody List<Mail> getUserMailBox(@RequestParam("userId") Integer userId) {
+    return mailBoxService.getOneUserMails(userId);
+  }
 }

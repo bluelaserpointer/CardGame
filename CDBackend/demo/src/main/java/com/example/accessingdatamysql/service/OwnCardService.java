@@ -16,10 +16,15 @@ public interface OwnCardService {
         OwnCard updateOwnCard(OwnCard updateOwnCard);
 
         // 用户拥有的某张卡牌升级
-        OwnCard cardLevelUp(Integer userId, Integer cardId);
+        // OwnCard cardLevelUp(Integer userId, Integer cardId);
+
+        // 增加卡牌经验值(如果累计经验值超过升级所需经验值则升级后再返回OwnCard)
+        OwnCard addExp(Integer userId, Integer cardId, Integer exp);
 
         // 用户再一次拥有已经拥有的卡牌
         // OwnCard ownAnotherCard(Integer userId, Integer cardId);
+        // 计算卡牌升级所需经验值 第一次升要100经验值,每一级比上一级多5%
+        Integer expToLevelUp(Integer cardLevel);
 
         // 获取所有的用户拥有卡牌记录
         List<OwnCard> getAllOwnCards();
