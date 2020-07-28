@@ -25,6 +25,9 @@ public class JwtUserFilter extends OncePerRequestFilter {
     @Autowired
     private UserDetailsServiceImpl service;
 
+    @Autowired
+    private OnlineCounter onlineCounter;
+
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
             FilterChain filterChain) throws ServletException, IOException {
@@ -44,6 +47,8 @@ public class JwtUserFilter extends OncePerRequestFilter {
             UserDetails userDetails = service.loadUserByUsername(userName);
             // 核实token与该用户名再一次重新生成的token是否吻合
             if (jwtUtil.validateToken(token, userDetails)) {
+
+                onlineCounter.insertToken(token);
 
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());

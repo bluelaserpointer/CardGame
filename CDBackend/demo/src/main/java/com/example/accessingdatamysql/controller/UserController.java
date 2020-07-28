@@ -1,6 +1,7 @@
 package com.example.accessingdatamysql.controller;
 
 import com.example.accessingdatamysql.Security.JwtUtil;
+import com.example.accessingdatamysql.Security.OnlineCounter;
 import com.example.accessingdatamysql.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -32,6 +33,9 @@ public class UserController {
   @Autowired
   private UserService userService;
   // private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+  @Autowired
+  private OnlineCounter onlineCounter;
 
   // 获取一个用户信息
   @GetMapping(value = "/getUser")
@@ -111,4 +115,13 @@ public class UserController {
     System.out.println("Class: UserController Method: addExp Param: userId = " + userId + " exp = " + exp);
     return userService.addExp(userId, exp);
   }
+
+  // 获取当前在线人数
+  @RequestMapping(value = "/getOnlineCount")
+  public int getRealOnlineCount(){
+    Integer onlines = onlineCounter.getOnlineCount();
+    return onlines;
+  }
+
+
 }

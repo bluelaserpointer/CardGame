@@ -91,5 +91,5 @@ service.interceptors.response.use(
   }
 );
 
-// export default service
-module.exports = service;
+export default service
+// module.exports = service;
