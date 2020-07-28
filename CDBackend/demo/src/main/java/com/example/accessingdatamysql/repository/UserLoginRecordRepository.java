@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface UserLoginRecordRepository extends JpaRepository<UserLoginRecord, Integer> {
-    UserLoginRecord findUserLoginRecordByUserIdEqualsAndLogoutTimeIsNullOrderByUserLoginRecord(Integer userId);
+    UserLoginRecord findUserLoginRecordByUserIdEqualsAndLogoutTimeIsNullOrderByUserLoginRecordIdDesc(Integer userId);
     List<UserLoginRecord> findUserLoginRecordsByUserIdEquals(Integer userId);
 }

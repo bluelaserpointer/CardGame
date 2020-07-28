@@ -1,8 +1,8 @@
 package com.example.accessingdatamysql.controller;
 
 import com.example.accessingdatamysql.Security.JwtUtil;
-import com.example.accessingdatamysql.Security.OnlineCounter;
 import com.example.accessingdatamysql.entity.*;
+import com.example.accessingdatamysql.service.UserLoginRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -32,10 +32,11 @@ public class UserController {
 
   @Autowired
   private UserService userService;
-  // private BCryptPasswordEncoder bCryptPasswordEncoder;
 
   @Autowired
-  private OnlineCounter onlineCounter;
+  private UserLoginRecordService userLoginRecordService;
+  // private BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
   // 获取一个用户信息
   @GetMapping(value = "/getUser")
@@ -99,8 +100,16 @@ public class UserController {
     } catch (Exception ex) {
       throw ex;
     }
+    userLoginRecordService.userLogin(userService.getOneUserByUserName(authRequest.getUserName()).getUserId());
     return jwtUtil.generateToken(authRequest.getUserName());
   }
+
+  @RequestMapping(value = "/logout")
+  public void userLogout(@RequestParam("userId")Integer userId, @RequestParam("type")Integer type) {
+    // Type: 1 代表正常退出， 2 代表系统IDLE踢出
+    userLoginRecordService.userLogout(userId, type);
+  }
+
 
   // 删除一个指定用户
   @RequestMapping(value = "/deleteUser")
@@ -114,13 +123,6 @@ public class UserController {
   public @ResponseBody User addExp(@RequestParam("userId") Integer userId, @RequestParam("exp") Integer exp) {
     System.out.println("Class: UserController Method: addExp Param: userId = " + userId + " exp = " + exp);
     return userService.addExp(userId, exp);
-  }
-
-  // 获取当前在线人数
-  @RequestMapping(value = "/getOnlineCount")
-  public int getRealOnlineCount(){
-    Integer onlines = onlineCounter.getOnlineCount();
-    return onlines;
   }
 
 

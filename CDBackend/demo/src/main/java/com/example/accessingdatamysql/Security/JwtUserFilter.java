@@ -1,5 +1,8 @@
 package com.example.accessingdatamysql.Security;
 
+import com.example.accessingdatamysql.service.UserLoginRecordService;
+import com.example.accessingdatamysql.serviceimpl.UserLoginRecordServiceImpl;
+import com.example.accessingdatamysql.serviceimpl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,8 +26,11 @@ public class JwtUserFilter extends OncePerRequestFilter {
     @Autowired
     private JwtUtil jwtUtil;
     @Autowired
-    private UserDetailsServiceImpl service;
-
+    private UserDetailsServiceImpl userDetailsService;
+    @Autowired
+    private UserLoginRecordServiceImpl userLoginRecordService;
+    @Autowired
+    private UserServiceImpl userService;
     @Autowired
     private OnlineCounter onlineCounter;
 
@@ -33,21 +39,28 @@ public class JwtUserFilter extends OncePerRequestFilter {
             FilterChain filterChain) throws ServletException, IOException {
         // 从request中提取出Authorization Header
         String authorizationHeader = httpServletRequest.getHeader(HEADER_STRING);
-
+//        System.out.println("In doFilter");
         String token = null;
         String userName = null;
         // 如果Authorization Header不为空且有Bearer作为开头
+//        System.out.println(authorizationHeader);
         if (authorizationHeader != null && authorizationHeader.startsWith(TOKEN_PREFIX)) {
             token = authorizationHeader.substring(7); // 获取token
+//            System.out.println("In parse branch1");
             userName = jwtUtil.extractUsername(token); // 调用jwtUtil来从token中解析出用户名
+//            System.out.println("In parse branch2");
         }
+//        else{
+//            System.out.println("In parse branch3");
+//        }
+//        System.out.println("After parse");
         // 如果解析成功
         if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             // 调用UserDetailsServiceImpl从repository中找出该用户
-            UserDetails userDetails = service.loadUserByUsername(userName);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
             // 核实token与该用户名再一次重新生成的token是否吻合
             if (jwtUtil.validateToken(token, userDetails)) {
-
+//                System.out.println("Logged in");
                 onlineCounter.insertToken(token);
 
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
@@ -55,6 +68,9 @@ public class JwtUserFilter extends OncePerRequestFilter {
                 usernamePasswordAuthenticationToken
                         .setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+            }else{
+//                System.out.println("Logged out");
+//                userLoginRecordService.userLogout(userService.getOneUserByUserName(userName).getUserId(),2);
             }
         }
         filterChain.doFilter(httpServletRequest, httpServletResponse);

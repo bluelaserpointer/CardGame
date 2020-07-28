@@ -21,7 +21,7 @@ public class UserLoginRecordDaoImpl implements UserLoginRecordDao {
     }
 
     public void userLogout(Integer userId, Integer type){
-        UserLoginRecord userLoginRecord = userLoginRecordRepository.findUserLoginRecordByUserIdEqualsAndLogoutTimeIsNullOrderByUserLoginRecord(userId);
+        UserLoginRecord userLoginRecord = userLoginRecordRepository.findUserLoginRecordByUserIdEqualsAndLogoutTimeIsNullOrderByUserLoginRecordIdDesc(userId);
         userLoginRecord.setUserLoginRecord(type);
         userLoginRecordRepository.save(userLoginRecord);
     }
