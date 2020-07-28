@@ -33,6 +33,6 @@ public class MapPageTest {
     public void uiCreateTest() {
         onView(withId(R.id.return_button)).check(matches(isDisplayed()));
         onView(withId(R.id.chapterList)).check(matches(isDisplayed()));
-        onView(withId(R.id.mapSelector)).check(matches(isDisplayed()));
+        onView(withId(R.id.mapContent)).check(matches(isDisplayed()));
     }
 }

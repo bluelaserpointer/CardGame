@@ -20,4 +20,7 @@ public class Urls {
     public static String getAllChapters() {
         return "chapter/getAllChapters";
     }
+    public static String uploadCrashReport() {
+        return "crashReports/add";
+    }
 }

@@ -9,14 +9,15 @@ import android.os.Looper;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.example.myapplicationtest1.utils.Urls;
 import com.example.myapplicationtest1.utils.Utils;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -121,6 +122,14 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         //saveErrorMessages(e);
         final JSONObject jsonObject = new JSONObject(mMessage);
         System.out.println("CrashHandler: Made a crash report: " + jsonObject.toString());
+        final JSONObject report = new JSONObject();
+        try {
+            report.accumulate("content", jsonObject.toString());
+        } catch (JSONException e2) {
+            e2.printStackTrace();
+            return false;
+        }
+        HttpClient.doPostShort(Urls.uploadCrashReport(), report.toString());
         return true;
     }
 
