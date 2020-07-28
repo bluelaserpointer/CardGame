@@ -17,11 +17,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.servlet.SpringBootWebSecurityConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.SpringSecurityCoreVersion;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -128,7 +126,7 @@ public class ActivityControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
         System.out.println(result.getResponse().getContentAsString());
 
-        System.out.println(result.getResponse().getContentAsString());
+        // System.out.println(result.getResponse().getContentAsString());
         String json = result.getResponse().getContentAsString();
         activity = JSON.parseObject(json, Activity.class);
         return activity;

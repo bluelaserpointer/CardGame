@@ -15,6 +15,12 @@ public class CardDetails {
     // 卡牌短描述
     private String shortDescription;
 
+    public CardDetails() {
+        // this.cardImg = cardImg;
+        // this.shortDescription = shortDescription;
+        // this.cardDescription = cardDescription;
+    }
+
     public CardDetails(Integer cardId, String cardImg, String shortDescription, String cardDescription) {
         this.cardId = cardId;
         this.cardImg = cardImg;
