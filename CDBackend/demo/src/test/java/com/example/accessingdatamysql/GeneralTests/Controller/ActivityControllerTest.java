@@ -3,6 +3,7 @@ package com.example.accessingdatamysql.GeneralTests.Controller;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.controller.ActivityController;
 import com.example.accessingdatamysql.controller.UserController;
 import com.example.accessingdatamysql.entity.Activity;
@@ -126,6 +127,10 @@ public class ActivityControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE).content(body).header("Authorization", token))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
         System.out.println(result.getResponse().getContentAsString());
+
+        System.out.println(result.getResponse().getContentAsString());
+        String json = result.getResponse().getContentAsString();
+        activity = JSON.parseObject(json, Activity.class);
         return activity;
     }
 
@@ -134,8 +139,10 @@ public class ActivityControllerTest {
     @Rollback(value = true)
     @DisplayName("File: ActivityController Method: findActivityByActivityId")
     public void findActivityByActivityId() throws Exception {
+        Activity addedActivity = addActivityBeforeTest();
         MvcResult result = mockMvc
-                .perform(get("/activity/getActivity?activityId=5").contentType(MediaType.APPLICATION_JSON_VALUE))
+                .perform(get("/activity/getActivity?activityId=" + addedActivity.getActivityId())
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
         System.out.println(result.getResponse().getContentAsString());
     }
@@ -162,7 +169,8 @@ public class ActivityControllerTest {
                 .perform(MockMvcRequestBuilders.post("/activity/addActivity")
                         .contentType(MediaType.APPLICATION_JSON_VALUE).content(body).header("Authorization", token))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
-        System.out.println(result.getResponse().getContentAsString());
+        // activity.setActivityId();
+
     }
 
     @Test
@@ -170,6 +178,7 @@ public class ActivityControllerTest {
     @Rollback(value = true)
     @DisplayName("File: ActivityController Method: updateActivity")
     public void updateActivity() throws Exception {
+        Activity addedActivity = addActivityBeforeTest();
         String token = getTOKEN();
         Timestamp start = new Timestamp(System.currentTimeMillis());
         Activity activity = new Activity("addNewActivity", "addNewActivity", start);
@@ -177,7 +186,7 @@ public class ActivityControllerTest {
         activityDetails.setActivityDescription("addNewActivity");
         activityDetails.setActivityImg("addNewActivity");
         activity.setActivityDetails(activityDetails);
-        activity.setActivityId(5);
+        activity.setActivityId(addedActivity.getActivityId());
 
         String body = JSON.toJSONString(activity);
         MvcResult result = mockMvc
@@ -203,9 +212,10 @@ public class ActivityControllerTest {
     @Rollback(value = true)
     @DisplayName("File: ActivityController Method: deleteActivities")
     public void deleteActivities() throws Exception {
+        Activity addedActivity = addActivityBeforeTest();
         MvcResult result = mockMvc
-                .perform(get("/activity/deleteActivities?activityIds=5").contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .header("Authorization", getTOKEN()))
+                .perform(get("/activity/deleteActivities?activityIds=" + addedActivity.getActivityId())
+                        .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", getTOKEN()))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
         System.out.println(result.getResponse().getContentAsString());
     }
@@ -227,9 +237,10 @@ public class ActivityControllerTest {
     @Rollback(value = true)
     @DisplayName("File: ActivityController Method: deleteActivity")
     public void deleteActivity() throws Exception {
+        Activity addedActivity = addActivityBeforeTest();
         MvcResult result = mockMvc
-                .perform(get("/activity/deleteActivity?activityId=5").contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .header("Authorization", getTOKEN()))
+                .perform(get("/activity/deleteActivity?activityId=" + addedActivity.getActivityId())
+                        .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", getTOKEN()))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
         System.out.println(result.getResponse().getContentAsString());
     }
