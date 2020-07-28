@@ -111,6 +111,7 @@ public class OwnCardDaoImpl implements OwnCardDao {
         return getAllOwnCards();
     }
 
+    // 计算更新剩余点数有多少
     @Override
     public Integer CaluculateLeftPoints(OwnCard ownCard) {
         ownCard.setLeftPoints(ownCard.getEnhancePoint() - ownCard.getEnhanceAttack() - ownCard.getEnhanceAttackRange()
