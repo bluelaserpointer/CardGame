@@ -13,6 +13,9 @@ public class ActivityDetails {
     // 活动描述
     private String activityDescription;
 
+    public ActivityDetails() {
+    }
+
     public ActivityDetails(Integer activityId, String activityImg, String activityDescription) {
         this.activityId = activityId;
         this.activityImg = activityImg;
