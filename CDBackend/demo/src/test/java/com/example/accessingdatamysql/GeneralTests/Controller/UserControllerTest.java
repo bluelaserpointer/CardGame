@@ -1,176 +1,279 @@
-// package com.example.accessingdatamysql.GeneralTests.Controller;
+package com.example.accessingdatamysql.GeneralTests.Controller;
 
-// import com.example.accessingdatamysql.UnitTestDemoApplicationTests;
-// import com.example.accessingdatamysql.controller.UserController;
+import com.alibaba.fastjson.JSON;
+import com.example.accessingdatamysql.UnitTestDemoApplicationTests;
+import com.example.accessingdatamysql.controller.UserController;
+import com.example.accessingdatamysql.entity.AuthRequest;
+import com.example.accessingdatamysql.entity.User;
 
-// import org.junit.Test;
-// import org.junit.runner.RunWith;
-// import
-// org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-// import org.springframework.boot.test.context.SpringBootTest;
-// import org.springframework.test.web.servlet.MockMvc;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.servlet.MockMvc;
 
-// import org.junit.Before;
-// import org.junit.jupiter.api.AfterAll;
-// import org.junit.jupiter.api.AfterEach;
-// import org.junit.jupiter.api.DisplayName;
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.http.MediaType;
-// import org.springframework.test.annotation.Rollback;
-// import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-// import org.springframework.test.web.servlet.MvcResult;
-// import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-// import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-// import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-// import org.springframework.transaction.annotation.Transactional;
+import org.junit.Before;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayName;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
 
-// import static
-// org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-// import static
-// org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-// import static
-// org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-// import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.assertj.core.api.Assertions.assertThat;
 
-// // @WebMvcTest(UserController.class)
-// @RunWith(SpringJUnit4ClassRunner.class)
-// @SpringBootTest
-// @AutoConfigureMockMvc
-// public class UserControllerTest extends UnitTestDemoApplicationTests {
+// @WebMvcTest(UserController.class)
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest
+@AutoConfigureMockMvc
+public class UserControllerTest extends UnitTestDemoApplicationTests {
 
-// @Test
-// public void contextLoads() {
-// assertThat(userController).isNotNull();
-// }
+    // @Test
+    // public void contextLoads() {
+    // assertThat(userController).isNotNull();
+    // }
 
-// private MockMvc mockMvc;
+    // private MockMvc mockMvc;
 
-// @Autowired
-// private UserController userController;
+    // @Autowired
+    // private UserController userController;
 
-// @Before
-// public void setUp() {
-// mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
-// }
+    // @Before
+    // public void setUp() {
+    // mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
+    // }
 
-// @AfterEach
-// void tearDown() {
+    @Autowired
+    private WebApplicationContext context;
 
-// }
+    private MockMvc mockMvc;
 
-// @AfterAll
-// static void tearDownAll() {
-// }
+    private String TOKEN;
 
-// // 测试获取单个userId（需要在数据库中存在userId为1的用户）
-// @Test
-// @Transactional
-// @Rollback(value = true)
-// @DisplayName("File: UserController Method: findUserByUserId")
-// public void findUserByUserId() throws Exception {
-// MvcResult result = mockMvc
-// .perform(get("/user/getUser?userId=1").contentType(MediaType.APPLICATION_JSON_VALUE))
-// .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
-// .andReturn();
-// System.out.println(result.getResponse().getContentAsString());
-// }
+    @Test
+    @DisplayName("File: cardController Method: contextLoads")
+    public void contextLoads() {
+        // assertThat(cardController).isNotNull();
+    }
 
-// // 测试添加一个新用户
-// @Test
-// @Transactional
-// @Rollback(value = true)
-// @DisplayName("File: UserController Method: addNewUser")
-// public void addNewUser() throws Exception {
-// // User testUser = new User("add2","add2","add2","add2");
-// MvcResult result = mockMvc
-// .perform(get("/user/addUser?userName=add2&email=add2&password=add2&phoneNumber=add2")
-// .contentType(MediaType.APPLICATION_JSON_VALUE))
-// .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
-// System.out.println(result.getResponse().getContentAsString());
-// }
+    @Before
+    public void setUp() throws Exception {
+        mockMvc = MockMvcBuilders.webAppContextSetup(context).apply(SecurityMockMvcConfigurers.springSecurity())
+                .build();
+    }
 
-// // 测试更新一个用户
-// @Test
-// @Transactional
-// @Rollback(value = true)
-// @DisplayName("File: UserController Method: updateUser")
-// public void updateUser() throws Exception {
-// MvcResult result = mockMvc.perform(get(
-// "/user/updateUser?userId=1&userName=add3&email=add3&password=add3&phoneNumber=add3&credits=1000&access=1&level=10&curExpPoint=10&stamina=5&money=99&grade=10&engKnowledge=5&mathKnowledge=100&chiKnowledge=2")
-// .contentType(MediaType.APPLICATION_JSON_VALUE))
-// .andExpect(status().isOk()).andExpect(jsonPath("$.level").value("10"))
-// .andDo(MockMvcResultHandlers.print()).andReturn();
-// System.out.println(result.getResponse().getContentAsString());
-// }
+    @AfterEach
+    void tearDown() {
 
-// // 测试获取所有用户
-// @Test
-// @Transactional
-// @Rollback(value = true)
-// @DisplayName("File: UserController Method: getAllUsers")
-// public void getAllUsers() throws Exception {
-// MvcResult result = mockMvc
-// .perform(get("/user/getAllUsers").contentType(MediaType.APPLICATION_JSON_VALUE))
-// .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
-// System.out.println(result.getResponse().getContentAsString());
-// }
+    }
 
-// @Test
-// @Transactional
-// @Rollback(value = true)
-// @DisplayName("File: UserController Method: identifyUser")
-// public void identifyUser() throws Exception {
-// MvcResult result = mockMvc
-// .perform(get("/user/identifyUser?userName=identifyUserTrue&password=identifyUserTrue")
-// .contentType(MediaType.APPLICATION_JSON_VALUE))
-// .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
-// System.out.println(result.getResponse().getContentAsString());
-// }
+    @AfterAll
+    static void tearDownAll() {
+    }
 
-// @Test
-// @Transactional
-// @Rollback(value = true)
-// @DisplayName("File: UserController Method: addExp")
-// public void addExp() throws Exception {
-// MvcResult result = mockMvc
-// .perform(get("/user/addExp?userId=1&exp=100")
-// .contentType(MediaType.APPLICATION_JSON_VALUE))
-// .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
-// System.out.println(result.getResponse().getContentAsString());
-// }
+    public String getTOKEN() throws Exception {
+        System.out.println(TOKEN);
+        AuthRequest user = new AuthRequest();
+        user.setPassword("postTest");
+        user.setUserName("postTest");
 
-// @Test
-// @Transactional
-// @Rollback(value = true)
-// @DisplayName("File: UserController Method: deleteUsers")
-// public void deleteUsers() throws Exception {
-// MvcResult result = mockMvc
-// .perform(get("/user/deleteUsers?userIds=1")
-// .contentType(MediaType.APPLICATION_JSON_VALUE))
-// .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
-// System.out.println(result.getResponse().getContentAsString());
-// }
+        String body = JSON.toJSONString(user);
+        System.out.println(body);
+        MvcResult result = mockMvc
+                .perform(MockMvcRequestBuilders.post("http://localhost:8080/user/login")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE).content(body))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+        TOKEN = result.getResponse().getContentAsString();
+        TOKEN = "Bearer " + TOKEN;
+        System.out.println(TOKEN);
+        return TOKEN;
+    }
 
-// @Test
-// @Transactional
-// @Rollback(value = true)
-// @DisplayName("File: UserController Method: deleteUser")
-// public void deleteUser() throws Exception {
-// MvcResult result = mockMvc
-// .perform(get("/user/deleteUser?userId=2").contentType(MediaType.APPLICATION_JSON_VALUE))
-// .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
-// System.out.println(result.getResponse().getContentAsString());
-// }
+    public User addUserBeforeTest() throws Exception {
+        String token = getTOKEN();
+        User User = new User("addUserBeforeTest", "addUserBeforeTest", "addUserBeforeTest", "addUserBeforeTest",
+                "addUserBeforeTest");
 
-// @Test
-// @Transactional
-// @Rollback(value = true)
-// @DisplayName("File: UserController Method: deleteAll")
-// public void deleteAll() throws Exception {
-// MvcResult result = mockMvc
-// .perform(get("/user/deleteAllUsers").contentType(MediaType.APPLICATION_JSON_VALUE))
-// .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
-// System.out.println(result.getResponse().getContentAsString());
-// }
+        String body = JSON.toJSONString(User);
 
-// }
+        // System.out.println(body);
+
+        MvcResult result = mockMvc
+                .perform(MockMvcRequestBuilders.post("/user/register").contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(body).header("Authorization", token))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
+        System.out.println(result.getResponse().getContentAsString());
+
+        // System.out.println(result.getResponse().getContentAsString());
+        String json = result.getResponse().getContentAsString();
+        User = JSON.parseObject(json, User.class);
+        return User;
+    }
+
+    // 测试获取单个userId（需要在数据库中存在userId为1的用户）
+    @Test
+    @Transactional
+    @Rollback(value = true)
+    @DisplayName("File: UserController Method: findUserByUserId")
+    public void findUserByUserId() throws Exception {
+        String token = getTOKEN();
+        User addedUser = addUserBeforeTest();
+        MvcResult result = mockMvc
+                .perform(get("/user/getUser?userId=" + addedUser.getUserId())
+                        .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
+        System.out.println(result.getResponse().getContentAsString());
+    }
+
+    // 测试添加一个新用户
+    @Test
+    @Transactional
+    @Rollback(value = true)
+    @DisplayName("File: UserController Method: addNewUser")
+    public void addNewUser() throws Exception {
+        String token = getTOKEN();
+        User User = new User("addUserBeforeTest", "addUserBeforeTest", "addUserBeforeTest", "addUserBeforeTest",
+                "addUserBeforeTest");
+
+        String body = JSON.toJSONString(User);
+
+        // System.out.println(body);
+
+        MvcResult result = mockMvc
+                .perform(MockMvcRequestBuilders.post("/user/register").contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(body).header("Authorization", token))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
+        System.out.println(result.getResponse().getContentAsString());
+    }
+
+    // 测试更新一个用户
+    @Test
+    @Transactional
+    @Rollback(value = true)
+    @DisplayName("File: UserController Method: updateUser")
+    public void updateUser() throws Exception {
+        String token = getTOKEN();
+        User addedUser = addUserBeforeTest();
+
+        addedUser.setUserName("updateUser");
+
+        String body = JSON.toJSONString(addedUser);
+
+        MvcResult result = mockMvc.perform(get("/user/updateUser").contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(body).header("Authorization", token)).andDo(MockMvcResultHandlers.print()).andReturn();
+        System.out.println(result.getResponse().getContentAsString());
+    }
+
+    // 测试获取所有用户
+    @Test
+    @Transactional
+    @Rollback(value = true)
+    @DisplayName("File: UserController Method: getAllUsers")
+    public void getAllUsers() throws Exception {
+        String token = getTOKEN();
+        MvcResult result = mockMvc.perform(
+                get("/user/getAllUsers").contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
+                .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
+        System.out.println(result.getResponse().getContentAsString());
+    }
+
+    @Test
+    @Transactional
+    @Rollback(value = true)
+    @DisplayName("File: UserController Method: confirmDelete")
+    public void confirmDelete() throws Exception {
+        String token = getTOKEN();
+        User addedUser = addUserBeforeTest();
+        MvcResult result = mockMvc.perform(
+                get("/user/confirmDelete?userName=" + addedUser.getUserName() + "&password=" + addedUser.getPassword())
+                        .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
+                .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
+        System.out.println(result.getResponse().getContentAsString());
+    }
+
+    @Test
+    @Transactional
+    @Rollback(value = true)
+    @DisplayName("File: UserController Method: login")
+    public void login() throws Exception {
+        String token = getTOKEN();
+        AuthRequest user = new AuthRequest();
+        user.setPassword("postTest");
+        user.setUserName("postTest");
+
+        String body = JSON.toJSONString(user);
+        System.out.println(body);
+        MvcResult result = mockMvc
+                .perform(MockMvcRequestBuilders.post("http://localhost:8080/user/login")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE).content(body).header("Authorization", token))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+    }
+
+    @Test
+    @Transactional
+    @Rollback(value = true)
+    @DisplayName("File: UserController Method: addExp")
+    public void addExp() throws Exception {
+        String token = getTOKEN();
+        User addedUser = addUserBeforeTest();
+        MvcResult result = mockMvc
+                .perform(get("/user/addExp?userId=" + addedUser.getUserId() + "&exp=1")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
+                .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
+        System.out.println(result.getResponse().getContentAsString());
+    }
+
+    @Test
+    @Transactional
+    @Rollback(value = true)
+    @DisplayName("File: UserController Method: deleteUsers")
+    public void deleteUsers() throws Exception {
+        String token = getTOKEN();
+        User addedUser = addUserBeforeTest();
+        MvcResult result = mockMvc
+                .perform(get("/user/deleteUsers?userIds=" + addedUser.getUserId())
+                        .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
+                .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
+        System.out.println(result.getResponse().getContentAsString());
+    }
+
+    @Test
+    @Transactional
+    @Rollback(value = true)
+    @DisplayName("File: UserController Method: deleteUser")
+    public void deleteUser() throws Exception {
+        String token = getTOKEN();
+        User addedUser = addUserBeforeTest();
+        MvcResult result = mockMvc
+                .perform(get("/user/deleteUser?userId=" + addedUser.getUserId())
+                        .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
+                .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
+        System.out.println(result.getResponse().getContentAsString());
+    }
+
+    @Test
+    @Transactional
+    @Rollback(value = true)
+    @DisplayName("File: UserController Method: deleteAll")
+    public void deleteAll() throws Exception {
+        String token = getTOKEN();
+        MvcResult result = mockMvc
+                .perform(get("/user/deleteAllUsers").contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .header("Authorization", token))
+                .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
+        System.out.println(result.getResponse().getContentAsString());
+    }
+
+}

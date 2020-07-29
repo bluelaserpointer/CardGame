@@ -178,3 +178,15 @@ Edward Raymond He 518030990022
 
 1. 由于调试过程已经超了两天，所以单元测试中封装 axios 的bug目前先暂停
 2. e2e测试的 code coverage 网址中未覆盖 .vue文件
+
+### 2020.07.28
+
+#### Finished: 
+
+1. 修改了 OwnCard 在前端的控制面板
+2. 添加了在线人数统计、登入登出日志统计
+3. 新增了基础实体类的数据生成SQL语句
+
+#### Currently working on:
+
+1. 在写更多实体类的数据生成SQL
