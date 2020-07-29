@@ -8,6 +8,7 @@ import com.example.accessingdatamysql.entity.AuthRequest;
 import com.example.accessingdatamysql.entity.Card;
 import com.example.accessingdatamysql.entity.CardDetails;
 import com.example.accessingdatamysql.entity.OwnCard;
+import com.example.accessingdatamysql.entity.User;
 import com.example.accessingdatamysql.entity.OwnCard;
 
 import org.junit.Before;
@@ -100,11 +101,14 @@ public class OwnCardControllerTest {
 
     public OwnCard addOwnCardBeforeTest() throws Exception {
         String token = getTOKEN();
-
+        User addedUser = addUserBeforeTest();
+        Card addedCard = addCardBeforeTest();
         // System.out.println(body);
 
         MvcResult result = mockMvc
-                .perform(MockMvcRequestBuilders.post("/ownItem/addOwnCard?userId=1&cardId=1")
+                .perform(MockMvcRequestBuilders
+                        .post("/ownCard/addOwnCard?userId=" + addedUser.getUserId() + "&cardId="
+                                + addedCard.getCardId())
                         .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
         System.out.println(result.getResponse().getContentAsString());
@@ -133,6 +137,27 @@ public class OwnCardControllerTest {
         String json = result.getResponse().getContentAsString();
         card = JSON.parseObject(json, Card.class);
         return card;
+    }
+
+    public User addUserBeforeTest() throws Exception {
+        String token = getTOKEN();
+        User User = new User("addUserBeforeTest", "addUserBeforeTest", "addUserBeforeTest", "addUserBeforeTest",
+                "addUserBeforeTest");
+
+        String body = JSON.toJSONString(User);
+
+        // System.out.println(body);
+
+        MvcResult result = mockMvc
+                .perform(MockMvcRequestBuilders.post("/user/register").contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(body).header("Authorization", token))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
+        System.out.println(result.getResponse().getContentAsString());
+
+        // System.out.println(result.getResponse().getContentAsString());
+        String json = result.getResponse().getContentAsString();
+        User = JSON.parseObject(json, User.class);
+        return User;
     }
 
     @Test
@@ -166,11 +191,14 @@ public class OwnCardControllerTest {
     @DisplayName("File: OwnCardController Method: addNewOwnCard")
     public void addNewOwnCard() throws Exception {
         String token = getTOKEN();
-
+        User addedUser = addUserBeforeTest();
+        Card addedCard = addCardBeforeTest();
         // System.out.println(body);
 
         MvcResult result = mockMvc
-                .perform(MockMvcRequestBuilders.post("/ownCard/addOwnCard?userId=1&cardId=1")
+                .perform(MockMvcRequestBuilders
+                        .post("/ownCard/addOwnCard?userId=" + addedUser.getUserId() + "&cardId="
+                                + addedCard.getCardId())
                         .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
         System.out.println(result.getResponse().getContentAsString());
@@ -185,10 +213,9 @@ public class OwnCardControllerTest {
         OwnCard addedOwnCard = addOwnCardBeforeTest();
 
         Timestamp start = new Timestamp(System.currentTimeMillis());
-        OwnCard OwnCard = new OwnCard(2, 2, start);
-        OwnCard.setOwnCardId(addedOwnCard.getOwnCardId());
+        addedOwnCard.setAccquireDate(start);
 
-        String body = JSON.toJSONString(OwnCard);
+        String body = JSON.toJSONString(addedOwnCard);
         MvcResult result = mockMvc
                 .perform(get("/ownCard/updateOwnCard").contentType(MediaType.APPLICATION_JSON_VALUE).content(body)
                         .header("Authorization", token))
@@ -199,15 +226,32 @@ public class OwnCardControllerTest {
     @Test
     @Transactional
     @Rollback(value = true)
-    @DisplayName("File: OwnCardController Method: cardLevelUp")
-    public void cardLevelUp() throws Exception {
+    @DisplayName("File: OwnCardController Method: addExp")
+    public void addExp() throws Exception {
         String token = getTOKEN();
-        MvcResult result = mockMvc
-                .perform(get("/ownCard/cardLevelUp?userId=12&cardId=10").contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .header("Authorization", token))
+        OwnCard OwnCard = addOwnCardBeforeTest();
+        MvcResult result = mockMvc.perform(
+                get("/ownCard/addExp?userId=" + OwnCard.getUserId() + "&cardId=" + OwnCard.getCardId() + "&exp=1")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
         System.out.println(result.getResponse().getContentAsString());
     }
+
+    // @Test
+    // @Transactional
+    // @Rollback(value = true)
+    // @DisplayName("File: OwnCardController Method: cardLevelUp")
+    // public void cardLevelUp() throws Exception {
+    // String token = getTOKEN();
+    // OwnCard addedOwnCard = addOwnCardBeforeTest();
+    // MvcResult result = mockMvc
+    // .perform(get("/ownCard/cardLevelUp?userId=" + addedOwnCard.getUserId()+
+    // "&cardId=" + addedOwnCard.getCardId()
+    // ).contentType(MediaType.APPLICATION_JSON_VALUE)
+    // .header("Authorization", token))
+    // .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
+    // System.out.println(result.getResponse().getContentAsString());
+    // }
 
     // @Test
     // @Transactional
@@ -229,7 +273,9 @@ public class OwnCardControllerTest {
     @DisplayName("File: OwnCardController Method: getAllOwnCards")
     public void getAllOwnCards() throws Exception {
         String token = getTOKEN();
-        MvcResult result = mockMvc.perform(get("/ownCard/getAllOwnCards").contentType(MediaType.APPLICATION_JSON_VALUE))
+        MvcResult result = mockMvc
+                .perform(get("/ownCard/getAllOwnCards").contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .header("Authorization", token))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
         System.out.println(result.getResponse().getContentAsString());
     }
@@ -240,8 +286,10 @@ public class OwnCardControllerTest {
     @DisplayName("File: OwnCardController Method: getAllOwnCardsByUserId")
     public void getAllOwnCardsByUserId() throws Exception {
         String token = getTOKEN();
+        OwnCard addedOwnCard = addOwnCardBeforeTest();
         MvcResult result = mockMvc
-                .perform(get("/ownCard/getAllOwnCardsByUserId?userId=12").contentType(MediaType.APPLICATION_JSON_VALUE))
+                .perform(get("/ownCard/getAllOwnCardsByUserId?userId=" + addedOwnCard.getUserId())
+                        .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
         System.out.println(result.getResponse().getContentAsString());
     }
@@ -254,7 +302,8 @@ public class OwnCardControllerTest {
         String token = getTOKEN();
         OwnCard addedOwnCard = addOwnCardBeforeTest();
         MvcResult result = mockMvc
-                .perform(get("/ownCard/deleteOwnCards?ownCardIds=88").contentType(MediaType.APPLICATION_JSON_VALUE))
+                .perform(get("/ownCard/deleteOwnCards?ownCardIds=" + addedOwnCard.getOwnCardId())
+                        .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
         System.out.println(result.getResponse().getContentAsString());
     }
@@ -266,7 +315,8 @@ public class OwnCardControllerTest {
     public void deleteAllOwnCards() throws Exception {
         String token = getTOKEN();
         MvcResult result = mockMvc
-                .perform(get("/ownCard/deleteAllOwnCards").contentType(MediaType.APPLICATION_JSON_VALUE))
+                .perform(get("/ownCard/deleteAllOwnCards").contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .header("Authorization", token))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
         System.out.println(result.getResponse().getContentAsString());
     }
@@ -278,9 +328,9 @@ public class OwnCardControllerTest {
     public void deleteOwnCard() throws Exception {
         String token = getTOKEN();
         OwnCard addedOwnCard = addOwnCardBeforeTest();
-        MvcResult result = mockMvc
-                .perform(
-                        get("/ownCard/deleteOwnCard?userId=12&cardId=10").contentType(MediaType.APPLICATION_JSON_VALUE))
+        MvcResult result = mockMvc.perform(
+                get("/ownCard/deleteOwnCard?userId=" + addedOwnCard.getUserId() + "&cardId=" + addedOwnCard.getCardId())
+                        .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
         System.out.println(result.getResponse().getContentAsString());
     }
