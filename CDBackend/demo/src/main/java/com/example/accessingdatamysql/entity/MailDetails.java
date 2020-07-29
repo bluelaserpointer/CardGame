@@ -13,6 +13,9 @@ public class MailDetails {
     // 邮件描述
     private String mailDescription;
 
+    public MailDetails() {
+    }
+
     public MailDetails(Integer mailId, String mailImg, String mailDescription) {
         this.mailId = mailId;
         this.mailImg = mailImg;

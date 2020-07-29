@@ -13,6 +13,9 @@ public class ItemDetails {
     // 道具描述
     private String itemDescription;
 
+    public ItemDetails() {
+    }
+
     public ItemDetails(Integer itemId, String itemImg, String itemDescription) {
         this.itemId = itemId;
         this.itemImg = itemImg;

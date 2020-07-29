@@ -15,6 +15,9 @@ public class EnemyDetails {
     // 敌人短描述
     private String shortDescription;
 
+    public EnemyDetails() {
+    }
+
     public EnemyDetails(Integer enemyId, String enemyImg, String shortDescription, String enemyDescription) {
         this.enemyId = enemyId;
         this.enemyImg = enemyImg;
