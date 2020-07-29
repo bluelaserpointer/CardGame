@@ -65,21 +65,18 @@ public class ChapterController {
     }
 
     @RequestMapping(value = "/getAllChapters")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<Chapter> getAllChapters() {
         System.out.println("In controller");
         return chapterService.getAllChapters();
     }
 
     @RequestMapping(value = "/getChapterDetailsByChapterAndByPhase")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<ChapterDetails> getChapterDetailsByChapterAndByPhase(@RequestParam("chapterId") Integer chapterId,
             @RequestParam("phaseId") Integer phaseId) {
         return chapterService.getChapterDetailsByChapterAndByPhase(chapterId, phaseId);
     }
 
     @RequestMapping(value = "/getChapterDetailsByChapter")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<ChapterDetails> getChapterDetailsByChapter(@RequestParam("chapterId") Integer chapterId) {
         return chapterService.getChapterDetailsByChapter(chapterId);
     }

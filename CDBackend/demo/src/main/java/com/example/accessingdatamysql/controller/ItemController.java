@@ -40,7 +40,6 @@ public class ItemController {
   }
 
   @RequestMapping(value = "/getAllItems")
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public List<Item> getAllItems() {
     return ItemService.getAllItems();
   }

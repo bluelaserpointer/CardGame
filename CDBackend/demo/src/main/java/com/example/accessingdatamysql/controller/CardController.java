@@ -27,6 +27,7 @@ public class CardController {
   }
 
   @RequestMapping(value = "/addCard")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public @ResponseBody Card addNewCard(@RequestBody Card newCard) {
     return CardService.addNewCard(newCard);
   }
