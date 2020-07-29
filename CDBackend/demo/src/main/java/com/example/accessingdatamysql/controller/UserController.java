@@ -92,7 +92,7 @@ public class UserController {
   // 确认用户身份
   @RequestMapping(value = "/confirmDelete")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public Integer identifyUser(@RequestParam("userName") String userName, @RequestParam("password") String password) {
+  public Integer confirmDelete(@RequestParam("userName") String userName, @RequestParam("password") String password) {
     return userService.identifyUser(userName, password);
   }
 

@@ -1,9 +1,6 @@
 package com.example.accessingdatamysql.GeneralTests.Controller;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.alibaba.fastjson.JSON;
-import com.example.accessingdatamysql.controller.EnemyController;
 import com.example.accessingdatamysql.entity.AuthRequest;
 import com.example.accessingdatamysql.entity.Enemy;
 import com.example.accessingdatamysql.entity.EnemyDetails;
@@ -37,21 +34,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @AutoConfigureMockMvc
 public class EnemyControllerTest {
 
-    private MockMvc mockMvc;
-
-    // @Autowired
-    // private EnemyController enemyController;
-
     @Autowired
     private WebApplicationContext context;
 
-    private String TOKEN;
+    private MockMvc mockMvc;
 
-    // @Test
-    // @DisplayName("File: EnemyController Method: contextLoads")
-    // public void contextLoads() {
-    // assertThat(enemyController).isNotNull();
-    // }
+    private String TOKEN;
 
     @Before
     public void setUp() {
