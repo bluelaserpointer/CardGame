@@ -222,3 +222,39 @@
 明天完成： AWS 部署
 
 ---
+
+### 7 月 29 日
+
+进展： 完成基本单元测试，服务器已安装 mysql 和 mongodb
+
+明天计划：jar 文件传输+java 安装完成服务器部署
+
+1. AWS 部署
+
+- 服务器属性：
+
+  Operating System: Ubuntu 16.04.6 LTS
+
+  Kernel: Linux 4.4.0-1109-aws
+
+  Architecture: x86-64
+
+  root-password:SECARDGAME
+
+* [服务器部署 Document](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/managing-users.html)
+
+* [服务器部署 Dashboard](https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#SecurityGroups:)
+
+* [AWS Educate](https://www.awseducate.com/student/s/awssite)
+
+* [服务器安装 mysql](https://www.linuxidc.com/Linux/2017-06/144805.htm)
+
+- [安装 mongodb](https://blog.csdn.net/zn505119020/article/details/81331808)
+
+  启动 mongodb：
+
+      cd /usr/local/mongodb/bin
+
+      ./mongod -f mongodb.conf
+
+      ./mongo
