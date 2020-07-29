@@ -39,7 +39,6 @@ public class MissionController {
   }
 
   @RequestMapping(value = "/getAllMissions")
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public List<Mission> getAllMissions() {
     return MissionService.getAllMissions();
   }

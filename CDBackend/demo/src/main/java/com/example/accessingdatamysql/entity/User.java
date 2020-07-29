@@ -48,6 +48,7 @@ public class User {
     // 中文知识点
     private Integer chiKnowledge;
     // Identity 要写成 "ROLE_ADMIN","ROLE_USER"
+    public static final String ROLE_ADMIN = "ROLE_ADMIN", ROLE_USER = "ROLE_USER";
     private String identity;
 
     public User() {

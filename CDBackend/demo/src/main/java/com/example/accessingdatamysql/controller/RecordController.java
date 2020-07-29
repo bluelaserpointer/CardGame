@@ -22,8 +22,6 @@ import java.util.Map;
 @RestController // This means that this class is a Controller
 @RequestMapping(path = "/record") // This means URL's start with /demo (after Application path)
 public class RecordController {
-    @Autowired // This means to get the bean called OwnItemRepository
-    private PveRecordService pveRecordService;
 
     @Autowired // This means to get the bean called OwnItemRepository
     private OnlineCountRecordService onlineCountRecordService;
@@ -33,23 +31,6 @@ public class RecordController {
 
     @Autowired
     private OnlineCounter onlineCounter;
-
-    @RequestMapping(value = "/pveRecord/getAllPveRecords")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public List<PveRecord> getAllPveRecords() {
-        return pveRecordService.getAllPveRecords();
-    }
-
-    @RequestMapping(value = "/pveRecord/getPveRecordStatistics")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Map<String, Integer> getPveRecordStatistics() {
-        return pveRecordService.getPveRecordStatistics();
-    }
-
-    @RequestMapping(value = "/pveRecord/getAllPveRecordsByUser")
-    public List<PveRecord> getAllPveRecordsByUser(@RequestParam("userId") Integer userId) {
-        return pveRecordService.getAllPveRecordsByUser(userId);
-    }
 
     @RequestMapping(value = "/onlineCountRecord/getAllOnlineCountRecords")
     @PreAuthorize("hasRole('ROLE_ADMIN')")

@@ -27,11 +27,13 @@ public class OwnItemController {
   }
 
   @RequestMapping(value = "/addOwnItem")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public @ResponseBody OwnItem addNewOwnItem(@RequestBody OwnItem newOwnItem) {
     return OwnItemService.addNewOwnItem(newOwnItem);
   }
 
   @RequestMapping(value = "/updateOwnItem")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public @ResponseBody OwnItem updateOwnItem(@RequestBody OwnItem updateOwnItem) {
     return OwnItemService.updateOwnItem(updateOwnItem);
   }
@@ -43,6 +45,7 @@ public class OwnItemController {
   }
 
   @RequestMapping(value = "/deleteOwnItems")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public String deleteOwnItems(@RequestParam("ownItemIds") List<Integer> ownItemIds) {
     return OwnItemService.deleteOwnItems(ownItemIds);
   }
@@ -54,6 +57,7 @@ public class OwnItemController {
   }
 
   @RequestMapping(value = "/deleteOwnItem")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public List<OwnItem> deleteOwnItem(@RequestParam("userId") Integer userId, @RequestParam("itemId") Integer itemId) {
     System.out.println("In controller");
     return OwnItemService.deleteOwnItem(userId, itemId);

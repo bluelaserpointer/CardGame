@@ -59,6 +59,7 @@ public class UserController {
   // 注册用户
   @PostMapping("/register")
   public @ResponseBody User register(@RequestBody User registerUser) {
+    registerUser.setIdentity(User.ROLE_USER);
     return userService.addNewUser(registerUser);
   }
 
@@ -99,12 +100,9 @@ public class UserController {
   // 登录逻辑
   @PostMapping("/login")
   public String identifyUser(@RequestBody AuthRequest authRequest) {
-    try {
-      authenticationManager
-          .authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUserName(), authRequest.getPassword()));
-    } catch (Exception ex) {
-      throw ex;
-    }
+    System.out.println("UserController login: " + authRequest.getUserName() + ", " + authRequest.getPassword());
+    authenticationManager
+        .authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUserName(), authRequest.getPassword()));
     userLoginRecordService.userLogin(userService.getOneUserByUserName(authRequest.getUserName()).getUserId());
     return jwtUtil.generateToken(authRequest.getUserName());
   }
@@ -124,6 +122,7 @@ public class UserController {
 
   // 增加用户经验值(如果累计经验值超过升级所需经验值则升级后再返回user)
   @RequestMapping(value = "/addExp")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public @ResponseBody User addExp(@RequestParam("userId") Integer userId, @RequestParam("exp") Integer exp) {
     System.out.println("Class: UserController Method: addExp Param: userId = " + userId + " exp = " + exp);
     return userService.addExp(userId, exp);
