@@ -14,6 +14,9 @@ public class MissionDetails {
     // 任务描述
     private String missionDescription;
 
+    public MissionDetails() {
+    }
+
     public MissionDetails(Integer missionId, String missionDescription) {
         this.missionId = missionId;
         this.missionDescription = missionDescription;
