@@ -33,7 +33,7 @@ public class CardStoragePageTest {
     @Before
     public void setUp() {
         Utils.setSharedPreference(rule.getActivity());
-        Utils.saveUserInfo("1", "1");
+        Utils.identifyUser("1", "1");
         Utils.saveUserId(0);
     }
 
