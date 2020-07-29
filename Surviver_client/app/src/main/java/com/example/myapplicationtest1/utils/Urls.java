@@ -5,7 +5,7 @@ public class Urls {
     /////////////
     //Users
     /////////////
-    public static String identifyUser() {
+    public static String login() {
         return "user/login";
     }
     public static String getUser() {
@@ -23,6 +23,9 @@ public class Urls {
     public static String getAllOwnCard() {
         return "ownCard/getAllOwnCardsByUserId?userId=" + Utils.getUserId();
     }
+    public static String drawCard(int chi, int mat, int eng) {
+        return "mechanism/drawCard?chi=" + chi + "&mat=" + mat + "&eng=" + eng;
+    }
     /////////////
     //Chapters
     /////////////
@@ -38,7 +41,6 @@ public class Urls {
     public static String uploadCrashReport() {
         return "crashReports/add";
     }
-    //TODO: 以下还未使用，先写在这
     /////////////
     //Records
     /////////////
@@ -48,6 +50,9 @@ public class Urls {
     public static String getAllPveRecords() {
         return "record/pveRecord/getAllPveRecordsByUser?userId=" + Utils.getUserId();
     }
+    public static String getUserLoginRecords() {
+        return "record/userLoginRecord/getUserLoginRecordsByUserId?userId=" + Utils.getUserId();
+    }
     /////////////
     //Activities
     /////////////
@@ -56,5 +61,14 @@ public class Urls {
     }
     public static String getActivity(int activityId) {
         return "activity/getActivity?activityId=" + activityId;
+    }
+    /////////////
+    //Missions
+    /////////////
+    public static String getAllMissions() {
+        return "mission/getAllMissions";
+    }
+    public static String getMission(int missionId) {
+        return "mission/getMission?missionId=" + missionId;
     }
 }
