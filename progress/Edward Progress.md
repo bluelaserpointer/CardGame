@@ -190,3 +190,15 @@ Edward Raymond He 518030990022
 #### Currently working on:
 
 1. 在写更多实体类的数据生成SQL
+
+### 2020.07.29
+
+#### Finished: 
+
+1. 主要在学习Aws部署前端还有本地环境搭建
+2. 完善并测试了SQL数据
+
+#### Currently working on:
+
+1. 继续完善运维端的功能性需求
+2. 继续调试运维端单元测试的异步操作Bug
