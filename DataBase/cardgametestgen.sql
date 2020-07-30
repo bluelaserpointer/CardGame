@@ -407,13 +407,13 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `generateActivity`()
 BEGIN
 	#Routine body goes here...
 	declare i int default 3;
-	declare basic int default 1000000;
+	declare basic int default 10000;
 
 	insert into activity(activity_id, activity_name, type, start)
 			select 1, "SuperActivity True", true, current_timestamp();
 	insert into activity(activity_id, activity_name, type, start)
 			select 2, "SuperActivity False", true, current_timestamp();
-#1000000 
+#10000 
 	while i <= basic do
 		if(i % 2 = 0) then
 			insert into activity(activity_id, activity_name, type, start)
@@ -439,7 +439,7 @@ BEGIN
 	declare i int default 3;
 	declare name varchar(15) default '';
 	declare rarity varchar(10) default 'SSS';
-	declare basic int default 1000000;
+	declare basic int default 10000;
 	
 	insert into card(card_id, attack, attack_range, card_name, cd, defense,
 										health_point, rarity, speed, type)
@@ -448,7 +448,7 @@ BEGIN
 	insert into card(card_id, attack, attack_range, card_name, cd, defense,
 										health_point, rarity, speed, type)
 	select 2, 100, 100, "SuperCard 2", 100, 100, 100, rarity, 60, 2;
-#1000000 
+#10000 
 	while i <= basic do
 
 		set name = LEFT(UUID(), 5);
@@ -520,14 +520,14 @@ BEGIN
 	#Routine body goes here...
 	declare i int default 3;
 	declare name varchar(15) default '';
-	declare basic int default 1000000;
+	declare basic int default 10000;
 
 	insert into item(item_id, item_name, price)
 	select 1, "SuperItem 1", 60;
 
 	insert into item(item_id, item_name, price)
 	select 2, "SuperItem 2", 60;
-#1000000
+#10000
 	while i <= basic do
 
 		set name = LEFT(UUID(), 5);
@@ -553,8 +553,8 @@ BEGIN
 	#Routine body goes here...
 	declare i int default 1;
 	declare j int default 1;
-	declare basic int default 100;
-	declare userBasic int default 1000000;
+	declare basic int default 10;
+	declare userBasic int default 10000;
 
 #1000
 	while i <= basic DO
@@ -674,7 +674,7 @@ BEGIN
 	declare name varchar(15) default '';
 	declare email varchar(20) default '';
 	declare role varchar(12) default 'ROLE_USER';
-	declare basic int default 1000000;
+	declare basic int default 10000;
 
 	insert into user(user_id, access, credits, email, level, password, phone_number, user_name,
 									exp, grade, money, stamina, chi_knowledge, eng_knowledge, math_knowledge, cur_exp_point, identity)
@@ -686,7 +686,7 @@ BEGIN
 	select 2, 1, 50, email, 50, 111111, 18321798666, "SuperUser",
 					100 % i, 4.0, 100 % i, 50 % i, 100 % i, 100 % i, 100 % i, 100 % i, "ROLE_USER";
 
-	#while i <= 1000000 do
+	#while i <= 10000 do
 	while i <= basic do
 		set name = LEFT(UUID(), 5);
 		set name = CONCAT("user", name);

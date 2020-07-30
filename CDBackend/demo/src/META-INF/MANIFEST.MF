@@ -1,0 +1,42 @@
+Manifest-Version: 1.0
+Main-Class: com.example.accessingdatamysql.AccessingDataMysqlApplication
+Class-Path: evo-inflector-1.2.2.jar spring-boot-starter-logging-2.2.6.RE
+ LEASE.jar spring-boot-starter-security-2.2.6.RELEASE.jar mongo-java-dri
+ ver-3.11.2.jar spring-data-jpa-2.2.5.RELEASE.jar byte-buddy-1.10.8.jar 
+ FastInfoset-1.2.16.jar asm-5.0.4.jar aspectjrt-1.9.5.jar spring-securit
+ y-config-5.2.2.RELEASE.jar spring-boot-starter-json-2.2.6.RELEASE.jar b
+ son-3.11.2.jar commons-codec-1.13.jar classmate-1.5.1.jar istack-common
+ s-runtime-3.0.8.jar hibernate-core-5.4.12.Final.jar spring-plugin-core-
+ 2.0.0.RELEASE.jar json-path-2.4.0.jar jandex-2.1.1.Final.jar log4j-api-
+ 2.12.1.jar spring-webmvc-5.2.5.RELEASE.jar jakarta.transaction-api-1.3.
+ 3.jar spring-boot-starter-web-2.2.6.RELEASE.jar spring-boot-starter-dat
+ a-rest-2.2.5.RELEASE.jar jackson-datatype-jdk8-2.10.3.jar spring-boot-s
+ tarter-validation-2.2.6.RELEASE.jar spring-context-5.2.5.RELEASE.jar mo
+ ngodb-driver-3.11.2.jar spring-web-5.2.5.RELEASE.jar stax-ex-1.8.1.jar 
+ jul-to-slf4j-1.7.30.jar hibernate-commons-annotations-5.1.0.Final.jar s
+ pring-boot-2.2.6.RELEASE.jar HikariCP-3.4.2.jar spring-boot-autoconfigu
+ re-2.2.6.RELEASE.jar spring-boot-starter-tomcat-2.2.6.RELEASE.jar sprin
+ g-jcl-5.2.5.RELEASE.jar mysql-connector-java-8.0.19.jar tomcat-embed-el
+ -9.0.33.jar snakeyaml-1.25.jar spring-aspects-5.2.5.RELEASE.jar logback
+ -core-1.2.3.jar spring-orm-5.2.5.RELEASE.jar spring-beans-5.2.5.RELEASE
+ .jar spring-data-rest-webmvc-3.2.6.RELEASE.jar json-smart-2.3.jar logba
+ ck-classic-1.2.3.jar spring-tx-5.2.5.RELEASE.jar hibernate-validator-6.
+ 0.18.Final.jar log4j-to-slf4j-2.12.1.jar spring-security-core-5.2.2.REL
+ EASE.jar jackson-annotations-2.10.3.jar antlr-2.7.7.jar mongodb-driver-
+ core-3.11.2.jar spring-boot-starter-2.2.6.RELEASE.jar java-jwt-3.4.0.ja
+ r accessors-smart-1.2.jar spring-boot-starter-data-mongodb-2.2.5.RELEAS
+ E.jar jjwt-0.9.1.jar jakarta.validation-api-2.0.2.jar jackson-datatype-
+ jsr310-2.10.3.jar jackson-databind-2.10.3.jar spring-core-5.2.5.RELEASE
+ .jar javassist-3.24.0-GA.jar spring-data-commons-2.2.6.RELEASE.jar jaka
+ rta.persistence-api-2.2.3.jar aspectjweaver-1.9.5.jar jboss-logging-3.4
+ .1.Final.jar spring-boot-starter-aop-2.2.6.RELEASE.jar dom4j-2.1.1.jar 
+ jackson-core-2.10.3.jar jakarta.xml.bind-api-2.3.3.jar spring-jdbc-5.2.
+ 5.RELEASE.jar slf4j-api-1.7.30.jar spring-security-web-5.2.2.RELEASE.ja
+ r spring-expression-5.2.5.RELEASE.jar jakarta.annotation-api-1.3.5.jar 
+ spring-data-rest-core-3.2.6.RELEASE.jar spring-data-mongodb-2.2.5.RELEA
+ SE.jar spring-boot-starter-data-jpa-2.2.5.RELEASE.jar spring-hateoas-1.
+ 0.4.RELEASE.jar spring-aop-5.2.5.RELEASE.jar fastjson-1.2.70.jar jaxb-r
+ untime-2.3.2.jar txw2-2.3.2.jar tomcat-embed-core-9.0.33.jar spring-boo
+ t-starter-jdbc-2.2.6.RELEASE.jar jakarta.activation-api-1.2.2.jar jacks
+ on-module-parameter-names-2.10.3.jar tomcat-embed-websocket-9.0.33.jar
+
