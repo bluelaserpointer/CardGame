@@ -69,13 +69,16 @@ public class MissionControllerTest {
 
     }
 
+    @Transactional
+    @Rollback(value = true)
     public String getTOKEN() throws Exception {
+        // System.out.println(TOKEN);
         User addedUser = new User("postTest", "postTest", "postTest", "postTest", "ROLE_ADMIN");
         String addU = JSON.toJSONString(addedUser);
+        System.out.println(addU);
         mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/user/register")
                 .contentType(MediaType.APPLICATION_JSON_VALUE).content(addU))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
-        System.out.println(TOKEN);
         AuthRequest user = new AuthRequest();
         user.setPassword("postTest");
         user.setUserName("postTest");
@@ -92,8 +95,9 @@ public class MissionControllerTest {
         return TOKEN;
     }
 
-    public Mission addMissionBeforeTest() throws Exception {
-        String token = getTOKEN();
+    @Transactional
+    @Rollback(value = true)
+    public Mission addMissionBeforeTest(String token) throws Exception {
         Mission Mission = new Mission("addMissionBeforeTest", "addMissionBeforeTest");
         MissionDetails MissionDetails = new MissionDetails();
         MissionDetails.setMissionDescription("addMissionBeforeTest");
@@ -121,7 +125,7 @@ public class MissionControllerTest {
     @DisplayName("File: MissionController Method: findMissionByMissionId")
     public void findMissionByMissionId() throws Exception {
         String token = getTOKEN();
-        Mission addedMission = addMissionBeforeTest();
+        Mission addedMission = addMissionBeforeTest(token);
         MvcResult result = mockMvc
                 .perform(get("/mission/getMission?missionId=" + addedMission.getMissionId())
                         .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
@@ -154,7 +158,7 @@ public class MissionControllerTest {
     @DisplayName("File: MissionController Method: updateMission")
     public void updateMission() throws Exception {
         String token = getTOKEN();
-        Mission addedMission = addMissionBeforeTest();
+        Mission addedMission = addMissionBeforeTest(token);
         Mission Mission = new Mission("updateMission", "updateMission");
         MissionDetails MissionDetails = new MissionDetails(addedMission.getMissionId(), "updateMission");
         Mission.setMissionDetails(MissionDetails);
@@ -187,7 +191,7 @@ public class MissionControllerTest {
     @DisplayName("File: MissionController Method: deleteMissions")
     public void deleteMissions() throws Exception {
         String token = getTOKEN();
-        Mission addedMission = addMissionBeforeTest();
+        Mission addedMission = addMissionBeforeTest(token);
         MvcResult result = mockMvc
                 .perform(get("/mission/deleteMissions?missionIds=" + addedMission.getMissionId())
                         .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
@@ -214,7 +218,7 @@ public class MissionControllerTest {
     @DisplayName("File: MissionController Method: deleteMission")
     public void deleteMission() throws Exception {
         String token = getTOKEN();
-        Mission addedMission = addMissionBeforeTest();
+        Mission addedMission = addMissionBeforeTest(token);
         MvcResult result = mockMvc
                 .perform(get("/mission/deleteMission?missionId=" + addedMission.getMissionId())
                         .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))

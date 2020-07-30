@@ -58,13 +58,16 @@ public class EnemyControllerTest {
 
     }
 
+    @Transactional
+    @Rollback(value = true)
     public String getTOKEN() throws Exception {
+        // System.out.println(TOKEN);
         User addedUser = new User("postTest", "postTest", "postTest", "postTest", "ROLE_ADMIN");
         String addU = JSON.toJSONString(addedUser);
+        System.out.println(addU);
         mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/user/register")
                 .contentType(MediaType.APPLICATION_JSON_VALUE).content(addU))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
-        System.out.println(TOKEN);
         AuthRequest user = new AuthRequest();
         user.setPassword("postTest");
         user.setUserName("postTest");
@@ -81,8 +84,9 @@ public class EnemyControllerTest {
         return TOKEN;
     }
 
-    public Enemy addEnemyBeforeTest() throws Exception {
-        String token = getTOKEN();
+    @Transactional
+    @Rollback(value = true)
+    public Enemy addEnemyBeforeTest(String token) throws Exception {
         Enemy enemy = new Enemy("addEnemyBeforeTest", 1, 1, 1, 1, 1.0, 1);
         EnemyDetails enemyDetails = new EnemyDetails();
         enemyDetails.setEnemyDescription("addEnemyBeforeTest");
@@ -112,7 +116,7 @@ public class EnemyControllerTest {
     @DisplayName("File: EnemyController Method: findEnemyByEnemyId")
     public void findEnemyByEnemyId() throws Exception {
         String token = getTOKEN();
-        Enemy addedEnemy = addEnemyBeforeTest();
+        Enemy addedEnemy = addEnemyBeforeTest(token);
         MvcResult result = mockMvc
                 .perform(get("/enemy/getEnemy?enemyId=" + addedEnemy.getEnemyId())
                         .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
@@ -151,7 +155,7 @@ public class EnemyControllerTest {
     @DisplayName("File: EnemyController Method: updateEnemy")
     public void updateEnemy() throws Exception {
         String token = getTOKEN();
-        Enemy addedEnemy = addEnemyBeforeTest();
+        Enemy addedEnemy = addEnemyBeforeTest(token);
         Enemy enemy = new Enemy("updateEnemy", 1, 1, 1, 1, 1.0, 1);
         EnemyDetails enemyDetails = new EnemyDetails(enemy.getEnemyId(), "updateEnemy", "updateEnemy", "updateEnemy");
         enemy.setEnemyDetails(enemyDetails);
@@ -184,7 +188,7 @@ public class EnemyControllerTest {
     @DisplayName("File: EnemyController Method: deleteEnemies")
     public void deleteEnemies() throws Exception {
         String token = getTOKEN();
-        Enemy addedEnemy = addEnemyBeforeTest();
+        Enemy addedEnemy = addEnemyBeforeTest(token);
         MvcResult result = mockMvc
                 .perform(get("/enemy/deleteEnemies?enemyIds=" + addedEnemy.getEnemyId())
                         .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
@@ -211,7 +215,7 @@ public class EnemyControllerTest {
     @DisplayName("File: EnemyController Method: deleteEnemy")
     public void deleteEnemy() throws Exception {
         String token = getTOKEN();
-        Enemy addedEnemy = addEnemyBeforeTest();
+        Enemy addedEnemy = addEnemyBeforeTest(token);
         MvcResult result = mockMvc
                 .perform(get("/enemy/deleteEnemy?enemyId=" + addedEnemy.getEnemyId())
                         .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))

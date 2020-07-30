@@ -89,6 +89,8 @@ public class ActivityControllerTest {
 
         }
 
+        @Transactional
+        @Rollback(value = true)
         public String getTOKEN() throws Exception {
                 // System.out.println(TOKEN);
                 User addedUser = new User("postTest", "postTest", "postTest", "postTest", "ROLE_ADMIN");
@@ -113,6 +115,8 @@ public class ActivityControllerTest {
                 return TOKEN;
         }
 
+        @Transactional
+        @Rollback(value = true)
         public Activity addActivityBeforeTest(String token) throws Exception {
                 // String token = getTOKEN();
                 System.out.println(token);

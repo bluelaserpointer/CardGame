@@ -45,17 +45,17 @@ public class CardControllerTest {
 
         private String TOKEN;
 
-        @Test
-        @DisplayName("File: cardController Method: contextLoads")
-        public void contextLoads() {
-                // assertThat(cardController).isNotNull();
-        }
+        // @Test
+        // @DisplayName("File: cardController Method: contextLoads")
+        // public void contextLoads() {
+        // // assertThat(cardController).isNotNull();
+        // }
 
         @Before
         public void setUp() throws Exception {
                 mockMvc = MockMvcBuilders.webAppContextSetup(context).apply(SecurityMockMvcConfigurers.springSecurity())
                                 .build();
-                getTOKEN();
+                // getTOKEN();
         }
 
         @AfterEach
@@ -68,8 +68,9 @@ public class CardControllerTest {
 
         }
 
-        public Card addCardBeforeTest() throws Exception {
-                String token = getTOKEN();
+        @Transactional
+        @Rollback(value = true)
+        public Card addCardBeforeTest(String token) throws Exception {
                 Card card = new Card("addCardBeforeTest", "addCardBeforeTest", 1, 1, 1, 1, 1.0, 1, 1);
                 CardDetails cardDetails = new CardDetails();
                 cardDetails.setCardDescription("addCardBeforeTest");
@@ -89,13 +90,16 @@ public class CardControllerTest {
                 return card;
         }
 
+        @Transactional
+        @Rollback(value = true)
         public String getTOKEN() throws Exception {
+                // System.out.println(TOKEN);
                 User addedUser = new User("postTest", "postTest", "postTest", "postTest", "ROLE_ADMIN");
                 String addU = JSON.toJSONString(addedUser);
+                System.out.println(addU);
                 mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/user/register")
                                 .contentType(MediaType.APPLICATION_JSON_VALUE).content(addU))
                                 .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
-                System.out.println(TOKEN);
                 AuthRequest user = new AuthRequest();
                 user.setPassword("postTest");
                 user.setUserName("postTest");
@@ -118,7 +122,7 @@ public class CardControllerTest {
         @DisplayName("File: cardController Method: findCardByCardId")
         public void findCardByCardId() throws Exception {
                 String token = getTOKEN();
-                Card addedCard = addCardBeforeTest();
+                Card addedCard = addCardBeforeTest(token);
                 MvcResult result = mockMvc.perform(get("/card/getCard?cardId=" + addedCard.getCardId())
                                 .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
                                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
@@ -152,8 +156,8 @@ public class CardControllerTest {
         @Rollback(value = true)
         @DisplayName("File: cardController Method: updateCard")
         public void updateCard() throws Exception {
-                Card addedCard = addCardBeforeTest();
                 String token = getTOKEN();
+                Card addedCard = addCardBeforeTest(token);
                 Card card = new Card("updateCard", "updateCard", 1, 1, 1, 1, 1.0, 1, 1);
                 CardDetails cardDetails = new CardDetails();
                 cardDetails.setCardDescription("updateCard");
@@ -191,7 +195,7 @@ public class CardControllerTest {
         @DisplayName("File: cardController Method: deleteCards")
         public void deleteCards() throws Exception {
                 String token = getTOKEN();
-                Card addedCard = addCardBeforeTest();
+                Card addedCard = addCardBeforeTest(token);
                 MvcResult result = mockMvc.perform(get("/card/deleteCards?cardIds=" + addedCard.getCardId())
                                 .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
                                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
@@ -219,7 +223,7 @@ public class CardControllerTest {
         @DisplayName("File: cardController Method: deleteCard")
         public void deleteCard() throws Exception {
                 String token = getTOKEN();
-                Card addedCard = addCardBeforeTest();
+                Card addedCard = addCardBeforeTest(token);
                 MvcResult result = mockMvc.perform(get("/card/deleteCard?cardId=" + addedCard.getCardId())
                                 .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
                                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
