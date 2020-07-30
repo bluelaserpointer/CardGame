@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.2.6.RELEASE</version>
+    <version>2.2.5.RELEASE</version>
     <relativePath /> <!-- lookup parent from repository -->
   </parent>
   <groupId>com.example</groupId>
@@ -12,13 +12,15 @@
   <version>0.0.1</version>
   <name>SECARDGAME</name>
   <description>Demo project for SE CARDGAME</description>
-
+  <packaging>jar</packaging>
   <properties>
     <!-- <java.version>14.0.2</java.version> -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <start-class>com.example.accessingdatamysql.AccessingDataMysqlApplication</start-class>
     <!-- <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target> -->
   </properties>
+
 
   <dependencies>
     <dependency>
@@ -106,9 +108,10 @@
     <pluginManagement>
       <!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
-        <plugin>
+        <!-- <plugin>
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-maven-plugin</artifactId>
+
           <executions>
             <execution>
               <id>repackage</id>
@@ -119,10 +122,11 @@
             </execution>
           </executions>
           <configuration>
-            <includeSystemScope>true</includeSystemScope>
-            <mainClass>com.example.accessingdatamysql</mainClass>
+            <manifestFile>MANIFEST.MF</manifestFile>
+
+
           </configuration>
-        </plugin>
+        </plugin> -->
         <plugin>
           <groupId>org.jacoco</groupId>
           <artifactId>jacoco-maven-plugin</artifactId>
@@ -168,13 +172,17 @@
           <version>2.19</version>
         </plugin>
         <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
           <version>3.0.2</version>
           <configuration>
             <archive>
+              <!-- <manifestFile>MANIFEST.MF</manifestFile> -->
               <manifest>
                 <addClasspath>true</addClasspath>
-                <mainClass>com.example.accessingdatamysql.AccessingDataMysqlApplication</mainClass>
+                <mainClass>
+                  com.example.accessingdatamysql.AccessingDataMysqlApplication
+                  </mainClass>
               </manifest>
             </archive>
           </configuration>

@@ -7,6 +7,7 @@ import com.example.accessingdatamysql.controller.ItemController;
 import com.example.accessingdatamysql.entity.AuthRequest;
 import com.example.accessingdatamysql.entity.Item;
 import com.example.accessingdatamysql.entity.ItemDetails;
+import com.example.accessingdatamysql.entity.User;
 
 import org.aspectj.internal.lang.annotation.ajcITD;
 import org.junit.Before;
@@ -70,8 +71,16 @@ public class ItemControllerTest {
 
     }
 
+    @Transactional
+    @Rollback(value = true)
     public String getTOKEN() throws Exception {
-        System.out.println(TOKEN);
+        // System.out.println(TOKEN);
+        User addedUser = new User("postTest", "postTest", "postTest", "postTest", "ROLE_ADMIN");
+        String addU = JSON.toJSONString(addedUser);
+        System.out.println(addU);
+        mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/user/register")
+                .contentType(MediaType.APPLICATION_JSON_VALUE).content(addU))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
         AuthRequest user = new AuthRequest();
         user.setPassword("postTest");
         user.setUserName("postTest");
@@ -88,8 +97,9 @@ public class ItemControllerTest {
         return TOKEN;
     }
 
-    public Item addItemBeforeTest() throws Exception {
-        String token = getTOKEN();
+    @Transactional
+    @Rollback(value = true)
+    public Item addItemBeforeTest(String token) throws Exception {
         Item Item = new Item("addItemBeforeTest", 1);
         ItemDetails ItemDetails = new ItemDetails();
         ItemDetails.setItemDescription("addItemBeforeTest");
@@ -118,7 +128,7 @@ public class ItemControllerTest {
     @DisplayName("File: ItemController Method: findItemByItemId")
     public void findItemByItemId() throws Exception {
         String token = getTOKEN();
-        Item Item = addItemBeforeTest();
+        Item Item = addItemBeforeTest(token);
         MvcResult result = mockMvc
                 .perform(get("/item/getItem?itemId=" + Item.getItemId()).contentType(MediaType.APPLICATION_JSON_VALUE)
                         .header("Authorization", token))
@@ -156,7 +166,7 @@ public class ItemControllerTest {
     public void updateItem() throws Exception {
 
         String token = getTOKEN();
-        Item addedItem = addItemBeforeTest();
+        Item addedItem = addItemBeforeTest(token);
         Item Item = new Item("updateItem", 1);
         ItemDetails ItemDetails = new ItemDetails(addedItem.getItemId(), "updateItem", "updateItem");
         Item.setItemDetails(ItemDetails);
@@ -189,7 +199,7 @@ public class ItemControllerTest {
     @DisplayName("File: ItemController Method: deleteItems")
     public void deleteItems() throws Exception {
         String token = getTOKEN();
-        Item Item = addItemBeforeTest();
+        Item Item = addItemBeforeTest(token);
         MvcResult result = mockMvc
                 .perform(get("/item/deleteItems?itemIds=" + Item.getItemId())
                         .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
@@ -216,7 +226,7 @@ public class ItemControllerTest {
     @DisplayName("File: ItemController Method: deleteItem")
     public void deleteItem() throws Exception {
         String token = getTOKEN();
-        Item Item = addItemBeforeTest();
+        Item Item = addItemBeforeTest(token);
         MvcResult result = mockMvc
                 .perform(get("/item/deleteItem?itemId=" + Item.getItemId())
                         .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))

@@ -83,8 +83,16 @@ public class UserControllerTest extends UnitTestDemoApplicationTests {
     static void tearDownAll() {
     }
 
+    @Transactional
+    @Rollback(value = true)
     public String getTOKEN() throws Exception {
-        System.out.println(TOKEN);
+        // System.out.println(TOKEN);
+        User addedUser = new User("postTest", "postTest", "postTest", "postTest", "ROLE_ADMIN");
+        String addU = JSON.toJSONString(addedUser);
+        System.out.println(addU);
+        mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/user/register")
+                .contentType(MediaType.APPLICATION_JSON_VALUE).content(addU))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
         AuthRequest user = new AuthRequest();
         user.setPassword("postTest");
         user.setUserName("postTest");
@@ -101,8 +109,9 @@ public class UserControllerTest extends UnitTestDemoApplicationTests {
         return TOKEN;
     }
 
-    public User addUserBeforeTest() throws Exception {
-        String token = getTOKEN();
+    @Transactional
+    @Rollback(value = true)
+    public User addUserBeforeTest(String token) throws Exception {
         User User = new User("addUserBeforeTest", "addUserBeforeTest", "addUserBeforeTest", "addUserBeforeTest",
                 "addUserBeforeTest");
 
@@ -129,7 +138,7 @@ public class UserControllerTest extends UnitTestDemoApplicationTests {
     @DisplayName("File: UserController Method: findUserByUserId")
     public void findUserByUserId() throws Exception {
         String token = getTOKEN();
-        User addedUser = addUserBeforeTest();
+        User addedUser = addUserBeforeTest(token);
         MvcResult result = mockMvc
                 .perform(get("/user/getUser?userId=" + addedUser.getUserId())
                         .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
@@ -165,7 +174,7 @@ public class UserControllerTest extends UnitTestDemoApplicationTests {
     @DisplayName("File: UserController Method: updateUser")
     public void updateUser() throws Exception {
         String token = getTOKEN();
-        User addedUser = addUserBeforeTest();
+        User addedUser = addUserBeforeTest(token);
 
         addedUser.setUserName("updateUser");
 
@@ -195,7 +204,7 @@ public class UserControllerTest extends UnitTestDemoApplicationTests {
     @DisplayName("File: UserController Method: confirmDelete")
     public void confirmDelete() throws Exception {
         String token = getTOKEN();
-        User addedUser = addUserBeforeTest();
+        User addedUser = addUserBeforeTest(token);
         MvcResult result = mockMvc.perform(
                 get("/user/confirmDelete?userName=" + addedUser.getUserName() + "&password=" + addedUser.getPassword())
                         .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
@@ -227,7 +236,7 @@ public class UserControllerTest extends UnitTestDemoApplicationTests {
     @DisplayName("File: UserController Method: addExp")
     public void addExp() throws Exception {
         String token = getTOKEN();
-        User addedUser = addUserBeforeTest();
+        User addedUser = addUserBeforeTest(token);
         MvcResult result = mockMvc
                 .perform(get("/user/addExp?userId=" + addedUser.getUserId() + "&exp=1")
                         .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
@@ -241,7 +250,7 @@ public class UserControllerTest extends UnitTestDemoApplicationTests {
     @DisplayName("File: UserController Method: deleteUsers")
     public void deleteUsers() throws Exception {
         String token = getTOKEN();
-        User addedUser = addUserBeforeTest();
+        User addedUser = addUserBeforeTest(token);
         MvcResult result = mockMvc
                 .perform(get("/user/deleteUsers?userIds=" + addedUser.getUserId())
                         .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
@@ -255,7 +264,7 @@ public class UserControllerTest extends UnitTestDemoApplicationTests {
     @DisplayName("File: UserController Method: deleteUser")
     public void deleteUser() throws Exception {
         String token = getTOKEN();
-        User addedUser = addUserBeforeTest();
+        User addedUser = addUserBeforeTest(token);
         MvcResult result = mockMvc
                 .perform(get("/user/deleteUser?userId=" + addedUser.getUserId())
                         .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))

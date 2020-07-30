@@ -7,6 +7,7 @@ import com.example.accessingdatamysql.controller.MailController;
 import com.example.accessingdatamysql.entity.AuthRequest;
 import com.example.accessingdatamysql.entity.Mail;
 import com.example.accessingdatamysql.entity.MailDetails;
+import com.example.accessingdatamysql.entity.User;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -67,8 +68,16 @@ public class MailControllerTest {
 
     }
 
+    @Transactional
+    @Rollback(value = true)
     public String getTOKEN() throws Exception {
-        System.out.println(TOKEN);
+        // System.out.println(TOKEN);
+        User addedUser = new User("postTest", "postTest", "postTest", "postTest", "ROLE_ADMIN");
+        String addU = JSON.toJSONString(addedUser);
+        System.out.println(addU);
+        mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/user/register")
+                .contentType(MediaType.APPLICATION_JSON_VALUE).content(addU))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
         AuthRequest user = new AuthRequest();
         user.setPassword("postTest");
         user.setUserName("postTest");
@@ -85,8 +94,9 @@ public class MailControllerTest {
         return TOKEN;
     }
 
-    public Mail addMailBeforeTest() throws Exception {
-        String token = getTOKEN();
+    @Transactional
+    @Rollback(value = true)
+    public Mail addMailBeforeTest(String token) throws Exception {
         Mail Mail = new Mail("addMailBeforeTest");
         MailDetails MailDetails = new MailDetails();
         MailDetails.setMailDescription("addMailBeforeTest");
@@ -115,7 +125,7 @@ public class MailControllerTest {
     @DisplayName("File: MailController Method: findMailByMailId")
     public void findMailByMailId() throws Exception {
         String token = getTOKEN();
-        Mail addedMail = addMailBeforeTest();
+        Mail addedMail = addMailBeforeTest(token);
         MvcResult result = mockMvc
                 .perform(get("/mail/getMail?mailId=" + addedMail.getMailId())
                         .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
@@ -152,7 +162,7 @@ public class MailControllerTest {
     @DisplayName("File: MailController Method: updateMail")
     public void updateMail() throws Exception {
         String token = getTOKEN();
-        Mail addedMail = addMailBeforeTest();
+        Mail addedMail = addMailBeforeTest(token);
         Mail Mail = new Mail("updateMail");
         MailDetails MailDetails = new MailDetails(addedMail.getMailId(), "updateMail", "updateMail");
         Mail.setMailDetails(MailDetails);
@@ -185,7 +195,7 @@ public class MailControllerTest {
     @DisplayName("File: MailController Method: deleteMails")
     public void deleteMails() throws Exception {
         String token = getTOKEN();
-        Mail addedMail = addMailBeforeTest();
+        Mail addedMail = addMailBeforeTest(token);
         MvcResult result = mockMvc
                 .perform(get("/mail/deleteMails?mailIds=" + addedMail.getMailId())
                         .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
@@ -212,7 +222,7 @@ public class MailControllerTest {
     @DisplayName("File: MailController Method: deleteMail")
     public void deleteMail() throws Exception {
         String token = getTOKEN();
-        Mail addedMail = addMailBeforeTest();
+        Mail addedMail = addMailBeforeTest(token);
         MvcResult result = mockMvc
                 .perform(get("/mail/deleteMail?mailId=" + addedMail.getMailId())
                         .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))

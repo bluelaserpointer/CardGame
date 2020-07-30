@@ -9,6 +9,7 @@ import com.example.accessingdatamysql.controller.UserController;
 import com.example.accessingdatamysql.entity.Activity;
 import com.example.accessingdatamysql.entity.ActivityDetails;
 import com.example.accessingdatamysql.entity.AuthRequest;
+import com.example.accessingdatamysql.entity.User;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -88,8 +89,16 @@ public class ActivityControllerTest {
 
         }
 
+        @Transactional
+        @Rollback(value = true)
         public String getTOKEN() throws Exception {
-                System.out.println(TOKEN);
+                // System.out.println(TOKEN);
+                User addedUser = new User("postTest", "postTest", "postTest", "postTest", "ROLE_ADMIN");
+                String addU = JSON.toJSONString(addedUser);
+                System.out.println(addU);
+                mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/user/register")
+                                .contentType(MediaType.APPLICATION_JSON_VALUE).content(addU))
+                                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
                 AuthRequest user = new AuthRequest();
                 user.setPassword("postTest");
                 user.setUserName("postTest");
@@ -106,8 +115,10 @@ public class ActivityControllerTest {
                 return TOKEN;
         }
 
-        public Activity addActivityBeforeTest() throws Exception {
-                String token = getTOKEN();
+        @Transactional
+        @Rollback(value = true)
+        public Activity addActivityBeforeTest(String token) throws Exception {
+                // String token = getTOKEN();
                 System.out.println(token);
                 Timestamp start = new Timestamp(System.currentTimeMillis());
                 Activity activity = new Activity("addNewActivity", "addNewActivity", start);
@@ -139,10 +150,12 @@ public class ActivityControllerTest {
         @Rollback(value = true)
         @DisplayName("File: ActivityController Method: findActivityByActivityId")
         public void findActivityByActivityId() throws Exception {
-                Activity addedActivity = addActivityBeforeTest();
+                String token = getTOKEN();
+                Activity addedActivity = addActivityBeforeTest(token);
                 MvcResult result = mockMvc
                                 .perform(get("/activity/getActivity?activityId=" + addedActivity.getActivityId())
-                                                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                                                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                                                .header("Authorization", token))
                                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
                                 .andReturn();
                 System.out.println(result.getResponse().getContentAsString());
@@ -181,8 +194,8 @@ public class ActivityControllerTest {
         @Rollback(value = true)
         @DisplayName("File: ActivityController Method: updateActivity")
         public void updateActivity() throws Exception {
-                Activity addedActivity = addActivityBeforeTest();
                 String token = getTOKEN();
+                Activity addedActivity = addActivityBeforeTest(token);
                 Timestamp start = new Timestamp(System.currentTimeMillis());
                 Activity activity = new Activity("addNewActivity", "addNewActivity", start);
                 ActivityDetails activityDetails = new ActivityDetails();
@@ -206,9 +219,10 @@ public class ActivityControllerTest {
         @Rollback(value = true)
         @DisplayName("File: ActivityController Method: getAllActivities")
         public void getAllActivities() throws Exception {
+                String token = getTOKEN();
                 MvcResult result = mockMvc
-                                .perform(get("/activity/getAllActivities")
-                                                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                                .perform(get("/activity/getAllActivities").contentType(MediaType.APPLICATION_JSON_VALUE)
+                                                .header("Authorization", token))
                                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
                                 .andReturn();
                 System.out.println(result.getResponse().getContentAsString());
@@ -219,11 +233,12 @@ public class ActivityControllerTest {
         @Rollback(value = true)
         @DisplayName("File: ActivityController Method: deleteActivities")
         public void deleteActivities() throws Exception {
-                Activity addedActivity = addActivityBeforeTest();
+                String token = getTOKEN();
+                Activity addedActivity = addActivityBeforeTest(token);
                 MvcResult result = mockMvc
                                 .perform(get("/activity/deleteActivities?activityIds=" + addedActivity.getActivityId())
                                                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                                                .header("Authorization", getTOKEN()))
+                                                .header("Authorization", token))
                                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
                                 .andReturn();
                 System.out.println(result.getResponse().getContentAsString());
@@ -246,11 +261,12 @@ public class ActivityControllerTest {
         @Rollback(value = true)
         @DisplayName("File: ActivityController Method: deleteActivity")
         public void deleteActivity() throws Exception {
-                Activity addedActivity = addActivityBeforeTest();
+                String token = getTOKEN();
+                Activity addedActivity = addActivityBeforeTest(token);
                 MvcResult result = mockMvc
                                 .perform(get("/activity/deleteActivity?activityId=" + addedActivity.getActivityId())
                                                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                                                .header("Authorization", getTOKEN()))
+                                                .header("Authorization", token))
                                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
                                 .andReturn();
                 System.out.println(result.getResponse().getContentAsString());

@@ -80,8 +80,16 @@ public class OwnItemControllerTest {
 
     }
 
+    @Transactional
+    @Rollback(value = true)
     public String getTOKEN() throws Exception {
-        System.out.println(TOKEN);
+        // System.out.println(TOKEN);
+        User addedUser = new User("postTest", "postTest", "postTest", "postTest", "ROLE_ADMIN");
+        String addU = JSON.toJSONString(addedUser);
+        System.out.println(addU);
+        mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/user/register")
+                .contentType(MediaType.APPLICATION_JSON_VALUE).content(addU))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
         AuthRequest user = new AuthRequest();
         user.setPassword("postTest");
         user.setUserName("postTest");
@@ -98,10 +106,11 @@ public class OwnItemControllerTest {
         return TOKEN;
     }
 
-    public OwnItem addOwnItemBeforeTest() throws Exception {
-        String token = getTOKEN();
-        User addedUser = addUserBeforeTest();
-        Item addedItem = addItemBeforeTest();
+    @Transactional
+    @Rollback(value = true)
+    public OwnItem addOwnItemBeforeTest(String token) throws Exception {
+        User addedUser = addUserBeforeTest(token);
+        Item addedItem = addItemBeforeTest(token);
         Timestamp start = new Timestamp(System.currentTimeMillis());
         // System.out.println(body);
         OwnItem OwnItem = new OwnItem(addedUser.getUserId(), addedItem.getItemId(), 1, start);
@@ -118,8 +127,9 @@ public class OwnItemControllerTest {
         return OwnItem;
     }
 
-    public Item addItemBeforeTest() throws Exception {
-        String token = getTOKEN();
+    @Transactional
+    @Rollback(value = true)
+    public Item addItemBeforeTest(String token) throws Exception {
         Item Item = new Item("addItemBeforeTest", 1);
         ItemDetails ItemDetails = new ItemDetails();
         ItemDetails.setItemDescription("addItemBeforeTest");
@@ -142,8 +152,9 @@ public class OwnItemControllerTest {
         return Item;
     }
 
-    public User addUserBeforeTest() throws Exception {
-        String token = getTOKEN();
+    @Transactional
+    @Rollback(value = true)
+    public User addUserBeforeTest(String token) throws Exception {
         User User = new User("addUserBeforeTest", "addUserBeforeTest", "addUserBeforeTest", "addUserBeforeTest",
                 "addUserBeforeTest");
 
@@ -169,7 +180,7 @@ public class OwnItemControllerTest {
     @DisplayName("File: OwnItemController Method: findOwnItemByOwnItemId")
     public void findOwnItemByOwnItemId() throws Exception {
         String token = getTOKEN();
-        OwnItem OwnItem = addOwnItemBeforeTest();
+        OwnItem OwnItem = addOwnItemBeforeTest(token);
         MvcResult result = mockMvc
                 .perform(get("/ownItem/getOwnItem?ownItemId=" + OwnItem.getOwnItemId())
                         .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
@@ -197,8 +208,8 @@ public class OwnItemControllerTest {
     @DisplayName("File: OwnItemController Method: addNewOwnItem")
     public void addNewOwnItem() throws Exception {
         String token = getTOKEN();
-        User addedUser = addUserBeforeTest();
-        Item addedItem = addItemBeforeTest();
+        User addedUser = addUserBeforeTest(token);
+        Item addedItem = addItemBeforeTest(token);
         Timestamp start = new Timestamp(System.currentTimeMillis());
         // System.out.println(body);
         OwnItem OwnItem = new OwnItem(addedUser.getUserId(), addedItem.getItemId(), 1, start);
@@ -216,7 +227,7 @@ public class OwnItemControllerTest {
     @DisplayName("File: OwnItemController Method: updateOwnItem")
     public void updateOwnItem() throws Exception {
         String token = getTOKEN();
-        OwnItem OwnItem = addOwnItemBeforeTest();
+        OwnItem OwnItem = addOwnItemBeforeTest(token);
         Timestamp start = new Timestamp(System.currentTimeMillis());
         OwnItem.setAccquireDate(start);
         String body = JSON.toJSONString(OwnItem);
@@ -247,7 +258,7 @@ public class OwnItemControllerTest {
     @DisplayName("File: OwnItemController Method: deleteOwnItems")
     public void deleteOwnItems() throws Exception {
         String token = getTOKEN();
-        OwnItem OwnItem = addOwnItemBeforeTest();
+        OwnItem OwnItem = addOwnItemBeforeTest(token);
         MvcResult result = mockMvc
                 .perform(get("/ownItem/deleteOwnItems?ownItemIds=" + OwnItem.getOwnItemId())
                         .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
@@ -274,7 +285,7 @@ public class OwnItemControllerTest {
     @DisplayName("File: OwnItemController Method: deleteOwnItem")
     public void deleteOwnItem() throws Exception {
         String token = getTOKEN();
-        OwnItem OwnItem = addOwnItemBeforeTest();
+        OwnItem OwnItem = addOwnItemBeforeTest(token);
         MvcResult result = mockMvc
                 .perform(get("/ownItem/deleteOwnItem?userId=" + OwnItem.getUserId() + "&itemId=" + OwnItem.getItemId())
                         .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
