@@ -61,7 +61,7 @@ public class Utils {
             requestBody.accumulate("userName", userName);
             requestBody.accumulate("password", password);
             System.out.println("Utils: " + requestBody.toString());
-            data = HttpClient.doPostShort(Urls.identifyUser(), requestBody.toString());
+            data = HttpClient.doPostShort(Urls.login(), requestBody.toString());
             System.out.println("Utils: data: " + data);
             if(data == null)
                 return false;
@@ -71,7 +71,7 @@ public class Utils {
             requestBody = new JSONObject();
             requestBody.accumulate("userId", 0);
             System.out.println("Utils2: " + requestBody.toString());
-            data = HttpClient.doPostShort(Urls.identifyUser(), requestBody.toString());
+            data = HttpClient.doPostShort(Urls.login(), requestBody.toString());
             System.out.println("Utils: data2: " + data);
         } catch (JSONException e) {
             System.out.println("Utils: failed.");

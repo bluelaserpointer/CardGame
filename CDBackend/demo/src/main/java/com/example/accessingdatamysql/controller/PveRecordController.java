@@ -20,6 +20,7 @@ public class PveRecordController {
     private PveRecordService pveRecordService;
 
     @RequestMapping(value = "/addPveRecord")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public PveRecord addPveRecord(@RequestParam("userId") Integer userId, @RequestParam("chapterId") Integer chapterId,
             @RequestParam("phaseId") Integer phaseId, @RequestParam("result") Integer result,
             @RequestParam("posRecord") String posRecord) throws JsonProcessingException {
@@ -27,6 +28,7 @@ public class PveRecordController {
     }
 
     @RequestMapping(value = "/updatePveRecord")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public PveRecord addPveRecord(@RequestParam("pveRecordId") Integer pveRecordId,
             @RequestParam("userId") Integer userId, @RequestParam("chapterId") Integer chapterId,
             @RequestParam("phaseId") Integer phaseId, @RequestParam("result") Integer result,
@@ -63,5 +65,4 @@ public class PveRecordController {
     public boolean deletePveRecords(@RequestParam("pveRecordIds") List<Integer> pveRecordIds) {
         return pveRecordService.deletePveRecords(pveRecordIds);
     }
-
 }

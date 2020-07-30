@@ -30,7 +30,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         // Identity 要写成 "ROLE_ADMIN","ROLE_USER"
-        System.out.println(applicationUser.getIdentity());
+        System.out.println("UserDetailsService: " + applicationUser.getIdentity());
         List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(applicationUser.getIdentity());
 
         return new User(applicationUser.getUserName(), applicationUser.getPassword(), authorities);

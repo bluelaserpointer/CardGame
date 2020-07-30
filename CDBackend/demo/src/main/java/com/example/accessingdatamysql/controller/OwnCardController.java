@@ -27,6 +27,7 @@ public class OwnCardController {
 
   // 增加一个用户拥有卡牌关系
   @RequestMapping(value = "/addOwnCard")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public @ResponseBody OwnCard addNewOwnCard(@RequestParam("userId") Integer userId,
       @RequestParam("cardId") Integer cardId) {
     return OwnCardService.addNewOwnCard(userId, cardId);
@@ -34,6 +35,7 @@ public class OwnCardController {
 
   // 更新一个用户拥有卡牌关系
   @RequestMapping(value = "/updateOwnCard")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public @ResponseBody OwnCard updateOwnCard(@RequestBody OwnCard updateOwnCard) {
     return OwnCardService.updateOwnCard(updateOwnCard);
   }
@@ -48,6 +50,7 @@ public class OwnCardController {
 
   // 增加用户经验值(如果累计经验值超过升级所需经验值则升级后再返回OwnCard)
   @RequestMapping(value = "/addExp")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public @ResponseBody OwnCard addExp(@RequestParam("userId") Integer userId, @RequestParam("cardId") Integer cardId,
       @RequestParam("exp") Integer exp) {
     // System.out.println("Class: UserController Method: addExp Param: userId = " +
@@ -78,6 +81,7 @@ public class OwnCardController {
 
   // 删除一些用户拥有卡牌关系
   @RequestMapping(value = "/deleteOwnCards")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public String deleteOwnCards(@RequestParam("ownCardIds") List<Integer> ownCardIds) {
     return OwnCardService.deleteOwnCards(ownCardIds);
   }
@@ -91,6 +95,7 @@ public class OwnCardController {
 
   // 删除某个用户拥有卡牌关系
   @RequestMapping(value = "/deleteOwnCard")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public List<OwnCard> deleteOwnCard(@RequestParam("userId") Integer userId, @RequestParam("cardId") Integer cardId) {
     return OwnCardService.deleteOwnCard(userId, cardId);
   }

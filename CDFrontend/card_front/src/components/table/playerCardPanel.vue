@@ -52,11 +52,53 @@
           <span>{{ row.repetitiveOwns }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="AccquireDate" min-width="150px">
+      <el-table-column label="AccquireDate" width="160">
         <template slot-scope="{row}">
           <span>{{ formatDate(row.accquireDate) }}</span>
         </template>
       </el-table-column>
+
+      <el-table-column label="EnhancePoint" prop="enhancePoint" sortable="custom" align="center" >
+        <template slot-scope="{row}">
+          <span>{{ row.enhancePoint }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="LeftPoints" prop="leftPoints" sortable="custom" align="center" >
+        <template slot-scope="{row}">
+          <span>{{ row.leftPoints }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="EnhanceHP" prop="enhanceHP" sortable="custom" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.enhanceHP }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="EnhanceAttack" prop="enhanceAttack" sortable="custom" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.enhanceAttack }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="EnhanceDefense" prop="enhanceDefense" sortable="custom" align="center" >
+        <template slot-scope="{row}">
+          <span>{{ row.enhanceDefense }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="EnhanceAttackRange" prop="enhanceAttackRange" sortable="custom" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.enhanceAttackRange }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="EnhanceCD" prop="enhanceCD" sortable="custom" align="center" >
+        <template slot-scope="{row}">
+          <span>{{ row.enhanceCD }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="EnhanceSpeed" prop="enhanceSpeed" sortable="custom" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.enhanceSpeed }}</span>
+        </template>
+      </el-table-column>
+
     </el-table>
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="panelVisible" top="5vh" class="editDialog">
@@ -90,6 +132,30 @@
         </el-form-item>
         <el-form-item label-width="120px" label="AccquireDate" class="postInfo-container-item" v-if="dialogStatus==='update'">
           <el-date-picker v-model="temp.accquireDate" type="datetime" value-format="yyyy-MM-dd hh:mm:ss" placeholder="Select date and time" />
+        </el-form-item>
+        <el-form-item label="EnhancePoint" prop="enhancePoint" v-if="dialogStatus==='update'">
+          <el-input class="enhancePointInput" v-model="temp.enhancePoint" />
+        </el-form-item>
+        <el-form-item label="LeftPoints" prop="leftPoints" v-if="dialogStatus==='update'">
+          <el-input class="leftPointsInput" v-model="temp.leftPoints" />
+        </el-form-item>
+        <el-form-item label="EnhanceHP" prop="enhanceHP" v-if="dialogStatus==='update'">
+          <el-input class="enhanceHPInput" v-model="temp.enhanceHP" />
+        </el-form-item>
+        <el-form-item label="EnhanceAttack" prop="enhanceAttack" v-if="dialogStatus==='update'">
+          <el-input class="enhanceAttackInput" v-model="temp.enhanceAttack" />
+        </el-form-item>
+        <el-form-item label="EnhanceDefense" prop="enhanceDefense" v-if="dialogStatus==='update'">
+          <el-input class="enhanceDefenseInput" v-model="temp.enhanceDefense" />
+        </el-form-item>
+        <el-form-item label="EnhanceAttackRange" prop="enhanceAttackRange" v-if="dialogStatus==='update'">
+          <el-input class="enhanceAttackRangeInput" v-model="temp.enhanceAttackRange" />
+        </el-form-item>
+        <el-form-item label="EnhanceCD" prop="enhanceCD" v-if="dialogStatus==='update'">
+          <el-input class="enhanceCDInput" v-model="temp.enhanceCD" />
+        </el-form-item>
+        <el-form-item label="EnhanceSpeed" prop="enhanceSpeed" v-if="dialogStatus==='update'">
+          <el-input class="enhanceSpeedInput" v-model="temp.enhanceSpeed" />
         </el-form-item>
       </el-form>
 
@@ -158,7 +224,15 @@ export default {
         cardCurExp: undefined,
         cardLevelLimit: undefined,
         repetitiveOwns: undefined,
-        accquireDate: undefined
+        accquireDate: undefined,
+        enhancePoint: undefined,
+        leftPoints: undefined,
+        enhanceHP: undefined,
+        enhanceAttack: undefined,
+        enhanceDefense: undefined,
+        enhanceAttackRange: undefined,
+        enhanceCD: undefined,
+        enhanceSpeed: undefined,
       },
       confirmPassword: '',
       confirmDelete: false,
@@ -174,6 +248,15 @@ export default {
         cardLevelLimit: [{ required: true, message: 'CardLevelLimit is required.', trigger: 'change' }],
         repetitiveOwns: [{ required: true, message: 'RepetitiveOwns is required.', trigger: 'change' }],
         accquireDate: [{ required: true, message: 'AccquireData is required.', trigger: 'change' }],
+
+        enhancePoint: [{ required: true, message: 'EnhancePoint is required.', trigger: 'change' }],
+        leftPoints: [{ required: true, message: 'LeftPoints is required.', trigger: 'change' }],
+        enhanceHP: [{ required: true, message: 'EnhanceHP is required.', trigger: 'change' }],
+        enhanceAttack: [{ required: true, message: 'EnhanceAttack is required.', trigger: 'change' }],
+        enhanceDefense: [{ required: true, message: 'EnhanceDefense is required.', trigger: 'change' }],
+        enhanceAttackRange: [{ required: true, message: 'EnhanceAttackRange is required.', trigger: 'change' }],
+        enhanceCD: [{ required: true, message: 'EnhanceCD is required.', trigger: 'change' }],
+        enhanceSpeed: [{ required: true, message: 'EnhanceSpeed is required.', trigger: 'change' }],
       },
 
 
@@ -242,7 +325,15 @@ export default {
         cardCurExp: undefined,
         cardLevelLimit: undefined,
         repetitiveOwns: undefined,
-        accquireDate: undefined
+        accquireDate: undefined,
+        enhancePoint: undefined,
+        leftPoints: undefined,
+        enhanceHP: undefined,
+        enhanceAttack: undefined,
+        enhanceDefense: undefined,
+        enhanceAttackRange: undefined,
+        enhanceCD: undefined,
+        enhanceSpeed: undefined,
       }
     },
     handleCreate() {
@@ -305,6 +396,15 @@ export default {
             cardLevelLimit: this.temp.cardLevelLimit,
             repetitiveOwns: this.temp.repetitiveOwns,
             accquireDate: this.formatDate(this.temp.accquireDate),
+
+            enhancePoint: this.temp.enhancePoint,
+            leftPoints: this.temp.leftPoints,
+            enhanceHP: this.temp.enhanceHP,
+            enhanceAttack: this.temp.enhanceAttack,
+            enhanceDefense: this.temp.enhanceDefense,
+            enhanceAttackRange: this.temp.enhanceAttackRange,
+            enhanceCD: this.temp.enhanceCD,
+            enhanceSpeed: this.temp.enhanceSpeed,
           };
 
           request({
