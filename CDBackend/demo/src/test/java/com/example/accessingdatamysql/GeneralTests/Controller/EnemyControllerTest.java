@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.example.accessingdatamysql.entity.AuthRequest;
 import com.example.accessingdatamysql.entity.Enemy;
 import com.example.accessingdatamysql.entity.EnemyDetails;
+import com.example.accessingdatamysql.entity.User;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -58,6 +59,11 @@ public class EnemyControllerTest {
     }
 
     public String getTOKEN() throws Exception {
+        User addedUser = new User("postTest", "postTest", "postTest", "postTest", "ROLE_ADMIN");
+        String addU = JSON.toJSONString(addedUser);
+        mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/user/register")
+                .contentType(MediaType.APPLICATION_JSON_VALUE).content(addU))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
         System.out.println(TOKEN);
         AuthRequest user = new AuthRequest();
         user.setPassword("postTest");

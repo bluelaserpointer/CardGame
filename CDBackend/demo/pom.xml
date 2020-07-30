@@ -174,7 +174,7 @@
             <archive>
               <manifest>
                 <addClasspath>true</addClasspath>
-                <mainClass>com.example.accessingdatamysql.AccessingDataMysqlApplication</mainClass>
+                <mainClass>com.example.accessingdatamysql.AccessingDataMysqlApplication.class</mainClass>
               </manifest>
             </archive>
           </configuration>

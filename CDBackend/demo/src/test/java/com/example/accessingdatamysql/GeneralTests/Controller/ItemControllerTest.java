@@ -7,6 +7,7 @@ import com.example.accessingdatamysql.controller.ItemController;
 import com.example.accessingdatamysql.entity.AuthRequest;
 import com.example.accessingdatamysql.entity.Item;
 import com.example.accessingdatamysql.entity.ItemDetails;
+import com.example.accessingdatamysql.entity.User;
 
 import org.aspectj.internal.lang.annotation.ajcITD;
 import org.junit.Before;
@@ -71,6 +72,11 @@ public class ItemControllerTest {
     }
 
     public String getTOKEN() throws Exception {
+        User addedUser = new User("postTest", "postTest", "postTest", "postTest", "ROLE_ADMIN");
+        String addU = JSON.toJSONString(addedUser);
+        mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/user/register")
+                .contentType(MediaType.APPLICATION_JSON_VALUE).content(addU))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
         System.out.println(TOKEN);
         AuthRequest user = new AuthRequest();
         user.setPassword("postTest");
