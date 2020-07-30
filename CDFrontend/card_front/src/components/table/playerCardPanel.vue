@@ -306,7 +306,7 @@ export default {
     getList() {
 
       request({
-        url: '/ownCard/getAllOwnCards',
+        url: 'ownCard/getAllOwnCards',
         method: 'get',
       }).then(response => {
         this.list = response.data
@@ -353,7 +353,7 @@ export default {
           postData.append('userId', this.temp.userId);
 
           request({
-            url: '/ownCard/addOwnCard',
+            url: 'ownCard/addOwnCard',
             method: 'post',
             data: postData
           }).then(response => {
@@ -408,7 +408,7 @@ export default {
           };
 
           request({
-            url: '/ownCard/updateOwnCard',
+            url: 'ownCard/updateOwnCard',
             method: 'post',
             data: postData
           }).then(response => {
@@ -439,7 +439,7 @@ export default {
       postData.append('password', this.confirmPassword);
 
       request({
-        url: '/user/confirmDelete',
+        url: 'user/confirmDelete',
         method: 'post',
         data: postData
       }).then(response => {
@@ -463,7 +463,7 @@ export default {
 
 
       request({
-        url: '/ownCard/deleteOwnCard',
+        url: 'ownCard/deleteOwnCard',
         method: 'post',
         data: postData
       }).then(response => {

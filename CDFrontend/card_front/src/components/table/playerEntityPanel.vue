@@ -278,7 +278,7 @@ export default {
   methods: {
     getList() {
       request({
-        url: '/user/getAllUsers',
+        url: 'user/getAllUsers',
         method: 'get',
       }).then(response =>
       {
@@ -340,7 +340,7 @@ export default {
           };
 
           request({
-            url: '/user/register',
+            url: 'user/register',
             method: 'post',
             data: JSON.stringify(postData)
           }).then(response => {
@@ -399,7 +399,7 @@ export default {
           };
 
           request({
-            url: '/user/updateUser',
+            url: 'user/updateUser',
             method: 'post',
             data: JSON.stringify(postData)
           }).then(response => {
@@ -429,7 +429,7 @@ export default {
       postData.append('password', this.confirmPassword);
 
       request({
-        url: '/user/confirmDelete',
+        url: 'user/confirmDelete',
         method: 'post',
         data: postData
       }).then(response => {
@@ -453,7 +453,7 @@ export default {
       postData.append('userId', this.temp.userId);
 
       request({
-        url: '/user/deleteUser',
+        url: 'user/deleteUser',
         method: 'post',
         data: postData
       }).then(response => {

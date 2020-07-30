@@ -142,7 +142,7 @@
       getList() {
         let _this = this;
         request({
-          url: '/chapter/getAllChapters',
+          url: 'chapter/getAllChapters',
           method: 'get',
         }).then(response => {
           if(response.data) {
@@ -165,7 +165,7 @@
         postData.append('password', this.confirmPassword);
 
         request({
-          url: '/user/confirmDelete',
+          url: 'user/confirmDelete',
           method: 'post',
           data: postData
         }).then(response => {
@@ -187,7 +187,7 @@
         postData.append('chapterId', this.temp.chapterId);
 
         request({
-          url: '/chapter/deleteChapter',
+          url: 'chapter/deleteChapter',
           method: 'post',
           data: postData
         }).then(response => {
@@ -232,7 +232,7 @@
 
 
             request({
-              url: '/chapter/addChapter',
+              url: 'chapter/addChapter',
               method: 'post',
               data: postData
             }).then(response => {
@@ -275,7 +275,7 @@
             postData.append('phaseType', this.temp.phaseType);
 
             request({
-              url: '/chapter/updateChapter',
+              url: 'chapter/updateChapter',
               method: 'post',
               data: postData
             }).then(response => {

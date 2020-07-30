@@ -157,7 +157,7 @@
         };
 
         request({
-          url: '/mail/addMail',
+          url: 'mail/addMail',
           method: 'post',
           data: JSON.stringify(postData)
         }).then(response => {

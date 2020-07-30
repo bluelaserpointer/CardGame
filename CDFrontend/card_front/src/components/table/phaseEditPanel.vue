@@ -566,7 +566,7 @@ export default {
       }
 
       request({
-        url: '/chapter/getChapterDetailsByChapter',
+        url: 'chapter/getChapterDetailsByChapter',
         method: 'post',
         data: postData
       }).then(response => {
@@ -576,7 +576,7 @@ export default {
           // console.log(response.data);
 
           request({
-            url: '/chapter/getChapterPhasesByChapter',
+            url: 'chapter/getChapterPhasesByChapter',
             method: 'post',
             data: postData
           }).then(res => {
@@ -682,7 +682,7 @@ export default {
       postData.append('phaseData', JSON.stringify(chapterPhaseData));
 
       request({
-        url: '/chapter/updateChapte',
+        url: 'chapter/updateChapte',
         method: 'post',
         data: postData
       }).then(response => {
@@ -731,7 +731,7 @@ export default {
       postData.append('awardCards', JSON.stringify(this.chapterAwardCards));
 
       request({
-        url: '/chapter/updateChapterAwards',
+        url: 'chapter/updateChapterAwards',
         method: 'post',
         data: postData
       }).then(response => {
@@ -762,7 +762,7 @@ export default {
 
 
       request({
-        url: '/chapter/updateChapterPhaseAwards',
+        url: 'chapter/updateChapterPhaseAwards',
         method: 'post',
         data: postData
       }).then(response => {
@@ -784,7 +784,7 @@ export default {
     getList() {
 
       request({
-        url: '/chapter/getAllChapters',
+        url: 'chapter/getAllChapters',
         method: 'get',
       }).then(response => {
         if(response.data)
@@ -792,7 +792,7 @@ export default {
           this.chapterList = response.data;
 
           request({
-            url: '/card/getAllCards',
+            url: 'card/getAllCards',
             method: 'get',
           }).then(res => {
             if(res.data) {
@@ -809,7 +809,7 @@ export default {
             });
 
           request({
-            url: '/item/getAllItems',
+            url: 'item/getAllItems',
             method: 'get',
           }).then(res => {
               if(res.data) {
