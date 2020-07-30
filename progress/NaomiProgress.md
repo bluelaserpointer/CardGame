@@ -258,3 +258,17 @@
       ./mongod -f mongodb.conf
 
       ./mongo
+
+AWS 账号密码：
+
+       email: edward.raymond.he@sjtu.edu.cn
+
+      pswd: S1project!
+
+AWS 目前开放了 8080 端口（测试用），后期可能会限制 inbound rules
+
+服务器后端项目访问地址（共有 Ip）： http://ec2-35-173-219-114.compute-1.amazonaws.com:8080
+
+今天完成： AWS 部署
+
+明天完成： 数据插入+并发性测试
