@@ -195,7 +195,7 @@
         postData.append('password', this.confirmPassword);
 
         request({
-          url: '/user/confirmDelete',
+          url: 'user/confirmDelete',
           method: 'post',
           data: postData
         }).then(response => {
@@ -232,7 +232,7 @@
         postData.append('activityId', this.updateContent.activityId);
 
         request({
-          url: '/activity/deleteActivity',
+          url: 'activity/deleteActivity',
           method: 'post',
           data: postData
         }).then(response => {
@@ -295,7 +295,7 @@
         };
 
         request({
-          url: '/activity/updateActivity',
+          url: 'activity/updateActivity',
           method: 'post',
           data: postData
         }).then(response => {

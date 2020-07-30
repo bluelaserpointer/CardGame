@@ -208,7 +208,7 @@ export default {
 
 
       request({
-        url: '/activity/addActivity',
+        url: 'activity/addActivity',
         method: 'post',
         data: JSON.stringify(postData)
       }).then(response => {

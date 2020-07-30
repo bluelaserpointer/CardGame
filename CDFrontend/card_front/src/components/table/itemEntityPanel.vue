@@ -211,7 +211,7 @@ export default {
       postData.append('password', this.confirmPassword);
 
       request({
-        url: '/user/confirmDelete',
+        url: 'user/confirmDelete',
         method: 'post',
         data: postData
       }).then(response => {
@@ -233,7 +233,7 @@ export default {
       postData.append('itemId', this.temp.itemId);
 
       request({
-        url: '/item/deleteItem',
+        url: 'item/deleteItem',
         method: 'post',
         data: postData
       }).then(response => {
@@ -282,7 +282,7 @@ export default {
     getList() {
       let _this = this;
       request({
-        url: '/item/getAllItems',
+        url: 'item/getAllItems',
         method: 'get',
       }).then( response => {
         if(response.data) {
@@ -361,7 +361,7 @@ export default {
           };
 
           request({
-            url: '/item/addItem',
+            url: 'item/addItem',
             method: 'post',
             data: JSON.stringify(postData)
           }).then(response => {
@@ -411,7 +411,7 @@ export default {
           };
 
           request({
-            url: '/item/updateItem',
+            url: 'item/updateItem',
             method: 'post',
             data: JSON.stringify(postData)
           }).then(response => {

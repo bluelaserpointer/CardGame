@@ -127,7 +127,7 @@ export default {
     getList() {
 
       request({
-        url: '/mail/getAllMails',
+        url: 'mail/getAllMails',
         method: 'get',
       }).then(response => {
         if(response.data) {
