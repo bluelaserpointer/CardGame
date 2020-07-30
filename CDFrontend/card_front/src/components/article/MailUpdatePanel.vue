@@ -171,7 +171,7 @@
         postData.append('password', this.confirmPassword);
 
         request({
-          url: '/user/confirmDelete',
+          url: 'user/confirmDelete',
           method: 'post',
           data: postData
         }).then(response => {
@@ -193,7 +193,7 @@
         postData.append('mailId', this.updateContent.mailId);
 
         request({
-          url: '/mail/deleteMail',
+          url: 'mail/deleteMail',
           method: 'post',
           data: postData
         }).then(response => {
@@ -230,7 +230,7 @@
         };
 
         request({
-          url: '/mail/updateMail',
+          url: 'mail/updateMail',
           method: 'post',
           data: JSON.stringify(postData)
         }).then(response => {

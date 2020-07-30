@@ -194,7 +194,7 @@ export default {
     getList() {
 
       request({
-        url: '/ownItem/getAllOwnItems',
+        url: 'ownItem/getAllOwnItems',
         method: 'get',
       }).then(response => {
         this.list = response.data
@@ -231,7 +231,7 @@ export default {
           };
 
           request({
-            url: '/ownItem/addOwnItem',
+            url: 'ownItem/addOwnItem',
             method: 'post',
             data: JSON.stringify(postData)
           }).then(response => {
@@ -291,7 +291,7 @@ export default {
           };
 
           request({
-            url: '/ownItem/updateOwnItem',
+            url: 'ownItem/updateOwnItem',
             method: 'post',
             data: JSON.stringify(postData)
           }).then(response => {
@@ -341,7 +341,7 @@ export default {
       postData.append('password', this.confirmPassword);
 
       request({
-        url: '/user/confirmDelete',
+        url: 'user/confirmDelete',
         method: 'post',
         data: postData
       }).then(response => {
@@ -377,7 +377,7 @@ export default {
       postData.append('itemId', this.temp.itemId);
 
       request({
-        url: '/ownItem/deleteOwnItem',
+        url: 'ownItem/deleteOwnItem',
         method: 'post',
         data: postData
       }).then(response => {
