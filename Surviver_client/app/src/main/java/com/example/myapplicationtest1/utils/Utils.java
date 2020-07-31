@@ -54,17 +54,16 @@ public class Utils {
             System.out.println("Utils: data: " + data);
             if(data == null)
                 return false;
-            //TODO: This is for old version backend!
-            Cache.token = data;
-            Cache.setUserInfo(new JSONObject(HttpClient.doGetShort("user/getUserByUserName?userName=SuperUser")));
-            //TODO: This is for new version, but it have not uploaded to server.
-//            jsonBody = new JSONObject(data);
-//            if(jsonBody.has("failReason")) {
-//                loginFailReason = jsonBody.getString("failReason");
-//                return false;
-//            }
-//            Cache.token = jsonBody.getString("token");
-//            Cache.setUserInfo(jsonBody.getJSONObject("user"));
+            //his is for old version backend!
+//                Cache.token = data;
+//                Cache.setUserInfo(new JSONObject(HttpClient.doGetShort("user/getUserByUserName?userName=SuperUser")));
+            jsonBody = new JSONObject(data);
+            if(jsonBody.has("failReason")) {
+                loginFailReason = jsonBody.getString("failReason");
+                return false;
+            }
+            Cache.token = jsonBody.getString("token");
+            Cache.setUserInfo(jsonBody.getJSONObject("user"));
         } catch (JSONException e) {
             System.out.println("Utils: failed.");
             e.printStackTrace();
