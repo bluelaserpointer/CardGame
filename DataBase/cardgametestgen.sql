@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80019
 File Encoding         : 65001
 
-Date: 2020-07-29 20:24:09
+Date: 2020-07-30 17:04:17
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -399,6 +399,28 @@ CREATE TABLE `user_login_record` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
+-- Procedure structure for deleteAll
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `deleteAll`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteAll`()
+BEGIN
+	#Routine body goes here...
+	delete from user;
+	delete from own_item;
+	delete from own_card;
+	delete from mail_box_mail_ids;
+	delete from mail;
+	delete from mail_box;
+	delete from item;
+	delete from enemy;
+	delete from card;
+	delete from activity;
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
 -- Procedure structure for generateActivity
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `generateActivity`;
@@ -413,7 +435,7 @@ BEGIN
 			select 1, "SuperActivity True", true, current_timestamp();
 	insert into activity(activity_id, activity_name, type, start)
 			select 2, "SuperActivity False", true, current_timestamp();
-#10000 
+#1000000 
 	while i <= basic do
 		if(i % 2 = 0) then
 			insert into activity(activity_id, activity_name, type, start)
@@ -424,6 +446,26 @@ BEGIN
 		end if;
 		set i = i + 1;
 	end while;
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for generateAll
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `generateAll`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `generateAll`()
+BEGIN
+	#Routine body goes here...
+	call deleteAll();
+	call generateUser();
+	call generateCard();
+	call generateItem();
+	call generateOwnCard();
+	call generateOwnItem();
+	call generateMail();
+	call generateActivity();
 END
 ;;
 DELIMITER ;
@@ -448,7 +490,7 @@ BEGIN
 	insert into card(card_id, attack, attack_range, card_name, cd, defense,
 										health_point, rarity, speed, type)
 	select 2, 100, 100, "SuperCard 2", 100, 100, 100, rarity, 60, 2;
-#10000 
+#1000000 
 	while i <= basic do
 
 		set name = LEFT(UUID(), 5);
@@ -483,7 +525,7 @@ BEGIN
 	#Routine body goes here...
 	declare i int default 1;
 	declare name varchar(15) default '';
-	declare basic int default 500000;
+	declare basic int default 10000;
 	
 	insert into enemy(enemy_id, attack, attack_range, cd, defense,
 										enemy_name, health_point, speed)
@@ -527,7 +569,7 @@ BEGIN
 
 	insert into item(item_id, item_name, price)
 	select 2, "SuperItem 2", 60;
-#10000
+#1000000
 	while i <= basic do
 
 		set name = LEFT(UUID(), 5);
@@ -686,7 +728,7 @@ BEGIN
 	select 2, 1, 50, email, 50, 111111, 18321798666, "SuperUser",
 					100 % i, 4.0, 100 % i, 50 % i, 100 % i, 100 % i, 100 % i, 100 % i, "ROLE_USER";
 
-	#while i <= 10000 do
+	#while i <= 1000000 do
 	while i <= basic do
 		set name = LEFT(UUID(), 5);
 		set name = CONCAT("user", name);
