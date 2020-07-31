@@ -31,19 +31,9 @@ public class LoginInputPage extends Page {
             System.out.println("InputIdentification succeeded!!!!!!!!!!!!!!!!");
             Utils.saveUserInfo(userName, password);
             Page.jump(this, HomePage.class);
-        }else{
+        } else {
             System.out.println("LoginInputPage: identification failed: " + Utils.loginFailReason);
-            switch(Utils.loginFailReason) {
-                case -1:
-                    ((TextView)findViewById(R.id.loginStatus)).setText("用户名不存在");
-                    break;
-                case -2:
-                    ((TextView)findViewById(R.id.loginStatus)).setText("密码错误");
-                    break;
-                case -3:
-                    ((TextView)findViewById(R.id.loginStatus)).setText("该用户被禁用！");
-                    break;
-            }
+            ((TextView)findViewById(R.id.loginStatus)).setText(Utils.loginFailReason);
         }
     }
 }

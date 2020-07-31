@@ -9,6 +9,7 @@ import android.os.Looper;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.example.myapplicationtest1.utils.Cache;
 import com.example.myapplicationtest1.utils.Urls;
 import com.example.myapplicationtest1.utils.Utils;
 
@@ -117,7 +118,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         //client info
         mMessage.put("ClientVersion", String.valueOf(Utils.CLIENT_VERSION));
         //user info
-        mMessage.put("UserId", String.valueOf(Utils.getUserId()));
+        mMessage.put("UserId", String.valueOf(Cache.userId));
         //save reports
         //saveErrorMessages(e);
         final JSONObject jsonObject = new JSONObject(mMessage);

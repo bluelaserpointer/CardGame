@@ -1,7 +1,10 @@
 package com.example.myapplicationtest1.utils;
 
 public class Urls {
-    public static String token = null;
+    //Edward: http://192.168.175.1:8080/
+    //Jun: http://192.168.254.1:8080/
+    //Online: http://ec2-35-173-219-114.compute-1.amazonaws.com:8080/
+    public static final String URLHead = "http://ec2-35-173-219-114.compute-1.amazonaws.com:8080/";
     /////////////
     //Users
     /////////////
@@ -9,7 +12,10 @@ public class Urls {
         return "user/login";
     }
     public static String getUser() {
-        return "user/getUser?userId=" + Utils.getUserId();
+        return "user/getUser?userId=" + Cache.userId;
+    }
+    public static String register() {
+        return "user/register";
     }
     /////////////
     //Cards
@@ -21,7 +27,7 @@ public class Urls {
         return "card/getAllCards";
     }
     public static String getAllOwnCard() {
-        return "ownCard/getAllOwnCardsByUserId?userId=" + Utils.getUserId();
+        return "ownCard/getAllOwnCardsByUserId?userId=" + Cache.userId;
     }
     public static String drawCard(int chi, int mat, int eng) {
         return "mechanism/drawCard?chi=" + chi + "&mat=" + mat + "&eng=" + eng;
@@ -48,10 +54,10 @@ public class Urls {
         return "record/getOnlineCount";
     }
     public static String getAllPveRecords() {
-        return "record/pveRecord/getAllPveRecordsByUser?userId=" + Utils.getUserId();
+        return "record/pveRecord/getAllPveRecordsByUser?userId=" + Cache.userId;
     }
     public static String getUserLoginRecords() {
-        return "record/userLoginRecord/getUserLoginRecordsByUserId?userId=" + Utils.getUserId();
+        return "record/userLoginRecord/getUserLoginRecordsByUserId?userId=" + Cache.userId;
     }
     /////////////
     //Activities

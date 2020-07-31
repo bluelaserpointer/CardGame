@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.example.myapplicationtest1.page.HomePage;
 import com.example.myapplicationtest1.page.LoginInputPage;
 import com.example.myapplicationtest1.page.Page;
+import com.example.myapplicationtest1.utils.Cache;
 import com.example.myapplicationtest1.utils.Urls;
 import com.example.myapplicationtest1.utils.Utils;
 
@@ -238,7 +239,7 @@ public class StartPage extends AppCompatActivity {
     }
     public static void backWithConnectionError() {
         connectedTimeOutHappen = true;
-        Urls.token = null;
+        Cache.token = null;
         Page.jump(StartPage.staticActivity, StartPage.class);
     }
 }
