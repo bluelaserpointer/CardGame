@@ -19,6 +19,7 @@ import com.example.myapplicationtest1.game.contents.unit.MyUnit;
 import com.example.myapplicationtest1.page.CardDetailPage;
 import com.example.myapplicationtest1.page.Page;
 import com.example.myapplicationtest1.page.TeamPage;
+import com.example.myapplicationtest1.utils.Cache;
 import com.example.myapplicationtest1.utils.Urls;
 import com.example.myapplicationtest1.utils.Utils;
 
@@ -39,7 +40,7 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardLi
 
     public void fetch() {
         knowledgeParameters.clear();
-        System.out.println("!!!fetch " + "ownCard/getAllOwnCardsByUserId?userId=" + Utils.getUserId());
+        System.out.println("!!!fetch " + "ownCard/getAllOwnCardsByUserId?userId=" + Cache.userId);
         if(Utils.getUserName().equals("NOT_LOGGED")) {
             System.out.println("!!!CardListAdapter: not login");
             return;

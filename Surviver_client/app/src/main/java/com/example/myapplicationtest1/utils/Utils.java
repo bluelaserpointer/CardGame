@@ -19,7 +19,6 @@ public class Utils {
     public static final double CLIENT_VERSION = 0.1;
 
     public static SharedPreferences sp;
-    public static int userId = -1;
     public static void setSharedPreference(Context context) {
         sp = context.getSharedPreferences("data", Context.MODE_PRIVATE); //数据自己可用
     }
@@ -29,12 +28,6 @@ public class Utils {
         edit.putString("password", password);
         edit.commit();
     }
-    public static void saveUserId(int id) {
-//        final SharedPreferences.Editor edit = sp.edit();
-//        edit.putString("userId", String.valueOf(id));
-//        edit.commit();
-        userId = id;
-    }
 
     // 从data.xml中获取用户名称
     public static String getUserName() {
@@ -43,77 +36,49 @@ public class Utils {
     public static String getPassword() {
         return sp == null ? "SP_NULL" : sp.getString("password", "NOT_LOGGED");
     }
-    public static Integer getUserId() {
-        //return sp.getString("userId", "-1");
-        return userId;
-    }
     public static boolean identifyUser() {
         return identifyUser(getUserName(), getPassword());
     }
-    public static int loginFailReason;
+    public static String loginFailReason;
     public static boolean identifyUser(String userName, String password) {
         //判断输入的用户名和密码是否正确
 //        final String data = HttpClient.doGetShort("user/identifyUser?"
 //                + "userName=" + userName + "&password=" + password);
         String data = null;
-        JSONObject requestBody = new JSONObject();
+        JSONObject jsonBody = new JSONObject();
         try {
-            requestBody.accumulate("userName", userName);
-            requestBody.accumulate("password", password);
-            System.out.println("Utils: " + requestBody.toString());
-            data = HttpClient.doPostShort(Urls.login(), requestBody.toString());
+            jsonBody.accumulate("userName", userName);
+            jsonBody.accumulate("password", password);
+            System.out.println("Utils: " + jsonBody.toString());
+            data = HttpClient.doPostShort(Urls.login(), jsonBody.toString());
             System.out.println("Utils: data: " + data);
             if(data == null)
                 return false;
-            Urls.token = data;
-//            requestBody.remove("userName");
-//            requestBody.remove("password");
-            requestBody = new JSONObject();
-            requestBody.accumulate("userId", 0);
-            System.out.println("Utils2: " + requestBody.toString());
-            data = HttpClient.doPostShort(Urls.login(), requestBody.toString());
-            System.out.println("Utils: data2: " + data);
+            //his is for old version backend!
+//                Cache.token = data;
+//                Cache.setUserInfo(new JSONObject(HttpClient.doGetShort("user/getUserByUserName?userName=SuperUser")));
+            jsonBody = new JSONObject(data);
+            if(jsonBody.has("failReason")) {
+                loginFailReason = jsonBody.getString("failReason");
+                return false;
+            }
+            Cache.token = jsonBody.getString("token");
+            Cache.setUserInfo(jsonBody.getJSONObject("user"));
         } catch (JSONException e) {
             System.out.println("Utils: failed.");
             e.printStackTrace();
             return false;
         }
-        //TODO: waiting backend make userId provider
-//        final int userId = Integer.parseInt(data.substring(0, data.length() - 2));
-        final int userId = 0;
-        if(userId >= 0) {
-            Utils.saveUserId(userId);
-            return true;
-        } else {
-            loginFailReason = userId;
-            System.out.println("Utils: identification result: " + userId);
-        }
-        return false;
-    }
-    public static void setUserTopBarInfo(Activity activity, JSONObject userInfo) {
-        try {
-            ((Button)activity.findViewById(R.id.grade_button)).setText(userInfo.get("grade").toString());
-            ((Button)activity.findViewById(R.id.stamina_button)).setText(userInfo.get("stamina").toString());
-            ((Button)activity.findViewById(R.id.money_button)).setText(userInfo.get("money").toString());
-        } catch(JSONException e) {
-            e.printStackTrace();
-        }
+        return true;
     }
     /**
      * Fetching data of the current logged in user
      * @param activity current activity
      */
     public static void setUserTopBarInfo(Activity activity) {
-        try{
-            setUserTopBarInfo(activity, getUserInfo());
-        } catch(JSONException e) {
-            e.printStackTrace();
-        }
-    }
-    public static JSONObject getUserInfo() throws JSONException {
-        final String data = HttpClient.doGetShort(Urls.getUser());
-        System.out.println("Utils::getUerInfo: " + data + ", " + Urls.token);
-        return new JSONObject(data);
+        ((Button)activity.findViewById(R.id.grade_button)).setText(String.valueOf(Cache.grade));
+        ((Button)activity.findViewById(R.id.stamina_button)).setText(String.valueOf(Cache.stamina));
+        ((Button)activity.findViewById(R.id.money_button)).setText(String.valueOf(Cache.money));
     }
     public static HashMap<Integer, Knowledge.KnowledgeParameter> ownCardRemoteRecords = new HashMap<>();
     public static HashMap<Integer, Knowledge.KnowledgeParameter> cardsInfoRemoteRecords = new HashMap<>();

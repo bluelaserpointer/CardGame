@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.Security.JwtUtil;
 import com.example.accessingdatamysql.entity.*;
 import com.example.accessingdatamysql.service.UserLoginRecordService;
@@ -100,11 +101,17 @@ public class UserController {
   // 登录逻辑
   @PostMapping("/login")
   public String identifyUser(@RequestBody AuthRequest authRequest) {
-    System.out.println("UserController login: " + authRequest.getUserName() + ", " + authRequest.getPassword());
-    authenticationManager
-        .authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUserName(), authRequest.getPassword()));
-    userLoginRecordService.userLogin(userService.getOneUserByUserName(authRequest.getUserName()).getUserId());
-    return jwtUtil.generateToken(authRequest.getUserName());
+    final String userName = authRequest.getUserName(), password = authRequest.getPassword();
+    System.out.println("UserController login: " + userName + ", " + password);
+    authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userName, password));
+    final User user = userService.getOneUserByUserName(userName);
+    userLoginRecordService.userLogin(user.getUserId());
+    JSONObject response = new JSONObject();
+    response.put("token", jwtUtil.generateToken(userName));
+    response.put("user", user);
+//    if(false)
+//      response.put("failReason", "");
+    return response.toString();
   }
 
   @RequestMapping(value = "/logout")

@@ -3,6 +3,7 @@ package com.example.myapplicationtest1;
 import android.os.StrictMode;
 
 import com.example.myapplicationtest1.page.Page;
+import com.example.myapplicationtest1.utils.Cache;
 import com.example.myapplicationtest1.utils.Urls;
 
 import java.io.BufferedReader;
@@ -16,14 +17,11 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 public class HttpClient {
-    //Edward: 192.168.175.1
-    //Jun: 192.168.254.1
-    public static final String URLHead = "http://192.168.254.1:8080/";
     private static final int CONNECT_TIMEOUT = 3000;
     private static final int READ_TIMEOUT = 60000;
     public static final String TIMEOUT_SIGN = "CONNECTION TIMEOUT";
     public static String doGetShort(String url) {
-        return doGet(URLHead + url);
+        return doGet(Urls.URLHead + url);
     }
     public static String doGet(String httpurl) {
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
@@ -37,8 +35,8 @@ public class HttpClient {
             connection = (HttpURLConnection) new URL(httpurl).openConnection();
             // 设置连接方式：get
             connection.setRequestMethod("GET");
-            if (Urls.token != null)
-                connection.setRequestProperty("Authorization", "Bearer " + Urls.token);
+            if (Cache.token != null)
+                connection.setRequestProperty("Authorization", "Bearer " + Cache.token);
             // 设置连接主机服务器的超时时间：15000毫秒
             connection.setConnectTimeout(CONNECT_TIMEOUT);
             // 设置读取远程返回的数据时间：60000毫秒
@@ -88,7 +86,7 @@ public class HttpClient {
     }
 
     public static String doPostShort(String url, String param) {
-        return doPost(URLHead + url, param);
+        return doPost(Urls.URLHead + url, param);
     }
     public static String doPost(String httpUrl, String param) {
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
@@ -115,8 +113,8 @@ public class HttpClient {
             // 设置传入参数的格式:请求参数应该是 name1=value1&name2=value2 的形式。
             connection.setRequestProperty("Content-Type", "application/json");
             // 设置鉴权信息：Authorization: Bearer da3efcbf-0845-4fe3-8aba-ee040be542c0
-            if(Urls.token != null)
-                connection.setRequestProperty("Authorization", "Bearer " + Urls.token);
+            if(Cache.token != null)
+                connection.setRequestProperty("Authorization", "Bearer " + Cache.token);
             // 通过连接对象获取一个输出流
             os = connection.getOutputStream();
             // 通过输出流对象将参数写出去/传输出去,它是通过字节数组写出的
