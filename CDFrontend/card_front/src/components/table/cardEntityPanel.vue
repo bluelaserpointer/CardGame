@@ -259,7 +259,7 @@ export default {
     getList() {
       let _this = this;
       request({
-        url: '/card/getAllCards',
+        url: 'card/getAllCards',
         method: 'get',
       }).then( response => {
         if(response.data) {
@@ -305,7 +305,7 @@ export default {
       postData.append('password', this.confirmPassword);
 
       request({
-        url: '/user/confirmDelete',
+        url: 'user/confirmDelete',
         method: 'post',
         data: postData
       }).then(response => {
@@ -327,7 +327,7 @@ export default {
       postData.append('cardId', this.temp.cardId);
 
       request({
-        url: '/card/deleteCard',
+        url: 'card/deleteCard',
         method: 'post',
         data: postData
       }).then(response => {
@@ -394,7 +394,7 @@ export default {
           };
 
           request({
-            url: '/card/addCard',
+            url: 'card/addCard',
             method: 'post',
             data: JSON.stringify(postData)
           }).then(response => {
@@ -453,7 +453,7 @@ export default {
           };
 
           request({
-            url: '/card/updateCard',
+            url: 'card/updateCard',
             method: 'post',
             data: JSON.stringify(postData)
           }).then(response => {

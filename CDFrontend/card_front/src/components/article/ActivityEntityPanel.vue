@@ -148,7 +148,7 @@ export default {
     getList() {
 
       request({
-        url: '/activity/getAllActivities',
+        url: 'activity/getAllActivities',
         method: 'get',
       }).then(response => {
         if(response.data) {

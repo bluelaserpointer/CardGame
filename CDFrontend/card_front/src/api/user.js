@@ -20,7 +20,7 @@ export function login(data) {
   // });
 
   return request({
-    url: '/user/login',
+    url: 'user/login',
     method: 'post',
     data: JSON.stringify(postData)
   });
@@ -41,7 +41,7 @@ export function getInfo(token) {
   // postData.append('password', data.password);
 
   return request({
-    url: '/user/getUserByUserName',
+    url: 'user/getUserByUserName',
     method: 'post',
     data: postData
   });
