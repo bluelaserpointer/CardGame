@@ -11,7 +11,6 @@ public class Cache {
     /////////////
     //user
     /////////////
-    private static JSONObject userInfo;
     public static int chiKnowledge;
     public static int credits;
     public static int curExpPoint;
@@ -41,8 +40,5 @@ public class Cache {
         } catch(JSONException e) {
             e.printStackTrace();
         }
-    }
-    public static JSONObject getUserInfo() {
-        return userInfo;
     }
 }

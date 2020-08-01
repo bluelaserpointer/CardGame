@@ -102,15 +102,25 @@ public class UserController {
   @PostMapping("/login")
   public String identifyUser(@RequestBody AuthRequest authRequest) {
     final String userName = authRequest.getUserName(), password = authRequest.getPassword();
-    System.out.println("UserController login: " + userName + ", " + password);
-    authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userName, password));
+    System.out.print("UserController: login request: " + userName + ", " + password + " -> ");
     final User user = userService.getOneUserByUserName(userName);
-    userLoginRecordService.userLogin(user.getUserId());
-    JSONObject response = new JSONObject();
-    response.put("token", jwtUtil.generateToken(userName));
-    response.put("user", user);
-//    if(false)
-//      response.put("failReason", "");
+    final JSONObject response = new JSONObject();
+    if(user == null) {
+      System.out.println("refused(wrong username)");
+      response.put("failReason", "用户名或密码错误");
+    } else if (!user.getPassword().equals(password)) {
+      System.out.println("refused(wrong password)");
+      response.put("failReason", "用户名或密码错误");
+    } else if(!user.getAccess()) {
+      System.out.println("refused(banned user)");
+      response.put("failReason", "用户已被禁止登录，详见游戏官网");
+    } else {
+      System.out.println("accepted");
+      authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userName, password));
+      userLoginRecordService.userLogin(user.getUserId());
+      response.put("token", jwtUtil.generateToken(userName));
+      response.put("user", user);
+    }
     return response.toString();
   }
 
