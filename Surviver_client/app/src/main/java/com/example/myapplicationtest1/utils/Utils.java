@@ -54,9 +54,6 @@ public class Utils {
             System.out.println("Utils: data: " + data);
             if(data == null)
                 return false;
-            //his is for old version backend!
-//                Cache.token = data;
-//                Cache.setUserInfo(new JSONObject(HttpClient.doGetShort("user/getUserByUserName?userName=SuperUser")));
             jsonBody = new JSONObject(data);
             if(jsonBody.has("failReason")) {
                 loginFailReason = jsonBody.getString("failReason");

@@ -59,9 +59,16 @@ public class UserController {
 
   // 注册用户
   @PostMapping("/register")
-  public @ResponseBody User register(@RequestBody User registerUser) {
-    registerUser.setIdentity(User.ROLE_USER);
-    return userService.addNewUser(registerUser);
+  public @ResponseBody String register(@RequestBody User registerUser) {
+    final User existedUser = userService.getOneUserByUserName(registerUser.getUserName());
+    final JSONObject response = new JSONObject();
+    if(existedUser != null) {
+      response.put("failReason", "用户名已存在");
+    } else {
+      registerUser.setIdentity(User.ROLE_USER);
+      response.put("user", userService.addNewUser(registerUser));
+    }
+    return response.toString();
   }
 
   // 更新一个用户信息

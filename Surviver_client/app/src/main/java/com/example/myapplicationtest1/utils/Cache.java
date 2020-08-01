@@ -21,7 +21,7 @@ public class Cache {
     public static int money;
     public static String phoneNumber;
     public static int stamina;
-    public static int userId;
+    public static int userId = -1;
     public static String userName;
     public static void setUserInfo(JSONObject userInfo) {
         try {
