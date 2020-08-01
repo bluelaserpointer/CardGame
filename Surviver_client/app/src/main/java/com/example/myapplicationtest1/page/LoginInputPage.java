@@ -24,20 +24,27 @@ public class LoginInputPage extends Page {
         final String password = ((EditText)findViewById(R.id.passwordText)).getText().toString();
         final String phoneNumber = ((EditText)findViewById(R.id.phoneNumberText)).getText().toString();
         final String mailAddress = ((EditText)findViewById(R.id.mailAddressText)).getText().toString();
+        if(userName.isEmpty()) {
+            ((TextView)findViewById(R.id.loginStatus)).setText("用户名未输入");
+            return;
+        }
+        if(password.isEmpty()) {
+            ((TextView)findViewById(R.id.loginStatus)).setText("密码未输入");
+            return;
+        }
         try {
             final JSONObject registerInfo = new JSONObject();
             registerInfo.put("userName", userName);
             registerInfo.put("password", password);
             registerInfo.put("phoneNumber", phoneNumber);
             registerInfo.put("email", mailAddress);
-            HttpClient.doPostShort(Urls.register(), registerInfo.toString());
-            if(Utils.identifyUser(userName, password)) {
+            final JSONObject response = new JSONObject(HttpClient.doPostShort(Urls.register(), registerInfo.toString()));
+            if(response.has("failReason")) {
+                ((TextView)findViewById(R.id.loginStatus)).setText("注册失败: " + response.getString("failReason"));
+            } else  if(Utils.identifyUser(userName, password)) {
                 ((TextView)findViewById(R.id.loginStatus)).setText("注册成功");
                 Utils.saveUserInfo(userName, password);
                 Page.jump(this, HomePage.class);
-            } else {
-                ((TextView)findViewById(R.id.loginStatus)).setText("注册失败");
-//                ((TextView)findViewById(R.id.loginStatus)).setText(Utils.loginFailReason);
             }
         } catch (JSONException e) {
             e.printStackTrace();

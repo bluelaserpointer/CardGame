@@ -11,7 +11,6 @@ public class Cache {
     /////////////
     //user
     /////////////
-    private static JSONObject userInfo;
     public static int chiKnowledge;
     public static int credits;
     public static int curExpPoint;
@@ -22,7 +21,7 @@ public class Cache {
     public static int money;
     public static String phoneNumber;
     public static int stamina;
-    public static int userId;
+    public static int userId = -1;
     public static String userName;
     public static void setUserInfo(JSONObject userInfo) {
         try {
@@ -41,8 +40,5 @@ public class Cache {
         } catch(JSONException e) {
             e.printStackTrace();
         }
-    }
-    public static JSONObject getUserInfo() {
-        return userInfo;
     }
 }
