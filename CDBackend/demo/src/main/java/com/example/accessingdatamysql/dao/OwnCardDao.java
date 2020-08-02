@@ -25,6 +25,8 @@ public interface OwnCardDao {
 
         OwnCard findOwnCardByUserIdEqualsAndCardIdEquals(Integer userId, Integer cardId);
 
+        List<OwnCard> ListPage(Integer page_token, Integer page_size);
+
         // 获取所有的用户拥有卡牌记录
         List<OwnCard> getAllOwnCards();
 

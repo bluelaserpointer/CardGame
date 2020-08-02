@@ -17,13 +17,13 @@ public class OwnCardServiceImpl implements OwnCardService {
 
     // 用ownCardId找某一个用户拥有卡牌的关系
     @Override
-    public OwnCard getOneOwnCard(Integer OwnCardId) {
+    public OwnCard getOneOwnCard(final Integer OwnCardId) {
         return OwnCardDao.getOneOwnCard(OwnCardId);
     }
 
     // 增加一个用户拥有某张卡牌的关系
     @Override
-    public OwnCard addNewOwnCard(Integer userId, Integer cardId) {
+    public OwnCard addNewOwnCard(final Integer userId, final Integer cardId) {
         if (OwnCardDao.findOwnCardByUserIdEqualsAndCardIdEquals(userId, cardId) != null) {
             // 重复获取
             return OwnCardDao.ownAnotherCard(OwnCardDao.findOwnCardByUserIdEqualsAndCardIdEquals(userId, cardId));
@@ -33,7 +33,7 @@ public class OwnCardServiceImpl implements OwnCardService {
     }
 
     // 获取指定用户的所有拥有卡牌记录
-    public List<OwnCard> getAllOwnCardsByUserId(Integer userId) {
+    public List<OwnCard> getAllOwnCardsByUserId(final Integer userId) {
         return OwnCardDao.getAllOwnCardsByUserId(userId);
     }
 
@@ -43,7 +43,7 @@ public class OwnCardServiceImpl implements OwnCardService {
     }
 
     // 用ownCardIds来删除拥有卡牌关系
-    public String deleteOwnCards(List<Integer> OwnCardIds) {
+    public String deleteOwnCards(final List<Integer> OwnCardIds) {
         return OwnCardDao.deleteOwnCards(OwnCardIds);
     }
 
@@ -53,21 +53,21 @@ public class OwnCardServiceImpl implements OwnCardService {
     }
 
     // 删除单个拥有卡牌关系
-    public List<OwnCard> deleteOwnCard(Integer userId, Integer cardId) {
+    public List<OwnCard> deleteOwnCard(final Integer userId, final Integer cardId) {
         return OwnCardDao.deleteOwnCard(userId, cardId);
     }
 
     // 更新一个用户拥有某张卡牌的所有信息
     @Override
-    public OwnCard updateOwnCard(OwnCard updateOwnCard) {
+    public OwnCard updateOwnCard(final OwnCard updateOwnCard) {
         return OwnCardDao.updateOwnCard(updateOwnCard);
     }
 
     // 自动判断增加exp是是否需要升级
     @Override
-    public OwnCard addExp(Integer userId, Integer cardId, Integer exp) {
-        OwnCard ownCard = OwnCardDao.findOwnCardByUserIdEqualsAndCardIdEquals(userId, cardId);
-        Integer expToNextLevel = expToLevelUp(ownCard.getCardLevel());
+    public OwnCard addExp(final Integer userId, final Integer cardId, final Integer exp) {
+        final OwnCard ownCard = OwnCardDao.findOwnCardByUserIdEqualsAndCardIdEquals(userId, cardId);
+        final Integer expToNextLevel = expToLevelUp(ownCard.getCardLevel());
         // System.out.println("UserService -> addExp:");
         // System.out.println("Before Modification: ");
         // System.out.println("User: userId = " + userId + " userName = " +
@@ -100,12 +100,17 @@ public class OwnCardServiceImpl implements OwnCardService {
 
     // 计算升级需要的经验值
     @Override
-    public Integer expToLevelUp(Integer cardLevel) {
-        Integer base = 100; // 等级为1时需要100经验值
-        double IncreaseRate = 1.05;
-        double result = Math.round(Math.pow(IncreaseRate, cardLevel - 1) * base); // 小数采用四舍五入法
+    public Integer expToLevelUp(final Integer cardLevel) {
+        final Integer base = 100; // 等级为1时需要100经验值
+        final double IncreaseRate = 1.05;
+        final double result = Math.round(Math.pow(IncreaseRate, cardLevel - 1) * base); // 小数采用四舍五入法
         System.out.println(result);
         return (int) result;
+    }
+
+    @Override
+    public List<OwnCard> ListPage(ListRequest listRequest) {
+        return OwnCardDao.ListPage(listRequest.getPageToken(), listRequest.getPageSize());
     }
 
     // 用户拥有的某张卡牌升级

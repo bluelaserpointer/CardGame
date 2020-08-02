@@ -42,4 +42,9 @@ public class MissionServiceImpl implements MissionService {
     public List<Mission> deleteMission(Integer MissionId) {
         return MissionDao.deleteMission(MissionId);
     }
+
+    @Override
+    public List<Mission> ListPage(ListRequest listRequest) {
+        return MissionDao.ListPage(listRequest.getPageToken(), listRequest.getPageSize());
+    }
 }

@@ -1,5 +1,7 @@
 package com.example.accessingdatamysql.repository;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 import org.springframework.data.jpa.repository.*;
 import com.example.accessingdatamysql.entity.*;
@@ -21,5 +23,10 @@ public interface MailRepository extends JpaRepository<Mail, Integer> {
     @Modifying
     @Query(value = "UPDATE Mail u SET u = :newMail WHERE u.mailId = :MailId")
     int updateMailStatus(@Param("newMail") Mail newMail, @Param("MailId") Integer MailId);
+
+    @Transactional
+    @Modifying
+    @Query(value = "SELECT * from Mail u Where u.mail_id >=?1 AND u.mail_id <=?2", nativeQuery = true)
+    List<Mail> ListPage(Integer start, Integer end);
 
 }

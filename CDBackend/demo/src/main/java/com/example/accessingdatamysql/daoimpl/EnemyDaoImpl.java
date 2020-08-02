@@ -98,4 +98,19 @@ public class EnemyDaoImpl implements EnemyDao {
         return getAllEnemies();
     }
 
+    @Override
+    public List<Enemy> ListPage(Integer page_token, Integer page_size) {
+        Integer start = (page_token - 1) * page_size + 1;
+        Integer end = page_token * page_size;
+        List<Enemy> enemies = EnemyRepository.ListPage(start, end);
+        for (int i = 0; i < enemies.size(); i++) {
+            Enemy enemy = enemies.get(i);
+            Optional<EnemyDetails> enemyDetails = EnemyDetailsRepository
+                    .findEnemyDetailsByEnemyIdEquals(enemy.getEnemyId());
+            enemyDetails.ifPresent(enemy::setEnemyDetails);
+            enemies.set(i, enemy);
+        }
+        return enemies;
+    }
+
 }

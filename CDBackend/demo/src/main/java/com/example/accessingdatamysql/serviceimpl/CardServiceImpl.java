@@ -43,4 +43,9 @@ public class CardServiceImpl implements CardService {
     public List<Card> deleteCard(Integer cardId) {
         return CardDao.deleteCard(cardId);
     }
+
+    @Override
+    public List<Card> ListPage(ListRequest listRequest) {
+        return CardDao.ListPage(listRequest.getPageToken(), listRequest.getPageSize());
+    }
 }

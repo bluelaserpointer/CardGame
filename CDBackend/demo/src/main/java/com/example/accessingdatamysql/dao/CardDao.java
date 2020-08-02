@@ -17,6 +17,8 @@ public interface CardDao {
 
         Card updateCard(Card updateCard);
 
+        List<Card> ListPage(Integer page_token, Integer page_size);
+
         List<Card> getAllCards();
 
         String deleteCards(List<Integer> cardIds);

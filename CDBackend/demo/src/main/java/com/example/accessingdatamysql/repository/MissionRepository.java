@@ -1,5 +1,7 @@
 package com.example.accessingdatamysql.repository;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 import org.springframework.data.jpa.repository.*;
 import com.example.accessingdatamysql.entity.*;
@@ -22,5 +24,10 @@ public interface MissionRepository extends JpaRepository<Mission, Integer> {
     @Modifying
     @Query(value = "UPDATE Mission u SET u = :newMission WHERE u.missionId = :MissionId")
     int updateMissionStatus(@Param("newMission") Mission newMission, @Param("MissionId") Integer MissionId);
+
+    @Transactional
+    @Modifying
+    @Query(value = "SELECT * from Mission u Where u.mission_id >=?1 AND u.mission_id <=?2", nativeQuery = true)
+    List<Mission> ListPage(Integer start, Integer end);
 
 }

@@ -103,4 +103,18 @@ public class MailDaoImpl implements MailDao {
         MailDetailsRepository.deleteMailDetailsByMailIdEquals(mailId);
         return getAllMails();
     }
+
+    @Override
+    public List<Mail> ListPage(Integer page_token, Integer page_size) {
+        Integer start = (page_token - 1) * page_size + 1;
+        Integer end = page_token * page_size;
+        List<Mail> mails = MailRepository.ListPage(start, end);
+        for (int i = 0; i < mails.size(); i++) {
+            Mail Mail = mails.get(i);
+            Optional<MailDetails> MailDetails = MailDetailsRepository.findMailDetailsByMailIdEquals(Mail.getMailId());
+            MailDetails.ifPresent(Mail::setMailDetails);
+            mails.set(i, Mail);
+        }
+        return mails;
+    }
 }

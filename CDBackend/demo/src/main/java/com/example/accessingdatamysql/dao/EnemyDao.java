@@ -14,6 +14,8 @@ public interface EnemyDao {
 
         Enemy updateEnemy(Enemy updateEnemy);
 
+        List<Enemy> ListPage(Integer page_token, Integer page_size);
+
         List<Enemy> getAllEnemies();
 
         String deleteEnemies(List<Integer> enemyIds);

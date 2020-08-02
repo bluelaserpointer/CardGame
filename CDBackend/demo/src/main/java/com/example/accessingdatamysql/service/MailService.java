@@ -11,6 +11,9 @@ public interface MailService {
 
         Mail updateMail(Mail updateMail);
 
+        // 获取指定页数的Mail
+        List<Mail> ListPage(ListRequest listRequest);
+
         List<Mail> getAllMails();
 
         String deleteMails(List<Integer> MailIds);

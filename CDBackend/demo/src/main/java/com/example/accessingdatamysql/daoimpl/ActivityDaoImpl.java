@@ -100,4 +100,19 @@ public class ActivityDaoImpl implements ActivityDao {
         return getAllActivities();
     }
 
+    @Override
+    public List<Activity> ListPage(Integer page_token, Integer page_size) {
+        Integer start = (page_token - 1) * page_size + 1;
+        Integer end = page_token * page_size;
+        List<Activity> activities = ActivityRepository.ListPage(start, end);
+        for (int i = 0; i < activities.size(); i++) {
+            Activity Activity = activities.get(i);
+            Optional<ActivityDetails> ActivityDetails = ActivityDetailsRepository
+                    .findActivityDetailsByActivityIdEquals(Activity.getActivityId());
+            ActivityDetails.ifPresent(Activity::setActivityDetails);
+            activities.set(i, Activity);
+        }
+        return activities;
+    }
+
 }

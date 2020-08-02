@@ -99,4 +99,18 @@ public class CardDaoImpl implements CardDao {
         return getAllCards();
     }
 
+    @Override
+    public List<Card> ListPage(Integer page_token, Integer page_size) {
+        Integer start = (page_token - 1) * page_size + 1;
+        Integer end = page_token * page_size;
+        List<Card> cards = CardRepository.ListPage(start, end);
+        for (int i = 0; i < cards.size(); i++) {
+            Card card = cards.get(i);
+            Optional<CardDetails> cardDetails = CardDetailsRepository.findCardDetailsByCardIdEquals(card.getCardId());
+            cardDetails.ifPresent(card::setCardDetails);
+            cards.set(i, card);
+        }
+        return cards;
+    }
+
 }

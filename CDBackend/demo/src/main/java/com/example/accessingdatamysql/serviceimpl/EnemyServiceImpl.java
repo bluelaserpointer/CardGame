@@ -48,4 +48,9 @@ public class EnemyServiceImpl implements EnemyService {
         return EnemyDao.deleteEnemy(enemyId);
     }
 
+    @Override
+    public List<Enemy> ListPage(ListRequest listRequest) {
+        return EnemyDao.ListPage(listRequest.getPageToken(), listRequest.getPageSize());
+    }
+
 }

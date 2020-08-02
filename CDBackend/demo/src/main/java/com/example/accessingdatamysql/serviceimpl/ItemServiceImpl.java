@@ -42,4 +42,9 @@ public class ItemServiceImpl implements ItemService {
     public List<Item> deleteItem(Integer itemId) {
         return ItemDao.deleteItem(itemId);
     }
+
+    @Override
+    public List<Item> ListPage(ListRequest listRequest) {
+        return ItemDao.ListPage(listRequest.getPageToken(), listRequest.getPageSize());
+    }
 }

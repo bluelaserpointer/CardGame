@@ -98,4 +98,12 @@ public class OwnItemDaoImpl implements OwnItemDao {
         return getAllOwnItems();
     }
 
+    @Override
+    public List<OwnItem> ListPage(Integer page_token, Integer page_size) {
+
+        Integer start = (page_token - 1) * page_size + 1;
+        Integer end = page_token * page_size;
+        return OwnItemRepository.ListPage(start, end);
+    }
+
 }

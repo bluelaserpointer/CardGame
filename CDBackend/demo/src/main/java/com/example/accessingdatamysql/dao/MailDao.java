@@ -17,6 +17,8 @@ public interface MailDao {
 
         Mail updateMail(Mail updateMail);
 
+        List<Mail> ListPage(Integer page_token, Integer page_size);
+
         List<Mail> getAllMails();
 
         String deleteMails(List<Integer> MailIds);

@@ -26,6 +26,9 @@ public interface OwnCardService {
         // 计算卡牌升级所需经验值 第一次升要100经验值,每一级比上一级多5%
         Integer expToLevelUp(Integer cardLevel);
 
+        // 获取指定页数的OwnCard
+        List<OwnCard> ListPage(ListRequest listRequest);
+
         // 获取所有的用户拥有卡牌记录
         List<OwnCard> getAllOwnCards();
 

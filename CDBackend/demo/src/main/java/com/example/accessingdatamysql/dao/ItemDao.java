@@ -18,6 +18,8 @@ public interface ItemDao {
 
         Item updateItem(Item updateItem);
 
+        List<Item> ListPage(Integer page_token, Integer page_size);
+
         List<Item> getAllItems();
 
         String deleteItems(List<Integer> ItemIds);

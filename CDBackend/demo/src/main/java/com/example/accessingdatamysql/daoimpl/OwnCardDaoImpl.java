@@ -122,4 +122,12 @@ public class OwnCardDaoImpl implements OwnCardDao {
         return ownCard.getLeftPoints();
     }
 
+    @Override
+    public List<OwnCard> ListPage(Integer page_token, Integer page_size) {
+
+        Integer start = (page_token - 1) * page_size + 1;
+        Integer end = page_token * page_size;
+        return OwnCardRepository.ListPage(start, end);
+    }
+
 }

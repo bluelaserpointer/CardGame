@@ -109,4 +109,19 @@ public class MissionDaoImpl implements MissionDao {
         MissionDetailsRepository.deleteMissionDetailsByMissionIdEquals(MissionId);
         return getAllMissions();
     }
+
+    @Override
+    public List<Mission> ListPage(Integer page_token, Integer page_size) {
+        Integer start = (page_token - 1) * page_size + 1;
+        Integer end = page_token * page_size;
+        List<Mission> missions = MissionRepository.ListPage(start, end);
+        for (int i = 0; i < missions.size(); i++) {
+            Mission Mission = missions.get(i);
+            Optional<MissionDetails> MissionDetails = MissionDetailsRepository
+                    .findMissionDetailsByMissionIdEquals(Mission.getMissionId());
+            MissionDetails.ifPresent(Mission::setMissionDetails);
+            missions.set(i, Mission);
+        }
+        return missions;
+    }
 }

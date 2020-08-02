@@ -17,6 +17,8 @@ public interface MissionDao {
 
         Mission updateMission(Mission updateMission);
 
+        List<Mission> ListPage(Integer page_token, Integer page_size);
+
         List<Mission> getAllMissions();
 
         String deleteMissions(List<Integer> MissionIds);

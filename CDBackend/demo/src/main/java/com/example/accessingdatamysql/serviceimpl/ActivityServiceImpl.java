@@ -44,4 +44,9 @@ public class ActivityServiceImpl implements ActivityService {
     public List<Activity> deleteActivity(Integer activityId) {
         return ActivityDao.deleteActivity(activityId);
     }
+
+    @Override
+    public List<Activity> ListPage(ListRequest listRequest) {
+        return ActivityDao.ListPage(listRequest.getPageToken(), listRequest.getPageSize());
+    }
 }

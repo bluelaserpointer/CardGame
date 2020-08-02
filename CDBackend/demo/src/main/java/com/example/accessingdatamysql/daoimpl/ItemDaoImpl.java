@@ -104,5 +104,19 @@ public class ItemDaoImpl implements ItemDao {
         ItemRepository.deleteById(itemId);
         ItemDetailsRepository.deleteItemDetailsByItemIdEquals(itemId);
         return getAllItems();
+    }
+
+    @Override
+    public List<Item> ListPage(Integer page_token, Integer page_size) {
+        Integer start = (page_token - 1) * page_size + 1;
+        Integer end = page_token * page_size;
+        List<Item> items = ItemRepository.ListPage(start, end);
+        for (int i = 0; i < items.size(); i++) {
+            Item Item = items.get(i);
+            Optional<ItemDetails> ItemDetails = ItemDetailsRepository.findItemDetailsByItemIdEquals(Item.getItemId());
+            ItemDetails.ifPresent(Item::setItemDetails);
+            items.set(i, Item);
+        }
+        return items;
     };
 }

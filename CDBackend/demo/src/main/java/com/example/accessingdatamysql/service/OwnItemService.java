@@ -11,6 +11,9 @@ public interface OwnItemService {
 
         OwnItem updateOwnItem(OwnItem updateOwnItem);
 
+        // 获取指定页数的OwnItem
+        List<OwnItem> ListPage(ListRequest listRequest);
+
         List<OwnItem> getAllOwnItems();
 
         List<OwnItem> getAllOwnItemsByUserId(Integer userId);

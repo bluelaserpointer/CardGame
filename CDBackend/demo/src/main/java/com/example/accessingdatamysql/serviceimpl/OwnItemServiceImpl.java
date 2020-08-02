@@ -52,4 +52,9 @@ public class OwnItemServiceImpl implements OwnItemService {
     public List<OwnItem> deleteOwnItem(Integer userId, Integer itemId) {
         return OwnItemDao.deleteOwnItem(userId, itemId);
     }
+
+    @Override
+    public List<OwnItem> ListPage(ListRequest listRequest) {
+        return OwnItemDao.ListPage(listRequest.getPageToken(), listRequest.getPageSize());
+    }
 }

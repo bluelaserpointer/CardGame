@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.example.accessingdatamysql.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,6 +13,7 @@ import java.util.*;
 // import javax.validation.constraints.Null;
 
 import com.example.accessingdatamysql.service.OwnItemService;
+import static com.example.accessingdatamysql.GlobalConstants.general_page_size;
 
 @CrossOrigin(origins = "*")
 @RestController // This means that this class is a Controller
@@ -36,6 +38,16 @@ public class OwnItemController {
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public @ResponseBody OwnItem updateOwnItem(@RequestBody OwnItem updateOwnItem) {
     return OwnItemService.updateOwnItem(updateOwnItem);
+  }
+
+  // 获取指定页数的数据
+  @RequestMapping(value = "/List")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  public List<OwnItem> ListPage(@RequestBody ListRequest ListRequest) {
+    ListRequest.setPageSize(general_page_size);
+    String request = JSON.toJSONString(ListRequest);
+    System.out.print(request);
+    return OwnItemService.ListPage(ListRequest);
   }
 
   @RequestMapping(value = "/getAllOwnItems")

@@ -13,6 +13,8 @@ public interface OwnItemDao {
 
         OwnItem updateOwnItem(OwnItem updateOwnItem);
 
+        List<OwnItem> ListPage(Integer page_token, Integer page_size);
+
         List<OwnItem> getAllOwnItems();
 
         OwnItem findOwnItemByUserIdEqualsAndItemIdEquals(Integer userId, Integer itemId);

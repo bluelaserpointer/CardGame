@@ -131,10 +131,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> ListPage(ListRequest listRequest) {
-        Integer page_token = listRequest.getPageToken();
-        Integer page_size = listRequest.getPageSize();
-        List<User> users = userDao.ListPage(page_token, page_size);
-        return users;
+        return userDao.ListPage(listRequest.getPageToken(), listRequest.getPageSize());
     }
 
 }

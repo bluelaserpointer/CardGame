@@ -15,6 +15,9 @@ public interface MissionService {
 
         Mission updateMission(Mission updateMission);
 
+        // 获取指定页数的Mission
+        List<Mission> ListPage(ListRequest listRequest);
+
         List<Mission> getAllMissions();
 
         String deleteMissions(List<Integer> MissionIds);

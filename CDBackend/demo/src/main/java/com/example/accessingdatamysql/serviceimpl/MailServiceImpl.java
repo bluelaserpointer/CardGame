@@ -65,4 +65,9 @@ public class MailServiceImpl implements MailService {
         }
         return MailDao.getOneMail(mailId);
     }
+
+    @Override
+    public List<Mail> ListPage(ListRequest listRequest) {
+        return MailDao.ListPage(listRequest.getPageToken(), listRequest.getPageSize());
+    }
 }
