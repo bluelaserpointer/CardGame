@@ -4,6 +4,7 @@ package com.example.accessingdatamysql.dao;
 import java.util.List;
 // import java.util.Optional;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.entity.*;
 
 public interface UserDao {
@@ -20,7 +21,7 @@ public interface UserDao {
         List<User> getAllUsers();
 
         // 获取指定页数的用户
-        List<User> ListPage(Integer page_token, Integer page_size);
+        JSONObject ListPage(Integer page_token, Integer page_size);
 
         // 删除部分用户
         String deleteUsers(List<Integer> UserIds);

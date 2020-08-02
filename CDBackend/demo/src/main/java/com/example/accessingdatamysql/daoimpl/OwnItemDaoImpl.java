@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.daoimpl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.dao.OwnItemDao;
 import com.example.accessingdatamysql.repository.*;
 import com.example.accessingdatamysql.entity.*;
@@ -99,11 +100,31 @@ public class OwnItemDaoImpl implements OwnItemDao {
     }
 
     @Override
-    public List<OwnItem> ListPage(Integer page_token, Integer page_size) {
+    public JSONObject ListPage(Integer page_token, Integer page_size) {
+        JSONObject response = new JSONObject();
 
+        // get the result data
         Integer start = (page_token - 1) * page_size + 1;
         Integer end = page_token * page_size;
-        return OwnItemRepository.ListPage(start, end);
+        List<OwnItem> ownItems = OwnItemRepository.ListPage(start, end);
+
+        // get the nextPageToken
+        Integer nextPageToken;
+        if ((OwnItemRepository.findAll().size() - (page_token * page_size)) <= 0) {
+            response.put("nextPageToken", "");
+        } else {
+            nextPageToken = page_token + 1;
+            response.put("nextPageToken", nextPageToken);
+        }
+
+        // get the total pages of the result
+        Integer totalPages = OwnItemRepository.findAll().size() / page_size;
+        totalPages = totalPages + 1;
+
+        response.put("result", ownItems);
+        response.put("totalPages", totalPages);
+
+        return response;
     }
 
 }

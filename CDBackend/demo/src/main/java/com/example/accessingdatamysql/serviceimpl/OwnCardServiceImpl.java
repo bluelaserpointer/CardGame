@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.serviceimpl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.dao.*;
 import com.example.accessingdatamysql.entity.*;
 import com.example.accessingdatamysql.service.OwnCardService;
@@ -109,7 +110,7 @@ public class OwnCardServiceImpl implements OwnCardService {
     }
 
     @Override
-    public List<OwnCard> ListPage(ListRequest listRequest) {
+    public JSONObject ListPage(ListRequest listRequest) {
         return OwnCardDao.ListPage(listRequest.getPageToken(), listRequest.getPageSize());
     }
 

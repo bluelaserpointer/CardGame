@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.entity.Item;
 import com.example.accessingdatamysql.entity.ListRequest;
 
@@ -13,7 +14,7 @@ public interface ItemService {
         Item updateItem(Item updateItem);
 
         // 获取指定页数的Item
-        List<Item> ListPage(ListRequest listRequest);
+        JSONObject ListPage(ListRequest listRequest);
 
         List<Item> getAllItems();
 

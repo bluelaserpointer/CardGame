@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.serviceimpl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.dao.*;
 import com.example.accessingdatamysql.entity.*;
 import com.example.accessingdatamysql.service.EnemyService;
@@ -49,7 +50,7 @@ public class EnemyServiceImpl implements EnemyService {
     }
 
     @Override
-    public List<Enemy> ListPage(ListRequest listRequest) {
+    public JSONObject ListPage(ListRequest listRequest) {
         return EnemyDao.ListPage(listRequest.getPageToken(), listRequest.getPageSize());
     }
 

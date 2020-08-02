@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.daoimpl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.dao.ItemDao;
 import com.example.accessingdatamysql.dao.MissionDao;
 import com.example.accessingdatamysql.repository.*;
@@ -111,7 +112,10 @@ public class MissionDaoImpl implements MissionDao {
     }
 
     @Override
-    public List<Mission> ListPage(Integer page_token, Integer page_size) {
+    public JSONObject ListPage(Integer page_token, Integer page_size) {
+        JSONObject response = new JSONObject();
+
+        // get the result data
         Integer start = (page_token - 1) * page_size + 1;
         Integer end = page_token * page_size;
         List<Mission> missions = MissionRepository.ListPage(start, end);
@@ -122,6 +126,23 @@ public class MissionDaoImpl implements MissionDao {
             MissionDetails.ifPresent(Mission::setMissionDetails);
             missions.set(i, Mission);
         }
-        return missions;
+
+        // get the nextPageToken
+        Integer nextPageToken;
+        if ((MissionRepository.findAll().size() - (page_token * page_size)) <= 0) {
+            response.put("nextPageToken", "");
+        } else {
+            nextPageToken = page_token + 1;
+            response.put("nextPageToken", nextPageToken);
+        }
+
+        // get the total pages of the result
+        Integer totalPages = MissionRepository.findAll().size() / page_size;
+        totalPages = totalPages + 1;
+
+        response.put("result", missions);
+        response.put("totalPages", totalPages);
+
+        return response;
     }
 }

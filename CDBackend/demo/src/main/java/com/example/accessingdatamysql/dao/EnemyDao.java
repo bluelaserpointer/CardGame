@@ -4,6 +4,7 @@ package com.example.accessingdatamysql.dao;
 import java.util.List;
 // import java.util.Optional;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.entity.*;
 
 public interface EnemyDao {
@@ -14,7 +15,7 @@ public interface EnemyDao {
 
         Enemy updateEnemy(Enemy updateEnemy);
 
-        List<Enemy> ListPage(Integer page_token, Integer page_size);
+        JSONObject ListPage(Integer page_token, Integer page_size);
 
         List<Enemy> getAllEnemies();
 

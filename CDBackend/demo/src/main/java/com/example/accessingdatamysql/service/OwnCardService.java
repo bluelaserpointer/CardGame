@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.entity.*;
 
 import java.sql.Timestamp;
@@ -27,7 +28,7 @@ public interface OwnCardService {
         Integer expToLevelUp(Integer cardLevel);
 
         // 获取指定页数的OwnCard
-        List<OwnCard> ListPage(ListRequest listRequest);
+        JSONObject ListPage(ListRequest listRequest);
 
         // 获取所有的用户拥有卡牌记录
         List<OwnCard> getAllOwnCards();

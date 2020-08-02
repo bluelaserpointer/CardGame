@@ -85,11 +85,12 @@ public class UserController {
   // 获取指定页数的数据
   @RequestMapping(value = "/List")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public List<User> ListPage(@RequestBody ListRequest ListRequest) {
+  public JSONObject ListPage(@RequestBody ListRequest ListRequest) {
     ListRequest.setPageSize(general_page_size);
     String request = JSON.toJSONString(ListRequest);
     System.out.print(request);
-    return userService.ListPage(ListRequest);
+    JSONObject response = userService.ListPage(ListRequest);
+    return response;
   }
 
   // 删除部分用户

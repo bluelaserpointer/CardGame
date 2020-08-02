@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.entity.Enemy;
 import com.example.accessingdatamysql.entity.ListRequest;
 
@@ -13,7 +14,7 @@ public interface EnemyService {
         Enemy updateEnemy(Enemy updateEnemy);
 
         // 获取指定页数的Enemy
-        List<Enemy> ListPage(ListRequest listRequest);
+        JSONObject ListPage(ListRequest listRequest);
 
         List<Enemy> getAllEnemies();
 

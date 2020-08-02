@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 import java.util.List;
 // import java.util.Optional;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.entity.*;
 
 public interface OwnCardDao {
@@ -25,7 +26,7 @@ public interface OwnCardDao {
 
         OwnCard findOwnCardByUserIdEqualsAndCardIdEquals(Integer userId, Integer cardId);
 
-        List<OwnCard> ListPage(Integer page_token, Integer page_size);
+        JSONObject ListPage(Integer page_token, Integer page_size);
 
         // 获取所有的用户拥有卡牌记录
         List<OwnCard> getAllOwnCards();

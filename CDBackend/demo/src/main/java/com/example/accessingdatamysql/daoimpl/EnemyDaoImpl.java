@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.daoimpl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.dao.EnemyDao;
 import com.example.accessingdatamysql.repository.*;
 import com.example.accessingdatamysql.entity.*;
@@ -99,7 +100,10 @@ public class EnemyDaoImpl implements EnemyDao {
     }
 
     @Override
-    public List<Enemy> ListPage(Integer page_token, Integer page_size) {
+    public JSONObject ListPage(Integer page_token, Integer page_size) {
+        JSONObject response = new JSONObject();
+
+        // get the result data
         Integer start = (page_token - 1) * page_size + 1;
         Integer end = page_token * page_size;
         List<Enemy> enemies = EnemyRepository.ListPage(start, end);
@@ -110,7 +114,23 @@ public class EnemyDaoImpl implements EnemyDao {
             enemyDetails.ifPresent(enemy::setEnemyDetails);
             enemies.set(i, enemy);
         }
-        return enemies;
+        // get the nextPageToken
+        Integer nextPageToken;
+        if ((EnemyRepository.findAll().size() - (page_token * page_size)) <= 0) {
+            response.put("nextPageToken", "");
+        } else {
+            nextPageToken = page_token + 1;
+            response.put("nextPageToken", nextPageToken);
+        }
+
+        // get the total pages of the result
+        Integer totalPages = EnemyRepository.findAll().size() / page_size;
+        totalPages = totalPages + 1;
+
+        response.put("result", enemies);
+        response.put("totalPages", totalPages);
+
+        return response;
     }
 
 }

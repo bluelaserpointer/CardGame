@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.entity.Card;
 import com.example.accessingdatamysql.entity.ListRequest;
 
@@ -13,7 +14,7 @@ public interface CardService {
         Card updateCard(Card updateCard);
 
         // 获取指定页数的Activity
-        List<Card> ListPage(ListRequest listRequest);
+        JSONObject ListPage(ListRequest listRequest);
 
         List<Card> getAllCards();
 

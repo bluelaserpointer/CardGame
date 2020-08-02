@@ -1,6 +1,7 @@
 package com.example.accessingdatamysql.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -44,11 +45,12 @@ public class ItemController {
   // 获取指定页数的数据
   @RequestMapping(value = "/List")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public List<Item> ListPage(@RequestBody ListRequest ListRequest) {
+  public JSONObject ListPage(@RequestBody ListRequest ListRequest) {
     ListRequest.setPageSize(general_page_size);
     String request = JSON.toJSONString(ListRequest);
     System.out.print(request);
-    return ItemService.ListPage(ListRequest);
+    JSONObject response = ItemService.ListPage(ListRequest);
+    return response;
   }
 
   @RequestMapping(value = "/getAllItems")

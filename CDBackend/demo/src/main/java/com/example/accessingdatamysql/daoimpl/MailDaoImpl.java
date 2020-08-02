@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.daoimpl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.dao.MailDao;
 import com.example.accessingdatamysql.repository.*;
 import com.example.accessingdatamysql.entity.*;
@@ -105,7 +106,10 @@ public class MailDaoImpl implements MailDao {
     }
 
     @Override
-    public List<Mail> ListPage(Integer page_token, Integer page_size) {
+    public JSONObject ListPage(Integer page_token, Integer page_size) {
+        JSONObject response = new JSONObject();
+
+        // get the result data
         Integer start = (page_token - 1) * page_size + 1;
         Integer end = page_token * page_size;
         List<Mail> mails = MailRepository.ListPage(start, end);
@@ -115,6 +119,23 @@ public class MailDaoImpl implements MailDao {
             MailDetails.ifPresent(Mail::setMailDetails);
             mails.set(i, Mail);
         }
-        return mails;
+
+        // get the nextPageToken
+        Integer nextPageToken;
+        if ((MailRepository.findAll().size() - (page_token * page_size)) <= 0) {
+            response.put("nextPageToken", "");
+        } else {
+            nextPageToken = page_token + 1;
+            response.put("nextPageToken", nextPageToken);
+        }
+
+        // get the total pages of the result
+        Integer totalPages = MailRepository.findAll().size() / page_size;
+        totalPages = totalPages + 1;
+
+        response.put("result", mails);
+        response.put("totalPages", totalPages);
+
+        return response;
     }
 }

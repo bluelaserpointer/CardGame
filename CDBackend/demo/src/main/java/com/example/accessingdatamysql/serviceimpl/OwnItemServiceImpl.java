@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.serviceimpl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.dao.*;
 import com.example.accessingdatamysql.entity.*;
 import com.example.accessingdatamysql.service.OwnItemService;
@@ -54,7 +55,7 @@ public class OwnItemServiceImpl implements OwnItemService {
     }
 
     @Override
-    public List<OwnItem> ListPage(ListRequest listRequest) {
+    public JSONObject ListPage(ListRequest listRequest) {
         return OwnItemDao.ListPage(listRequest.getPageToken(), listRequest.getPageSize());
     }
 }

@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.daoimpl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.dao.UserDao;
 import com.example.accessingdatamysql.repository.*;
 import com.example.accessingdatamysql.entity.*;
@@ -88,12 +89,30 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List<User> ListPage(Integer page_token, Integer page_size) {
-        System.out.println("User Dao: page_token: " + page_token);
-        Integer start = (page_token - 1) * page_size;
-        Integer end = page_token * page_size - 1;
-        System.out.println("User Dao: start: " + start + " end: " + end);
-        System.out.println(UserRepository.ListPage(start, end));
-        return UserRepository.ListPage(start, end);
+    public JSONObject ListPage(Integer page_token, Integer page_size) {
+        JSONObject response = new JSONObject();
+
+        // get the result data
+        Integer start = (page_token - 1) * page_size + 1;
+        Integer end = page_token * page_size;
+        List<User> users = UserRepository.ListPage(start, end);
+
+        // get the nextPageToken
+        Integer nextPageToken;
+        if ((UserRepository.findAll().size() - (page_token * page_size)) <= 0) {
+            response.put("nextPageToken", "");
+        } else {
+            nextPageToken = page_token + 1;
+            response.put("nextPageToken", nextPageToken);
+        }
+
+        // get the total pages of the result
+        Integer totalPages = UserRepository.findAll().size() / page_size;
+        totalPages = totalPages + 1;
+
+        response.put("result", users);
+        response.put("totalPages", totalPages);
+
+        return response;
     }
 }

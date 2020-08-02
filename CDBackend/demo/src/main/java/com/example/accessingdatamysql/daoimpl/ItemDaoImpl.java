@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.daoimpl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.dao.ItemDao;
 import com.example.accessingdatamysql.repository.*;
 import com.example.accessingdatamysql.entity.*;
@@ -107,7 +108,10 @@ public class ItemDaoImpl implements ItemDao {
     }
 
     @Override
-    public List<Item> ListPage(Integer page_token, Integer page_size) {
+    public JSONObject ListPage(Integer page_token, Integer page_size) {
+        JSONObject response = new JSONObject();
+
+        // get the result data
         Integer start = (page_token - 1) * page_size + 1;
         Integer end = page_token * page_size;
         List<Item> items = ItemRepository.ListPage(start, end);
@@ -117,6 +121,23 @@ public class ItemDaoImpl implements ItemDao {
             ItemDetails.ifPresent(Item::setItemDetails);
             items.set(i, Item);
         }
-        return items;
+
+        // get the nextPageToken
+        Integer nextPageToken;
+        if ((ItemRepository.findAll().size() - (page_token * page_size)) <= 0) {
+            response.put("nextPageToken", "");
+        } else {
+            nextPageToken = page_token + 1;
+            response.put("nextPageToken", nextPageToken);
+        }
+
+        // get the total pages of the result
+        Integer totalPages = ItemRepository.findAll().size() / page_size;
+        totalPages = totalPages + 1;
+
+        response.put("result", items);
+        response.put("totalPages", totalPages);
+
+        return response;
     };
 }
