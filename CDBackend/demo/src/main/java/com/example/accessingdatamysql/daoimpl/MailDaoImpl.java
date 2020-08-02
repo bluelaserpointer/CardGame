@@ -110,8 +110,8 @@ public class MailDaoImpl implements MailDao {
         JSONObject response = new JSONObject();
 
         // get the result data
-        Integer start = (page_token - 1) * page_size + 1;
-        Integer end = page_token * page_size;
+        Integer start = (page_token - 1) * page_size;
+        Integer end = page_token * page_size - 1;
         List<Mail> mails = MailRepository.ListPage(start, end);
         for (int i = 0; i < mails.size(); i++) {
             Mail Mail = mails.get(i);

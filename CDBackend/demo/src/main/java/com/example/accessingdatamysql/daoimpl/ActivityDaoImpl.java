@@ -105,9 +105,9 @@ public class ActivityDaoImpl implements ActivityDao {
     public JSONObject ListPage(Integer page_token, Integer page_size) {
         JSONObject response = new JSONObject();
 
-        // get the result activities
-        Integer start = (page_token - 1) * page_size + 1;
-        Integer end = page_token * page_size;
+        // get the result data
+        Integer start = (page_token - 1) * page_size;
+        Integer end = page_token * page_size - 1;
         List<Activity> activities = ActivityRepository.ListPage(start, end);
         for (int i = 0; i < activities.size(); i++) {
             Activity Activity = activities.get(i);

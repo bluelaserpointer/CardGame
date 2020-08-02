@@ -51,7 +51,7 @@ public class EnemyController {
     ListRequest.setPageSize(general_page_size);
     String request = JSON.toJSONString(ListRequest);
     System.out.print(request);
-    JSONObject response = EnemyService.ListPage(listRequest);
+    JSONObject response = EnemyService.ListPage(ListRequest);
     return response;
   }
 

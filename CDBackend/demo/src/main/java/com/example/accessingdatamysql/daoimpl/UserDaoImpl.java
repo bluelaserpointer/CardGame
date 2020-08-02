@@ -93,8 +93,8 @@ public class UserDaoImpl implements UserDao {
         JSONObject response = new JSONObject();
 
         // get the result data
-        Integer start = (page_token - 1) * page_size + 1;
-        Integer end = page_token * page_size;
+        Integer start = (page_token - 1) * page_size;
+        Integer end = page_token * page_size - 1;
         List<User> users = UserRepository.ListPage(start, end);
 
         // get the nextPageToken

@@ -104,8 +104,8 @@ public class EnemyDaoImpl implements EnemyDao {
         JSONObject response = new JSONObject();
 
         // get the result data
-        Integer start = (page_token - 1) * page_size + 1;
-        Integer end = page_token * page_size;
+        Integer start = (page_token - 1) * page_size;
+        Integer end = page_token * page_size - 1;
         List<Enemy> enemies = EnemyRepository.ListPage(start, end);
         for (int i = 0; i < enemies.size(); i++) {
             Enemy enemy = enemies.get(i);
