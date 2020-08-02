@@ -34,7 +34,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Transactional
     @Modifying
-    @Query(value = "SELECT * from User u Where u.user_id >=?1 AND u.user_id <=?2", nativeQuery = true)
+    @Query(value = "SELECT * from User LIMIT ?1,?2", nativeQuery = true)
     List<User> ListPage(Integer start, Integer end);
 
     // List<User> findByFirstName(@Param("firstname") String firstname);

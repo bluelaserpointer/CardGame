@@ -90,8 +90,10 @@ public class UserDaoImpl implements UserDao {
     @Override
     public List<User> ListPage(Integer page_token, Integer page_size) {
         System.out.println("User Dao: page_token: " + page_token);
-        Integer start = (page_token - 1) * page_size + 1;
-        Integer end = page_token * page_size;
+        Integer start = (page_token - 1) * page_size;
+        Integer end = page_token * page_size - 1;
+        System.out.println("User Dao: start: " + start + " end: " + end);
+        System.out.println(UserRepository.ListPage(start, end));
         return UserRepository.ListPage(start, end);
     }
 }

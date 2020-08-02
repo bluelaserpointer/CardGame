@@ -5,6 +5,7 @@ package com.example.accessingdatamysql.dao;
 import java.util.List;
 // import java.util.Optional;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.entity.*;
 
 public interface ActivityDao {
@@ -18,7 +19,7 @@ public interface ActivityDao {
         // 更新活动信息
         Activity updateActivity(Activity updateActivity);
 
-        List<Activity> ListPage(Integer page_token, Integer page_size);
+        JSONObject ListPage(Integer page_token, Integer page_size);
 
         // 获取所有活动的信息
         List<Activity> getAllActivities();

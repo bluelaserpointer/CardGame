@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.daoimpl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.dao.ActivityDao;
 import com.example.accessingdatamysql.repository.*;
 import com.example.accessingdatamysql.entity.*;
@@ -101,7 +102,10 @@ public class ActivityDaoImpl implements ActivityDao {
     }
 
     @Override
-    public List<Activity> ListPage(Integer page_token, Integer page_size) {
+    public JSONObject ListPage(Integer page_token, Integer page_size) {
+        JSONObject response = new JSONObject();
+
+        // get the result activities
         Integer start = (page_token - 1) * page_size + 1;
         Integer end = page_token * page_size;
         List<Activity> activities = ActivityRepository.ListPage(start, end);
@@ -112,7 +116,24 @@ public class ActivityDaoImpl implements ActivityDao {
             ActivityDetails.ifPresent(Activity::setActivityDetails);
             activities.set(i, Activity);
         }
-        return activities;
+
+        // get the nextPageToken
+        Integer nextPageToken;
+        if ((ActivityRepository.findAll().size() - (page_token * page_size)) <= 0) {
+            response.put("nextPageToken", "");
+        } else {
+            nextPageToken = page_token + 1;
+            response.put("nextPageToken", nextPageToken);
+        }
+
+        // get the total pages of the result
+        Integer totalPages = ActivityRepository.findAll().size() / page_size;
+        totalPages = totalPages + 1;
+
+        response.put("result", activities);
+        response.put("totalPages", totalPages);
+
+        return response;
     }
 
 }

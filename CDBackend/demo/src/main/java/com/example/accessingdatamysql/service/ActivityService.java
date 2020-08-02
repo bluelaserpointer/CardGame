@@ -1,6 +1,8 @@
 package com.example.accessingdatamysql.service;
 
 import java.sql.Timestamp;
+
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.entity.Activity;
 import com.example.accessingdatamysql.entity.ListRequest;
 
@@ -18,7 +20,7 @@ public interface ActivityService {
         Activity updateActivity(Activity updateActivity);
 
         // 获取指定页数的Activity
-        List<Activity> ListPage(ListRequest listRequest);
+        JSONObject ListPage(ListRequest listRequest);
 
         // 获取所有活动
         List<Activity> getAllActivities();
