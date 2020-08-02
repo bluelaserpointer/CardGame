@@ -20,6 +20,9 @@ public interface UserService {
     // 获取所有用户信息
     List<User> getAllUsers();
 
+    // 获取指定页数的User
+    List<User> ListPage(ListRequest listRequest);
+
     // 删除部分用户
     String deleteUsers(List<Integer> UserIds);
 

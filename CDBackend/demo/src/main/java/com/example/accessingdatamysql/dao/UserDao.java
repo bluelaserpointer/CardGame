@@ -19,6 +19,9 @@ public interface UserDao {
         // 获取所有用户信息
         List<User> getAllUsers();
 
+        // 获取指定页数的用户
+        List<User> ListPage(Integer page_token, Integer page_size);
+
         // 删除部分用户
         String deleteUsers(List<Integer> UserIds);
 

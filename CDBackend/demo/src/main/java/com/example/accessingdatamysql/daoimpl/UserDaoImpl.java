@@ -86,4 +86,12 @@ public class UserDaoImpl implements UserDao {
         UserRepository.deleteById(userId);
         return getAllUsers();
     }
+
+    @Override
+    public List<User> ListPage(Integer page_token, Integer page_size) {
+        System.out.println("User Dao: page_token: " + page_token);
+        Integer start = (page_token - 1) * page_size + 1;
+        Integer end = page_token * page_size;
+        return UserRepository.ListPage(start, end);
+    }
 }

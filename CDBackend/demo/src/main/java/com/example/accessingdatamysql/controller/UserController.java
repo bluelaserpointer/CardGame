@@ -1,6 +1,9 @@
 package com.example.accessingdatamysql.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.Security.JwtUtil;
+import com.example.accessingdatamysql.dao.UserDao;
 import com.example.accessingdatamysql.entity.*;
 import com.example.accessingdatamysql.service.UserLoginRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,8 @@ import com.example.accessingdatamysql.service.MailBoxService;
 // import javax.validation.constraints.Null;
 
 import com.example.accessingdatamysql.service.UserService;
+
+import static com.example.accessingdatamysql.GlobalConstants.general_page_size;
 
 @CrossOrigin(origins = "*")
 @RestController() // This means that this class is a Controller
@@ -73,7 +78,18 @@ public class UserController {
   @RequestMapping(value = "/getAllUsers")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public List<User> getAllUsers() {
+    // System.out.print(request);
     return userService.getAllUsers();
+  }
+
+  // 获取指定页数的数据
+  @RequestMapping(value = "/List")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  public List<User> ListPage(@RequestBody ListRequest ListRequest) {
+    ListRequest.setPageSize(general_page_size);
+    String request = JSON.toJSONString(ListRequest);
+    System.out.print(request);
+    return userService.ListPage(ListRequest);
   }
 
   // 删除部分用户
