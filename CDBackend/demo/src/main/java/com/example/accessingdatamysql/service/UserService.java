@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.entity.*;
 
 import java.util.List;
@@ -19,6 +20,9 @@ public interface UserService {
 
     // 获取所有用户信息
     List<User> getAllUsers();
+
+    // 获取指定页数的User
+    JSONObject ListPage(ListRequest listRequest);
 
     // 删除部分用户
     String deleteUsers(List<Integer> UserIds);

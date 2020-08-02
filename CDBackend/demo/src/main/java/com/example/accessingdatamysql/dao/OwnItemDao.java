@@ -4,6 +4,7 @@ package com.example.accessingdatamysql.dao;
 import java.util.List;
 // import java.util.Optional;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.entity.*;
 
 public interface OwnItemDao {
@@ -12,6 +13,8 @@ public interface OwnItemDao {
         OwnItem addNewOwnItem(OwnItem newOwnItem);
 
         OwnItem updateOwnItem(OwnItem updateOwnItem);
+
+        JSONObject ListPage(Integer page_token, Integer page_size);
 
         List<OwnItem> getAllOwnItems();
 

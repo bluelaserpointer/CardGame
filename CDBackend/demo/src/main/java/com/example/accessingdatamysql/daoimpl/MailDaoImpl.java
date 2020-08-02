@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.daoimpl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.dao.MailDao;
 import com.example.accessingdatamysql.repository.*;
 import com.example.accessingdatamysql.entity.*;
@@ -102,5 +103,39 @@ public class MailDaoImpl implements MailDao {
         MailRepository.deleteById(mailId);
         MailDetailsRepository.deleteMailDetailsByMailIdEquals(mailId);
         return getAllMails();
+    }
+
+    @Override
+    public JSONObject ListPage(Integer page_token, Integer page_size) {
+        JSONObject response = new JSONObject();
+
+        // get the result data
+        Integer start = (page_token - 1) * page_size;
+        Integer end = page_token * page_size - 1;
+        List<Mail> mails = MailRepository.ListPage(start, end);
+        for (int i = 0; i < mails.size(); i++) {
+            Mail Mail = mails.get(i);
+            Optional<MailDetails> MailDetails = MailDetailsRepository.findMailDetailsByMailIdEquals(Mail.getMailId());
+            MailDetails.ifPresent(Mail::setMailDetails);
+            mails.set(i, Mail);
+        }
+
+        // get the nextPageToken
+        Integer nextPageToken;
+        if ((MailRepository.findAll().size() - (page_token * page_size)) <= 0) {
+            response.put("nextPageToken", "");
+        } else {
+            nextPageToken = page_token + 1;
+            response.put("nextPageToken", nextPageToken);
+        }
+
+        // get the total pages of the result
+        Integer totalPages = MailRepository.findAll().size() / page_size;
+        totalPages = totalPages + 1;
+
+        response.put("result", mails);
+        response.put("totalPages", totalPages);
+
+        return response;
     }
 }

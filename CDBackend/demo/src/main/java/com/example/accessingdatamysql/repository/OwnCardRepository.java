@@ -30,4 +30,9 @@ public interface OwnCardRepository extends JpaRepository<OwnCard, Integer> {
     @Query(value = "UPDATE OwnCard u SET u = :newOwnCard WHERE u.ownCardId = :ownCardId")
     int updateOwnCardStatus(@Param("newOwnCard") OwnCard newOwnCard, @Param("ownCardId") Integer ownCardId);
 
+    @Transactional
+    @Modifying
+    @Query(value = "SELECT * from own_card LIMIT ?1,?2", nativeQuery = true)
+    List<OwnCard> ListPage(Integer start, Integer end);
+
 }

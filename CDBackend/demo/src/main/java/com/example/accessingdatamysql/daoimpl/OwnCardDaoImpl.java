@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.daoimpl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.dao.OwnCardDao;
 import com.example.accessingdatamysql.repository.*;
 import com.example.accessingdatamysql.entity.*;
@@ -120,6 +121,34 @@ public class OwnCardDaoImpl implements OwnCardDao {
                 - ownCard.getEnhanceCD() - ownCard.getEnhanceDefense() - ownCard.getEnhanceHP()
                 - ownCard.getEnhanceSpeed());
         return ownCard.getLeftPoints();
+    }
+
+    @Override
+    public JSONObject ListPage(Integer page_token, Integer page_size) {
+        JSONObject response = new JSONObject();
+
+        // get the result data
+        Integer start = (page_token - 1) * page_size;
+        Integer end = page_token * page_size - 1;
+        List<OwnCard> ownCards = OwnCardRepository.ListPage(start, end);
+
+        // get the nextPageToken
+        Integer nextPageToken;
+        if ((OwnCardRepository.findAll().size() - (page_token * page_size)) <= 0) {
+            response.put("nextPageToken", "");
+        } else {
+            nextPageToken = page_token + 1;
+            response.put("nextPageToken", nextPageToken);
+        }
+
+        // get the total pages of the result
+        Integer totalPages = OwnCardRepository.findAll().size() / page_size;
+        totalPages = totalPages + 1;
+
+        response.put("result", ownCards);
+        response.put("totalPages", totalPages);
+
+        return response;
     }
 
 }

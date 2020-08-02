@@ -1,5 +1,7 @@
 package com.example.accessingdatamysql.repository;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 import org.springframework.data.jpa.repository.*;
 import com.example.accessingdatamysql.entity.*;
@@ -21,5 +23,10 @@ public interface EnemyRepository extends JpaRepository<Enemy, Integer> {
     @Modifying
     @Query(value = "UPDATE Enemy u SET u = :newEnemy WHERE u.enemyId = :enemyId")
     int updateEnemyStatus(@Param("newEnemy") Enemy newEnemy, @Param("enemyId") Integer enemyId);
+
+    @Transactional
+    @Modifying
+    @Query(value = "SELECT * from Enemy LIMIT ?1,?2", nativeQuery = true)
+    List<Enemy> ListPage(Integer start, Integer end);
 
 }

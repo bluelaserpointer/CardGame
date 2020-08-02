@@ -1,5 +1,7 @@
 package com.example.accessingdatamysql.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.Timestamp;
 import java.util.*;
 
+import static com.example.accessingdatamysql.GlobalConstants.general_page_size;
 // import javax.validation.constraints.Null;
 
 import com.example.accessingdatamysql.service.ActivityService;
@@ -40,6 +43,19 @@ public class ActivityController {
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public @ResponseBody Activity updateActivity(@RequestBody Activity updateActivity) {
     return ActivityService.updateActivity(updateActivity);
+  }
+
+  // 获取指定页数的数据
+  @RequestMapping(value = "/List")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  public JSONObject ListPage(@RequestBody ListRequest ListRequest) {
+    ListRequest.setPageSize(general_page_size);
+    String request = JSON.toJSONString(ListRequest);
+    System.out.print(request);
+    JSONObject response = ActivityService.ListPage(ListRequest);
+    System.out.print(JSON.toJSONString(response));
+    return response;
+
   }
 
   // 获取所有活动信息（用户调用这个获取目前在举行的活动）
