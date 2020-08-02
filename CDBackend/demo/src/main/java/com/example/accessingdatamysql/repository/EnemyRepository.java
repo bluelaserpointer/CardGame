@@ -26,7 +26,7 @@ public interface EnemyRepository extends JpaRepository<Enemy, Integer> {
 
     @Transactional
     @Modifying
-    @Query(value = "SELECT * from Enemy u Where u.enemy_id >=?1 AND u.enemy_id <=?2", nativeQuery = true)
+    @Query(value = "SELECT * from Enemy LIMIT ?1,?2", nativeQuery = true)
     List<Enemy> ListPage(Integer start, Integer end);
 
 }

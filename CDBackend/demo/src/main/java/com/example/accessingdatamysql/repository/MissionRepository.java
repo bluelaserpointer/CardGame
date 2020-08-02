@@ -27,7 +27,7 @@ public interface MissionRepository extends JpaRepository<Mission, Integer> {
 
     @Transactional
     @Modifying
-    @Query(value = "SELECT * from Mission u Where u.mission_id >=?1 AND u.mission_id <=?2", nativeQuery = true)
+    @Query(value = "SELECT * from Mission LIMIT ?1,?2", nativeQuery = true)
     List<Mission> ListPage(Integer start, Integer end);
 
 }

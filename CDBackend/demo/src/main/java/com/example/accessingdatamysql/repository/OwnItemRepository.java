@@ -31,7 +31,7 @@ public interface OwnItemRepository extends JpaRepository<OwnItem, Integer> {
 
     @Transactional
     @Modifying
-    @Query(value = "SELECT * from own_item u Where u.own_item_id >=?1 AND u.own_item_id <=?2", nativeQuery = true)
+    @Query(value = "SELECT * from own_item LIMIT ?1,?2", nativeQuery = true)
     List<OwnItem> ListPage(Integer start, Integer end);
 
 }

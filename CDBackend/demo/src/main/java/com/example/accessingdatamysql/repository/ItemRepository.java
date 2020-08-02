@@ -26,7 +26,7 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 
     @Transactional
     @Modifying
-    @Query(value = "SELECT * from Item u Where u.item_id >=?1 AND u.item_id <=?2", nativeQuery = true)
+    @Query(value = "SELECT * from Item LIMIT ?1,?2", nativeQuery = true)
     List<Item> ListPage(Integer start, Integer end);
 
 }

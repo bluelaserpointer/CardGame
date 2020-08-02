@@ -27,7 +27,7 @@ public interface ActivityRepository extends JpaRepository<Activity, Integer> {
 
     @Transactional
     @Modifying
-    @Query(value = "SELECT * from Activity u Where u.activity_id >=?1 AND u.activity_id <=?2", nativeQuery = true)
+    @Query(value = "SELECT * from Activity LIMIT ?1,?2", nativeQuery = true)
     List<Activity> ListPage(Integer start, Integer end);
 
 }

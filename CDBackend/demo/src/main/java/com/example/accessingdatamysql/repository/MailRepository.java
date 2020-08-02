@@ -26,7 +26,7 @@ public interface MailRepository extends JpaRepository<Mail, Integer> {
 
     @Transactional
     @Modifying
-    @Query(value = "SELECT * from Mail u Where u.mail_id >=?1 AND u.mail_id <=?2", nativeQuery = true)
+    @Query(value = "SELECT * from Mail LIMIT ?1,?2", nativeQuery = true)
     List<Mail> ListPage(Integer start, Integer end);
 
 }

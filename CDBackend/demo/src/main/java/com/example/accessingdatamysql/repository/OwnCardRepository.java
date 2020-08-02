@@ -32,7 +32,7 @@ public interface OwnCardRepository extends JpaRepository<OwnCard, Integer> {
 
     @Transactional
     @Modifying
-    @Query(value = "SELECT * from own_card u Where u.own_card_id >=?1 AND u.own_card_id <=?2", nativeQuery = true)
+    @Query(value = "SELECT * from own_card LIMIT ?1,?2", nativeQuery = true)
     List<OwnCard> ListPage(Integer start, Integer end);
 
 }
