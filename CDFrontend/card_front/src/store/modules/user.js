@@ -39,7 +39,7 @@ const actions = {
       login({ adminName: username.trim(), password: password }).then(response => {
         const { data } = response;
         console.log(data);
-        let token = "Bearer " + data;
+        let token = "Bearer " + data.token;
         commit('SET_TOKEN', token);
         setToken(token);
         resolve()
