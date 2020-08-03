@@ -8,8 +8,8 @@
         Publish
       </el-button>
     </sticky>
-    <div class="createPost-main-container" style="display:grid; grid-template-columns: 50% 50%; grid-template-rows: 30% 70%;">
-      <el-row style="grid-row: 1 / span 1; grid-column: 1 / span 2">
+    <div class="createPost-main-container" style="display:grid; grid-template-columns: 50% 25% 25%; grid-template-rows: 30% 70%;">
+      <el-row style="grid-row: 1 / span 1; grid-column: 1 / span 3">
         <!--          <Warning />-->
         <el-col :span="24">
           <el-form-item style="margin-bottom: 40px;" prop="title">
@@ -24,7 +24,7 @@
         <Tinymce ref="editor" v-model="postForm.content" :height="400" />
       </el-form-item>
 
-      <div style="display: grid; grid-template-columns: 50% 50%">
+      <div style="display: grid; grid-template-columns: 50% 50%; grid-row: 2 / span 1; grid-column: 2 / span 1">
         <el-image
           style="width: 200px; height: 200px"
           :src="postForm.image_uri"
@@ -33,6 +33,50 @@
         <div class="coverControl">
           <input ref="img" type="file" style="margin: 10px" @change="uploadCover">
         </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 50% 50%; grid-row: 2 / span 1; grid-column: 3 / span 1">
+        <el-button @click="handleSelectAll">Select All</el-button>
+        <el-button @click="handleClearAll">Clear All</el-button>
+        <el-table
+          :key="tableKey"
+          v-loading="listLoading"
+          :data="userList"
+          class="phaseAwardItemsTable"
+          border
+          fit
+          highlight-current-row
+          style="width: 100%; grid-column: 1 / span 1"
+          height="350"
+          max-height="350"
+          @row-click="handleSendSrc"
+          @sort-change="sortChange"
+        >
+          <el-table-column label="UserId" prop="userId" sortable="custom" align="center">
+            <template slot-scope="{row}">
+              <span>{{ row.userId }}</span>
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-table
+          v-loading="listLoading"
+          :data="sendList"
+          class="phaseAwardCardsTable"
+          border
+          fit
+          highlight-current-row
+          style="width: 100%; grid-column: 2 / span 1"
+          height="350"
+          max-height="350"
+          @row-click="handleSendDes"
+          @sort-change="sortChange"
+        >
+          <el-table-column label="CardId" prop="itemId" sortable="custom" align="center">
+            <template slot-scope="{row}">
+              <span>{{ row }}</span>
+            </template>
+          </el-table-column>
+        </el-table>
       </div>
     </div>
   </el-form>
@@ -109,6 +153,14 @@
           source_uri: [{ validator: validateSourceUri, trigger: 'blur' }]
         },
         tempRoute: {},
+        userList: [],
+        sendList: [],
+        targetChosen: false
+      }
+    },
+    watch:{
+      sendList(newVal){
+        this.targetChosen = newVal.length > 0;
       }
     },
     computed: {
@@ -121,9 +173,48 @@
       // Because if you enter this page and quickly switch tag, may be in the execution of the setTagsViewTitle function, this.$route is no longer pointing to the current page
       // https://github.com/PanJiaChen/vue-element-admin/issues/1221
 
-      this.tempRoute = Object.assign({}, this.$route)
+      request({
+        url: 'user/getAllUsers',
+        method: 'get'
+      }).then(response => {
+        if(response.data)
+        {
+          this.userList = response.data;
+        }else{
+
+        }
+      }).catch(error => {
+
+      });
+
+
+      this.tempRoute = Object.assign({}, this.$route);
     },
     methods: {
+      handleSelectAll(){
+        this.handleClearAll();
+        for(let i in this.userList)
+        {
+          this.sendList.push(this.userList[i]);
+        }
+      },
+      handleClearAll(){
+        this.sendList = [];
+      },
+      handleSendSrc(row)
+      {
+        let index = this.sendList.indexOf(row.userId);
+        if(index >= 0){
+          this.sendList.splice(index, 1);
+        }else{
+          this.sendList.push(row.userId);
+        }
+      },
+      handleSendDes(row)
+      {
+        this.sendList.splice(this.sendList.indexOf(row), 1);
+      },
+
       uploadCover() {
         const _this = this;
         // 根据ref得到图片文件
@@ -140,8 +231,15 @@
       resetArticle(){
         this.postForm = Object.assign({}, defaultForm);
         this.$refs.editor.setContent('');
+        this.sendList = [];
       },
       submitForm() {
+        if(!this.targetChosen)
+        {
+          this.$message.error('Target not chosen!');
+          return false;
+        }
+
         if(this.postForm.title === undefined || this.postForm.content === undefined || this.postForm.title === '' || this.postForm.content === '')
         {
           this.$message.error('Data From Invalid!');
@@ -164,6 +262,9 @@
           if (response.data) {
             //
             this.resetArticle();
+            request({
+              url: 'mail/sendMailToUsers'
+            })
           } else {
             this.$message.error('Publishing Mail failed!');
           }
