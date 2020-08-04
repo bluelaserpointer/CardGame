@@ -22,7 +22,7 @@ export default {
     handleClick(tab, event) {
       console.log(tab.$el.id);
       if (tab.$el.id === 'pane-second') {
-        this.$refs.entity.getList()
+        this.$refs.entity.getList(this.$refs.entity.listQuery.page, this.$refs.entity.listQuery.limit);
       }
     }
   }
