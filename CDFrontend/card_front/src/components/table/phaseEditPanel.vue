@@ -58,11 +58,12 @@
     <div style="display: grid; width: 100%; height: 100%; grid-template-columns: 50% 50%">
       <div style="display: grid; width: 100%; height: 100%; grid-column: 1 / span 1; grid-template-rows: 50% 50%">
         <div style="display: grid; grid-row: 1 / span 1; width: 100%; grid-template-columns: 50% 50%">
-          <el-table
+          <div>
+            <el-table
             style="grid-column: 1 / span 1"
             :key="tableKey"
             v-loading="listLoading"
-            :data="itemList"
+            :data="itemAwardList"
             class="itemAwardTable"
             border
             fit
@@ -106,11 +107,14 @@
               </template>
             </el-table-column>
           </el-table>
-          <el-table
+            <pagination v-show="itemAwardListQuery.total > 0" :total.sync="itemAwardListQuery.total * itemAwardListQuery.limit" :page.sync="itemAwardListQuery.page" :limit.sync="itemAwardListQuery.limit" @pagination="getItemAwardList(itemAwardListQuery.page, itemAwardListQuery.limit)" />
+          </div>
+          <div>
+            <el-table
             style="grid-column: 2 / span 1"
             :key="tableKey"
           v-loading="listLoading"
-          :data="cardList"
+          :data="cardAwardList"
             class="cardAwardTable"
             border
           fit
@@ -154,11 +158,14 @@
             </template>
           </el-table-column>
         </el-table>
+            <pagination v-show="cardAwardListQuery.total > 0" :total.sync="cardAwardListQuery.total * cardAwardListQuery.limit" :page.sync="cardAwardListQuery.page" :limit.sync="cardAwardListQuery.limit" @pagination="getCardAwardList(cardAwardListQuery.page, cardAwardListQuery.limit)" />
+          </div>
         </div>
 
         <div style="display: grid; grid-row: 2 / span 1; width: 100%; height: 100%; grid-template-columns: 50% 50%">
           <div style="display: grid; height: 100%; grid-template-columns: 50% 50%">
-            <el-table
+            <div>
+              <el-table
               :key="tableKey"
               v-loading="listLoading"
               :data="phaseAwardItems"
@@ -182,28 +189,32 @@
                 </template>
               </el-table-column>
             </el-table>
-            <el-table
-            :key="tableKey"
-            v-loading="listLoading"
-            :data="phaseAwardCards"
-            class="phaseAwardCardsTable"
-            border
-            fit
-            highlight-current-row
-            style="width: 100%; grid-column: 2 / span 1"
-            height="350"
-            max-height="350"
-            @sort-change="sortChange"
-          >
-            <el-table-column label="CardId" prop="itemId" sortable="custom" align="center" :class-name="getSortClass('id')">
-              <template slot-scope="{row}">
-                <span>{{ row }}</span>
-              </template>
-            </el-table-column>
-          </el-table>
+            </div>
+            <div>
+              <el-table
+              :key="tableKey"
+              v-loading="listLoading"
+              :data="phaseAwardCards"
+              class="phaseAwardCardsTable"
+              border
+              fit
+              highlight-current-row
+              style="width: 100%; grid-column: 2 / span 1"
+              height="350"
+              max-height="350"
+              @sort-change="sortChange"
+            >
+              <el-table-column label="CardId" prop="itemId" sortable="custom" align="center" :class-name="getSortClass('id')">
+                <template slot-scope="{row}">
+                  <span>{{ row }}</span>
+                </template>
+              </el-table-column>
+            </el-table>
+            </div>
           </div>
           <div style="display: grid; height: 100%; grid-template-columns: 50% 50%">
-            <el-table
+            <div>
+              <el-table
               :key="tableKey"
               v-loading="listLoading"
               :data="chapterAwardItems"
@@ -227,7 +238,9 @@
                 </template>
               </el-table-column>
             </el-table>
-            <el-table
+            </div>
+            <div>
+              <el-table
           :key="tableKey"
           v-loading="listLoading"
           :data="chapterAwardCards"
@@ -246,6 +259,7 @@
             </template>
           </el-table-column>
         </el-table>
+            </div>
           </div>
         </div>
         <div style="display: grid; grid-template-columns: 50% 50%">
@@ -260,7 +274,8 @@
             <el-button :style="{'background':(posList.includes(pos) ? '#85b2dc' : '#fff'), 'color': (posList.includes(pos) ? '#fff' : '#000'), 'width': '80px'}" @click="placeCard(pos)">{{ pos }}</el-button>
           </div>
         </div>
-        <el-table
+        <div>
+          <el-table
           :key="tableKey"
           v-loading="listLoading"
           :data="cardList"
@@ -327,6 +342,8 @@
             </template>
           </el-table-column>
         </el-table>
+          <pagination v-show="cardListQuery.total > 0" :total.sync="cardListQuery.total * cardListQuery.limit" :page.sync="cardListQuery.page" :limit.sync="cardListQuery.limit" @pagination="getCardList(cardListQuery.page, cardListQuery.limit)" />
+        </div>
       </div>
     </div>
   </div>
@@ -355,8 +372,9 @@ export default {
   data() {
     return {
       mapData: null,
+      cardAwardList: null,
+      itemAwardList: null,
       cardList: null,
-      itemList: null,
       chapterList: null,
       phaseAwardItems: null,
       phaseAwardCards: null,
@@ -382,9 +400,21 @@ export default {
       listQuery: {
         page: 1,
         limit: 20,
-        importance: undefined,
-        title: undefined,
-        type: undefined,
+        sort: '+id'
+      },
+      cardListQuery: {
+        page: 1,
+        limit: 20,
+        sort: '+id'
+      },
+      itemAwardListQuery:{
+        page: 1,
+        limit: 20,
+        sort: '+id'
+      },
+      cardAwardListQuery:{
+        page: 1,
+        limit: 20,
         sort: '+id'
       },
       importanceOptions: [1, 2, 3],
@@ -409,7 +439,7 @@ export default {
 
   },
   created() {
-    this.getList()
+    this.getList();
   },
   methods: {
     phaseAddItem(index, row){
@@ -573,7 +603,6 @@ export default {
         if (response.data) {
 
           _this.chapterData = response.data;
-          // console.log(response.data);
 
           request({
             url: 'chapter/getChapterPhasesByChapter',
@@ -584,15 +613,6 @@ export default {
             _this.chapterPhaseData = res.data;
             _this.handleRefreshPhase(1);
           })
-
-          // axios.post('http://localhost:8080/chapter/getChapterPhasesByChapter', postData).then(res => {
-          //   console.log(res.data);
-          //   _this.chapterPhaseData = res.data;
-          //   _this.handleRefreshPhase(1);
-          // })
-          // .catch(error => {
-          //   this.$message.error('Fetching ChapterPhases Failed!');
-          // });
 
         } else {
           // this.$message.error('Fetching Data Failed!');
@@ -778,11 +798,71 @@ export default {
         })
     },
 
+    getItemAwardList(page, limit) {
+      let postData = {
+        pageToken: page,
+        pageSize: limit
+      };
+      request({
+        url: 'item/List',
+        method: 'post',
+        data: postData
+      }).then(res => {
+        if(res.data) {
+          this.itemAwardList = res.data.result;
+          this.itemAwardListQuery.total = res.data.totalPages;
+          this.watchList()
+        }else
+        {
+          this.$message.error('Fetching Data Failed!');
+        }
+      })
+    },
 
+    getCardAwardList(page, limit) {
+      let postData = {
+        pageToken: page,
+        pageSize: limit
+      };
+      request({
+        url: 'card/List',
+        method: 'post',
+        data: postData
+      }).then(res => {
+        if(res.data) {
+          this.cardAwardList = res.data.result;
+          this.cardAwardListQuery.total = res.data.totalPages;
+          this.watchList()
+        }else
+        {
+          this.$message.error('Fetching Data Failed!');
+        }
+      })
+    },
+
+    getCardList(page, limit) {
+      let postData = {
+        pageToken: page,
+        pageSize: limit
+      };
+      request({
+        url: 'card/List',
+        method: 'post',
+        data: postData
+      }).then(res => {
+        if(res.data) {
+          this.cardList = res.data.result;
+          this.cardListQuery.total = res.data.totalPages;
+          this.watchList()
+        }else
+        {
+          this.$message.error('Fetching Data Failed!');
+        }
+      })
+    },
 
 
     getList() {
-
       request({
         url: 'chapter/getAllChapters',
         method: 'get',
@@ -790,85 +870,36 @@ export default {
         if(response.data)
         {
           this.chapterList = response.data;
-
-          request({
-            url: 'card/getAllCards',
-            method: 'get',
-          }).then(res => {
-            if(res.data) {
-              this.cardList = res.data;
-              this.watchList()
-            }else
-            {
-              this.$message.error('Fetching Data Failed!');
-            }
-          })
-            .catch(error =>
-            {
-              this.$message.error('Fetching Data Failed!');
-            });
-
-          request({
-            url: 'item/getAllItems',
-            method: 'get',
-          }).then(res => {
-              if(res.data) {
-                this.itemList = res.data;
-                this.watchList()
-              }else
-              {
-                this.$message.error('Fetching Data Failed!');
-              }
-            })
-            .catch(error =>
-            {
-              this.$message.error('Fetching Data Failed!');
-            });
-
+          this.getItemAwardList(this.itemAwardListQuery.page, this.itemAwardListQuery.limit);
+          this.getCardAwardList(this.cardAwardListQuery.page, this.cardAwardListQuery.limit);
+          this.getCardList(this.cardListQuery.page, this.cardListQuery.limit);
         }else{
           this.$message.error('Fetching Data Failed!');
         }
       })
-        .catch(error =>
-          {
-            this.$message.error('Fetching Data Failed!');
-          }
-        );
-
-    },
-    watchList() {
-      // let list = this.cardList;
-      // for (let i in list) {
-      //   let details = list[i].cardDetails;
-      //   list[i].cardImg = details.cardImg;
-      //   list[i].cardDescription = details.cardDescription;
-      //   list[i].shortDescription = details.shortDescription
-      // }
-      // this.cardList = list
     },
 
-
-    handleFilter() {
-      this.listQuery.page = 1;
-      this.getList()
-    },
+    // handleFilter() {
+    //   this.listQuery.page = 1;
+    //   this.getList();
+    // },
     sortChange(data) {
-      const { prop, order } = data;
-      if (prop === 'id') {
-        this.sortByID(order)
-      }
+      // const { prop, order } = data;
+      // if (prop === 'id') {
+      //   this.sortByID(order)
+      // }
     },
-    sortByID(order) {
-      if (order === 'ascending') {
-        this.listQuery.sort = '+id'
-      } else {
-        this.listQuery.sort = '-id'
-      }
-      this.handleFilter()
-    },
+    // sortByID(order) {
+    //   if (order === 'ascending') {
+    //     this.listQuery.sort = '+id'
+    //   } else {
+    //     this.listQuery.sort = '-id'
+    //   }
+    //   this.handleFilter()
+    // },
     getSortClass: function(key) {
-      const sort = this.listQuery.sort;
-      return sort === `+${key}` ? 'ascending' : 'descending'
+      // const sort = this.listQuery.sort;
+      // return sort === `+${key}` ? 'ascending' : 'descending'
     },
   }
 }

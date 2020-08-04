@@ -101,6 +101,8 @@
 
     </el-table>
 
+    <pagination v-show="listQuery.total > 0" :total.sync="listQuery.total * listQuery.limit" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList(listQuery.page, listQuery.limit)" />
+
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="panelVisible">
       <el-form ref="temp" :rules="rules" :model="temp" label-position="left" label-width="70px" style="margin: auto 20px auto 20px; display:grid; grid-template-columns: 50% 50%; grid-column-gap: 10px">
         <el-form-item label="ID" prop="userId" v-if="dialogStatus==='update'">
@@ -195,10 +197,11 @@
 <script>
 import waves from '@/directive/waves' // waves directive
 import request from "@/utils/request"; // secondary package based on el-pagination
+import Pagination from '@/components/Pagination/index'
 
 export default {
   name: 'PlayerEntityPanel',
-  components: { },
+  components: { Pagination },
   directives: { waves },
   data() {
     return {
@@ -209,9 +212,7 @@ export default {
       listQuery: {
         page: 1,
         limit: 20,
-        importance: undefined,
-        title: undefined,
-        type: undefined,
+        total: 0,
         sort: '+id'
       },
       importanceOptions: [1, 2, 3],
@@ -273,25 +274,28 @@ export default {
     } // untested
   },
   created() {
-    this.getList()
+    this.getList(1, this.listQuery.limit);
   },
   methods: {
-    getList() {
+    getList(page, limit) {
+      let postData = {
+        pageToken: page,
+        pageSize: limit
+      };
       request({
-        url: 'user/getAllUsers',
-        method: 'get',
+        url: 'user/List',
+        method: 'post',
+        data: postData
       }).then(response =>
       {
         if(response.data)
         {
-          console.log(response.data);
-          this.list = response.data;
+          this.list = response.data.result;
+          this.listQuery.total = response.data.totalPages;
         }else{
           this.$message.error('Fetching Data failed!');
         }
-      }).catch(error => {
-        this.$message.error('Fetching Data failed!');
-      });
+      })
 
     },
 
@@ -345,7 +349,7 @@ export default {
             data: JSON.stringify(postData)
           }).then(response => {
             if (response.data) {
-              _this.getList();
+              _this.getList(this.listQuery.page, this.listQuery.limit);
               _this.panelVisible = false;
               _this.resetTemp();
             }else {
@@ -404,7 +408,7 @@ export default {
             data: JSON.stringify(postData)
           }).then(response => {
             if (response.data) {
-              _this.getList();
+              _this.getList(this.listQuery.page, this.listQuery.limit);
               _this.panelVisible = false
             } else {
               this.$message.error('Updating Data failed!');
@@ -460,7 +464,7 @@ export default {
         if (response.data) {
           _this.panelVisible = false;
           _this.deleteVisible = false;
-          _this.getList()
+          _this.getList(this.listQuery.page, this.listQuery.limit);
         } else {
           this.$message.error('Deleting Data failed!');
         }
@@ -476,7 +480,7 @@ export default {
 
     handleFilter() {
       this.listQuery.page = 1;
-      this.getList()
+      this.getList(this.listQuery.page, this.listQuery.limit);
     },
     handleModifyStatus(row, status) {
       this.$message({
