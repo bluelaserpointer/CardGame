@@ -400,21 +400,25 @@ export default {
       listQuery: {
         page: 1,
         limit: 20,
+        total: 0,
         sort: '+id'
       },
       cardListQuery: {
         page: 1,
         limit: 20,
+        total: 0,
         sort: '+id'
       },
       itemAwardListQuery:{
         page: 1,
         limit: 20,
+        total: 0,
         sort: '+id'
       },
       cardAwardListQuery:{
         page: 1,
         limit: 20,
+        total: 0,
         sort: '+id'
       },
       importanceOptions: [1, 2, 3],
