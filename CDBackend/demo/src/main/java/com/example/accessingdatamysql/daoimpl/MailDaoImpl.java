@@ -111,8 +111,8 @@ public class MailDaoImpl implements MailDao {
 
         // get the result data
         Integer start = (page_token - 1) * page_size;
-        Integer end = page_token * page_size - 1;
-        List<Mail> mails = MailRepository.ListPage(start, end);
+        // Integer end = page_token * page_size - 1;
+        List<Mail> mails = MailRepository.ListPage(start, page_size);
         for (int i = 0; i < mails.size(); i++) {
             Mail Mail = mails.get(i);
             Optional<MailDetails> MailDetails = MailDetailsRepository.findMailDetailsByMailIdEquals(Mail.getMailId());
@@ -131,8 +131,9 @@ public class MailDaoImpl implements MailDao {
 
         // get the total pages of the result
         Integer totalPages = MailRepository.findAll().size() / page_size;
-        totalPages = totalPages + 1;
-
+        if ((totalPages - page_size * totalPages) > 0) {
+            totalPages += 1;
+        }
         response.put("result", mails);
         response.put("totalPages", totalPages);
 

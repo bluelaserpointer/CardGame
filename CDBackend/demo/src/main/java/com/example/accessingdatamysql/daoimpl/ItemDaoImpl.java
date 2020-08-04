@@ -113,8 +113,8 @@ public class ItemDaoImpl implements ItemDao {
 
         // get the result data
         Integer start = (page_token - 1) * page_size;
-        Integer end = page_token * page_size - 1;
-        List<Item> items = ItemRepository.ListPage(start, end);
+        // Integer end = page_token * page_size - 1;
+        List<Item> items = ItemRepository.ListPage(start, page_size);
         for (int i = 0; i < items.size(); i++) {
             Item Item = items.get(i);
             Optional<ItemDetails> ItemDetails = ItemDetailsRepository.findItemDetailsByItemIdEquals(Item.getItemId());
@@ -133,8 +133,9 @@ public class ItemDaoImpl implements ItemDao {
 
         // get the total pages of the result
         Integer totalPages = ItemRepository.findAll().size() / page_size;
-        totalPages = totalPages + 1;
-
+        if ((totalPages - page_size * totalPages) > 0) {
+            totalPages += 1;
+        }
         response.put("result", items);
         response.put("totalPages", totalPages);
 

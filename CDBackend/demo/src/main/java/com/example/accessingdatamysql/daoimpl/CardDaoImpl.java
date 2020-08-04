@@ -107,8 +107,9 @@ public class CardDaoImpl implements CardDao {
 
         // get the result data
         Integer start = (page_token - 1) * page_size;
-        Integer end = page_token * page_size - 1;
-        List<Card> cards = CardRepository.ListPage(start, end);
+        // System.out.print("Start: " + start + " End: " + end);
+        List<Card> cards = CardRepository.ListPage(start, page_size);
+        System.out.print("Size: " + cards.size());
         for (int i = 0; i < cards.size(); i++) {
             Card card = cards.get(i);
             Optional<CardDetails> cardDetails = CardDetailsRepository.findCardDetailsByCardIdEquals(card.getCardId());
@@ -127,8 +128,9 @@ public class CardDaoImpl implements CardDao {
 
         // get the total pages of the result
         Integer totalPages = CardRepository.findAll().size() / page_size;
-        totalPages = totalPages + 1;
-
+        if ((totalPages - page_size * totalPages) > 0) {
+            totalPages += 1;
+        }
         response.put("result", cards);
         response.put("totalPages", totalPages);
 

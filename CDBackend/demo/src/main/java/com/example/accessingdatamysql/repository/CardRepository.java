@@ -27,6 +27,6 @@ public interface CardRepository extends JpaRepository<Card, Integer> {
     @Transactional
     @Modifying
     @Query(value = "SELECT * from Card LIMIT ?1,?2", nativeQuery = true)
-    List<Card> ListPage(Integer start, Integer end);
+    List<Card> ListPage(Integer start, Integer amount);
 
 }
