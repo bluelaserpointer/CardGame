@@ -1,9 +1,7 @@
 <template>
   <el-form ref="postForm" :model="postForm" :rules="rules" class="form-container">
     <sticky :z-index="10" :class-name="'sub-navbar ' + postForm.status">
-      <!--        <CommentDropdown v-model = "postForm.comment_disabled" />-->
-      <!--      <PlatformDropdown v-model="postForm.platforms" />-->
-      <!--        <SourceUrlDropdown v-model = "postForm.source_uri" />-->
+
       <el-button class="activityUpdatePublishButton" v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">
         Publish
       </el-button>
@@ -106,7 +104,7 @@
   export default {
     name: 'ActivityUpdatePanel',
     components: { Tinymce, MDinput, Sticky, Warning, CommentDropdown, PlatformDropdown, SourceUrlDropdown },
-    props: ['updateContent'] ,
+    props: ['updateContent', 'listQuery'] ,
     data() {
       const validateRequire = (rule, value, callback) => {
         if (value === '') {
@@ -129,13 +127,11 @@
         loading: false,
         userListOptions: [],
         rules: {
-          // image_uri: [{ validator: validateRequire }],
           title: [{ validator: validateRequire }],
           content: [{ validator: validateRequire }],
-          // source_uri: [{ validator: validateSourceUri, trigger: 'blur' }]
         },
         tempRoute: {},
-        displayTime: undefined
+        displayTime: undefined,
       }
 
     },
@@ -162,13 +158,9 @@
       } // untested
     },
     created() {
-      // Why need to make a copy of this.$route here?
-      // Because if you enter this page and quickly switch tag, may be in the execution of the setTagsViewTitle function, this.$route is no longer pointing to the current page
-      // https://github.com/PanJiaChen/vue-element-admin/issues/1221
-
       this.postForm.image_uri = this.updateContent.activityImg;
       this.postForm.title = this.updateContent.activityName;
-      this.postForm.content = this.updateContent.activityDescription;
+      this.$refs.editor.setContent(this.updateContent.activityDescription);
       this.limit = this.updateContent.type === "true";
       this.displayTime = this.updateContent.start;
 
@@ -210,21 +202,6 @@
               this.$message.error('Identification failed!');
             }
           );
-
-
-        // axios.post('http://localhost:8080/admin/identifyAdmin', postData)
-        //   .then(response => {
-        //     if (response.data) {
-        //       _this.confirmDelete = true
-        //     } else {
-        //       this.$message.error('Identification failed!');
-        //     }
-        //   })
-        //   .catch(error =>
-        //     {
-        //       this.$message.error('Identification failed!');
-        //     }
-        //   );
       },
       deleteData() {
         let postData = new FormData();
@@ -238,7 +215,7 @@
         }).then(response => {
           if (response.data) {
             _this.deleteVisible = false;
-            _this.$emit('getList');
+            _this.$emit('getList', this.listQuery.page, this.listQuery.limit);
           } else {
             this.$message.error('Deleting Data failed!');
           }
@@ -248,20 +225,6 @@
               this.$message.error('Deleting Data failed!');
             }
           );
-
-        // axios.post('http://localhost:8080/activity/deleteActivity', postData).then(response => {
-        //   if (response.data) {
-        //     _this.deleteVisible = false;
-        //     _this.$emit('getList');
-        //   } else {
-        //     this.$message.error('Deleting Data failed!');
-        //   }
-        // })
-        //   .catch(error =>
-        //     {
-        //       this.$message.error('Deleting Data failed!');
-        //     }
-        //   );
       },
       submitForm() {
         let _this = this;
@@ -301,7 +264,7 @@
         }).then(response => {
           if (response.data) {
             //
-            _this.$emit('getList');
+            _this.$emit('getList', this.listQuery.page, this.listQuery.limit);
           } else {
             //
             this.$message.error('Updating Data failed!');
@@ -312,21 +275,6 @@
               this.$message.error('Updating Data failed!');
             }
           );
-
-        // axios.post(`http://localhost:8080/activity/updateActivity`, postData).then(response => {
-        //   if (response.data) {
-        //     //
-        //     _this.$emit('getList');
-        //   } else {
-        //     //
-        //     this.$message.error('Updating Data failed!');
-        //   }
-        // })
-        //   .catch(error =>
-        //     {
-        //       this.$message.error('Updating Data failed!');
-        //     }
-        //   );
       },
       delayDate(days){
         let newDate = new Date();

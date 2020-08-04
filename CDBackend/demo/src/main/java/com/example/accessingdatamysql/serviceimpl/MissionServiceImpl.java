@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.serviceimpl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.dao.*;
 import com.example.accessingdatamysql.entity.*;
 import com.example.accessingdatamysql.service.MissionService;
@@ -41,5 +42,10 @@ public class MissionServiceImpl implements MissionService {
 
     public List<Mission> deleteMission(Integer MissionId) {
         return MissionDao.deleteMission(MissionId);
+    }
+
+    @Override
+    public JSONObject ListPage(ListRequest listRequest) {
+        return MissionDao.ListPage(listRequest.getPageToken(), listRequest.getPageSize());
     }
 }

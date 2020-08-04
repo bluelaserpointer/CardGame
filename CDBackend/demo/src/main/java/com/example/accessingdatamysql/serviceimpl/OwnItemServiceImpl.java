@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.serviceimpl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.dao.*;
 import com.example.accessingdatamysql.entity.*;
 import com.example.accessingdatamysql.service.OwnItemService;
@@ -51,5 +52,10 @@ public class OwnItemServiceImpl implements OwnItemService {
 
     public List<OwnItem> deleteOwnItem(Integer userId, Integer itemId) {
         return OwnItemDao.deleteOwnItem(userId, itemId);
+    }
+
+    @Override
+    public JSONObject ListPage(ListRequest listRequest) {
+        return OwnItemDao.ListPage(listRequest.getPageToken(), listRequest.getPageSize());
     }
 }

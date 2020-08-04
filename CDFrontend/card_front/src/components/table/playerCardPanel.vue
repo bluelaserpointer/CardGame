@@ -101,6 +101,8 @@
 
     </el-table>
 
+    <pagination v-show="listQuery.total > 0" :total.sync="listQuery.total * listQuery.limit" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList(listQuery.page, listQuery.limit)" />
+
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="panelVisible" top="5vh" class="editDialog">
       <el-form ref="temp" :rules="rules" :model="temp" style="margin: auto 50px auto 50px; display:grid; grid-template-columns: 50% 50%; grid-column-gap: 10px" class="demo-form-inline">
         <el-form-item label="ID" prop="ownCardId" v-if="dialogStatus==='update'">
@@ -265,9 +267,7 @@ export default {
       listQuery: {
         page: 1,
         limit: 20,
-        importance: undefined,
-        title: undefined,
-        type: undefined,
+        total: 0,
         sort: '+id'
       },
       sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
@@ -287,7 +287,7 @@ export default {
     }
   },
   created() {
-    this.getList()
+    this.getList(this.listQuery.page, this.listQuery.limit);
   },
   methods: {
     // watchList() {
@@ -303,18 +303,24 @@ export default {
     formatDate(date){
       return moment(new Date(date)).format('YYYY-MM-DD HH:mm:ss');
     },
-    getList() {
-
+    getList(page, limit) {
+      let postData = {
+        pageToken: page,
+        pageSize: limit
+      };
       request({
-        url: 'ownCard/getAllOwnCards',
-        method: 'get',
+        url: 'ownCard/List',
+        method: 'post',
+        data: postData
       }).then(response => {
-        this.list = response.data
-      })
-        .catch(error =>
+        if(response.data) {
+          this.list = response.data.result;
+          this.listQuery.total = response.data.totalPages;
+        }else
         {
           this.$message.error('Fetching Data Failed!');
-        });
+        }
+      })
     },
     resetTemp() {
       this.temp = {
@@ -358,7 +364,7 @@ export default {
             data: postData
           }).then(response => {
             if (response.data) {
-              this.getList();
+              this.getList(this.listQuery.page, this.listQuery.limit);
               this.panelVisible = false;
             } else {
               this.$message.error('Creating Data failed!');
@@ -413,7 +419,7 @@ export default {
             data: postData
           }).then(response => {
             if (response.data) {
-              this.getList();
+              this.getList(this.listQuery.page, this.listQuery.limit);
               this.panelVisible = false;
               this.resetTemp();
             } else {
@@ -470,7 +476,7 @@ export default {
         if (response.data) {
           _this.panelVisible = false;
           _this.deleteVisible = false;
-          _this.getList()
+          _this.getList(this.listQuery.page, this.listQuery.limit);
         } else {
           this.$message.error('Deleting Data failed!');
         }
@@ -484,7 +490,7 @@ export default {
 
     handleFilter() {
       this.listQuery.page = 1;
-      this.getList()
+      this.getList(this.listQuery.page, this.listQuery.limit);
     },
     handleModifyStatus(row, status) {
       this.$message({

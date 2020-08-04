@@ -40,6 +40,8 @@
       </el-table-column>
     </el-table>
 
+    <pagination v-show="listQuery.total > 0" :total.sync="listQuery.total * listQuery.limit" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList(listQuery.page, listQuery.limit)" />
+
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="panelVisible" top="5vh" class="editDialog">
       <MailUpdatePanel v-bind:update-content="temp" @getList="getList" />
     </el-dialog>
@@ -84,9 +86,6 @@ export default {
       listQuery: {
         page: 1,
         limit: 20,
-        importance: undefined,
-        title: undefined,
-        type: undefined,
         sort: '+id'
       },
       sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
@@ -102,7 +101,7 @@ export default {
     }
   },
   created() {
-    this.getList()
+    this.getList(1, this.listQuery.limit);
   },
   methods: {
     watchList() {
@@ -124,25 +123,26 @@ export default {
         _this.temp.mailImg = this.result
       }
     },
-    getList() {
-
+    getList(page, limit) {
+      let postData = {
+        pageToken: page,
+        pageSize: limit
+      };
       request({
-        url: 'mail/getAllMails',
-        method: 'get',
+        url: 'mail/List',
+        method: 'post',
+        data: postData
       }).then(response => {
         if(response.data) {
           this.panelVisible = false;
-          this.list = response.data;
+          this.list = response.data.result;
+          this.listQuery.total = response.data.totalPages;
           this.watchList()
         }else
         {
           this.$message.error('Fetching Data Failed!');
         }
       })
-        .catch(error =>
-        {
-          this.$message.error('Fetching Data Failed!');
-        });
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row); // copy obj

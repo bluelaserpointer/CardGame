@@ -90,6 +90,10 @@
         type: Object,
         default: null
       },
+      listQuery:{
+        type: Object,
+        default: null
+      }
     },
     data() {
       const validateRequire = (rule, value, callback) => {
@@ -146,7 +150,7 @@
 
       this.postForm.image_uri = this.updateContent.mailImg;
       this.postForm.title = this.updateContent.mailName;
-      this.postForm.content = this.updateContent.mailDescription;
+      this.$refs.editor.setContent(this.updateContent.mailDescription);
 
       this.tempRoute = Object.assign({}, this.$route)
     },
@@ -199,7 +203,7 @@
         }).then(response => {
           if (response.data) {
             _this.deleteVisible = false;
-            _this.$emit('getList');
+            _this.$emit('getList', this.listQuery.page, this.listQuery.limit);
           } else {
             this.$message.error('Deleting Data failed!');
           }
@@ -236,16 +240,12 @@
         }).then(response => {
           if (response.data) {
             //
-            _this.$emit('getList');
+            _this.$emit('getList', this.listQuery.page, this.listQuery.limit);
           }else
           {
             this.$message.error('Fetching Data Failed!');
           }
         })
-          .catch(error =>
-          {
-            this.$message.error('Fetching Data Failed!');
-          });
       },
 
       setTagsViewTitle() {

@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.daoimpl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.dao.ItemDao;
 import com.example.accessingdatamysql.dao.MissionDao;
 import com.example.accessingdatamysql.repository.*;
@@ -108,5 +109,41 @@ public class MissionDaoImpl implements MissionDao {
         MissionRepository.deleteById(MissionId);
         MissionDetailsRepository.deleteMissionDetailsByMissionIdEquals(MissionId);
         return getAllMissions();
+    }
+
+    @Override
+    public JSONObject ListPage(Integer page_token, Integer page_size) {
+        JSONObject response = new JSONObject();
+
+        // get the result data
+        Integer start = (page_token - 1) * page_size;
+        // Integer end = page_token * page_size - 1;
+        List<Mission> missions = MissionRepository.ListPage(start, page_size);
+        for (int i = 0; i < missions.size(); i++) {
+            Mission Mission = missions.get(i);
+            Optional<MissionDetails> MissionDetails = MissionDetailsRepository
+                    .findMissionDetailsByMissionIdEquals(Mission.getMissionId());
+            MissionDetails.ifPresent(Mission::setMissionDetails);
+            missions.set(i, Mission);
+        }
+
+        // get the nextPageToken
+        Integer nextPageToken;
+        if ((MissionRepository.findAll().size() - (page_token * page_size)) <= 0) {
+            response.put("nextPageToken", "");
+        } else {
+            nextPageToken = page_token + 1;
+            response.put("nextPageToken", nextPageToken);
+        }
+
+        // get the total pages of the result
+        Integer totalPages = MissionRepository.findAll().size() / page_size;
+        if ((totalPages - page_size * totalPages) > 0) {
+            totalPages += 1;
+        }
+        response.put("result", missions);
+        response.put("totalPages", totalPages);
+
+        return response;
     }
 }

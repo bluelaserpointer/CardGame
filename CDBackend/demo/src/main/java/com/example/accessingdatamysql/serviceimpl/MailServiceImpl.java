@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.serviceimpl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.dao.*;
 import com.example.accessingdatamysql.entity.*;
 import com.example.accessingdatamysql.service.MailService;
@@ -64,5 +65,10 @@ public class MailServiceImpl implements MailService {
             MailBoxDao.updateMailBox(MailBox.getMailBoxId(), mailIds);
         }
         return MailDao.getOneMail(mailId);
+    }
+
+    @Override
+    public JSONObject ListPage(ListRequest listRequest) {
+        return MailDao.ListPage(listRequest.getPageToken(), listRequest.getPageSize());
     }
 }

@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.serviceimpl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.dao.*;
 import com.example.accessingdatamysql.entity.*;
 import com.example.accessingdatamysql.service.*;
@@ -43,5 +44,10 @@ public class ActivityServiceImpl implements ActivityService {
 
     public List<Activity> deleteActivity(Integer activityId) {
         return ActivityDao.deleteActivity(activityId);
+    }
+
+    @Override
+    public JSONObject ListPage(ListRequest listRequest) {
+        return ActivityDao.ListPage(listRequest.getPageToken(), listRequest.getPageSize());
     }
 }

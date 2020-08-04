@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.daoimpl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.dao.EnemyDao;
 import com.example.accessingdatamysql.repository.*;
 import com.example.accessingdatamysql.entity.*;
@@ -96,6 +97,41 @@ public class EnemyDaoImpl implements EnemyDao {
         EnemyRepository.deleteById(EnemyId);
         EnemyDetailsRepository.deleteEnemyDetailsByEnemyIdEquals(EnemyId);
         return getAllEnemies();
+    }
+
+    @Override
+    public JSONObject ListPage(Integer page_token, Integer page_size) {
+        JSONObject response = new JSONObject();
+
+        // get the result data
+        Integer start = (page_token - 1) * page_size;
+        // Integer end = page_token * page_size - 1;
+        List<Enemy> enemies = EnemyRepository.ListPage(start, page_size);
+        for (int i = 0; i < enemies.size(); i++) {
+            Enemy enemy = enemies.get(i);
+            Optional<EnemyDetails> enemyDetails = EnemyDetailsRepository
+                    .findEnemyDetailsByEnemyIdEquals(enemy.getEnemyId());
+            enemyDetails.ifPresent(enemy::setEnemyDetails);
+            enemies.set(i, enemy);
+        }
+        // get the nextPageToken
+        Integer nextPageToken;
+        if ((EnemyRepository.findAll().size() - (page_token * page_size)) <= 0) {
+            response.put("nextPageToken", "");
+        } else {
+            nextPageToken = page_token + 1;
+            response.put("nextPageToken", nextPageToken);
+        }
+
+        // get the total pages of the result
+        Integer totalPages = EnemyRepository.findAll().size() / page_size;
+        if ((totalPages - page_size * totalPages) > 0) {
+            totalPages += 1;
+        }
+        response.put("result", enemies);
+        response.put("totalPages", totalPages);
+
+        return response;
     }
 
 }

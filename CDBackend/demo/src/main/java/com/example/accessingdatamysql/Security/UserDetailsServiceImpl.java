@@ -23,16 +23,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        com.example.accessingdatamysql.entity.User applicationUser = applicationUserRepository
+        final com.example.accessingdatamysql.entity.User applicationUser = applicationUserRepository
                 .findUserByUserNameEquals(username);
         if (applicationUser == null) {
             throw new UsernameNotFoundException(username);
         }
 
         // Identity 要写成 "ROLE_ADMIN","ROLE_USER"
-        System.out.println("UserDetailsService: " + applicationUser.getIdentity());
-        List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(applicationUser.getIdentity());
-
-        return new User(applicationUser.getUserName(), applicationUser.getPassword(), authorities);
+        return new User(applicationUser.getUserName(), applicationUser.getPassword(), AuthorityUtils.createAuthorityList(applicationUser.getIdentity()));
     }
 }
