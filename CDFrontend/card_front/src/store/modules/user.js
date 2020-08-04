@@ -59,6 +59,7 @@ const actions = {
         console.log("Within promise");
         console.log(response);
 
+        localStorage.setItem('UserId', response.data.userId);
 
         response.data.roles = ['admin', 'editor'];
         response.data.name = 'admin1';

@@ -49,8 +49,16 @@ export function getInfo(token) {
 
 export function logout() {
   console.log('In api logout');
+  const postData = new FormData();
+  postData.append('userId', localStorage.getItem('UserId'));
+  postData.append('type', 1);
+  // postData.append('password', data.password);
 
-  return Promise.resolve();
+  return request({
+    url: 'user/logout',
+    method: 'post',
+    data: postData
+  });
 
   // return (request({
   //   url: '/admin/getAdminName',
