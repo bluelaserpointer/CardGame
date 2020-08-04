@@ -105,8 +105,8 @@ public class EnemyDaoImpl implements EnemyDao {
 
         // get the result data
         Integer start = (page_token - 1) * page_size;
-        Integer end = page_token * page_size - 1;
-        List<Enemy> enemies = EnemyRepository.ListPage(start, end);
+        // Integer end = page_token * page_size - 1;
+        List<Enemy> enemies = EnemyRepository.ListPage(start, page_size);
         for (int i = 0; i < enemies.size(); i++) {
             Enemy enemy = enemies.get(i);
             Optional<EnemyDetails> enemyDetails = EnemyDetailsRepository
@@ -125,8 +125,9 @@ public class EnemyDaoImpl implements EnemyDao {
 
         // get the total pages of the result
         Integer totalPages = EnemyRepository.findAll().size() / page_size;
-        totalPages = totalPages + 1;
-
+        if ((totalPages - page_size * totalPages) > 0) {
+            totalPages += 1;
+        }
         response.put("result", enemies);
         response.put("totalPages", totalPages);
 

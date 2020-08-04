@@ -94,8 +94,8 @@ public class UserDaoImpl implements UserDao {
 
         // get the result data
         Integer start = (page_token - 1) * page_size;
-        Integer end = page_token * page_size - 1;
-        List<User> users = UserRepository.ListPage(start, end);
+        // Integer end = page_token * page_size - 1;
+        List<User> users = UserRepository.ListPage(start, page_size);
 
         // get the nextPageToken
         Integer nextPageToken;
@@ -108,7 +108,10 @@ public class UserDaoImpl implements UserDao {
 
         // get the total pages of the result
         Integer totalPages = UserRepository.findAll().size() / page_size;
-        totalPages = totalPages + 1;
+        if ((totalPages - page_size * totalPages) > 0) {
+            totalPages += 1;
+        }
+        // totalPages = totalPages + 1;
 
         response.put("result", users);
         response.put("totalPages", totalPages);

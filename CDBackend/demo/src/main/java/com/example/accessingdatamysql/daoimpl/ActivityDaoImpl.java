@@ -107,8 +107,8 @@ public class ActivityDaoImpl implements ActivityDao {
 
         // get the result data
         Integer start = (page_token - 1) * page_size;
-        Integer end = page_token * page_size - 1;
-        List<Activity> activities = ActivityRepository.ListPage(start, end);
+        // Integer end = page_token * page_size;
+        List<Activity> activities = ActivityRepository.ListPage(start, page_size);
         for (int i = 0; i < activities.size(); i++) {
             Activity Activity = activities.get(i);
             Optional<ActivityDetails> ActivityDetails = ActivityDetailsRepository
@@ -128,8 +128,9 @@ public class ActivityDaoImpl implements ActivityDao {
 
         // get the total pages of the result
         Integer totalPages = ActivityRepository.findAll().size() / page_size;
-        totalPages = totalPages + 1;
-
+        if ((totalPages - page_size * totalPages) > 0) {
+            totalPages += 1;
+        }
         response.put("result", activities);
         response.put("totalPages", totalPages);
 

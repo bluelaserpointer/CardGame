@@ -105,8 +105,8 @@ public class OwnItemDaoImpl implements OwnItemDao {
 
         // get the result data
         Integer start = (page_token - 1) * page_size;
-        Integer end = page_token * page_size - 1;
-        List<OwnItem> ownItems = OwnItemRepository.ListPage(start, end);
+        // Integer end = page_token * page_size - 1;
+        List<OwnItem> ownItems = OwnItemRepository.ListPage(start, page_size);
 
         // get the nextPageToken
         Integer nextPageToken;
@@ -119,8 +119,9 @@ public class OwnItemDaoImpl implements OwnItemDao {
 
         // get the total pages of the result
         Integer totalPages = OwnItemRepository.findAll().size() / page_size;
-        totalPages = totalPages + 1;
-
+        if ((totalPages - page_size * totalPages) > 0) {
+            totalPages += 1;
+        }
         response.put("result", ownItems);
         response.put("totalPages", totalPages);
 

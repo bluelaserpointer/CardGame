@@ -129,8 +129,8 @@ public class OwnCardDaoImpl implements OwnCardDao {
 
         // get the result data
         Integer start = (page_token - 1) * page_size;
-        Integer end = page_token * page_size - 1;
-        List<OwnCard> ownCards = OwnCardRepository.ListPage(start, end);
+        // Integer end = page_token * page_size - 1;
+        List<OwnCard> ownCards = OwnCardRepository.ListPage(start, page_size);
 
         // get the nextPageToken
         Integer nextPageToken;
@@ -143,8 +143,9 @@ public class OwnCardDaoImpl implements OwnCardDao {
 
         // get the total pages of the result
         Integer totalPages = OwnCardRepository.findAll().size() / page_size;
-        totalPages = totalPages + 1;
-
+        if ((totalPages - page_size * totalPages) > 0) {
+            totalPages += 1;
+        }
         response.put("result", ownCards);
         response.put("totalPages", totalPages);
 

@@ -117,8 +117,8 @@ public class MissionDaoImpl implements MissionDao {
 
         // get the result data
         Integer start = (page_token - 1) * page_size;
-        Integer end = page_token * page_size - 1;
-        List<Mission> missions = MissionRepository.ListPage(start, end);
+        // Integer end = page_token * page_size - 1;
+        List<Mission> missions = MissionRepository.ListPage(start, page_size);
         for (int i = 0; i < missions.size(); i++) {
             Mission Mission = missions.get(i);
             Optional<MissionDetails> MissionDetails = MissionDetailsRepository
@@ -138,8 +138,9 @@ public class MissionDaoImpl implements MissionDao {
 
         // get the total pages of the result
         Integer totalPages = MissionRepository.findAll().size() / page_size;
-        totalPages = totalPages + 1;
-
+        if ((totalPages - page_size * totalPages) > 0) {
+            totalPages += 1;
+        }
         response.put("result", missions);
         response.put("totalPages", totalPages);
 
