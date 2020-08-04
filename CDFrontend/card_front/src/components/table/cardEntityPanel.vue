@@ -16,7 +16,6 @@
       </el-button>
     </div>
 
-
     <!--    :data="list.filter(data => !search || data.itemName.toLowerCase().includes(search.toLowerCase()))"-->
     <el-table
       :key="tableKey"
@@ -97,6 +96,8 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <pagination v-show="listQuery.total > 0" :total.sync="listQuery.total * listQuery.limit" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList(listQuery.page, listQuery.limit)" />
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="panelVisible" top="5vh" class="editDialog">
       <el-form ref="temp" :rules="rules" :model="temp" style="margin: auto 50px auto 50px; display:grid; grid-template-columns: 50% 50%; grid-column-gap: 10px" class="demo-form-inline">
@@ -180,11 +181,8 @@
 
 <script>
 import waves from '@/directive/waves' // waves directive
-// import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination/index'
-// import axios from 'axios' // secondary package based on el-pagination
 import request from '@/utils/request'
-// const request = require('../../../src/utils/request');
 
 
 export default {
@@ -227,15 +225,12 @@ export default {
       panelVisible: false,
       dialogStatus: '',
 
-
       tableKey: 0,
       listLoading: false,
       listQuery: {
         page: 1,
         limit: 20,
-        importance: undefined,
-        title: undefined,
-        type: undefined,
+        total: 0,
         sort: '+id'
       },
       sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
@@ -253,39 +248,31 @@ export default {
     } // untested
   },
   created() {
-    this.getList()
+    this.getList(1, this.listQuery.limit);
   },
   methods: {
-    getList() {
+    getList(page, limit) {
+      console.log("In getList");
+      console.log(this.listQuery.page);
       let _this = this;
+      let postData = {
+        pageToken: page,
+        pageSize: limit
+      };
       request({
-        url: 'card/getAllCards',
-        method: 'get',
+        url: 'card/List',
+        method: 'post',
+        data: postData
       }).then( response => {
         if(response.data) {
-          _this.list = response.data;
+          _this.list = response.data.result;
+          _this.listQuery.total = response.data.totalPages;
           _this.watchList();
         }else
         {
           this.$message.error('Fetching Data Failed!');
         }
-      }).catch( error => {
-        this.$message.error('Fetching Data Failed!');
-      });
-      // axios.get('http://localhost:8080/card/getAllCards')
-      // .then(response => {
-      //   if(response.data) {
-      //     _this.list = response.data;
-      //     _this.watchList();
-      //   }else
-      //   {
-      //     this.$message.error('Fetching Data Failed!');
-      //   }
-      // })
-      // .catch(error =>
-      // {
-      //   this.$message.error('Fetching Data Failed!');
-      // });
+      })
     },
     watchList() {
       const list = this.list;
@@ -334,7 +321,7 @@ export default {
         if (response.data) {
           _this.panelVisible = false;
           _this.deleteVisible = false;
-          _this.getList()
+          this.getList(this.listQuery.page, this.listQuery.limit);
         } else {
           this.$message.error('Deleting Data failed!');
         }
@@ -400,7 +387,7 @@ export default {
           }).then(response => {
             if (response.data) {
               // TODO: SHORTEN THE REQUESTS
-              _this.getList();
+              _this.getList(this.listQuery.page, this.listQuery.limit);
               _this.panelVisible = false;
               _this.resetTemp();
             }else {
@@ -458,7 +445,7 @@ export default {
             data: JSON.stringify(postData)
           }).then(response => {
             if(response.data) {
-              _this.getList();
+              _this.getList(this.listQuery.page, this.listQuery.limit);
               _this.panelVisible = false;
               _this.resetTemp();
             }else {

@@ -152,10 +152,6 @@
             this.$message.error('Fetching Data Failed!');
           }
         })
-          .catch(error =>
-          {
-            this.$message.error('Fetching Data Failed!');
-          });
       },
 
       confirmIdentity() {

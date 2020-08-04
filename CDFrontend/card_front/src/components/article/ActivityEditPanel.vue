@@ -224,20 +224,6 @@ export default {
             this.$message.error('Publishing Activity failed!');
           }
         );
-
-      // axios.post(`http://localhost:8080/activity/addActivity`, postData).then(response => {
-      //   if (response.data) {
-      //     //
-      //     this.resetArticle();
-      //   } else {
-      //     this.$message.error('Publishing Activity failed!');
-      //   }
-      // })
-      // .catch(error =>
-      //   {
-      //     this.$message.error('Publishing Activity failed!');
-      //   }
-      // );
     },
     uploadCover() {
       const _this = this;

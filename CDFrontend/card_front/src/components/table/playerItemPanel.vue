@@ -44,6 +44,8 @@
       </el-table-column>
     </el-table>
 
+    <pagination v-show="listQuery.total > 0" :total.sync="listQuery.total * listQuery.limit" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList(listQuery.page, listQuery.limit)" />
+
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="panelVisible" top="5vh" class="editDialog">
       <el-form ref="temp" :rules="rules" :model="temp" style="margin: auto 50px auto 50px; display:grid; grid-template-columns: 50% 50%; grid-column-gap: 10px" class="demo-form-inline">
         <el-form-item label="ID" prop="ownItemId" v-if="dialogStatus==='update' ">
@@ -175,7 +177,7 @@ export default {
     }
   },
   created() {
-    this.getList()
+    this.getList(this.listQuery.page, this.listQuery.limit);
   },
   methods: {
     // watchList() {
@@ -191,18 +193,21 @@ export default {
     formatDate(date){
       return moment(new Date(date)).format('YYYY-MM-DD HH:mm:ss');
     },
-    getList() {
-
+    getList(page, limit) {
+      let postData = {
+        pageToken: page,
+        pageSize: limit
+      };
       request({
-        url: 'ownItem/getAllOwnItems',
-        method: 'get',
+        url: 'ownItem/List',
+        method: 'post',
+        data: postData
       }).then(response => {
-        this.list = response.data
+        if(response.data) {
+          this.list = response.data.result;
+          this.listQuery.total = response.data.totalPages;
+        }
       })
-        .catch(error =>
-        {
-          this.$message.error('Fetching Data Failed!');
-        });
     },
     resetTemp() {
       this.temp = {
@@ -237,7 +242,7 @@ export default {
           }).then(response => {
             if (response.data) {
               // TODO: SHORTEN THE REQUESTS
-              this.getList();
+              this.getList(this.listQuery.page, this.listQuery.limit);
               this.panelVisible = false;
             } else {
               this.$message.error('Creating Data failed!');
@@ -248,22 +253,6 @@ export default {
                 this.$message.error('Creating Data failed!');
               }
             );
-
-          // axios.post(`http://localhost:8080/ownItem/addOwnItem`, postData).then(response => {
-          //   if (response.data) {
-          //     // TODO: SHORTEN THE REQUESTS
-          //     this.getList();
-          //     this.panelVisible = false;
-          //   } else {
-          //     this.$message.error('Creating Data failed!');
-          //   }
-          // })
-          //   .catch(error =>
-          //     {
-          //       this.$message.error('Creating Data failed!');
-          //     }
-          //   );
-
         } else {
           this.$message.error('Form Invalid!');
           return false;
@@ -297,7 +286,7 @@ export default {
           }).then(response => {
             if (response.data) {
               // TODO: SHORTEN THE REQUESTS
-              this.getList();
+              this.getList(this.listQuery.page, this.listQuery.limit);
               this.panelVisible = false;
               this.resetTemp();
             } else {
@@ -309,24 +298,6 @@ export default {
                 this.$message.error('Updating Data failed!');
               }
             );
-
-          // axios.post(`http://localhost:8080/ownItem/updateOwnItem`, postData).then(response => {
-          //   if (response.data) {
-          //     // TODO: SHORTEN THE REQUESTS
-          //     this.getList();
-          //     this.panelVisible = false;
-          //     this.resetTemp();
-          //   } else {
-          //     this.$message.error('Updating Data failed!');
-          //   }
-          // })
-          //   .catch(error =>
-          //     {
-          //       this.$message.error('Updating Data failed!');
-          //     }
-          //   );
-
-
         } else {
           this.$message.error('Form Invalid!');
           return false;
@@ -356,19 +327,6 @@ export default {
             this.$message.error('Identification failed!');
           }
         );
-
-      // axios.post('http://localhost:8080/admin/identifyAdmin', postData).then(response => {
-      //   if (response.data) {
-      //     _this.confirmDelete = true
-      //   } else {
-      //     this.$message.error('Identification failed!');
-      //   }
-      // })
-      // .catch(error =>
-      //   {
-      //     this.$message.error('Identification failed!');
-      //   }
-      // );
     },
     deleteData() {
       let postData = new FormData();
@@ -384,7 +342,7 @@ export default {
         if (response.data) {
           _this.panelVisible = false;
           _this.deleteVisible = false;
-          _this.getList()
+          _this.getList(this.listQuery.page, this.listQuery.limit)
         } else {
           this.$message.error('Deleting Data failed!');
         }
@@ -394,26 +352,11 @@ export default {
             this.$message.error('Deleting Data failed!');
           }
         );
-
-      // axios.post('http://localhost:8080/ownItem/deleteOwnItem', postData).then(response => {
-      //   if (response.data) {
-      //     _this.panelVisible = false;
-      //     _this.deleteVisible = false;
-      //     _this.getList()
-      //   } else {
-      //     this.$message.error('Deleting Data failed!');
-      //   }
-      // })
-      // .catch(error =>
-      //   {
-      //     this.$message.error('Deleting Data failed!');
-      //   }
-      // );
     },
 
     handleFilter() {
       this.listQuery.page = 1;
-      this.getList()
+      this.getList(this.listQuery.page, this.listQuery.limit)
     },
     handleModifyStatus(row, status) {
       this.$message({
