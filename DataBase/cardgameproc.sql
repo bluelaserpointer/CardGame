@@ -6,7 +6,7 @@
 set @userAmount = 10000;
 set @cardAmount = 200;
 set @itemAmount = 200;
-set @userAmountWhoOwnSomething = 50; #50: for function test | @userAmount: for pressure test
+set @userAmountWhoOwnSomething = @userAmount; #50: for function test | @userAmount: for pressure test
 set @activityAmount = 10000;
 set @enemyAmount = 200;
 set @mailAmountPerUser = 10;
