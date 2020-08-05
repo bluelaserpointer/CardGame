@@ -71,13 +71,51 @@
                     android:adjustViewBounds="true"
                     app:srcCompat="@drawable/chi_n1" />
 
-                <TextView
-                    android:id="@+id/cardRarity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|right"
-                    android:textColor="@color/design_default_color_background"
-                    android:textSize="24sp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="10" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="2"
+                        android:orientation="horizontal">
+
+                        <Space
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="10" />
+
+                        <TextView
+                            android:id="@+id/cardRarity"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="right"
+                            android:layout_weight="5"
+                            android:text="Rarity"
+                            android:textColor="@color/design_default_color_background"
+                            android:textSize="24sp" />
+
+                        <Space
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                    </LinearLayout>
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                </LinearLayout>
+
             </FrameLayout>
 
             <LinearLayout
@@ -164,7 +202,7 @@
                             android:id="@+id/textView16"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="2"
+                            android:layout_weight="3"
                             android:gravity="center"
                             android:text="点数分配"
                             android:textColor="@color/design_default_color_background" />
@@ -198,6 +236,15 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@drawable/upgrade_button" />
+
+                        <TextView
+                            android:id="@+id/cardHPEnhanced"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:textColor="@color/design_default_color_background"
+                            android:textSize="18sp" />
 
                         <Button
                             android:id="@+id/subHP"
@@ -235,6 +282,15 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@drawable/upgrade_button" />
+
+                        <TextView
+                            android:id="@+id/cardATKEnhanced"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:textColor="@color/design_default_color_background"
+                            android:textSize="18sp" />
 
                         <Button
                             android:id="@+id/subATK"
@@ -274,6 +330,15 @@
                             android:layout_weight="1"
                             android:background="@drawable/upgrade_button" />
 
+                        <TextView
+                            android:id="@+id/cardDEFEnhanced"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:textColor="@color/design_default_color_background"
+                            android:textSize="18sp" />
+
                         <Button
                             android:id="@+id/subDEF"
                             android:layout_width="0dp"
@@ -310,6 +375,15 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@drawable/upgrade_button" />
+
+                        <TextView
+                            android:id="@+id/cardATKRangeEnhanced"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:textColor="@color/design_default_color_background"
+                            android:textSize="18sp" />
 
                         <Button
                             android:id="@+id/subATKRange"
@@ -348,6 +422,15 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@drawable/upgrade_button" />
+
+                        <TextView
+                            android:id="@+id/cardCDEnhanced"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:textColor="@color/design_default_color_background"
+                            android:textSize="18sp" />
 
                         <Button
                             android:id="@+id/subCD"
