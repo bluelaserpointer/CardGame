@@ -43,8 +43,7 @@ public class LoginInputPage extends Page {
                 ((TextView)findViewById(R.id.loginStatus)).setText("注册失败: " + response.getString("failReason"));
             } else  if(Utils.identifyUser(userName, password)) {
                 ((TextView)findViewById(R.id.loginStatus)).setText("注册成功");
-                Utils.saveUserInfo(userName, password);
-                Page.jump(this, HomePage.class);
+                Utils.doLogin(this, userName, password);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -63,8 +62,7 @@ public class LoginInputPage extends Page {
         }
         if(Utils.identifyUser(userName, password)) {
             System.out.println("InputIdentification succeeded!!!!!!!!!!!!!!!!");
-            Utils.saveUserInfo(userName, password);
-            Page.jump(this, HomePage.class);
+            Utils.doLogin(getApplicationContext(), userName, password);
         } else {
             System.out.println("LoginInputPage: identification failed: " + Utils.loginFailReason);
             ((TextView)findViewById(R.id.loginStatus)).setText(Utils.loginFailReason);

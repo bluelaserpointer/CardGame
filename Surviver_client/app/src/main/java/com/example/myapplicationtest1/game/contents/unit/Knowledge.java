@@ -1,35 +1,35 @@
 package com.example.myapplicationtest1.game.contents.unit;
 
 import com.example.myapplicationtest1.R;
-import com.example.myapplicationtest1.game.contents.engine.Subject;
 import com.example.myapplicationtest1.game.core.GHQ;
 import com.example.myapplicationtest1.game.paint.ImageFrame;
 import com.example.myapplicationtest1.game.paint.dot.DotPaint;
 import com.example.myapplicationtest1.game.preset.unit.Unit;
+import com.example.myapplicationtest1.utils.Cache;
 
 public class Knowledge extends MyUnit {
-	public final KnowledgeParameter PARAM;
+	public final Cache.Card card;
 	public final DotPaint standPaint;
 	
-	private Knowledge(KnowledgeParameter param, DotPaint additionalStandImage) {
-		super(param.NAME, param.PAINT, FRIEND);
+	private Knowledge(Cache.Card card, DotPaint additionalStandImage) {
+		super(card.cardName, card.drawableId, FRIEND);
 		standPaint = additionalStandImage;
-		PARAM = param;
+		this.card = card;
 	}
-	public Knowledge(KnowledgeParameter param) {
-		super(param.NAME, param.PAINT, FRIEND);
-		standPaint = param.PAINT;
-		PARAM = param;
+	public Knowledge(Cache.Card card) {
+		super(card.cardName, card.drawableId, FRIEND);
+		standPaint = getDotPaint();
+		this.card = card;
 	}
 	@Override
 	public Knowledge respawn(int x, int y) {
 		super.respawn(x, y);
-		maxHP = hp = PARAM.iniHP;
-		atk = PARAM.iniATK;
-		def = PARAM.iniDEF;
-		atkRange = PARAM.iniATKRange;
-		cd = PARAM.iniCD;
-		spd = PARAM.iniSPD;
+		maxHP = hp = card.healthPoint;
+		atk = card.attack;
+		def = card.defense;
+		atkRange = card.attackRange;
+		cd = card.cd;
+		spd = card.speed;
 		return this;
 	}
 	@Override
@@ -56,47 +56,12 @@ public class Knowledge extends MyUnit {
 			}
 		}
 	}
-	public static class KnowledgeParameter {
-		final String getRarity() {
-			final String str = this.toString();
-			return str.substring(4, str.length() - 1);
-		}
-		
-		static final KnowledgeParameter[][][] lotteSpring
-			= new KnowledgeParameter[Subject.values().length][5][]; //subject, rarity
-		private static final void setMember(Subject subject, int rarity, KnowledgeParameter... members)
-		{
-			lotteSpring[subject.ordinal()][rarity] = members;
-		}
-		public int ownCardId;
-		public final Subject SUBJECT;
-		public final String NAME;
-		public int drawableId;
-		public DotPaint PAINT;
-		public int iniHP, iniATK, iniDEF, iniCD;
-		public double iniATKRange, iniSPD;
-		public String appendTalk, description;
-		
-		public KnowledgeParameter(int ownCardId, Subject subject, String name, int drawableId, int hp, int atk, int def, double atkRange, int cd, double spd, String appendTalk, String description) {
-			this.ownCardId = ownCardId;
-			SUBJECT = subject;
-			NAME = name;
-			this.drawableId = drawableId;
-			PAINT = ImageFrame.create(drawableId);
-			iniHP = hp;
-			iniATK = atk;
-			iniDEF = def;
-			iniATKRange = atkRange;
-			iniCD = cd;
-			iniSPD = spd;
-			this.appendTalk = appendTalk;
-			this.description = description;
-		}
-		private static final ImageFrame 
-			MAT_N2_IF = ImageFrame.create(R.drawable.greensquare),
-			MAT_SER_IF1 = ImageFrame.create(R.drawable.fenlei1),
-			MAT_SER_IF2 = ImageFrame.create(R.drawable.fenlei2);
-		Knowledge generate() {
+//	public static class KnowledgeParameter {
+//		private static final ImageFrame
+//			MAT_N2_IF = ImageFrame.create(R.drawable.greensquare),
+//			MAT_SER_IF1 = ImageFrame.create(R.drawable.fenlei1),
+//			MAT_SER_IF2 = ImageFrame.create(R.drawable.fenlei2);
+//		Knowledge generate() {
 //			final Knowledge UNIT;
 //			if(this == MAT_N2) { //长*宽*高
 //				UNIT = new Knowledge(this);
@@ -196,8 +161,5 @@ public class Knowledge extends MyUnit {
 //					}
 //				};
 //			}else
-//				UNIT = new Knowledge(this);
-			return new Knowledge(this);
-		}
-	}
+//				UNIT = new Knowledge(this););
 }

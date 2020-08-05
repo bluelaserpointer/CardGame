@@ -1,8 +1,5 @@
 package com.example.myapplicationtest1.game.contents.unit;
 
-import android.graphics.Color;
-import android.graphics.Paint;
-
 import com.example.myapplicationtest1.game.core.GHQ;
 import com.example.myapplicationtest1.game.paint.dot.DotPaint;
 import com.example.myapplicationtest1.game.preset.unit.Unit;
