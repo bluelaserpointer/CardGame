@@ -173,7 +173,7 @@ BEGIN
 
 	declare name varchar(15) default '';
 
-	declare rarity varchar(10) default 'SSS';
+	declare rarity varchar(10) default 'SSR';
 
 	insert into card(card_id, attack, attack_range, card_name, cd, defense,
 
@@ -195,7 +195,7 @@ BEGIN
 
 		if(i % 3 = 0) then 
 
-			set rarity = 'SSS';
+			set rarity = 'SSR';
 
 		elseif(i % 2 = 0)  then
 
