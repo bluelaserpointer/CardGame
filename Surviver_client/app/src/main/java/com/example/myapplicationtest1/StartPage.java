@@ -78,7 +78,7 @@ public class StartPage extends AppCompatActivity {
             connectedTimeOutHappen = false;
             if (Utils.identifyUser()) {
                 System.out.println("StartPage: Identification succeed.");
-                Page.jump(this, HomePage.class);
+                Utils.doLogin(this);
             } else if (connectedTimeOutHappen) {
                 System.out.println("StartPage: Connection Timeout.");
             } else {

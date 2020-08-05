@@ -1,7 +1,6 @@
 package com.example.myapplicationtest1.pageParts;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -12,49 +11,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myapplicationtest1.HttpClient;
 import com.example.myapplicationtest1.R;
-import com.example.myapplicationtest1.game.contents.unit.Knowledge;
-import com.example.myapplicationtest1.game.contents.unit.MyUnit;
 import com.example.myapplicationtest1.page.CardDetailPage;
 import com.example.myapplicationtest1.page.Page;
 import com.example.myapplicationtest1.page.TeamPage;
 import com.example.myapplicationtest1.utils.Cache;
-import com.example.myapplicationtest1.utils.Urls;
-import com.example.myapplicationtest1.utils.Utils;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.LinkedList;
+import java.util.Iterator;
+import java.util.Map;
 
 public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardListViewHolder> {
     private final Context context;
-    private final LinkedList<Knowledge.KnowledgeParameter> knowledgeParameters = new LinkedList<>();
-
+    private final Iterator<Map.Entry<Integer, Cache.OwnCard>> oCardEntryIterator = Cache.ownCards.entrySet().iterator();
     public CardListAdapter(Context context) {
         this.context = context;
-        fetch();
-    }
-
-    public void fetch() {
-        knowledgeParameters.clear();
-        System.out.println("!!!fetch " + "ownCard/getAllOwnCardsByUserId?userId=" + Cache.userId);
-        if(Utils.getUserName().equals("NOT_LOGGED")) {
-            System.out.println("!!!CardListAdapter: not login");
-            return;
-        }
-        try {
-            final JSONArray arr = new JSONArray(HttpClient.doGetShort(Urls.getAllOwnCard()));
-            for(int i = 0; i < arr.length(); ++i) {
-                final JSONObject object = arr.getJSONObject(i);
-                final int cardId = object.getInt("cardId");
-                knowledgeParameters.add(MyUnit.loadAsKnowledge(object.getInt("ownCardId"), Urls.getCard(cardId)));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
     @NonNull
     @Override
@@ -67,19 +37,20 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardLi
         ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
         layoutParams.height = 500;
         holder.itemView.setLayoutParams(layoutParams);
-        final Knowledge.KnowledgeParameter params = knowledgeParameters.get(position);
+        final Map.Entry<Integer, Cache.OwnCard> oCardEntry = this.oCardEntryIterator.next();
+        final Cache.OwnCard params = oCardEntry.getValue();
         holder.cardImageView.setImageResource(R.drawable.greentmp);
-        holder.cardNameTextView.setText(params.NAME);
+        holder.cardNameTextView.setText(params.card.cardName);
         holder.cardRarityTextView.setText("SSR");
-        holder.cardLevelTextView.setText("Lv: " + 12 + "/" + 50);
-        holder.cardExpTextView.setText("exp: " + 12 + "/" + 100);
+        holder.cardLevelTextView.setText("Lv: " + params.cardLevel + "/" + params.cardLevelLimit);
+        holder.cardExpTextView.setText("exp: " + params.cardCurExp + "/" + 100);
         holder.itemView.setOnClickListener(v -> {}); //???I don't know why, but it helps itself receive more kinds of motionEvent.
         holder.itemView.setOnTouchListener((v, motionEvent) -> {
             v.performClick();
             System.out.println("CardListAdapter: action: " + motionEvent.getAction());
             if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
                 if(TeamPage.getOnEditPos() != -1) {
-                    TeamPage.setFormationToOnEditPos(knowledgeParameters.get(position).ownCardId);
+                    TeamPage.setFormationToOnEditPos(oCardEntry.getKey());
                     Page.jump(context, TeamPage.class);
                 } else {
                     Page.jump(context, CardDetailPage.class);
@@ -91,7 +62,7 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardLi
 
     @Override
     public int getItemCount() {
-        return knowledgeParameters.size();
+        return Cache.ownCards.size();
     }
 
     static class CardListViewHolder extends RecyclerView.ViewHolder {

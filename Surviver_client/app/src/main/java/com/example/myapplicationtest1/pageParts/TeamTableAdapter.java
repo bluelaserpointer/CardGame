@@ -16,6 +16,7 @@ import com.example.myapplicationtest1.game.contents.unit.Knowledge;
 import com.example.myapplicationtest1.page.CardStoragePage;
 import com.example.myapplicationtest1.page.Page;
 import com.example.myapplicationtest1.page.TeamPage;
+import com.example.myapplicationtest1.utils.Cache;
 import com.example.myapplicationtest1.utils.Utils;
 
 public class TeamTableAdapter extends RecyclerView.Adapter<TeamTableAdapter.TeamTableLine> {
@@ -41,9 +42,9 @@ public class TeamTableAdapter extends RecyclerView.Adapter<TeamTableAdapter.Team
             final int cardSetPos = position * this.getItemCount() + i;
             if(TeamPage.formation.containsKey(cardSetPos)) { //set button bg to card icon
                 System.out.println("TeamTableAdapter: found card at " + cardSetPos);
-                final Knowledge.KnowledgeParameter param = Utils.getKnowledgeParameter(TeamPage.formation.get(cardSetPos));
-                if(param != null)
-                    holder.buttons[i].setBackground(ContextCompat.getDrawable(activity, param.drawableId));
+                final Cache.OwnCard ownCard = Cache.ownCards.get(TeamPage.formation.get(cardSetPos));
+                if(ownCard != null)
+                    holder.buttons[i].setBackground(ContextCompat.getDrawable(activity, ownCard.card.drawableId));
                 else
                     System.out.println("TeamTableAdapter: Not found card param at " + TeamPage.formation.get(cardSetPos));
             } else {

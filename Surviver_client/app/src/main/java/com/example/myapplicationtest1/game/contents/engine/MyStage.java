@@ -45,7 +45,7 @@ public class MyStage extends GHQStage {
         for(Knowledge unit : formationTS) {
             if(unit == null)
                 continue;
-            switch(unit.PARAM.SUBJECT) {
+            switch(unit.card.subject()) {
                 case CHI:
                     ++Enemy.chiCount;
                     break;
