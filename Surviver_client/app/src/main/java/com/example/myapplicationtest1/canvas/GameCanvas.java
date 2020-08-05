@@ -8,17 +8,15 @@ import android.util.AttributeSet;
 import androidx.annotation.Nullable;
 
 import com.example.myapplicationtest1.HttpClient;
-import com.example.myapplicationtest1.R;
-import com.example.myapplicationtest1.game.contents.engine.Subject;
 import com.example.myapplicationtest1.game.contents.unit.Enemy;
 import com.example.myapplicationtest1.game.contents.engine.MyStage;
 import com.example.myapplicationtest1.game.contents.unit.Knowledge;
 import com.example.myapplicationtest1.game.contents.unit.MyUnit;
 import com.example.myapplicationtest1.game.core.GHQ;
-import com.example.myapplicationtest1.game.paint.ImageFrame;
 import com.example.myapplicationtest1.page.BattleFinishPage;
 import com.example.myapplicationtest1.page.Page;
 import com.example.myapplicationtest1.pageParts.ChapterListAdapter;
+import com.example.myapplicationtest1.utils.Cache;
 import com.example.myapplicationtest1.utils.Urls;
 
 import org.json.JSONArray;
@@ -66,20 +64,7 @@ public class GameCanvas extends MyCanvas {
             }
             //load friend formation
             //TODO: this is dummy!
-            stage.addUnit(new Knowledge(new Knowledge.KnowledgeParameter(
-                    0,
-                            Subject.MAT,
-                    "testFriendUnit",
-                    R.drawable.tongyongm,
-                    100,
-                    100,
-                    100,
-                    100,
-                    100,
-                    100,
-                    "",
-                    ""
-            )).respawn(100, 800));
+            stage.addUnit(new Knowledge(Cache.cards.get(0)).respawn(100, 800));
 
         } catch (JSONException e) {
             e.printStackTrace();

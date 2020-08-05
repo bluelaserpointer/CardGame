@@ -3,7 +3,6 @@ package com.example.myapplicationtest1.game.contents.unit;
 import com.example.myapplicationtest1.HttpClient;
 import com.example.myapplicationtest1.R;
 import com.example.myapplicationtest1.game.contents.bullet.Bullets;
-import com.example.myapplicationtest1.game.contents.engine.Subject;
 import com.example.myapplicationtest1.game.contents.engine.SurDamage;
 import com.example.myapplicationtest1.game.core.GHQ;
 import com.example.myapplicationtest1.game.core.GHQObject;
@@ -27,7 +26,8 @@ public abstract class MyUnit extends Unit implements HasDotPaint {
 	public static final int FRIEND = 0, ENEMY = 1;
 	
 	final String NAME;
-	int maxHP, hp, def, atk, cd;
+	int maxHP, hp, def, atk;
+	double cd;
 
 	double atkRange;
 	double spd;
@@ -85,7 +85,7 @@ public abstract class MyUnit extends Unit implements HasDotPaint {
 	protected final Weapon setDegaultWeapon() {
 		return new Weapon() {
 			{
-				this.setCoolTime(cd);
+				this.setCoolTime((int)cd);
 			}
 			@Override
 			public List<Bullet> setBullets(GHQObject shooter, HitGroup standpoint) {
@@ -130,30 +130,6 @@ public abstract class MyUnit extends Unit implements HasDotPaint {
 					enemyInfo.getInt("attackRange"),
 					enemyInfo.getInt("cd"),
 					enemyInfo.getInt("speed"),
-					enemyInfo.getString("cardDetails")
-			);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		return enemyParameter;
-	}
-
-	public static Knowledge.KnowledgeParameter loadAsKnowledge(int ownCardId, String fetchURL) {
-		Knowledge.KnowledgeParameter enemyParameter = null;
-		try {
-			final JSONObject enemyInfo = new JSONObject(HttpClient.doGetShort(fetchURL));
-			enemyParameter = new Knowledge.KnowledgeParameter(
-					ownCardId,
-					Subject.CHI, //Subject.valueOf(enemyInfo.getString("subject")),
-					enemyInfo.getString("cardName"),
-					R.drawable.tongyongc,
-					enemyInfo.getInt("healthPoint"),
-					enemyInfo.getInt("attack"),
-					enemyInfo.getInt("defense"),
-					enemyInfo.getInt("attackRange"),
-					enemyInfo.getInt("cd"),
-					enemyInfo.getInt("speed"),
-					"appendTalk not found.", //enemyInfo.getString("appendTalk"),
 					enemyInfo.getString("cardDetails")
 			);
 		} catch (JSONException e) {
