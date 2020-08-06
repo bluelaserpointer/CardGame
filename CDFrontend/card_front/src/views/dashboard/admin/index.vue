@@ -2,7 +2,7 @@
   <div class="dashboard-editor-container">
     <!--    <span>hi</span>-->
     <github-corner class="github-corner" />
-    <panel-group @handleSetLineChartData="handleSetLineChartData" />
+    <panel-group @handleSetLineChartData="handleSetLineChartData" :curr-data="currData"/>
 
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
       <line-chart :chart-data="lineChartData" />
@@ -41,59 +41,127 @@
 </template>
 
 <script>
-// import GithubCorner from '@/components/GithubCorner'
-import PanelGroup from './components/PanelGroup'
-import LineChart from './components/LineChart'
-// import RaddarChart from './components/RaddarChart'
-import PieChart from './components/PieChart'
-import BarChart from './components/BarChart'
-// import TransactionTable from './components/TransactionTable'
-// import TodoList from './components/TodoList'
-// import BoxCard from './components/BoxCard'
+  import PanelGroup from './components/PanelGroup'
+  import LineChart from './components/LineChart'
+  import PieChart from './components/PieChart'
+  import BarChart from './components/BarChart'
+  import request from "@/utils/request"; // secondary package based on el-pagination
+  import moment from "moment"
 
-// import DragTable from '../../table/drag-table'
+  // import RaddarChart from './components/RaddarChart'
+  // import GithubCorner from '@/components/GithubCorner'
+  // import TransactionTable from './components/TransactionTable'
+  // import TodoList from './components/TodoList'
+  // import BoxCard from './components/BoxCard'
+  // import DragTable from '../../table/drag-table'
 
-const lineChartData = {
-  newVisitis: {
-    expectedData: [100, 120, 161, 134, 105, 160, 165],
-    actualData: [120, 82, 91, 154, 162, 140, 145]
-  },
-  messages: {
-    expectedData: [200, 192, 120, 144, 160, 130, 140],
-    actualData: [180, 160, 151, 106, 145, 150, 130]
+let lineChartData = {
+  onlineCounts: {
+    actualData: [100, 100, 100, 100, 100, 100, 100],
+    actualAxis: ['', '', '', '', '', '', '']
   },
   purchases: {
-    expectedData: [80, 100, 121, 104, 105, 90, 100],
-    actualData: [120, 90, 100, 138, 142, 130, 130]
+    actualData: [100, 100, 100, 100, 100, 100, 100],
+    actualAxis: ['', '', '', '', '', '', '']
   },
-  shoppings: {
-    expectedData: [130, 140, 141, 142, 145, 150, 160],
-    actualData: [120, 82, 91, 154, 162, 140, 130]
+  crashReports: {
+    actualData: [100, 100, 100, 100, 100, 100, 100],
+    actualAxis: ['', '', '', '', '', '', '']
   }
 };
 
 export default {
   name: 'DashboardAdmin',
   components: {
-    // DragTable,
-    // GithubCorner,
     PanelGroup,
     LineChart,
-    // RaddarChart,
     PieChart,
     BarChart
+    // DragTable,
+    // GithubCorner,
+    // RaddarChart,
     // TransactionTable,
     // TodoList,
     // BoxCard
   },
   data() {
     return {
-      lineChartData: lineChartData.newVisitis
+      lineChartData: lineChartData.onlineCounts,
+      currData: {
+        onlineCount: 0,
+        purchase: 0,
+        crashReport: 0,
+      },
+      onlineCountId: null,
+      purchaseId: null,
+      crashReportId: null,
     }
   },
+  created(){
+      this.handleOnlineCountsFetch('day');
+      this.handleScheduled();
+  },
   methods: {
+    handleScheduled(){
+      this.onlineCountId = setInterval(this.handleOnlineCountFetch, 30000);
+    },
+    handleOnlineCountFetch(){
+      request({
+        url: 'record/onlineCountRecord/getOnlineCountRecord',
+        method: 'get'
+      }).then(response => {
+        this.currData.onlineCount = response.data.onlineCount;
+        lineChartData.onlineCounts.actualData.push(response.data.onlineCount);
+        lineChartData.onlineCounts.actualAxis.push(moment(response.data.recordTime).format('MM-DD HH:mm'));
+      })
+    },
+    handlePurchaseFetch(){
+
+    },
+    handleCrashReportFetch(){
+
+    },
+    handleDataFetch(){
+
+    },
+    handleOnlineCountsFetch(type){
+      let dataType = '';
+      switch(type)
+      {
+        case 'year':
+          dataType = 'HalfYear';
+          break;
+        case 'day':
+          dataType = 'OneDay';
+          break;
+      }
+      request({
+        url: 'record/onlineCountRecord/getOnlineCountRecordsWithinOneDay',
+        method: 'get',
+      }).then(response => {
+        let arrData = [];
+        let arrAxis = [];
+        for(let i in response.data)
+        {
+          arrData.push(response.data[i].onlineCount);
+          arrAxis.push(moment(response.data[i].recordTime).format('MM-DD HH:mm'));
+        }
+        lineChartData.onlineCounts.actualData = arrData;
+        lineChartData.onlineCounts.actualAxis = arrAxis;
+      });
+    },
     handleSetLineChartData(type) {
-      this.lineChartData = lineChartData[type]
+    //   this.lineChartData = lineChartData[type];
+    //   switch(type)
+    //   {
+    //     case 'onlineCounts':
+    //       this.handleOnlineCountsFetch('day');
+    //       break;
+    //     case 'purchases':
+    //       break;
+    //     case 'crashReports':
+    //       break;
+    //   }
     }
   }
 }
