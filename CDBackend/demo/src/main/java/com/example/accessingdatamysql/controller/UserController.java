@@ -1,6 +1,5 @@
 package com.example.accessingdatamysql.controller;
 
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.Security.JwtUtil;
@@ -67,7 +66,7 @@ public class UserController {
   public @ResponseBody String register(@RequestBody User registerUser) {
     final User existedUser = userService.getOneUserByUserName(registerUser.getUserName());
     final JSONObject response = new JSONObject();
-    if(existedUser != null) {
+    if (existedUser != null) {
       response.put("failReason", "用户名已存在");
     } else {
       registerUser.setIdentity(User.ROLE_USER);
@@ -78,8 +77,10 @@ public class UserController {
 
   // 更新一个用户信息
   @RequestMapping(value = "/updateUser")
-  public @ResponseBody User updateUser(@RequestBody User updateUser) {
-    return userService.updateUser(updateUser);
+  @PreAuthorize("hasRole('ROLE_ADMIN') OR #updateUser.userName == authentication.name")
+  public @ResponseBody User updateUser(@RequestBody JSONObject updateUser) {
+    User User = JSON.parseObject(updateUser.getString("User"), User.class);
+    return userService.updateUser(User);
   }
 
   // 获取所有用户信息
@@ -129,13 +130,13 @@ public class UserController {
     System.out.print("UserController: login request: " + userName + ", " + password + " -> ");
     final User user = userService.getOneUserByUserName(userName);
     final JSONObject response = new JSONObject();
-    if(user == null) {
+    if (user == null) {
       System.out.println("refused(wrong username)");
       response.put("failReason", "用户名或密码错误");
     } else if (!user.getPassword().equals(password)) {
       System.out.println("refused(wrong password)");
       response.put("failReason", "用户名或密码错误");
-    } else if(!user.getAccess()) {
+    } else if (!user.getAccess()) {
       System.out.println("refused(banned user)");
       response.put("failReason", "用户已被禁止登录，详见游戏官网");
     } else {
@@ -171,7 +172,9 @@ public class UserController {
 
   // 获取用户的游戏信箱
   @RequestMapping(value = "/getMailBox")
-  public @ResponseBody List<Mail> getUserMailBox(@RequestParam("userId") Integer userId) {
+  @PreAuthorize("hasRole('ROLE_ADMIN') OR #userName == authentication.name")
+  public @ResponseBody List<Mail> getUserMailBox(@RequestParam("userName") String userName) {
+    Integer userId = userService.getOneUserByUserName(userName).getUserId();
     return mailBoxService.getOneUserMails(userId);
   }
 }
