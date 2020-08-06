@@ -300,3 +300,9 @@ AWS 目前开放了 8080 端口（测试用），后期可能会限制 inbound r
 - 单元测试（用 service 取代目前 Controller 层的单元测试）
 
 - 其他游戏逻辑的移植
+
+---
+
+### 8 月 4 日 更新
+
+- 完成 API Pagination
