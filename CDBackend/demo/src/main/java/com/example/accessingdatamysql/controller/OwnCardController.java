@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 // import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import java.sql.Timestamp;
 import java.util.*;
 
 import com.example.accessingdatamysql.service.OwnCardService;
+import com.example.accessingdatamysql.service.UserService;
 
 @CrossOrigin(origins = "*")
 @RestController // This means that this class is a Controller
@@ -21,6 +23,9 @@ import com.example.accessingdatamysql.service.OwnCardService;
 public class OwnCardController {
   @Autowired
   private OwnCardService OwnCardService;
+
+  @Autowired
+  private UserService UserService;
 
   // 获取一张用户拥有卡牌关系
   @RequestMapping(value = "/getOwnCard")
@@ -30,34 +35,34 @@ public class OwnCardController {
 
   // 增加一个用户拥有卡牌关系
   @RequestMapping(value = "/addOwnCard")
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public @ResponseBody OwnCard addNewOwnCard(@RequestParam("userId") Integer userId,
+  @PreAuthorize("hasRole('ROLE_ADMIN') OR #userName == authentication.name")
+  public @ResponseBody OwnCard addNewOwnCard(@RequestParam("userName") String userName,
       @RequestParam("cardId") Integer cardId) {
+    Integer userId = UserService.getOneUserByUserName(userName).getUserId();
     return OwnCardService.addNewOwnCard(userId, cardId);
   }
 
   // 更新一个用户拥有卡牌关系
   @RequestMapping(value = "/updateOwnCard")
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public @ResponseBody OwnCard updateOwnCard(@RequestBody OwnCard updateOwnCard) {
-    return OwnCardService.updateOwnCard(updateOwnCard);
+  @PreAuthorize("hasRole('ROLE_ADMIN') OR #updateOwnCard.userName == authentication.name")
+  public @ResponseBody OwnCard updateOwnCard(@RequestBody JSONObject updateOwnCard) {
+    OwnCard ownCard = JSON.parseObject(updateOwnCard.getString("OwnCard"), OwnCard.class);
+    return OwnCardService.updateOwnCard(ownCard);
   }
-
-  // 用户拥有的卡片升级
-  // @RequestMapping(value = "/cardLevelUp")
-  // public @ResponseBody OwnCard cardLevelUp(@RequestParam("userId") Integer
-  // userId,
-  // @RequestParam("cardId") Integer cardId) {
-  // return OwnCardService.cardLevelUp(userId, cardId);
-  // }
 
   // 增加用户经验值(如果累计经验值超过升级所需经验值则升级后再返回OwnCard)
   @RequestMapping(value = "/addExp")
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public @ResponseBody OwnCard addExp(@RequestParam("userId") Integer userId, @RequestParam("cardId") Integer cardId,
+  @PreAuthorize("hasRole('ROLE_ADMIN') OR #userName == authentication.name")
+  public @ResponseBody OwnCard addExp(@RequestParam("userName") String userName, @RequestParam("cardId") Integer cardId,
       @RequestParam("exp") Integer exp) {
     // System.out.println("Class: UserController Method: addExp Param: userId = " +
     // userId + " exp = " + exp);
+    // JSONObject response = new JSONObject();
+    // response.put("userName", UserService.getOneUser(userId).getUserName());
+    // response.put("ownCard", OwnCardService.addExp(userId, cardId, exp));
+    // System.out.println(authentication.name);
+    Integer userId = UserService.getOneUserByUserName(userName).getUserId();
+
     return OwnCardService.addExp(userId, cardId, exp);
   }
 
@@ -88,8 +93,10 @@ public class OwnCardController {
   }
 
   // 获取某一用户的所有拥有卡牌关系
-  @RequestMapping(value = "/getAllOwnCardsByUserId")
-  public List<OwnCard> getAllOwnCardsByUserId(@RequestParam("userId") Integer userId) {
+  @RequestMapping(value = "/getAllOwnCardsByUserName")
+  @PreAuthorize("hasRole('ROLE_ADMIN') OR #userName == authentication.name")
+  public List<OwnCard> getAllOwnCardsByUserName(@RequestParam("userName") String userName) {
+    Integer userId = UserService.getOneUserByUserName(userName).getUserId();
     return OwnCardService.getAllOwnCardsByUserId(userId);
   }
 
