@@ -2,11 +2,11 @@
   <div class="dashboard-editor-container">
     <!--    <span>hi</span>-->
     <github-corner class="github-corner" />
-    <panel-group @handleSetLineChartData="handleSetLineChartData" />
+    <panel-group @handleSetLineChartData="handleSetLineChartData" :curr-data="currData"/>
 
-    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
+    <el-col style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
       <line-chart :chart-data="lineChartData" />
-    </el-row>
+    </el-col>
 
     <el-row :gutter="32">
       <!--      <el-col :xs="24" :sm="24" :lg="8">-->
@@ -14,6 +14,22 @@
       <!--          <raddar-chart />-->
       <!--        </div>-->
       <!--      </el-col>-->
+
+<!--      <el-col style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">-->
+      <el-col :xs="24" :sm="24" :lg="8" style="background:#fff">
+        <line-chart :chart-data="onlineCounts" />
+      </el-col>
+      <el-col :xs="24" :sm="24" :lg="8" style="background:#fff">
+        <line-chart :chart-data="pveRecords" />
+      </el-col>
+      <el-col :xs="24" :sm="24" :lg="8" style="background:#fff">
+<!--        <line-chart :chart-data="lineChartData" />-->
+      </el-col>
+      <el-col :xs="24" :sm="24" :lg="8" style="background:#fff">
+        <line-chart :chart-data="crashReports" />
+      </el-col>
+
+
       <el-col :xs="24" :sm="24" :lg="8">
         <div class="chart-wrapper">
           <pie-chart />
@@ -41,59 +57,305 @@
 </template>
 
 <script>
-// import GithubCorner from '@/components/GithubCorner'
-import PanelGroup from './components/PanelGroup'
-import LineChart from './components/LineChart'
-// import RaddarChart from './components/RaddarChart'
-import PieChart from './components/PieChart'
-import BarChart from './components/BarChart'
-// import TransactionTable from './components/TransactionTable'
-// import TodoList from './components/TodoList'
-// import BoxCard from './components/BoxCard'
+  import PanelGroup from './components/PanelGroup'
+  import LineChart from './components/LineChart'
+  import PieChart from './components/PieChart'
+  import BarChart from './components/BarChart'
+  import request from "@/utils/request"; // secondary package based on el-pagination
+  import moment from "moment"
 
-// import DragTable from '../../table/drag-table'
+  // import RaddarChart from './components/RaddarChart'
+  // import GithubCorner from '@/components/GithubCorner'
+  // import TransactionTable from './components/TransactionTable'
+  // import TodoList from './components/TodoList'
+  // import BoxCard from './components/BoxCard'
+  // import DragTable from '../../table/drag-table'
 
-const lineChartData = {
-  newVisitis: {
-    expectedData: [100, 120, 161, 134, 105, 160, 165],
-    actualData: [120, 82, 91, 154, 162, 140, 145]
-  },
-  messages: {
-    expectedData: [200, 192, 120, 144, 160, 130, 140],
-    actualData: [180, 160, 151, 106, 145, 150, 130]
+let lineChartData = {
+  onlineCounts: {
+    actualData: [100, 100, 100, 100, 100, 100, 100],
+    actualAxis: ['', '', '', '', '', '', ''],
+    name: 'Number of Players Online (Half Year)'
   },
   purchases: {
-    expectedData: [80, 100, 121, 104, 105, 90, 100],
-    actualData: [120, 90, 100, 138, 142, 130, 130]
+    actualData: [100, 100, 100, 100, 100, 100, 100],
+    actualAxis: ['', '', '', '', '', '', ''],
+    name: 'Number of Purchases (Half Year)'
   },
-  shoppings: {
-    expectedData: [130, 140, 141, 142, 145, 150, 160],
-    actualData: [120, 82, 91, 154, 162, 140, 130]
-  }
+  pveRecords: {
+    actualData: [100, 100, 100, 100, 100, 100, 100],
+    actualAxis: ['', '', '', '', '', '', ''],
+    name: 'Number of Players In PVE-Chapters'
+  },
+  crashReports: {
+    actualData: [100, 100, 100, 100, 100, 100, 100],
+    actualAxis: ['', '', '', '', '', '', ''],
+    name: 'Number of Crashes (Half Year)'
+  },
 };
 
 export default {
   name: 'DashboardAdmin',
   components: {
-    // DragTable,
-    // GithubCorner,
     PanelGroup,
     LineChart,
-    // RaddarChart,
     PieChart,
     BarChart
+    // DragTable,
+    // GithubCorner,
+    // RaddarChart,
     // TransactionTable,
     // TodoList,
     // BoxCard
   },
   data() {
     return {
-      lineChartData: lineChartData.newVisitis
+      lineChartData: lineChartData.onlineCounts,
+      currData: {
+        onlineCount: 0,
+        purchase: 0,
+        crashReport: 0,
+        pveRecord: 0
+      },
+      onlineCounts: {
+        actualData: [100, 100, 100, 100, 100, 100, 100],
+        actualAxis: ['', '', '', '', '', '', ''],
+        name: 'Number of Players Online (One Day)'
+      },
+      purchases: {
+        actualData: [100, 100, 100, 100, 100, 100, 100],
+        actualAxis: ['', '', '', '', '', '', ''],
+        name: 'Number of Players Online (One Day)'
+      },
+      pveRecords: {
+        actualData: [100, 100, 100, 100, 100, 100, 100],
+        actualAxis: ['', '', '', '', '', '', ''],
+        name: 'Number of Players Online (One Day)'
+      },
+      crashReports: {
+        actualData: [100, 100, 100, 100, 100, 100, 100],
+        actualAxis: ['', '', '', '', '', '', ''],
+        name: 'Number of Players Online (One Day)'
+      },
+      onlineCountId: null,
+      purchaseId: null,
+      crashReportId: null,
+      pveRecordId: null,
+
     }
   },
+  created(){
+    this.handleOnlineCountsFetch('day');
+    this.handlePveRecordsFetch('day');
+    this.handleOnlineCountsFetch('year');
+    this.handleScheduled();
+  },
   methods: {
+    handleScheduled(){
+      this.handleOnlineCountFetch();
+      this.handlePveRecordFetch();
+      this.handleCrashReportFetch();
+      this.onlineCountId = setInterval(this.handleOnlineCountFetch, 30000);
+      this.pveRecordId = setInterval(this.handlePveRecordFetch, 30000);
+      this.crashReportId = setInterval(this.handleCrashReportFetch, 30000);
+    },
+    handleOnlineCountFetch(){
+      request({
+        url: 'record/onlineCountRecord/getOnlineCountRecord',
+        method: 'get'
+      }).then(response => {
+        this.currData.onlineCount = response.data.onlineCount;
+        this.onlineCounts.actualData.push(response.data.onlineCount);
+        this.onlineCounts.actualAxis.push(moment(response.data.recordTime).format('MM-DD HH:mm'));
+      })
+    },
+    handlePveRecordFetch(){
+      console.log("Here");
+      request({
+        url: 'record/pveRecord/getPveRecordsWithinOneDay',
+        method: 'get'
+      }).then(response => {
+        console.log(response);
+        let arrData = [];
+        let arrAxis = [];
+        let tmp = 0;
+        for(let i in response.data)
+        {
+          tmp += response.data[i][1];
+          arrAxis.push(response.data[i][0]);
+          arrData.push(response.data[i][2]);
+        }
+        this.pveRecords.actualData = arrData;
+        this.pveRecords.actualAxis = arrAxis;
+        this.currData.pveRecord = tmp;
+      })
+    },
+    handleCrashReportFetch(){
+      request({
+        url: 'record/crashReport/getCrashReportsWithinOneDay',
+        method: 'get'
+      }).then(response => {
+        console.log(response);
+        let map = new Map();
+        for(let i in response.data)
+        {
+          let formattedDate = moment(response.data[i].recordTime).format('YYYY-MM-DD HH:mm');
+
+          if(map.has(formattedDate))
+          {
+            map.set(formattedDate, map.get(formattedDate) + 1);
+          }else{
+            map.set(formattedDate, 1);
+          }
+        }
+
+        this.crashReports.actualAxis = Array.from(map.keys());
+        this.crashReports.actualData = Array.from(map.values());
+        this.currData.crashReport = response.data.length;
+
+
+        // let arrData = [];
+        // let arrAxis = [];
+        // let tmp = 0;
+        // for(let i in response.data)
+        // {
+        //   tmp += response.data[i][1];
+        //   arrAxis.push(response.data[i][0]);
+        //   arrData.push(response.data[i][2]);
+        // }
+        // this.crashReports.actualData = arrData;
+        // this.crashReports.actualAxis = arrAxis;
+      })
+    },
+    handlePurchaseFetch(){
+
+    },
+    handleDataFetch(){
+
+    },
+
+    handleOnlineCountsFetch(type){
+      let dataType = '';
+      switch(type)
+      {
+        case 'year':
+          dataType = 'HalfYear';
+          break;
+        case 'day':
+          dataType = 'OneDay';
+          break;
+      }
+      request({
+        url: `record/onlineCountRecord/getOnlineCountRecordsWithin${dataType}`,
+        method: 'get',
+      }).then(response => {
+        let arrData = [];
+        let arrAxis = [];
+        for(let i in response.data)
+        {
+          arrData.push(response.data[i].onlineCount);
+          arrAxis.push(moment(response.data[i].recordTime).format('MM-DD HH:mm'));
+        }
+        switch(type)
+        {
+          case 'year':
+            lineChartData.onlineCounts.actualData = arrData;
+            lineChartData.onlineCounts.actualAxis = arrAxis;
+            break;
+          case 'day':
+            this.onlineCounts.actualData = arrData;
+            this.onlineCounts.actualAxis = arrAxis;
+            break;
+        }
+      });
+    },
+    handlePveRecordsFetch(type){
+      let dataType = '';
+      switch(type)
+      {
+        case 'year':
+          dataType = 'HalfYear';
+          break;
+        case 'day':
+          dataType = 'OneDay';
+          break;
+      }
+      request({
+        url: `record/pveRecord/getPveRecordsWithin${dataType}`,
+        method: 'get',
+      }).then(response => {
+        console.log(response);
+
+        let arrData = [];
+        let arrAxis = [];
+        for(let i in response.data)
+        {
+          arrAxis.push(response.data[i][0]);
+          arrData.push(response.data[i][1]);
+        }
+        switch(type)
+        {
+          case 'year':
+            lineChartData.pveRecords.actualData = arrData;
+            lineChartData.pveRecords.actualAxis = arrAxis;
+            break;
+          case 'day':
+            this.pveRecords.actualData = arrData;
+            this.pveRecords.actualAxis = arrAxis;
+            break;
+        }
+      });
+    },
+    handleCrashReportsFetch(type){
+      let dataType = '';
+      switch(type)
+      {
+        case 'year':
+          dataType = 'HalfYear';
+          break;
+        case 'day':
+          dataType = 'OneDay';
+          break;
+      }
+      request({
+        url: `record/crashReport/getCrashReportsWithin${dataType}`,
+        method: 'get',
+      }).then(response => {
+        let map = new Map();
+        for(let i in response.data)
+        {
+          let formattedDate = moment(response.data[i].recordTime).format('YYYY-MM-DD HH');
+
+          if(map.has(formattedDate))
+          {
+            map.set(formattedDate, map.get(formattedDate) + 1);
+          }else{
+            map.set(formattedDate, 1);
+          }
+        }
+        lineChartData.crashReports.actualAxis = Array.from(map.keys());
+        lineChartData.crashReports.actualData = Array.from(map.values());
+      });
+    },
+
     handleSetLineChartData(type) {
-      this.lineChartData = lineChartData[type]
+      switch(type)
+      {
+        case 'onlineCounts':
+          this.handleOnlineCountsFetch('year');
+          break;
+        case 'purchases':
+          this.handlePurchasesFetch('year');
+          break;
+        case 'crashReports':
+          this.handleCrashReportsFetch('year');
+          break;
+        case 'pveRecords':
+          this.handlePveRecordsFetch('year');
+          break;
+      }
+      this.lineChartData = lineChartData[type];
+
     }
   }
 }

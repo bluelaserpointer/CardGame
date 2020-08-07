@@ -8,8 +8,8 @@
         Publish
       </el-button>
     </sticky>
-    <div class="createPost-main-container" style="display:grid; grid-template-columns: 50% 50%; grid-template-rows: 30% 70%;">
-      <el-row style="grid-row: 1 / span 1; grid-column: 1 / span 2">
+    <div class="createPost-main-container" style="display:grid; grid-template-columns: 50% 25% 25%; grid-template-rows: 30% 70%;">
+      <el-row style="grid-row: 1 / span 1; grid-column: 1 / span 3">
         <!--          <Warning />-->
         <el-col :span="24">
           <el-form-item style="margin-bottom: 40px;" prop="title">
@@ -24,7 +24,7 @@
         <Tinymce ref="editor" v-model="postForm.content" :height="400" />
       </el-form-item>
 
-      <div style="display: grid; grid-template-columns: 50% 50%">
+      <div style="display: grid; grid-template-columns: 50% 50%; grid-row: 2 / span 1; grid-column: 2 / span 1">
         <el-image
           style="width: 200px; height: 200px"
           :src="postForm.image_uri"
@@ -34,6 +34,57 @@
           <input ref="img" type="file" style="margin: 10px" @change="uploadCover">
         </div>
       </div>
+
+      <div style="display: grid; grid-template-rows: 10% 90%; grid-row: 2 / span 1; grid-column: 3 / span 1">
+        <div style="grid-row: 1 / span 1">
+          <el-button @click="handleSelectAll">Select All</el-button>
+          <el-button @click="handleClearAll">Clear All</el-button>
+        </div>
+        <div style="display: grid; grid-template-columns: 50% 50%; grid-row: 2 / span 1">
+          <div>
+            <el-table
+            :key="tableKey"
+            v-loading="listLoading"
+            :data="userList"
+            class="phaseAwardItemsTable"
+            border
+            fit
+            highlight-current-row
+            style="width: 100%; grid-column: 1 / span 1"
+            height="350"
+            max-height="350"
+            @row-click="handleSendSrc"
+            @sort-change="sortChange"
+          >
+            <el-table-column label="UserId" prop="userId" sortable="custom" align="center">
+              <template slot-scope="{row}">
+                <span>{{ row.userId }}</span>
+              </template>
+            </el-table-column>
+          </el-table>
+            <pagination v-show="listQuery.total > 0" :total.sync="listQuery.total * listQuery.limit" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList(listQuery.page, listQuery.limit)" />
+          </div>
+          <el-table
+          v-loading="listLoading"
+          :data="sendList"
+          class="phaseAwardCardsTable"
+          border
+          fit
+          highlight-current-row
+          style="width: 100%; grid-column: 2 / span 1"
+          height="350"
+          max-height="350"
+          @row-click="handleSendDes"
+          @sort-change="sortChange"
+        >
+          <el-table-column label="CardId" prop="itemId" sortable="custom" align="center">
+            <template slot-scope="{row}">
+              <span>{{ row }}</span>
+            </template>
+          </el-table-column>
+        </el-table>
+        </div>
+      </div>
     </div>
   </el-form>
 </template>
@@ -41,13 +92,15 @@
 <script>
   import Tinymce from '@/components/Tinymce/index'
   import MDinput from '@/components/MDinput/index'
-  import Sticky from '@/components/Sticky/index' // 粘性header组件
+  import Sticky from '@/components/Sticky/index'
   import { validURL } from '@/utils/validate'
   import Warning from './Warning'
   import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from '../../views/example/components/Dropdown'
   import axios from 'axios'
   import moment from "moment";
-  import request from "@/utils/request"; // secondary package based on el-pagination
+  import request from "@/utils/request";
+  import Pagination from '@/components/Pagination/index'
+
 
   const defaultForm = {
     status: 'draft',
@@ -58,7 +111,7 @@
     image_uri: '', // 文章图片
     id: undefined,
     platforms: ['a-platform'],
-    comment_disabled: false
+    comment_disabled: false,
     // importance: 0
   };
 
@@ -109,6 +162,20 @@
           source_uri: [{ validator: validateSourceUri, trigger: 'blur' }]
         },
         tempRoute: {},
+        userList: [],
+        sendList: [],
+        targetChosen: false,
+        listQuery: {
+          page: 1,
+          limit: 20,
+          total: 0,
+          sort: '+id'
+        },
+      }
+    },
+    watch:{
+      sendList(newVal){
+        this.targetChosen = newVal.length > 0;
       }
     },
     computed: {
@@ -120,10 +187,55 @@
       // Why need to make a copy of this.$route here?
       // Because if you enter this page and quickly switch tag, may be in the execution of the setTagsViewTitle function, this.$route is no longer pointing to the current page
       // https://github.com/PanJiaChen/vue-element-admin/issues/1221
+      this.getList(1, this.listQuery.limit);
 
-      this.tempRoute = Object.assign({}, this.$route)
+      this.tempRoute = Object.assign({}, this.$route);
     },
     methods: {
+      getList(page, limit){
+        let postData = {
+          pageToken: page,
+          pageSize: limit
+        };
+        request({
+          url: 'user/List',
+          method: 'post',
+          data: postData
+        }).then(response =>
+        {
+          if(response.data)
+          {
+            this.userList = response.data.result;
+            this.listQuery.total = response.data.totalPages;
+          }else{
+            this.$message.error('Fetching Data failed!');
+          }
+        })
+      },
+      handleSelectAll(){
+        this.handleClearAll();
+        for(let i in this.userList)
+        {
+          this.sendList.push(this.userList[i]);
+        }
+      },
+      handleClearAll(){
+        this.sendList = [];
+      },
+      handleSendSrc(row)
+      {
+        let index = this.sendList.indexOf(row.userId);
+        if(index >= 0){
+          this.sendList.splice(index, 1);
+        }else{
+          this.sendList.push(row.userId);
+        }
+      },
+      handleSendDes(row)
+      {
+        this.sendList.splice(this.sendList.indexOf(row), 1);
+      },
+
       uploadCover() {
         const _this = this;
         // 根据ref得到图片文件
@@ -140,8 +252,15 @@
       resetArticle(){
         this.postForm = Object.assign({}, defaultForm);
         this.$refs.editor.setContent('');
+        this.sendList = [];
       },
       submitForm() {
+        if(!this.targetChosen)
+        {
+          this.$message.error('Target not chosen!');
+          return false;
+        }
+
         if(this.postForm.title === undefined || this.postForm.content === undefined || this.postForm.title === '' || this.postForm.content === '')
         {
           this.$message.error('Data From Invalid!');
@@ -164,6 +283,9 @@
           if (response.data) {
             //
             this.resetArticle();
+            request({
+              url: 'mail/sendMailToUsers'
+            })
           } else {
             this.$message.error('Publishing Mail failed!');
           }
