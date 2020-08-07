@@ -91,4 +91,19 @@ public class PveRecordDaoImpl implements PveRecordDao {
         return true;
     }
 
+    @Override
+    public List<List<Number>> getPveRecordsWithinHalfYear(){
+        return pveRecordRepository.findPveRecordsWithinHalfYear();
+    }
+
+    @Override
+    public List<List<Number>> getPveRecordsWithinOneDay(){
+        return pveRecordRepository.findPveRecordsWithinOneDay();
+    }
+
+    @Override
+    public Integer getPveRecordCountWithinOneDay(){
+        return pveRecordRepository.findPveRecordCountWithinOneDay();
+    }
+
 }
