@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.entity.*;
 
 import java.util.List;
@@ -10,6 +11,9 @@ public interface MailService {
         Mail addNewMail(Mail newMail);
 
         Mail updateMail(Mail updateMail);
+
+        // 获取指定页数的Mail
+        JSONObject ListPage(ListRequest listRequest);
 
         List<Mail> getAllMails();
 

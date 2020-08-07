@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.serviceimpl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.dao.*;
 import com.example.accessingdatamysql.entity.*;
 import com.example.accessingdatamysql.service.UserService;
@@ -127,6 +128,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getOneUserByUserName(String userName) {
         return userDao.getOneUserByUserName(userName);
+    }
+
+    @Override
+    public JSONObject ListPage(ListRequest listRequest) {
+        return userDao.ListPage(listRequest.getPageToken(), listRequest.getPageSize());
     }
 
 }

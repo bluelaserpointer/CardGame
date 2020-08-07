@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 import java.util.List;
 // import java.util.Optional;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.entity.*;
 
 public interface OwnCardDao {
@@ -17,6 +18,8 @@ public interface OwnCardDao {
         // 更新一个用户拥有某张卡牌的所有信息
         OwnCard updateOwnCard(OwnCard updateOwnCard);
 
+        OwnCard redistributeUpgrades(OwnCard updateOwnCard);
+
         // 用户拥有的某张卡牌升级
         OwnCard cardLevelUp(Integer userId, Integer cardId);
 
@@ -24,6 +27,8 @@ public interface OwnCardDao {
         OwnCard ownAnotherCard(OwnCard ownCard);
 
         OwnCard findOwnCardByUserIdEqualsAndCardIdEquals(Integer userId, Integer cardId);
+
+        JSONObject ListPage(Integer page_token, Integer page_size);
 
         // 获取所有的用户拥有卡牌记录
         List<OwnCard> getAllOwnCards();

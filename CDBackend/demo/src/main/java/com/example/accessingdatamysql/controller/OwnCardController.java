@@ -1,12 +1,14 @@
 package com.example.accessingdatamysql.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 // import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import static com.example.accessingdatamysql.GlobalConstants.general_page_size;
 
-import java.sql.Timestamp;
 // import java.sql.Timestamp;
 import java.util.*;
 
@@ -66,6 +68,17 @@ public class OwnCardController {
   // return OwnCardService.ownAnotherCard(userId, cardId);
   // }
 
+  // 获取指定页数的数据
+  @RequestMapping(value = "/List")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  public JSONObject ListPage(@RequestBody ListRequest ListRequest) {
+    ListRequest.setPageSize(general_page_size);
+    String request = JSON.toJSONString(ListRequest);
+    System.out.print(request);
+    JSONObject response = OwnCardService.ListPage(ListRequest);
+    return response;
+  }
+
   // 获取所有用户拥有卡牌关系
   @RequestMapping(value = "/getAllOwnCards")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -98,5 +111,10 @@ public class OwnCardController {
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public List<OwnCard> deleteOwnCard(@RequestParam("userId") Integer userId, @RequestParam("cardId") Integer cardId) {
     return OwnCardService.deleteOwnCard(userId, cardId);
+  }
+
+  @RequestMapping(value = "/redistributeUpgrades")
+  public @ResponseBody OwnCard redistributeUpgrades(@RequestBody OwnCard updateOwnCard) {
+    return OwnCardService.redistributeUpgrades(updateOwnCard);
   }
 }

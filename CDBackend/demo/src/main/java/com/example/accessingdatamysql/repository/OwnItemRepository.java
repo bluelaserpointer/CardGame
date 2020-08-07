@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -27,5 +28,10 @@ public interface OwnItemRepository extends JpaRepository<OwnItem, Integer> {
     @Modifying
     @Query(value = "UPDATE OwnItem u SET u = :newOwnItem WHERE u.ownItemId = :OwnItemId")
     int updateOwnItemStatus(@Param("newOwnItem") OwnItem newOwnItem, @Param("OwnItemId") Integer OwnItemId);
+
+    @Transactional
+    @Modifying
+    @Query(value = "SELECT * from own_item LIMIT ?1,?2", nativeQuery = true)
+    List<OwnItem> ListPage(Integer start, Integer end);
 
 }

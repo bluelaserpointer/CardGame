@@ -1,10 +1,13 @@
 package com.example.accessingdatamysql.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 // import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import static com.example.accessingdatamysql.GlobalConstants.general_page_size;
 
 // import java.sql.Timestamp;
 import java.util.*;
@@ -36,6 +39,17 @@ public class MissionController {
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public @ResponseBody Mission updateMission(@RequestBody Mission updateMission) {
     return MissionService.updateMission(updateMission);
+  }
+
+  // 获取指定页数的数据
+  @RequestMapping(value = "/List")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  public JSONObject ListPage(@RequestBody ListRequest ListRequest) {
+    ListRequest.setPageSize(general_page_size);
+    String request = JSON.toJSONString(ListRequest);
+    System.out.print(request);
+    JSONObject response = MissionService.ListPage(ListRequest);
+    return response;
   }
 
   @RequestMapping(value = "/getAllMissions")

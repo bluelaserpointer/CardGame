@@ -1,5 +1,7 @@
 package com.example.accessingdatamysql.repository;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 import org.springframework.data.jpa.repository.*;
 import com.example.accessingdatamysql.entity.*;
@@ -22,5 +24,10 @@ public interface ActivityRepository extends JpaRepository<Activity, Integer> {
     @Modifying
     @Query(value = "UPDATE Activity u SET u = :newActivity WHERE u.activityId = :activityId")
     int updateActivityStatus(@Param("newActivity") Activity newActivity, @Param("activityId") Integer ActivityId);
+
+    @Transactional
+    @Modifying
+    @Query(value = "SELECT * from Activity LIMIT ?1,?2", nativeQuery = true)
+    List<Activity> ListPage(Integer start, Integer end);
 
 }
