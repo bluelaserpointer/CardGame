@@ -152,6 +152,7 @@ public class Cache {
     /////////////
     public static class OwnCard {
         public int cardId;
+        public int ownCardId;
         public Card card;
         // 用户拥有的某张卡片的等级
         public int cardLevel;
@@ -222,6 +223,7 @@ public class Cache {
                 final JSONObject ownCardJson = ownCardsJson.getJSONObject(index);
                 final OwnCard ownCard = new OwnCard();
                 ownCard.cardId = ownCardJson.getInt("cardId");
+                ownCard.ownCardId = ownCardJson.getInt("ownCardId");
                 ownCard.card = cards.get(ownCard.cardId);
                 ownCard.cardLevel = ownCardJson.getInt("cardLevel");
                 ownCard.cardCurExp = ownCardJson.getInt("cardCurExp");

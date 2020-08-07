@@ -1,15 +1,17 @@
 package com.example.myapplicationtest1;
 
 public enum CardStatusEnum {
-    HP(R.id.cardHP, R.id.cardHPEnhanced),
-    ATK(R.id.cardATK, R.id.cardATKEnhanced),
-    DEF(R.id.cardDEF, R.id.cardDEFEnhanced),
-    ATKRange(R.id.cardATKRange, R.id.cardATKRangeEnhanced),
-    CD(R.id.cardCD, R.id.cardCDEnhanced),
-    SPD(R.id.cardSpeed, R.id.cardSpeedEnhanced);
+    HP("HP", R.id.cardHP, R.id.cardHPEnhanced),
+    ATK("Attack", R.id.cardATK, R.id.cardATKEnhanced),
+    DEF("Defence", R.id.cardDEF, R.id.cardDEFEnhanced),
+    ATKRange("AttackRange", R.id.cardATKRange, R.id.cardATKRangeEnhanced),
+    CD("CD", R.id.cardCD, R.id.cardCDEnhanced),
+    SPD("Speed", R.id.cardSpeed, R.id.cardSpeedEnhanced);
 
+    public final String str;
     public final int valTextViewId, upgPtTextViewId;
-    CardStatusEnum(int valTextViewId, int upgPtTextViewId) {
+    CardStatusEnum(String str, int valTextViewId, int upgPtTextViewId) {
+        this.str = str;
         this.valTextViewId = valTextViewId;
         this.upgPtTextViewId = upgPtTextViewId;
     }

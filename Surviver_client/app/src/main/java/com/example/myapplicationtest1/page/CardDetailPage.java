@@ -8,8 +8,15 @@ import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 
 import com.example.myapplicationtest1.CardStatusEnum;
+import com.example.myapplicationtest1.HttpClient;
 import com.example.myapplicationtest1.R;
 import com.example.myapplicationtest1.utils.Cache;
+import com.example.myapplicationtest1.utils.Urls;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Arrays;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class CardDetailPage extends Page {
@@ -20,7 +27,29 @@ public class CardDetailPage extends Page {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.card_detail);
-        super.setJump(R.id.return_button, CardStoragePage.class);
+        super.setTouchEvent(R.id.return_button, () -> {
+            //返回到其它页面前，把强化点数分配上传至后端
+            boolean hasChange = false;
+            JSONObject jsonObject = new JSONObject();
+            try {
+                for (CardStatusEnum status : CardStatusEnum.values()) {
+                    final int statusID = status.ordinal();
+                    if (enhancedBackUp[statusID] != selectingOwnCard.enhanced[statusID]) {
+                        jsonObject.put("enhance" + status.str, selectingOwnCard.enhanced[statusID]);
+                        hasChange = true;
+                    }
+                }
+                if(hasChange) {
+                    jsonObject.put("ownCardId", selectingOwnCard.ownCardId);
+                    System.out.println("CardDetailPage: redistribution is " + jsonObject.toString());
+                    HttpClient.doPostShort(Urls.redistributeUpgrades(), jsonObject.toString());
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            selectingOwnCard.leftPoints = sp;
+            Page.jump(this, CardStoragePage.class);
+        });
         //BackUpEnhancedPoint
         enhancedBackUp = new int[selectingOwnCard.enhanced.length];
         System.arraycopy(selectingOwnCard.enhanced, 0, this.enhancedBackUp, 0, selectingOwnCard.enhanced.length);
