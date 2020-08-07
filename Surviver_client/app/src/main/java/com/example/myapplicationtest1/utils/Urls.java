@@ -28,7 +28,7 @@ public class Urls {
         return "card/getAllCards";
     }
     public static String getAllOwnCard() {
-        return "ownCard/getAllOwnCardsByUserId?userId=" + Cache.userId;
+        return "ownCard/getAllOwnCardsByUserName?userName=" + Cache.userName;
     }
     public static String drawCard(int chi, int mat, int eng) {
         return "mechanism/drawCard?chi=" + chi + "&mat=" + mat + "&eng=" + eng;
