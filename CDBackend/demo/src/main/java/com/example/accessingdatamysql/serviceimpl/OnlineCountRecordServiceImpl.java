@@ -19,6 +19,10 @@ public class OnlineCountRecordServiceImpl implements OnlineCountRecordService {
         onlineCountRecordDao.saveCount();
     }
 
+    public OnlineCountRecord getOnlineCountRecord(){
+        return onlineCountRecordDao.getOnlineCountRecord();
+    }
+
     public List<OnlineCountRecord> getAllOnlineCountRecords(){
         return onlineCountRecordDao.getAllOnlineCountRecords();
     }
@@ -28,4 +32,11 @@ public class OnlineCountRecordServiceImpl implements OnlineCountRecordService {
         return onlineCountRecordDao.getOnlineCountRecordByRange(start, end);
     }
 
+    public List<OnlineCountRecord> getOnlineCountRecordsWithinHalfYear(){
+        return onlineCountRecordDao.getOnlineCountRecordsWithinHalfYear();
+    }
+
+    public List<OnlineCountRecord> getOnlineCountRecordsWithinOneDay(){
+        return onlineCountRecordDao.getOnlineCountRecordsWithinOneDay();
+    }
 }

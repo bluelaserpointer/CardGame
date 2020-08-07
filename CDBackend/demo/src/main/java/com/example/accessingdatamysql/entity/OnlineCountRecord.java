@@ -28,4 +28,29 @@ public class OnlineCountRecord {
         this.onlineCount = onlineCount;
         this.inPlayCount = inPlayCount;
     }
+
+    public Timestamp getRecordTime() {
+        return recordTime;
+    }
+
+    public void setRecordTime(Timestamp recordTime) {
+        this.recordTime = recordTime;
+    }
+
+    public Integer getOnlineCount() {
+        return onlineCount;
+    }
+
+    public void setOnlineCount(Integer onlineCount) {
+        this.onlineCount = onlineCount;
+    }
+
+    public Integer getInPlayCount() {
+        return inPlayCount;
+    }
+
+    public void setInPlayCount(Integer inPlayCount) {
+        this.inPlayCount = inPlayCount;
+    }
+
 }

@@ -7,7 +7,10 @@ import java.util.List;
 
 public interface OnlineCountRecordDao {
     void saveCount();
+    OnlineCountRecord getOnlineCountRecord();
     List<OnlineCountRecord> getAllOnlineCountRecords();
     List<OnlineCountRecord> getOnlineCountRecordByRange(Timestamp start, Timestamp end);
+    List<OnlineCountRecord> getOnlineCountRecordsWithinHalfYear();
+    List<OnlineCountRecord> getOnlineCountRecordsWithinOneDay();
 
 }
