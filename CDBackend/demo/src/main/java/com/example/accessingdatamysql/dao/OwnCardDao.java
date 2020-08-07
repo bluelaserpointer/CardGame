@@ -18,6 +18,8 @@ public interface OwnCardDao {
         // 更新一个用户拥有某张卡牌的所有信息
         OwnCard updateOwnCard(OwnCard updateOwnCard);
 
+        OwnCard redistributeUpgrades(OwnCard updateOwnCard);
+
         // 用户拥有的某张卡牌升级
         OwnCard cardLevelUp(Integer userId, Integer cardId);
 

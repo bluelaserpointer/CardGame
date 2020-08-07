@@ -120,4 +120,9 @@ public class OwnCardController {
   public List<OwnCard> deleteOwnCard(@RequestParam("userId") Integer userId, @RequestParam("cardId") Integer cardId) {
     return OwnCardService.deleteOwnCard(userId, cardId);
   }
+
+  @RequestMapping(value = "/redistributeUpgrades")
+  public @ResponseBody OwnCard redistributeUpgrades(@RequestBody OwnCard updateOwnCard) {
+    return OwnCardService.redistributeUpgrades(updateOwnCard);
+  }
 }
