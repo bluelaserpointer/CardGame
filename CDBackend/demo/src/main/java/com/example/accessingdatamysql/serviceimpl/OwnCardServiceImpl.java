@@ -64,6 +64,11 @@ public class OwnCardServiceImpl implements OwnCardService {
         return OwnCardDao.updateOwnCard(updateOwnCard);
     }
 
+    @Override
+    public OwnCard redistributeUpgrades(OwnCard updateOwnCard) {
+        return OwnCardDao.redistributeUpgrades(updateOwnCard);
+    }
+
     // 自动判断增加exp是是否需要升级
     @Override
     public OwnCard addExp(final Integer userId, final Integer cardId, final Integer exp) {
