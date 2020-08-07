@@ -6,7 +6,7 @@ import com.example.accessingdatamysql.repository.UserLoginRecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Repository
@@ -20,9 +20,10 @@ public class UserLoginRecordDaoImpl implements UserLoginRecordDao {
         userLoginRecordRepository.save(userLoginRecord);
     }
 
-    public void userLogout(Integer userId, Integer type){
-        UserLoginRecord userLoginRecord = userLoginRecordRepository.findUserLoginRecordByUserIdEqualsAndLogoutTimeIsNullOrderByUserLoginRecordIdDesc(userId);
+    public void userLogout(Integer userId, Integer type, Timestamp logoutTime){
+        UserLoginRecord userLoginRecord = userLoginRecordRepository.findUserLoginRecordByUserIdEqualsAndLogoutTimeIsNullOrderByUserLoginRecordIdAsc(userId).get(0);
         userLoginRecord.setUserLoginRecord(type);
+        userLoginRecord.setLogoutTime(logoutTime);
         userLoginRecordRepository.save(userLoginRecord);
     }
 
@@ -34,5 +35,11 @@ public class UserLoginRecordDaoImpl implements UserLoginRecordDao {
     public List<UserLoginRecord> getUserLoginRecordsByUserId(Integer userId)
     {
         return userLoginRecordRepository.findUserLoginRecordsByUserIdEquals(userId);
+    }
+
+
+    public List<UserLoginRecord> getUserLoginRecordsByExpiration()
+    {
+        return userLoginRecordRepository.findUserLoginRecordsByLogoutTimeIsNullOrderByUserLoginRecordIdAsc();
     }
 }
