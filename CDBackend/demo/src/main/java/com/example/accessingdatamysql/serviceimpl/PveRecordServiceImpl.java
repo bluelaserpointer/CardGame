@@ -46,4 +46,16 @@ public class PveRecordServiceImpl implements PveRecordService {
     public boolean deletePveRecords(List<Integer> pveRecordIds) {
         return pveRecordDao.deletePveRecords(pveRecordIds);
     }
+
+    public List<List<Number>> getPveRecordsWithinHalfYear(){
+        return pveRecordDao.getPveRecordsWithinHalfYear();
+    }
+
+    public List<List<Number>> getPveRecordsWithinOneDay(){
+        return pveRecordDao.getPveRecordsWithinOneDay();
+    }
+
+    public Integer getPveRecordCountWithinOneDay(){
+        return pveRecordDao.getPveRecordCountWithinOneDay();
+    }
 }

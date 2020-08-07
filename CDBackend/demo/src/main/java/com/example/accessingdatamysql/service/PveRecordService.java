@@ -24,4 +24,10 @@ public interface PveRecordService {
     boolean deleteAllPveRecordsByUser(Integer userId);
 
     boolean deletePveRecords(List<Integer> pveRecordIds);
+
+    List<List<Number>> getPveRecordsWithinHalfYear();
+
+    List<List<Number>> getPveRecordsWithinOneDay();
+
+    Integer getPveRecordCountWithinOneDay();
 }

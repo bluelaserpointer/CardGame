@@ -6,6 +6,8 @@ import com.example.accessingdatamysql.service.CrashReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CrashReportServiceImpl implements CrashReportService {
     @Autowired
@@ -19,5 +21,13 @@ public class CrashReportServiceImpl implements CrashReportService {
     @Override
     public void addNew(String reportContent) {
         crashReportsDao.addNew(reportContent);
+    }
+
+    public List<CrashReports> getCrashReportsWithinHalfYear(){
+        return crashReportsDao.getCrashReportsWithinHalfYear();
+    }
+
+    public List<CrashReports> getCrashReportsWithinOneDay(){
+        return crashReportsDao.getCrashReportsWithinOneDay();
     }
 }

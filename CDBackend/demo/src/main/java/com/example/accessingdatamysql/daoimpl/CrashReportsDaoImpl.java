@@ -8,6 +8,9 @@ import com.example.accessingdatamysql.repository.CrashReportsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
+import java.util.List;
+
 @Repository
 public class CrashReportsDaoImpl implements CrashReportsDao {
     @Autowired
@@ -25,8 +28,31 @@ public class CrashReportsDaoImpl implements CrashReportsDao {
     @Override
     public void addNew(String reportsContent) {
         final CrashReports reports = new CrashReports();
+        reports.setRecordTime(new Timestamp(System.currentTimeMillis()));
         crashReportsRepository.save(reports);
         System.out.println("CrashReportsDaoImpl: saving: " + reportsContent + " at id " + reports.getReportId());
         crashReportsDetailRepository.save(new CrashReportsDetail(reports.getReportId(), reportsContent));
+    }
+
+    public List<CrashReports> getCrashReportsWithinHalfYear(){
+//        return null;
+        List<CrashReports> crashReports = crashReportsRepository.findCrashReportsWithinHalfYear();
+        for(int i = 0; i < crashReports.size(); i++)
+        {
+            CrashReports report = crashReports.get(i);
+            crashReportsDetailRepository.findCrashReportsDetailByReportIdEquals(report.getReportId()).ifPresent(report::setDetail);
+        }
+        return crashReports;
+    }
+
+    public List<CrashReports> getCrashReportsWithinOneDay(){
+//        return null;
+        List<CrashReports> crashReports = crashReportsRepository.findCrashReportsWithinOneDay();
+        for(int i = 0; i < crashReports.size(); i++)
+        {
+            CrashReports report = crashReports.get(i);
+            crashReportsDetailRepository.findCrashReportsDetailByReportIdEquals(report.getReportId()).ifPresent(report::setDetail);
+        }
+        return crashReports;
     }
 }

@@ -25,6 +25,11 @@ public class OnlineCountRecordDaoImpl implements OnlineCountRecordDao {
         onlineCountRecordRepository.save(onlineCountRecord);
     }
 
+    public OnlineCountRecord getOnlineCountRecord()
+    {
+        return onlineCountRecordRepository.findLatestOnlineCountRecord();
+    }
+
     public List<OnlineCountRecord> getAllOnlineCountRecords()
     {
         return onlineCountRecordRepository.findAll();
@@ -33,5 +38,15 @@ public class OnlineCountRecordDaoImpl implements OnlineCountRecordDao {
     public List<OnlineCountRecord> getOnlineCountRecordByRange(Timestamp start, Timestamp end)
     {
         return onlineCountRecordRepository.findOnlineCountRecordsByRecordTimeGreaterThanEqualAndRecordTimeLessThanEqual(start, end);
+    }
+
+    public List<OnlineCountRecord> getOnlineCountRecordsWithinHalfYear()
+    {
+        return onlineCountRecordRepository.findOnlineCountRecordsWithinHalfYear();
+    }
+
+    public List<OnlineCountRecord> getOnlineCountRecordsWithinOneDay()
+    {
+        return onlineCountRecordRepository.findOnlineCountRecordsWithinOneDay();
     }
 }
