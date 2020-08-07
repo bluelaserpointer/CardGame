@@ -1,5 +1,6 @@
 package com.example.myapplicationtest1.utils;
 
+import com.example.myapplicationtest1.CardStatusEnum;
 import com.example.myapplicationtest1.HttpClient;
 import com.example.myapplicationtest1.R;
 import com.example.myapplicationtest1.game.contents.engine.Subject;
@@ -86,6 +87,24 @@ public class Cache {
         public double cd;
         // 卡牌速度属性
         public int speed;
+        // 基本属性通用
+        public String strStatus(CardStatusEnum status) {
+            switch(status) {
+                case HP:
+                    return String.valueOf(healthPoint);
+                case ATK:
+                    return String.valueOf(attack);
+                case DEF:
+                    return String.valueOf(defense);
+                case ATKRange:
+                    return String.valueOf(attackRange);
+                case CD:
+                    return String.valueOf(cd);
+                case SPD:
+                    return String.valueOf(speed);
+            }
+            return null;
+        }
         // 卡牌派系(1 chi 2 mat 3 eng)
         public int type;
         // 新获得时台词
@@ -148,41 +167,49 @@ public class Cache {
         public int enhancePoint;
         // 剩余强化点数
         public int leftPoints;
-        // 强化hp次数
-        public int enhanceHP;
-        // 强化攻击次数
-        public int enhanceAttack;
-        // 强化防御次数
-        public int enhanceDefense;
-        // 强化攻击范围次数
-        public int enhanceAttackRange;
-        // 强化冷却时间
-        public int enhanceCD;
-        // 强化速度次数
-        public int enhanceSpeed;
+        // 各属性强化次数
+        public final int[] enhanced = new int[CardStatusEnum.values().length];
         // 目前卡牌hp属性
         public int healthPoint() {
-            return (int)(card.healthPoint + 1.0*enhanceHP);
+            return (int)(card.healthPoint + 1.0*enhanced[CardStatusEnum.HP.ordinal()]);
         }
         // 目前卡牌攻击属性
         public int attack() {
-            return (int)(card.attack + 1.0*enhanceAttack);
+            return (int)(card.attack + 1.0*enhanced[CardStatusEnum.ATK.ordinal()]);
         }
         // 目前卡牌防御属性
         public int defense() {
-            return (int)(card.defense + 1.0*enhanceDefense);
+            return (int)(card.defense + 1.0*enhanced[CardStatusEnum.DEF.ordinal()]);
         }
         // 目前卡牌攻击范围
         public int attackRange() {
-            return (int)(card.attackRange + 1.0*enhanceAttackRange);
+            return (int)(card.attackRange + 1.0*enhanced[CardStatusEnum.ATKRange.ordinal()]);
         }
         // 目前卡牌冷却时间
         public double cd() {
-            return card.cd + 1.0*enhanceCD;
+            return card.cd + 1.0*enhanced[CardStatusEnum.CD.ordinal()];
         }
         // 目前卡牌速度属性
         public int speed() {
-            return (int)(card.speed + 1.0*enhanceSpeed);
+            return (int)(card.speed + 1.0*enhanced[CardStatusEnum.SPD.ordinal()]);
+        }
+        // 通用
+        public String strVal(CardStatusEnum status) {
+            switch(status) {
+                case HP:
+                    return String.valueOf(healthPoint());
+                case ATK:
+                    return String.valueOf(attack());
+                case DEF:
+                    return String.valueOf(defense());
+                case ATKRange:
+                    return String.valueOf(attackRange());
+                case CD:
+                    return String.valueOf(cd());
+                case SPD:
+                    return String.valueOf(speed());
+            }
+            return null;
         }
     }
     public static final HashMap<Integer, OwnCard> ownCards = new HashMap<>();
@@ -203,12 +230,12 @@ public class Cache {
                 ownCard.accquireDate = Timestamp.valueOf(ownCardJson.getString("accquireDate"));
                 ownCard.enhancePoint = ownCardJson.getInt("enhancePoint");
                 ownCard.leftPoints = ownCardJson.getInt("leftPoints");
-                ownCard.enhanceHP = ownCardJson.getInt("enhanceHP");
-                ownCard.enhanceAttack = ownCardJson.getInt("enhanceAttack");
-                ownCard.enhanceDefense = ownCardJson.getInt("enhanceDefense");
-                ownCard.enhanceAttackRange = ownCardJson.getInt("enhanceAttackRange");
-                ownCard.enhanceCD = ownCardJson.getInt("enhanceCD");
-                ownCard.enhanceSpeed = ownCardJson.getInt("enhanceSpeed");
+                ownCard.enhanced[CardStatusEnum.HP.ordinal()] = ownCardJson.getInt("enhanceHP");
+                ownCard.enhanced[CardStatusEnum.ATK.ordinal()] = ownCardJson.getInt("enhanceAttack");
+                ownCard.enhanced[CardStatusEnum.DEF.ordinal()] = ownCardJson.getInt("enhanceDefense");
+                ownCard.enhanced[CardStatusEnum.ATKRange.ordinal()] = ownCardJson.getInt("enhanceAttackRange");
+                ownCard.enhanced[CardStatusEnum.CD.ordinal()] = ownCardJson.getInt("enhanceCD");
+                ownCard.enhanced[CardStatusEnum.SPD.ordinal()] = ownCardJson.getInt("enhanceSpeed");
                 //TODO: Need change them to latest logic
                 ownCards.put(ownCardJson.getInt("ownCardId"), ownCard);
             }

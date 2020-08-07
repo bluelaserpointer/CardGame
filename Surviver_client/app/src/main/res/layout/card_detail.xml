@@ -132,7 +132,7 @@
 
                     <TableRow
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" >
+                        android:layout_height="match_parent">
 
                         <TextView
                             android:id="@+id/textView10"
@@ -155,7 +155,7 @@
 
                     <TableRow
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" >
+                        android:layout_height="match_parent">
 
                         <TextView
                             android:id="@+id/textView12"
@@ -178,7 +178,7 @@
 
                     <TableRow
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
+                        android:layout_height="match_parent"
                         android:layout_weight="1">
 
                         <TextView
@@ -211,7 +211,7 @@
 
                     <TableRow
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
+                        android:layout_height="match_parent"
                         android:layout_weight="1">
 
                         <TextView
@@ -256,7 +256,7 @@
 
                     <TableRow
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
+                        android:layout_height="match_parent"
                         android:layout_weight="1">
 
                         <TextView
@@ -303,7 +303,7 @@
 
                     <TableRow
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
+                        android:layout_height="match_parent"
                         android:layout_weight="1">
 
                         <TextView
@@ -349,7 +349,7 @@
 
                     <TableRow
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
+                        android:layout_height="match_parent"
                         android:layout_weight="1">
 
                         <TextView
@@ -396,7 +396,7 @@
 
                     <TableRow
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
+                        android:layout_height="match_parent"
                         android:layout_weight="1">
 
                         <TextView
@@ -434,6 +434,52 @@
 
                         <Button
                             android:id="@+id/subCD"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/downgrade_button" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/textView8"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4"
+                            android:text="speed"
+                            android:textColor="@color/design_default_color_background"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/cardSpeed"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4"
+                            android:textColor="@color/design_default_color_background"
+                            android:textSize="18sp" />
+
+                        <Button
+                            android:id="@+id/addSpeed"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/upgrade_button" />
+
+                        <TextView
+                            android:id="@+id/cardSpeedEnhanced"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:textColor="@color/design_default_color_background"
+                            android:textSize="18sp" />
+
+                        <Button
+                            android:id="@+id/subSpeed"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
