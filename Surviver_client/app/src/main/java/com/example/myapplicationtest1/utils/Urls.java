@@ -33,6 +33,9 @@ public class Urls {
     public static String drawCard(int chi, int mat, int eng) {
         return "mechanism/drawCard?chi=" + chi + "&mat=" + mat + "&eng=" + eng;
     }
+    public static String redistributeUpgrades() {
+        return "ownCard/redistributeUpgrades";
+    }
     /////////////
     //Chapters
     /////////////

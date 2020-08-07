@@ -53,6 +53,7 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardLi
                     TeamPage.setFormationToOnEditPos(oCardEntry.getKey());
                     Page.jump(context, TeamPage.class);
                 } else {
+                    CardDetailPage.selectingOwnCard = Cache.ownCards.get(oCardEntry.getKey());
                     Page.jump(context, CardDetailPage.class);
                 }
             }
