@@ -101,6 +101,11 @@ public class CardDaoImpl implements CardDao {
     }
 
     @Override
+    public List<Card> getByRarityAndType(String rarity, Integer type) {
+        return CardRepository.getByRarityAndType(rarity, type);
+    }
+
+    @Override
     public JSONObject ListPage(Integer page_token, Integer page_size) {
 
         JSONObject response = new JSONObject();

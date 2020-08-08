@@ -23,4 +23,6 @@ public interface CardService {
         String deleteAll();
 
         List<Card> deleteCard(Integer cardId);
+
+        List<Card> getByRarityAndType(String rarity, Integer type);
 }
