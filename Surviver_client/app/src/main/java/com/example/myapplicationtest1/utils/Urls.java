@@ -31,7 +31,7 @@ public class Urls {
         return "ownCard/getAllOwnCardsByUserName?userName=" + Cache.userName;
     }
     public static String drawCard(int chi, int mat, int eng) {
-        return "mechanism/drawCard?chi=" + chi + "&mat=" + mat + "&eng=" + eng;
+        return "mechanism/drawCard?userName=" + Cache.userName + "&chi=" + chi + "&mat=" + mat + "&eng=" + eng;
     }
     public static String redistributeUpgrades() {
         return "ownCard/redistributeUpgrades";

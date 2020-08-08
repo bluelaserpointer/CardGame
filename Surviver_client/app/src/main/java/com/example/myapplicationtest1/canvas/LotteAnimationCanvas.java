@@ -10,6 +10,8 @@ import androidx.annotation.Nullable;
 
 import com.example.myapplicationtest1.HttpClient;
 import com.example.myapplicationtest1.game.core.GHQ;
+import com.example.myapplicationtest1.game.paint.ImageFrame;
+import com.example.myapplicationtest1.utils.Cache;
 import com.example.myapplicationtest1.utils.Urls;
 
 import org.json.JSONException;
@@ -23,6 +25,10 @@ public class LotteAnimationCanvas extends MyCanvas {
     //data
     public static int stockCHI, stockENG, stockMAT;
     public static int betCHI, betENG, betMAT;
+    //animations
+    private int animationFrame;
+    private Cache.Card lastDrawnCard;
+    private ImageFrame lastDrawnCardImage;
 
     public LotteAnimationCanvas(Context context)  {//动态实例化view用到;
         super(context);
@@ -61,20 +67,31 @@ public class LotteAnimationCanvas extends MyCanvas {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        ++animationFrame;
         GHQ.setTargetCanvas(canvas);
         canvas.drawRect(0, 0, getWidth(), getHeight(), whitePaint);
         GHQ.drawStringGHQ("语文知识:" + betCHI + "/" + stockCHI, 50, 50, chiPaint);
         GHQ.drawStringGHQ("英语知识:" + betENG + "/" + stockENG, 50, 100, engPaint);
         GHQ.drawStringGHQ("数学知识:" + betMAT + "/" + stockMAT, 50, 150, matPaint);
         canvas.drawRect(getWidth()/2 - 100, getHeight()/2 - 100, getWidth()/2 + 100, getHeight()/2 + 100, GHQ.generatePaint(Color.GREEN));
+        if(lastDrawnCard != null) {
+            lastDrawnCardImage.dotPaint(getWidth()/2, getHeight() - lastDrawnCardImage.height()/2);
+        }
     }
     @Override
     public void touched(int x, int y) {
-        System.out.println("LotteAnimationCanvas: " + x + ", " + y);
-        if(Math.abs(x - getWidth()/2) < 100 && Math.abs(y - getHeight()/2) < 100) {
+        if((betCHI > 0 || betMAT > 0 || betENG > 0) && Math.abs(x - getWidth()/2) < 100 && Math.abs(y - getHeight()/2) < 100) {
             //TODO: waiting for backend making drawCard process
-            //String data = HttpClient.doGetShort("mechanism/drawCard?chi=" + betCHI + "&mat=" + betMAT + "&eng=" + betENG);
-            //int id = Integer.parseInt(data.substring(data.length() - 2));
+            animationFrame = 0;
+            JSONObject drawnCardJson;
+            try {
+                drawnCardJson = new JSONObject(HttpClient.doGetShort(Urls.drawCard(betCHI, betMAT, betENG)));
+                lastDrawnCard = Cache.cards.get(drawnCardJson.getInt("drawnCardId"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return;
+            }
+            lastDrawnCardImage = ImageFrame.create(lastDrawnCard.drawableId);
             betCHI = betENG = betMAT = 0;
         }
     }
