@@ -33,4 +33,7 @@ public interface ChapterDao {
 
     List<ChapterPhase> getChapterPhasesByChapter(Integer chapterId);
 
+    Chapter getOneChapter(Integer chapterId);
+
+    ChapterPhase getOneChapterPhase(Integer chapterId, Integer chapterPhaseId);
 }

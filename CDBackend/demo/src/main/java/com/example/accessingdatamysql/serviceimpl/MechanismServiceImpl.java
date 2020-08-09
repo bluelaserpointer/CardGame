@@ -3,6 +3,7 @@ package com.example.accessingdatamysql.serviceimpl;
 import com.example.accessingdatamysql.entity.Card;
 import com.example.accessingdatamysql.entity.User;
 import com.example.accessingdatamysql.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.accessingdatamysql.Classes.*;
 
@@ -10,14 +11,18 @@ import java.util.List;
 
 @Service
 public class MechanismServiceImpl implements MechanismService {
-    // @Autowired
-    // private CardDao CardDao;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private CardService cardService;
+    @Autowired
+    private OwnCardService ownCardService;
 
     @Override
-    public Integer drawCard(CardService cardService, OwnCardService ownCardService, User user, Integer chi, Integer mat, Integer eng) {
-
+    public Integer drawCard(String userName, Integer chi, Integer mat, Integer eng) {
+        final User user = userService.getOneUserByUserName(userName);
         // LotteSpring(subject rarity)
-        System.out.println("MechanismServiceImpl: " + user.getUserName() + "requested card draw with resources chi: " + chi + " mat: " + mat + " eng: " + eng);
+        System.out.println("MechanismServiceImpl: " + userName + "requested card draw with resources chi: " + chi + " mat: " + mat + " eng: " + eng);
 
         //resource check
         if(user.getChiKnowledge() < chi) {

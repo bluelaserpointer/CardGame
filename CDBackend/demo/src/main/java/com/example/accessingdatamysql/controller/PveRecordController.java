@@ -1,11 +1,9 @@
 package com.example.accessingdatamysql.controller;
 
 import com.example.accessingdatamysql.entity.*;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
-import static com.example.accessingdatamysql.GlobalConstants.general_page_size;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -24,7 +22,7 @@ public class PveRecordController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public PveRecord addPveRecord(@RequestParam("userId") Integer userId, @RequestParam("chapterId") Integer chapterId,
             @RequestParam("phaseId") Integer phaseId, @RequestParam("result") Integer result,
-            @RequestParam("posRecord") String posRecord) throws JsonProcessingException {
+            @RequestParam("posRecord") String posRecord) {
         return pveRecordService.addPveRecord(userId, chapterId, phaseId, result, posRecord);
     }
 
@@ -33,8 +31,7 @@ public class PveRecordController {
     public PveRecord addPveRecord(@RequestParam("pveRecordId") Integer pveRecordId,
             @RequestParam("userId") Integer userId, @RequestParam("chapterId") Integer chapterId,
             @RequestParam("phaseId") Integer phaseId, @RequestParam("result") Integer result,
-            @RequestParam("recordTime") Timestamp recordTime, @RequestParam("posRecord") String posRecord)
-            throws JsonProcessingException {
+            @RequestParam("recordTime") Timestamp recordTime, @RequestParam("posRecord") String posRecord) {
         return pveRecordService.updatePveRecord(pveRecordId, userId, chapterId, phaseId, result, recordTime, posRecord);
     }
 

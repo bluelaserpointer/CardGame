@@ -1,17 +1,13 @@
 package com.example.accessingdatamysql.daoimpl;
 
 import com.example.accessingdatamysql.dao.PveRecordDao;
-import com.example.accessingdatamysql.entity.ChapterDetails;
 import com.example.accessingdatamysql.entity.PveRecord;
 import com.example.accessingdatamysql.repository.PveRecordRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.TypeFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.swing.text.html.Option;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +20,7 @@ public class PveRecordDaoImpl implements PveRecordDao {
     private PveRecordRepository pveRecordRepository;
 
     // 将 String类型的 "[[2,1], [3,2], [4,3]]" 等 List<List> 形式转换为 Map
-    public Map<Integer, Integer> parsePosRecord(String awardItems) throws JsonProcessingException {
+    public Map<Integer, Integer> parsePosRecord(String awardItems) {
         Map<Integer, Integer> map = new HashMap<Integer, Integer>();
         ObjectMapper mapper = new ObjectMapper();
 
@@ -38,8 +34,7 @@ public class PveRecordDaoImpl implements PveRecordDao {
     }
 
     @Override
-    public PveRecord addPveRecord(Integer userId, Integer chapterId, Integer phaseId, Integer result, String posRecord)
-            throws JsonProcessingException {
+    public PveRecord addPveRecord(Integer userId, Integer chapterId, Integer phaseId, Integer result, String posRecord) {
         PveRecord pveRecord = new PveRecord(userId, chapterId, phaseId, result);
         pveRecord.setPosRecord(parsePosRecord(posRecord));
         pveRecord.setRecordTime(new Timestamp(System.currentTimeMillis()));
@@ -49,7 +44,7 @@ public class PveRecordDaoImpl implements PveRecordDao {
 
     @Override
     public PveRecord updatePveRecord(Integer pveRecordId, Integer userId, Integer chapterId, Integer phaseId,
-            Integer result, Timestamp recordTime, String posRecord) throws JsonProcessingException {
+            Integer result, Timestamp recordTime, String posRecord) {
         Optional<PveRecord> optPveRecord = pveRecordRepository.findById(pveRecordId);
 
         if (optPveRecord.isPresent()) {

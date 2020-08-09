@@ -24,4 +24,6 @@ public interface OwnItemService {
         String deleteAll();
 
         List<OwnItem> deleteOwnItem(Integer userId, Integer itemId);
+
+        OwnItem addNewOwnItem(Integer userId, Integer itemId, Integer itemAmount);
 }

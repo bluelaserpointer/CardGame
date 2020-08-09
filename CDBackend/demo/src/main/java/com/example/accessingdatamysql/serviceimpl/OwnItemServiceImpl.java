@@ -58,4 +58,8 @@ public class OwnItemServiceImpl implements OwnItemService {
     public JSONObject ListPage(ListRequest listRequest) {
         return OwnItemDao.ListPage(listRequest.getPageToken(), listRequest.getPageSize());
     }
+
+    public OwnItem addNewOwnItem(Integer userId, Integer itemId, Integer itemAmount) {
+        return OwnItemDao.addNewOwnItem(userId, itemId, itemAmount);
+    }
 }

@@ -1,7 +1,5 @@
 package com.example.accessingdatamysql.daoimpl;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.dao.ChapterDao;
 import com.example.accessingdatamysql.entity.Chapter;
 import com.example.accessingdatamysql.entity.ChapterDetails;
@@ -165,5 +163,13 @@ public class ChapterDaoImpl implements ChapterDao {
         chapter.setPhaseType(phaseType);
         chapterRepository.save(chapter);
         return getAllChapters();
+    }
+
+    public Chapter getOneChapter(Integer chapterId) {
+        return chapterRepository.getOne(chapterId);
+    }
+
+    public ChapterPhase getOneChapterPhase(Integer chapterId, Integer chapterPhaseId) {
+        return chapterPhaseRepository.getOne(new ChapterPhaseEntityId(chapterId, chapterPhaseId));
     }
 }

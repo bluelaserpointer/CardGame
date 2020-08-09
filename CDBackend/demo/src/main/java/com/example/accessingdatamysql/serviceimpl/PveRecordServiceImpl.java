@@ -3,7 +3,6 @@ package com.example.accessingdatamysql.serviceimpl;
 import com.example.accessingdatamysql.dao.PveRecordDao;
 import com.example.accessingdatamysql.entity.PveRecord;
 import com.example.accessingdatamysql.service.PveRecordService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +16,12 @@ public class PveRecordServiceImpl implements PveRecordService {
     private PveRecordDao pveRecordDao;
 
     @Override
-    public PveRecord addPveRecord(Integer userId, Integer chapterId, Integer phaseId, Integer result, String posRecord)
-            throws JsonProcessingException {
+    public PveRecord addPveRecord(Integer userId, Integer chapterId, Integer phaseId, Integer result, String posRecord) {
         return pveRecordDao.addPveRecord(userId, chapterId, phaseId, result, posRecord);
     }
 
     public PveRecord updatePveRecord(Integer pveRecordId, Integer userId, Integer chapterId, Integer phaseId,
-            Integer result, Timestamp recordTime, String posRecord) throws JsonProcessingException {
+            Integer result, Timestamp recordTime, String posRecord) {
         return pveRecordDao.updatePveRecord(pveRecordId, userId, chapterId, phaseId, result, recordTime, posRecord);
     }
 
