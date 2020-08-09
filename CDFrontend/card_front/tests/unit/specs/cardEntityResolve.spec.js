@@ -16,6 +16,27 @@ let mockData = { result: [{
   }
 }]};
 
+let mockDataTrans = [{
+  cardId: 0,
+  cardName: '',
+  rarity: '',
+  healthPoint: 0,
+  attack: 0,
+  defense: 0,
+  attackRange: 0,
+  cd: 0,
+  speed: 0,
+  type: 1,
+  cardImg: 'testImg',
+  cardDescription: 'testCardText',
+  shortDescription: 'testShortText',
+  cardDetails: {
+    cardImg: 'testImg',
+    cardDescription: 'testCardText',
+    shortDescription: 'testShortText'
+  }
+}];
+
 const validateStub = {
   render: () => {},
   methods: {
@@ -53,26 +74,7 @@ describe('CardEntityPanel.vue', () => {
   });
 
   it('Card Entity Panel Resolves created',   async () => {
-    expect(wrapper.vm.list).toStrictEqual([{
-      cardId: 0,
-      cardName: '',
-      rarity: '',
-      healthPoint: 0,
-      attack: 0,
-      defense: 0,
-      attackRange: 0,
-      cd: 0,
-      speed: 0,
-      type: 1,
-      cardImg: 'testImg',
-      cardDescription: 'testCardText',
-      shortDescription: 'testShortText',
-      cardDetails: {
-        cardImg: 'testImg',
-        cardDescription: 'testCardText',
-        shortDescription: 'testShortText'
-      }
-    }]);
+    expect(wrapper.vm.list).toStrictEqual(mockDataTrans);
 
     expect(spyPost).toHaveBeenCalledTimes(1);
   });
