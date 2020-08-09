@@ -3,7 +3,6 @@ package com.example.accessingdatamysql.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.Security.JwtUtil;
-import com.example.accessingdatamysql.dao.UserDao;
 import com.example.accessingdatamysql.entity.*;
 import com.example.accessingdatamysql.service.UserLoginRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,15 +10,11 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-// import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-// import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
 import com.example.accessingdatamysql.service.MailBoxService;
-
-// import javax.validation.constraints.Null;
 
 import com.example.accessingdatamysql.service.UserService;
 
@@ -45,8 +40,6 @@ public class UserController {
 
   @Autowired
   private UserLoginRecordService userLoginRecordService;
-
-  // private BCryptPasswordEncoder bCryptPasswordEncoder;
 
   // 获取一个用户信息
   @GetMapping(value = "/getUser")
@@ -77,7 +70,7 @@ public class UserController {
 
   // 更新一个用户信息
   @RequestMapping(value = "/updateUser")
-  @PreAuthorize("hasRole('ROLE_ADMIN') OR #updateUser.userName == authentication.name")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public @ResponseBody User updateUser(@RequestBody JSONObject updateUser) {
     User User = JSON.parseObject(updateUser.getString("User"), User.class);
     return userService.updateUser(User);
@@ -96,10 +89,9 @@ public class UserController {
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public JSONObject ListPage(@RequestBody ListRequest ListRequest) {
     ListRequest.setPageSize(general_page_size);
-    String request = JSON.toJSONString(ListRequest);
+    final String request = JSON.toJSONString(ListRequest);
     System.out.print(request);
-    JSONObject response = userService.ListPage(ListRequest);
-    return response;
+    return userService.ListPage(ListRequest);
   }
 
   // 删除部分用户

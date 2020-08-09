@@ -24,7 +24,7 @@ public class MechanismController {
 
   // 抽卡逻辑在这里
   @RequestMapping(value = "/drawCard")
-  @PreAuthorize("#userName == authentication.name")
+  @PreAuthorize("hasRole('ROLE_ADMIN') OR #userName == authentication.name")
   public String drawCard(@RequestParam("userName") String userName, @RequestParam("chi") Integer chi, @RequestParam("mat") Integer mat,
       @RequestParam("eng") Integer eng) {
     final JSONObject jsonObject = new JSONObject();

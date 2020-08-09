@@ -133,7 +133,7 @@ public class ChapterController {
     // }
 
     @RequestMapping(value = "/phaseClear")
-    @PreAuthorize("#userName == authentication.name")
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR #userName == authentication.name")
     public String phaseClear(String userName, int chapterId, int phaseId, int result, String usedCardsIdAndPosString) {
         return chapterService.phaseClear(userName, chapterId, phaseId, result, usedCardsIdAndPosString);
     }
