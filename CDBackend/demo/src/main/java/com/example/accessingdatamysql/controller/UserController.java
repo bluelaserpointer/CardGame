@@ -85,9 +85,9 @@ public class UserController {
   // 更新一个用户信息
   @RequestMapping(value = "/updateUser")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public @ResponseBody User updateUser(@RequestBody JSONObject updateUser) {
-    User User = JSON.parseObject(updateUser.getString("User"), User.class);
-    return userService.updateUser(User);
+  public @ResponseBody User updateUser(@RequestBody User updateUser) {
+    // User User = JSON.parseObject(updateUser.getString("User"), User.class);
+    return userService.updateUser(updateUser);
   }
 
   // 获取所有用户信息
