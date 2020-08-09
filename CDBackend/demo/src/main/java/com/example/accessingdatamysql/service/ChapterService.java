@@ -1,6 +1,5 @@
 package com.example.accessingdatamysql.service;
 
-import com.example.accessingdatamysql.entity.Card;
 import com.example.accessingdatamysql.entity.Chapter;
 import com.example.accessingdatamysql.entity.ChapterDetails;
 import com.example.accessingdatamysql.entity.ChapterPhase;
@@ -13,7 +12,7 @@ public interface ChapterService {
             throws JsonProcessingException;
 
     List<ChapterPhase> updateChapterPhaseAwards(Integer chapterId, Integer phaseId, String awardItems,
-            String awardCards) throws JsonProcessingException;
+                                                String awardCards) throws JsonProcessingException;
 
     List<Chapter> updateChapterAwards(Integer chapterId, String awardItems, String awardCards)
             throws JsonProcessingException;
@@ -33,4 +32,10 @@ public interface ChapterService {
     List<ChapterDetails> getAllChapterDetails();
 
     List<ChapterPhase> getChapterPhasesByChapter(Integer chapterId);
+
+    Chapter getOneChapter(Integer chapterId);
+
+    ChapterPhase getOneChapterPhase(Integer chapterId, Integer chapterPhaseId);
+
+    String phaseClear(String userName, int chapterId, int phaseId, int result, String usedCardsIdAndPosString);
 }

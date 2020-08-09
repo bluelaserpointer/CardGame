@@ -4,9 +4,7 @@ package com.example.accessingdatamysql.service;
 
 // import java.util.List;
 
-import com.example.accessingdatamysql.entity.User;
-
 public interface MechanismService {
 
-        Integer drawCard(CardService cardService, OwnCardService ownCardService, User user, Integer chi, Integer mat, Integer eng);
+        Integer drawCard(String userName, Integer chi, Integer mat, Integer eng);
 }

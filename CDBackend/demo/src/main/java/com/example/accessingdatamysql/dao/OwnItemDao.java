@@ -30,4 +30,5 @@ public interface OwnItemDao {
 
         List<OwnItem> deleteOwnItem(Integer userId, Integer itemId);
 
+        OwnItem addNewOwnItem(Integer userId, Integer itemId, Integer itemAmount);
 }

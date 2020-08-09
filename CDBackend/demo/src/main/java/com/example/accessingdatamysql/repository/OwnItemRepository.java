@@ -33,5 +33,4 @@ public interface OwnItemRepository extends JpaRepository<OwnItem, Integer> {
     @Modifying
     @Query(value = "SELECT * from own_item LIMIT ?1,?2", nativeQuery = true)
     List<OwnItem> ListPage(Integer start, Integer end);
-
 }

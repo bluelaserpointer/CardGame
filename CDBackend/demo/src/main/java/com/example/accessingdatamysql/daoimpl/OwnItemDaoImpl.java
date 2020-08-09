@@ -25,15 +25,28 @@ public class OwnItemDaoImpl implements OwnItemDao {
     }
 
     public OwnItem addNewOwnItem(OwnItem newOwnItem) {
+        final Timestamp acquireDate = new Timestamp(System.currentTimeMillis());
 
-        Timestamp accquireDate = new Timestamp(System.currentTimeMillis());
-
-        OwnItem ownItem = new OwnItem(newOwnItem.getUserId(), newOwnItem.getItemId(), newOwnItem.getItemCount(),
-                accquireDate);
+        final OwnItem ownItem = new OwnItem(newOwnItem.getUserId(), newOwnItem.getItemId(), newOwnItem.getItemCount(),
+                acquireDate);
         // System.out.println("new OwnItem has an Id of : " + n.getOwnItemId());
         OwnItemRepository.save(ownItem);
         return ownItem;
 
+    }
+    public OwnItem addNewOwnItem(Integer userId, Integer itemId, Integer itemAmount) {
+        OwnItem ownItem = this.findOwnItemByUserIdEqualsAndItemIdEquals(userId, itemId);
+        if(ownItem == null) {
+            ownItem = new OwnItem();
+            ownItem.setUserId(userId);
+            ownItem.setItemId(itemId);
+            ownItem.setItemCount(itemAmount);
+            this.addNewOwnItem(ownItem);
+        } else {
+            ownItem.setItemCount(ownItem.getItemCount() + itemAmount);
+            OwnItemRepository.save(ownItem);
+        }
+        return ownItem;
     }
 
     public OwnItem updateOwnItem(OwnItem updateOwnItem) {
