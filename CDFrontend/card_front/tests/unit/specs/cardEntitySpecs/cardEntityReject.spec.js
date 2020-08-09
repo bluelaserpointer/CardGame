@@ -1,74 +1,88 @@
-jest.mock('axios', () => ({
-  get: jest.fn(() => Promise.reject()),
-  post: jest.fn(() => Promise.reject())
-}));
+let mockData = false;
+
+const validateStub = {
+  render: () => {},
+  methods: {
+    validate: () => {}
+  }
+};
+
+jest.unmock('axios');
+import axios from 'axios';
+import MockAdapter from "axios-mock-adapter";
 
 import {createLocalVue, mount, shallowMount} from '@vue/test-utils'
 import CardEntityPanel from '@/components/table/cardEntityPanel'
 import Element from 'element-ui';
-import axios from 'axios';
 
 const localVue = createLocalVue();
 localVue.use(Element);
 
 describe('CardEntityPanel.vue', () => {
-  const wrapper = mount(CardEntityPanel,
+  const wrapper = shallowMount(CardEntityPanel,
     {
-      localVue
+      localVue,
+      stubs:{
+        'el-form': validateStub
+      }
     });
 
-  it('Card Entity Panel Rejects created',   async () => {
-    expect(wrapper.vm.list).toStrictEqual(null);
-    expect(axios.get).toHaveBeenCalledTimes(1);
-    expect(axios.get).toBeCalledWith('http://localhost:8080/card/getAllCards');
+  let mockAdapter = new MockAdapter(axios);
+  let spyPost = jest.spyOn(axios, "post");
+
+  mockAdapter.onPost('card/List').reply(200, mockData);
+
+  it('Startup', async () => {
+    await wrapper.vm.getList();
   });
 
-  it('Card Entity Panel Rejects getList, watchList',  async () => {
-    expect(axios.get).toHaveBeenCalledTimes(1);
+  it('Card Entity Panel Resolves created',   async () => {
+    expect(wrapper.vm.list).toBeNull();
 
-    await wrapper.vm.getList(()=>{wrapper.vm.watchList()});
-    expect(wrapper.vm.list).toStrictEqual(null);
-    expect(axios.get).toHaveBeenCalledTimes(2);
-    expect(axios.get).toBeCalledWith('http://localhost:8080/card/getAllCards');
+    expect(spyPost).toHaveBeenCalledTimes(1);
   });
 
-  it('Card Entity Panel Rejects confirmIdentity', async () => {
+  it('Card Entity Panel Resolves confirmIdentity', async () => {
     wrapper.vm.confirmDelete = false;
-
+    mockAdapter.onPost('user/confirmDelete').reply(200, false);
     await wrapper.vm.confirmIdentity();
-
-    expect(wrapper.vm.confirmDelete).toBeFalsy();
   });
 
+  it('Card Entity Panel Resolves confirmIdentity result', async () => {
+    expect(wrapper.vm.confirmDelete).toBeFalsy();
+    expect(spyPost).toHaveBeenCalledTimes(2);
+  });
 
-  it('Card Entity Panel Rejects deleteData',  async () => {
+  it('Card Entity Panel Resolves deleteData',  async () => {
     wrapper.vm.confirmDelete = true;
     wrapper.vm.panelVisible = true;
     wrapper.vm.deleteVisible = true;
 
-    expect(axios.post).toHaveBeenCalledTimes(1);
-    expect(axios.get).toHaveBeenCalledTimes(2);
-    expect(wrapper.vm.confirmDelete).toBeTruthy();
-
+    mockAdapter.onPost('card/deleteCard').reply(200, false);
     await wrapper.vm.deleteData();
+  });
 
+  it('Card Entity Panel Resolves deleteData result', async () => {
     expect(wrapper.vm.panelVisible).toBeTruthy();
     expect(wrapper.vm.deleteVisible).toBeTruthy();
-    expect(axios.post).toHaveBeenCalledTimes(2);
-    expect(axios.get).toHaveBeenCalledTimes(2);
-    expect(axios.get).toBeCalledWith("http://localhost:8080/card/getAllCards");
+    expect(spyPost).toHaveBeenCalledTimes(3);
   });
 
-  it('Card Entity Panel Rejects createData', async () => {
+  it('Card Entity Panel Resolves createData', async () => {
     wrapper.vm.panelVisible = true;
-    await wrapper.vm.createData('temp');
-    expect(wrapper.vm.panelVisible).toBeTruthy();
+    mockAdapter.onAny().reply(200, false);
+    wrapper.vm.createData('temp');
+    await wrapper.vm.submitCreate();
   });
 
-  it('Card Entity Panel Rejects updateData', async () => {
+  it('Card Entity Panel Resolves updateData', async () => {
     wrapper.vm.panelVisible = true;
-    await wrapper.vm.updateData('temp');
-    expect(wrapper.vm.panelVisible).toBeTruthy();
+    wrapper.vm.updateData('temp');
+    await wrapper.vm.submitUpdate();
+  });
+
+  it('Card Entity Panel Resolves updateData result',  () => {
+    expect(spyPost).toHaveBeenCalledTimes(5);
   });
 
 });
