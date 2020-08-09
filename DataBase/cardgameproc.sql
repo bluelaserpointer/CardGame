@@ -175,11 +175,8 @@ BEGIN
 
 	declare rarity varchar(10) default 'SSR';
 
-	insert into card(card_id, attack, attack_range, card_name, cd, defense,
-
-										health_point, rarity, speed, type)
-
-	select 1, 100, 100, "SuperCard 1", 100, 100, 100, rarity, 60, 1;
+	insert into card(card_id, attack, attack_range, card_name, cd, defense, health_point, rarity, speed, type)
+	select 1, 100, 100, "SuperCard 1", 100, 100, 100, "SR", 60, 1;
 
 	insert into card(card_id, attack, attack_range, card_name, cd, defense,
 
@@ -344,9 +341,9 @@ BEGIN
 
 	while i <= @MailAmountPerUser DO
 
-		insert into mail(mail_id, mail_name)
+		insert into mail(mail_id, mail_name, mail_time)
 
-		select i, CONCAT("Test Mail ", LEFT(UUID(), 5));
+		select i, CONCAT("Test Mail ", LEFT(UUID(), 5)), current_timestamp();
 
 		set i = i + 1;
 
