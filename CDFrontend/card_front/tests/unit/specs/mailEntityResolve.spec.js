@@ -1,20 +1,37 @@
-jest.mock('axios', () => ({
-  get: jest.fn(() => Promise.resolve({data: [{
-      mailId: 0,
-      mailName: '',
-      mailDetails: {
-        mailImg: '',
-        mailDescription: '',
-      }
-    }]})),
-  post: jest.fn(() => Promise.resolve())
-}));
+let mockData = { result: [{
+    mailId: 0,
+    mailName: '',
+    mailDetails: {
+      mailImg: '',
+      mailDescription: '',
+    }
+  }]};
+
+let mockDataTrans = [{
+  mailId: 0,
+  mailName: '',
+  mailImg: '',
+  mailDescription: '',
+  mailDetails: {
+    mailImg: '',
+    mailDescription: '',
+  }
+}];
+
+const validateStub = {
+  render: () => {},
+  methods: {
+    validate: () => {}
+  }
+};
+
+jest.unmock('axios');
+import axios from 'axios';
+import MockAdapter from "axios-mock-adapter";
 
 import {createLocalVue, mount, shallowMount} from '@vue/test-utils'
-import MailEntityPanel from '@/components/edit/MailEntityPanel'
+import MailEntityPanel from '@/components/article/mailEntityPanel'
 import Element from 'element-ui';
-import moment from 'moment';
-import axios from 'axios';
 
 const localVue = createLocalVue();
 localVue.use(Element);
@@ -22,8 +39,20 @@ localVue.use(Element);
 describe('MailEntityPanel.vue', () => {
   const wrapper = shallowMount(MailEntityPanel,
     {
-      localVue
+      localVue,
+      stubs:{
+        'el-form': validateStub
+      }
     });
+
+  let mockAdapter = new MockAdapter(axios);
+  let spyPost = jest.spyOn(axios, "post");
+
+  mockAdapter.onPost('mail/List').reply(200, mockData);
+
+  it('Startup', async () => {
+    await wrapper.vm.getList();
+  });
 
   it('Mail Entity Panel Resolves created getList watchList', async () => {
     expect(wrapper.vm.panelVisible).toBeFalsy();
@@ -37,8 +66,7 @@ describe('MailEntityPanel.vue', () => {
         mailDescription: '',
       }
     }]);
-    expect(axios.get).toHaveBeenCalledTimes(1);
-    expect(axios.get).toBeCalledWith('http://localhost:8080/mail/getAllMails');
+    expect(spyPost).toHaveBeenCalledTimes(1);
   });
 
   it('Mail Entity Panel Resolves handleUpdate', () => {
