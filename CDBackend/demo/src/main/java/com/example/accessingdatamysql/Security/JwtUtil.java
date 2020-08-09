@@ -1,6 +1,7 @@
 package com.example.accessingdatamysql.Security;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,7 +21,7 @@ public class JwtUtil {
 
     private String secret = SECRET;
 
-    public String extractUsername(String token) {
+    public String extractUsername(String token) throws ExpiredJwtException {
         return extractClaim(token, Claims::getSubject);
     }
 
@@ -28,12 +29,11 @@ public class JwtUtil {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) throws ExpiredJwtException {
+        return claimsResolver.apply(extractAllClaims(token));
     }
 
-    public Claims extractAllClaims(String token) {
+    public Claims extractAllClaims(String token) throws ExpiredJwtException {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
     }
 
