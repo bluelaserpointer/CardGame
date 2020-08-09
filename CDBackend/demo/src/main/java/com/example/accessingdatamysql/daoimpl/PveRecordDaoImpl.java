@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.daoimpl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.dao.PveRecordDao;
 import com.example.accessingdatamysql.entity.PveRecord;
 import com.example.accessingdatamysql.repository.PveRecordRepository;
@@ -34,7 +35,8 @@ public class PveRecordDaoImpl implements PveRecordDao {
     }
 
     @Override
-    public PveRecord addPveRecord(Integer userId, Integer chapterId, Integer phaseId, Integer result, String posRecord) {
+    public PveRecord addPveRecord(Integer userId, Integer chapterId, Integer phaseId, Integer result,
+            String posRecord) {
         PveRecord pveRecord = new PveRecord(userId, chapterId, phaseId, result);
         pveRecord.setPosRecord(parsePosRecord(posRecord));
         pveRecord.setRecordTime(new Timestamp(System.currentTimeMillis()));
@@ -87,18 +89,48 @@ public class PveRecordDaoImpl implements PveRecordDao {
     }
 
     @Override
-    public List<List<Number>> getPveRecordsWithinHalfYear(){
+    public List<List<Number>> getPveRecordsWithinHalfYear() {
         return pveRecordRepository.findPveRecordsWithinHalfYear();
     }
 
     @Override
-    public List<List<Number>> getPveRecordsWithinOneDay(){
+    public List<List<Number>> getPveRecordsWithinOneDay() {
         return pveRecordRepository.findPveRecordsWithinOneDay();
     }
 
     @Override
-    public Integer getPveRecordCountWithinOneDay(){
+    public Integer getPveRecordCountWithinOneDay() {
         return pveRecordRepository.findPveRecordCountWithinOneDay();
     }
 
+    @Override
+    public JSONObject ListPage(Integer page_token, Integer page_size) {
+        JSONObject response = new JSONObject();
+
+        // get the result data
+        Integer start = (page_token - 1) * page_size;
+        // Integer end = page_token * page_size - 1;
+        List<PveRecord> pveRecords = pveRecordRepository.ListPage(start, page_size);
+
+        // get the nextPageToken
+        Integer nextPageToken;
+        if ((pveRecordRepository.findAll().size() - (page_token * page_size)) <= 0) {
+            response.put("nextPageToken", "");
+        } else {
+            nextPageToken = page_token + 1;
+            response.put("nextPageToken", nextPageToken);
+        }
+
+        // get the total pages of the result
+        Integer totalPages = pveRecordRepository.findAll().size() / page_size;
+        if ((totalPages - page_size * totalPages) > 0) {
+            totalPages += 1;
+        }
+        // totalPages = totalPages + 1;
+
+        response.put("result", pveRecords);
+        response.put("totalPages", totalPages);
+
+        return response;
+    }
 }

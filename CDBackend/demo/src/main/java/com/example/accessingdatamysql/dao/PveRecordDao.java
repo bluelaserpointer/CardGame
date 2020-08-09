@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.dao;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.entity.PveRecord;
 
 import java.sql.Timestamp;
@@ -11,6 +12,9 @@ public interface PveRecordDao {
 
     PveRecord updatePveRecord(Integer pveRecordId, Integer userId, Integer chapterId, Integer phaseId, Integer result,
             Timestamp recordTime, String posRecord);
+
+    // 获取指定页数的用户
+    JSONObject ListPage(Integer page_token, Integer page_size);
 
     List<PveRecord> getAllPveRecords();
 

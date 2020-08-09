@@ -94,13 +94,36 @@ public class RecordController {
     }
 
     // 获取指定页数的数据
+
+    // RecordType 用来指定需要获取的记录类型:
+    // - OnlineCountRecord 1
+    // - UserLoginRecord 2
+    // - PveRecord 3
+    // - CrashReport 4
+
     @RequestMapping(value = "/List")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public JSONObject ListPage(@RequestBody ListRequest ListRequest) {
+    public JSONObject ListPage(@RequestBody ListRequest ListRequest, @RequestParam Integer recordType) {
         ListRequest.setPageSize(general_page_size);
         final String request = JSON.toJSONString(ListRequest);
         System.out.print(request);
-        return userLoginRecordService.ListPage(ListRequest);
+        JSONObject response = new JSONObject();
+        switch (recordType) {
+            case 1:
+                response = onlineCountRecordService.ListPage(ListRequest);
+                break;
+            case 2:
+                response = userLoginRecordService.ListPage(ListRequest);
+                break;
+            case 3:
+                response = pveRecordService.ListPage(ListRequest);
+                break;
+            case 4:
+                response = crashReportService.ListPage(ListRequest);
+                break;
+        }
+        return response;
+
     }
 
     // 获取特定的玩家登录日志

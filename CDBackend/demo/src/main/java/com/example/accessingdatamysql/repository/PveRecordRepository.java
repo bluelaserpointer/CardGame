@@ -26,4 +26,8 @@ public interface PveRecordRepository extends JpaRepository<PveRecord, Integer> {
     @Transactional
     @Query(value = "select count(*) from pve_record where record_time > DATE_SUB(NOW(), INTERVAL 1 DAY)", nativeQuery = true)
     Integer findPveRecordCountWithinOneDay();
+
+    @Transactional
+    @Query(value = "SELECT * from pve_record LIMIT ?1,?2", nativeQuery = true)
+    List<PveRecord> ListPage(Integer start, Integer end);
 }
