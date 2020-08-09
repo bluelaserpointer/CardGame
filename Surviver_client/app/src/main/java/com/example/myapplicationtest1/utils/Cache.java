@@ -33,6 +33,7 @@ public class Cache {
     public static int chiKnowledge;
     public static int credits;
     public static int curExpPoint;
+    public static int engKnowledge;
     public static String email;
     public static double grade;
     public static int level;
@@ -47,6 +48,7 @@ public class Cache {
             chiKnowledge = userInfo.getInt("chiKnowledge");
             credits = userInfo.getInt("credits");
             curExpPoint = userInfo.getInt("curExpPoint");
+            engKnowledge = userInfo.getInt("engKnowledge");
             email = userInfo.getString("email");
             grade = userInfo.getDouble("grade");
             level = userInfo.getInt("level");

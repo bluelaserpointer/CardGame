@@ -46,6 +46,11 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
+    public List<Card> getByRarityAndType(String rarity, Integer type) {
+        return CardDao.getByRarityAndType(rarity, type);
+    }
+
+    @Override
     public JSONObject ListPage(ListRequest listRequest) {
         return CardDao.ListPage(listRequest.getPageToken(), listRequest.getPageSize());
     }

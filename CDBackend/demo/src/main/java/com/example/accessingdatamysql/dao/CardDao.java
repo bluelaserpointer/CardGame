@@ -28,4 +28,6 @@ public interface CardDao {
 
         List<Card> deleteCard(Integer cardId);
 
+        List<Card> getByRarityAndType(String rarity, Integer type);
+
 }

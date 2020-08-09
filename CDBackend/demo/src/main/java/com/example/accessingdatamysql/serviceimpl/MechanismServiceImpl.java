@@ -1,8 +1,12 @@
 package com.example.accessingdatamysql.serviceimpl;
 
+import com.example.accessingdatamysql.entity.Card;
+import com.example.accessingdatamysql.entity.User;
 import com.example.accessingdatamysql.service.*;
 import org.springframework.stereotype.Service;
 import com.example.accessingdatamysql.Classes.*;
+
+import java.util.List;
 
 @Service
 public class MechanismServiceImpl implements MechanismService {
@@ -10,12 +14,23 @@ public class MechanismServiceImpl implements MechanismService {
     // private CardDao CardDao;
 
     @Override
-    public Integer drawCard(Integer chi, Integer mat, Integer eng) {
+    public Integer drawCard(CardService cardService, OwnCardService ownCardService, User user, Integer chi, Integer mat, Integer eng) {
 
         // LotteSpring(subject rarity)
-        System.out.println("chi: " + chi + "mat: " + mat + "eng: " + eng);
+        System.out.println("MechanismServiceImpl: " + user.getUserName() + "requested card draw with resources chi: " + chi + " mat: " + mat + " eng: " + eng);
 
-        final int[][][] lotteSpring = new int[Subject.values().length][5][]; // subject, rarity
+        //resource check
+        if(user.getChiKnowledge() < chi) {
+            System.out.println("!!!MechanismServiceImpl: Illegal left resource of chi " + user.getChiKnowledge() + " with requested " + chi);
+            return -1;
+        }if(user.getMathKnowledge() < mat) {
+            System.out.println("!!!MechanismServiceImpl: Illegal left resource of mat " + user.getMathKnowledge() + " with requested " + mat);
+            return -1;
+        }if(user.getEngKnowledge() < eng) {
+            System.out.println("!!!MechanismServiceImpl: Illegal left resource of eng " + user.getEngKnowledge() + " with requested " + eng);
+            return -1;
+        }
+        //calculate rarity and type
         final int SUM = chi + mat + eng;
         final int RAND = (int) (Math.random() * 1000.0);
         int rarity;
@@ -50,7 +65,6 @@ public class MechanismServiceImpl implements MechanismService {
             else
                 rarity = 4;
         } else {
-            System.out.println("too much bet bug?");
             rarity = 4;
         }
         final int RAND2 = (int) (Math.random() * SUM);
@@ -61,8 +75,24 @@ public class MechanismServiceImpl implements MechanismService {
             subject = 1;
         else
             subject = 2;
-        final int[] group = lotteSpring[subject][rarity];
-        System.out.println("Result: " + group[(int) (Math.random() * group.length)]);
-        return group[(int) (Math.random() * group.length)];
+        //choose random one in same rarity and same type
+        final String rarityStr = Rarity.values()[rarity].toString();
+        final List<Card> cardSpring = cardService.getByRarityAndType(rarityStr , subject);
+        System.out.println("MechanismServiceImpl: search for " + rarityStr + " in " + subject + ": found " + cardSpring.size());
+        final Card drawnCard;
+        if(cardSpring.isEmpty()) { //Ouch...I guess the rarity does not exist in that subject.
+            System.out.println("!!!MechanismServiceImpl: Could not found any card. Trying returning random card.");
+            drawnCard = cardService.getAllCards().get(0);
+        } else {
+            drawnCard = cardSpring.get((int) (Math.random() * cardSpring.size()));
+        }
+        System.out.println("MechanismServiceImpl: drawnCard is " + drawnCard.getCardName());
+        //consume resources
+        user.setChiKnowledge(user.getChiKnowledge() - chi);
+        user.setMathKnowledge(user.getMathKnowledge() - mat);
+        user.setEngKnowledge(user.getEngKnowledge() - eng);
+        //add card
+        ownCardService.addNewOwnCard(user.getUserId(), drawnCard.getCardId());
+        return drawnCard.getCardId();
     }
 }
