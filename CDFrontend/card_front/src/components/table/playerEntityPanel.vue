@@ -282,11 +282,7 @@ export default {
         pageToken: page,
         pageSize: limit
       };
-      request({
-        url: 'user/List',
-        method: 'post',
-        data: postData
-      }).then(response =>
+      request.post('user/List', postData).then(response =>
       {
         if(response.data)
         {
@@ -324,44 +320,42 @@ export default {
       this.dialogStatus = 'create';
       this.panelVisible = true;
       this.$nextTick(() => {
-        this.$refs.temp.clearValidate()
+        this.$refs['temp'].clearValidate()
       })
     },
+    submitCreate(){
+      const _this = this;
+
+      let postData = {
+        userName: this.temp.userName,
+        password: this.temp.password,
+        phoneNumber: this.temp.phoneNumber,
+        credits: this.temp.credits,
+        access: this.temp.access,
+        level: this.temp.level,
+        email: this.temp.email,
+        identity: this.temp.identity
+      };
+
+      request.post('user/register', JSON.stringify(postData)).then(response => {
+        if (response.data) {
+          _this.getList(this.listQuery.page, this.listQuery.limit);
+          _this.panelVisible = false;
+          _this.resetTemp();
+        }else {
+          this.$message.error('Adding Data failed!');
+        }
+      })
+        .catch(error =>
+          {
+            this.$message.error('Adding Data failed!');
+          }
+        );
+    },
     createData(formName) {
-      this.$refs.temp.validate((valid) => {
+      this.$refs['temp'].validate((valid) => {
         if (valid) {
-          const _this = this;
-
-          let postData = {
-            userName: this.temp.userName,
-            password: this.temp.password,
-            phoneNumber: this.temp.phoneNumber,
-            credits: this.temp.credits,
-            access: this.temp.access,
-            level: this.temp.level,
-            email: this.temp.email,
-            identity: this.temp.identity
-          };
-
-          request({
-            url: 'user/register',
-            method: 'post',
-            data: JSON.stringify(postData)
-          }).then(response => {
-            if (response.data) {
-              _this.getList(this.listQuery.page, this.listQuery.limit);
-              _this.panelVisible = false;
-              _this.resetTemp();
-            }else {
-              this.$message.error('Adding Data failed!');
-            }
-          })
-            .catch(error =>
-              {
-                this.$message.error('Adding Data failed!');
-              }
-            );
-
+          this.submitCreate();
         } else {
           this.$message.error('Form Invalid!');
           return false;
@@ -375,50 +369,49 @@ export default {
       this.dialogStatus = 'update';
       this.panelVisible = true;
       this.$nextTick(() => {
-        this.$refs.temp.clearValidate()
+        this.$refs['temp'].clearValidate()
       })
     },
+    submitUpdate(){
+      const _this = this;
+
+      let postData = {
+        userId: this.temp.userId,
+        userName: this.temp.userName,
+        password: this.temp.password,
+        phoneNumber: this.temp.phoneNumber,
+        credits: this.temp.credits,
+        access: this.temp.access,
+        level: this.temp.level,
+        email: this.temp.email,
+        curExpPoint: this.temp.curExpPoint,
+        stamina: this.temp.stamina,
+        money: this.temp.money,
+        grade: this.temp.grade,
+        engKnowledge: this.temp.engKnowledge,
+        mathKnowledge: this.temp.mathKnowledge,
+        chiKnowledge: this.temp.chiKnowledge,
+        identity: this.temp.identity
+      };
+
+      request.post('user/updateUser', JSON.stringify(postData)).then(response => {
+        if (response.data) {
+          _this.getList(this.listQuery.page, this.listQuery.limit);
+          _this.panelVisible = false
+        } else {
+          this.$message.error('Updating Data failed!');
+        }
+      })
+        .catch(error =>
+          {
+            this.$message.error('Updating Data failed!');
+          }
+        );
+    },
     updateData(formName) {
-      this.$refs.temp.validate((valid) => {
+      this.$refs['temp'].validate((valid) => {
         if (valid) {
-          const _this = this;
-
-          let postData = {
-            userId: this.temp.userId,
-            userName: this.temp.userName,
-            password: this.temp.password,
-            phoneNumber: this.temp.phoneNumber,
-            credits: this.temp.credits,
-            access: this.temp.access,
-            level: this.temp.level,
-            email: this.temp.email,
-            curExpPoint: this.temp.curExpPoint,
-            stamina: this.temp.stamina,
-            money: this.temp.money,
-            grade: this.temp.grade,
-            engKnowledge: this.temp.engKnowledge,
-            mathKnowledge: this.temp.mathKnowledge,
-            chiKnowledge: this.temp.chiKnowledge,
-            identity: this.temp.identity
-          };
-
-          request({
-            url: 'user/updateUser',
-            method: 'post',
-            data: JSON.stringify(postData)
-          }).then(response => {
-            if (response.data) {
-              _this.getList(this.listQuery.page, this.listQuery.limit);
-              _this.panelVisible = false
-            } else {
-              this.$message.error('Updating Data failed!');
-            }
-          })
-            .catch(error =>
-              {
-                this.$message.error('Updating Data failed!');
-              }
-            );
+          this.submitUpdate();
         } else {
           this.$message.error('Form Invalid!');
           return false;
@@ -432,11 +425,7 @@ export default {
       postData.append('userName', localStorage.getItem('AdminName'));
       postData.append('password', this.confirmPassword);
 
-      request({
-        url: 'user/confirmDelete',
-        method: 'post',
-        data: postData
-      }).then(response => {
+      request.post('user/confirmDelete', postData).then(response => {
         console.log(response);
         if (response.data) {
           _this.confirmDelete = true
@@ -456,11 +445,7 @@ export default {
       const _this = this;
       postData.append('userId', this.temp.userId);
 
-      request({
-        url: 'user/deleteUser',
-        method: 'post',
-        data: postData
-      }).then(response => {
+      request.post('user/deleteUser', postData).then(response => {
         if (response.data) {
           _this.panelVisible = false;
           _this.deleteVisible = false;
