@@ -36,15 +36,25 @@
       </div>
 
       <div style="display: grid; grid-template-rows: 10% 90%; grid-row: 2 / span 1; grid-column: 3 / span 1">
-        <div style="grid-row: 1 / span 1">
-          <el-button @click="handleSelectAll">Select All</el-button>
-          <el-button @click="handleClearAll">Clear All</el-button>
-        </div>
-        <div style="display: grid; grid-template-columns: 50% 50%; grid-row: 2 / span 1">
-          <div>
+
+        <el-switch
+          v-model="type"
+          active-color="#13ce66"
+          inactive-color="#ff4949"
+          active-text="单人"
+          inactive-text="全体"
+          style="margin-left: 20px; margin-top: 5px"
+        />
+
+<!--        <div style="grid-row: 1 / span 1">-->
+<!--          <el-button @click="handleSelectAll">Select All</el-button>-->
+<!--          <el-button @click="handleClearAll">Clear All</el-button>-->
+<!--        </div>-->
+<!--        <div style="display: grid; grid-template-columns: 50% 50%; grid-row: 2 / span 1">-->
+<!--          <div>-->
+        <div v-if="type">
             <el-table
             :key="tableKey"
-            v-loading="listLoading"
             :data="userList"
             class="phaseAwardItemsTable"
             border
@@ -53,8 +63,7 @@
             style="width: 100%; grid-column: 1 / span 1"
             height="350"
             max-height="350"
-            @row-click="handleSendSrc"
-            @sort-change="sortChange"
+            @row-click="handleSendUser"
           >
             <el-table-column label="UserId" prop="userId" sortable="custom" align="center">
               <template slot-scope="{row}">
@@ -62,28 +71,29 @@
               </template>
             </el-table-column>
           </el-table>
-            <pagination v-show="listQuery.total > 0" :total.sync="listQuery.total * listQuery.limit" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList(listQuery.page, listQuery.limit)" />
-          </div>
-          <el-table
-          v-loading="listLoading"
-          :data="sendList"
-          class="phaseAwardCardsTable"
-          border
-          fit
-          highlight-current-row
-          style="width: 100%; grid-column: 2 / span 1"
-          height="350"
-          max-height="350"
-          @row-click="handleSendDes"
-          @sort-change="sortChange"
-        >
-          <el-table-column label="CardId" prop="itemId" sortable="custom" align="center">
-            <template slot-scope="{row}">
-              <span>{{ row }}</span>
-            </template>
-          </el-table-column>
-        </el-table>
+          <pagination v-show="listQuery.total > 0" :total.sync="listQuery.total * listQuery.limit" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList(listQuery.page, listQuery.limit)" />
         </div>
+<!--          </div>-->
+<!--          <el-table-->
+<!--          v-loading="listLoading"-->
+<!--          :data="sendList"-->
+<!--          class="phaseAwardCardsTable"-->
+<!--          border-->
+<!--          fit-->
+<!--          highlight-current-row-->
+<!--          style="width: 100%; grid-column: 2 / span 1"-->
+<!--          height="350"-->
+<!--          max-height="350"-->
+<!--          @row-click="handleSendDes"-->
+<!--          @sort-change="sortChange"-->
+<!--        >-->
+<!--          <el-table-column label="CardId" prop="itemId" sortable="custom" align="center">-->
+<!--            <template slot-scope="{row}">-->
+<!--              <span>{{ row }}</span>-->
+<!--            </template>-->
+<!--          </el-table-column>-->
+<!--        </el-table>-->
+<!--        </div>-->
       </div>
     </div>
   </el-form>
@@ -106,18 +116,18 @@
     status: 'draft',
     title: '', // 文章题目
     content: '', // 文章内容
-    // content_short: '', // 文章摘要
-    // source_uri: '', // 文章外链
     image_uri: '', // 文章图片
     id: undefined,
     platforms: ['a-platform'],
     comment_disabled: false,
-    // importance: 0
+    // importance: 0,
+    // content_short: '', // 文章摘要
+    // source_uri: '', // 文章外链
   };
 
   export default {
     name: 'MailEditPanel',
-    components: { Tinymce, MDinput, Sticky, Warning, CommentDropdown, PlatformDropdown, SourceUrlDropdown },
+    components: { Tinymce, MDinput, Sticky, Warning, CommentDropdown, PlatformDropdown, SourceUrlDropdown, Pagination },
     props: {
       isEdit: {
         type: Boolean,
@@ -164,6 +174,7 @@
         tempRoute: {},
         userList: [],
         sendList: [],
+        sendUser: 0,
         targetChosen: false,
         listQuery: {
           page: 1,
@@ -171,6 +182,8 @@
           total: 0,
           sort: '+id'
         },
+        type: false,
+        tableKey: 0
       }
     },
     watch:{
@@ -222,6 +235,10 @@
       handleClearAll(){
         this.sendList = [];
       },
+      handleSendUser(row)
+      {
+        this.sendUser = row.userId;
+      },
       handleSendSrc(row)
       {
         let index = this.sendList.indexOf(row.userId);
@@ -255,11 +272,11 @@
         this.sendList = [];
       },
       submitForm() {
-        if(!this.targetChosen)
-        {
-          this.$message.error('Target not chosen!');
-          return false;
-        }
+        // if(!this.targetChosen)
+        // {
+        //   this.$message.error('Target not chosen!');
+        //   return false;
+        // }
 
         if(this.postForm.title === undefined || this.postForm.content === undefined || this.postForm.title === '' || this.postForm.content === '')
         {
@@ -283,9 +300,7 @@
           if (response.data) {
             //
             this.resetArticle();
-            request({
-              url: 'mail/sendMailToUsers'
-            })
+            this.sendMail(response.data.mailId);
           } else {
             this.$message.error('Publishing Mail failed!');
           }
@@ -296,7 +311,33 @@
             }
           );
       },
+      sendMail(mailId){
+        let postData = new FormData();
+        postData.append('mailId', mailId);
+        if(!this.type)
+        {
+          request({
+            url: 'mail/sendMailToAllUsers',
+            method: 'post',
+            data: postData
+          }).then(response => {
 
+          }).catch(response => {
+
+          })
+        }else{
+          postData.append('userId', this.sendUser);
+          request({
+            url: 'mail/sendMail',
+            method: 'post',
+            data: postData
+          }).then(response => {
+
+          }).catch(response => {
+
+          })
+        }
+      },
       setTagsViewTitle() {
         const title = 'Edit Mail';
         const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` });
