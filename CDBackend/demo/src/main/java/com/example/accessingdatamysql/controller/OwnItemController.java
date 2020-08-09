@@ -37,15 +37,21 @@ public class OwnItemController {
 
   @RequestMapping(value = "/addOwnItem")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public @ResponseBody OwnItem addNewOwnItem(@RequestBody JSONObject newOwnItem) {
-    OwnItem ownItem = JSON.parseObject(newOwnItem.getString("OwnItem"), OwnItem.class);
-    return OwnItemService.addNewOwnItem(ownItem);
+  public @ResponseBody OwnItem addNewOwnItem(@RequestBody OwnItem newOwnItem) {
+    // JSONObject jsonObject = JSON.parseObject(newOwnItem);
+    // OwnItem ownItem = JSON.parseObject(jsonObject.getString("OwnItem"),
+    // OwnItem.class);
+    return OwnItemService.addNewOwnItem(newOwnItem);
   }
 
   @RequestMapping(value = "/updateOwnItem")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public @ResponseBody OwnItem updateOwnItem(@RequestBody JSONObject updateOwnItem) {
-    return OwnItemService.updateOwnItem(JSON.parseObject(updateOwnItem.getString("OwnItem"), OwnItem.class));
+  public @ResponseBody OwnItem updateOwnItem(@RequestBody OwnItem updateOwnItem) {
+    // JSONObject jsonObject = JSON.parseObject(updateOwnItem);
+    // return
+    // OwnItemService.updateOwnItem(JSON.parseObject(jsonObject.getString("OwnItem"),
+    // OwnItem.class));
+    return OwnItemService.updateOwnItem(updateOwnItem);
   }
 
   // 获取指定页数的数据

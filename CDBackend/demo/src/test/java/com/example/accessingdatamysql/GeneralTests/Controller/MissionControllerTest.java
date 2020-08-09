@@ -3,8 +3,10 @@ package com.example.accessingdatamysql.GeneralTests.Controller;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.controller.MissionController;
 import com.example.accessingdatamysql.entity.AuthRequest;
+import com.example.accessingdatamysql.entity.ListRequest;
 import com.example.accessingdatamysql.entity.Mission;
 import com.example.accessingdatamysql.entity.MissionDetails;
 import com.example.accessingdatamysql.entity.User;
@@ -38,192 +40,227 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @AutoConfigureMockMvc
 public class MissionControllerTest {
 
-    // @Test
-    // @DisplayName("File: MissionController Method: contextLoads")
-    // public void contextLoads() {
-    // assertThat(missionController).isNotNull();
-    // }
+        // @Test
+        // @DisplayName("File: MissionController Method: contextLoads")
+        // public void contextLoads() {
+        // assertThat(missionController).isNotNull();
+        // }
 
-    @Autowired
-    private WebApplicationContext context;
+        @Autowired
+        private WebApplicationContext context;
 
-    private MockMvc mockMvc;
+        private MockMvc mockMvc;
 
-    private String TOKEN;
-    // @Autowired
-    // private MissionController missionController;
+        private String TOKEN;
+        // @Autowired
+        // private MissionController missionController;
 
-    @Before
-    public void setUp() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(context).apply(SecurityMockMvcConfigurers.springSecurity())
-                .build();
-    }
+        @Before
+        public void setUp() {
+                mockMvc = MockMvcBuilders.webAppContextSetup(context).apply(SecurityMockMvcConfigurers.springSecurity())
+                                .build();
+        }
 
-    @AfterEach
-    void tearDown() {
+        @AfterEach
+        void tearDown() {
 
-    }
+        }
 
-    @AfterAll
-    static void tearDownAll() {
+        @AfterAll
+        static void tearDownAll() {
 
-    }
+        }
 
-    @Transactional
-    @Rollback(value = true)
-    public String getTOKEN() throws Exception {
-        // System.out.println(TOKEN);
-        User addedUser = new User("postTest", "postTest", "postTest", "postTest", "ROLE_ADMIN");
-        String addU = JSON.toJSONString(addedUser);
-        System.out.println(addU);
-        mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/user/register")
-                .contentType(MediaType.APPLICATION_JSON_VALUE).content(addU))
-                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
-        AuthRequest user = new AuthRequest();
-        user.setPassword("postTest");
-        user.setUserName("postTest");
+        @Transactional
+        @Rollback(value = true)
+        public String getTOKEN() throws Exception {
+                // System.out.println(TOKEN);
+                User addedUser = new User("postTest", "postTest", "postTest", "postTest", "ROLE_ADMIN");
+                String addU = JSON.toJSONString(addedUser);
+                // System.out.println(addU);
+                mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/user/unitTest")
+                                .contentType(MediaType.APPLICATION_JSON_VALUE).content(addU))
+                                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+                AuthRequest user = new AuthRequest();
+                user.setPassword("postTest");
+                user.setUserName("postTest");
 
-        String body = JSON.toJSONString(user);
-        System.out.println(body);
-        MvcResult result = mockMvc
-                .perform(MockMvcRequestBuilders.post("http://localhost:8080/user/login")
-                        .contentType(MediaType.APPLICATION_JSON_VALUE).content(body))
-                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
-        TOKEN = result.getResponse().getContentAsString();
-        TOKEN = "Bearer " + TOKEN;
-        System.out.println(TOKEN);
-        return TOKEN;
-    }
+                String body = JSON.toJSONString(user);
+                System.out.println(body);
+                MvcResult result = mockMvc
+                                .perform(MockMvcRequestBuilders.post("http://localhost:8080/user/login")
+                                                .contentType(MediaType.APPLICATION_JSON_VALUE).content(body))
+                                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+                TOKEN = result.getResponse().getContentAsString();
+                System.out.println(TOKEN);
+                JSONObject temp = JSON.parseObject(TOKEN);
+                TOKEN = temp.getString("token");
+                TOKEN = "Bearer " + TOKEN;
+                System.out.println(TOKEN);
+                return TOKEN;
+        }
 
-    @Transactional
-    @Rollback(value = true)
-    public Mission addMissionBeforeTest(String token) throws Exception {
-        Mission Mission = new Mission("addMissionBeforeTest", "addMissionBeforeTest");
-        MissionDetails MissionDetails = new MissionDetails();
-        MissionDetails.setMissionDescription("addMissionBeforeTest");
-        Mission.setMissionDetails(MissionDetails);
+        @Transactional
+        @Rollback(value = true)
+        public Mission addMissionBeforeTest(String token) throws Exception {
+                Mission Mission = new Mission("addMissionBeforeTest", "addMissionBeforeTest");
+                MissionDetails MissionDetails = new MissionDetails();
+                MissionDetails.setMissionDescription("addMissionBeforeTest");
+                Mission.setMissionDetails(MissionDetails);
 
-        String body = JSON.toJSONString(Mission);
+                String body = JSON.toJSONString(Mission);
 
-        // System.out.println(body);
+                // System.out.println(body);
 
-        MvcResult result = mockMvc
-                .perform(MockMvcRequestBuilders.post("/mission/addMission")
-                        .contentType(MediaType.APPLICATION_JSON_VALUE).content(body).header("Authorization", token))
-                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
-        System.out.println(result.getResponse().getContentAsString());
+                MvcResult result = mockMvc
+                                .perform(MockMvcRequestBuilders.post("/mission/addMission")
+                                                .contentType(MediaType.APPLICATION_JSON_VALUE).content(body)
+                                                .header("Authorization", token))
+                                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
+                                .andReturn();
+                System.out.println(result.getResponse().getContentAsString());
 
-        // System.out.println(result.getResponse().getContentAsString());
-        String json = result.getResponse().getContentAsString();
-        Mission = JSON.parseObject(json, Mission.class);
-        return Mission;
-    }
+                // System.out.println(result.getResponse().getContentAsString());
+                String json = result.getResponse().getContentAsString();
+                Mission = JSON.parseObject(json, Mission.class);
+                return Mission;
+        }
 
-    @Test
-    @Transactional
-    @Rollback(value = true)
-    @DisplayName("File: MissionController Method: findMissionByMissionId")
-    public void findMissionByMissionId() throws Exception {
-        String token = getTOKEN();
-        Mission addedMission = addMissionBeforeTest(token);
-        MvcResult result = mockMvc
-                .perform(get("/mission/getMission?missionId=" + addedMission.getMissionId())
-                        .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
-                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
-        System.out.println(result.getResponse().getContentAsString());
-    }
+        @Test
+        @Transactional
+        @Rollback(value = true)
+        @DisplayName("File: MissionController Method: findMissionByMissionId")
+        public void findMissionByMissionId() throws Exception {
+                String token = getTOKEN();
+                Mission addedMission = addMissionBeforeTest(token);
+                MvcResult result = mockMvc.perform(get("/mission/getMission?missionId=" + addedMission.getMissionId())
+                                .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
+                                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
+                                .andReturn();
+                System.out.println(result.getResponse().getContentAsString());
+        }
 
-    @Test
-    @Transactional
-    @Rollback(value = true)
-    @DisplayName("File: MissionController Method: addNewMission")
-    public void addNewMission() throws Exception {
-        String token = getTOKEN();
-        Mission Mission = new Mission("addNewMission", "addNewMission");
-        MissionDetails MissionDetails = new MissionDetails();
-        MissionDetails.setMissionDescription("addNewMission");
-        Mission.setMissionDetails(MissionDetails);
+        @Test
+        @Transactional
+        @Rollback(value = true)
+        @DisplayName("File: MissionController Method: addNewMission")
+        public void addNewMission() throws Exception {
+                String token = getTOKEN();
+                Mission Mission = new Mission("addNewMission", "addNewMission");
+                MissionDetails MissionDetails = new MissionDetails();
+                MissionDetails.setMissionDescription("addNewMission");
+                Mission.setMissionDetails(MissionDetails);
 
-        String body = JSON.toJSONString(Mission);
-        MvcResult result = mockMvc
-                .perform(MockMvcRequestBuilders.post("/mission/addMission")
-                        .contentType(MediaType.APPLICATION_JSON_VALUE).content(body).header("Authorization", token))
-                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
-        System.out.println(result.getResponse().getContentAsString());
-    }
+                String body = JSON.toJSONString(Mission);
+                MvcResult result = mockMvc
+                                .perform(MockMvcRequestBuilders.post("/mission/addMission")
+                                                .contentType(MediaType.APPLICATION_JSON_VALUE).content(body)
+                                                .header("Authorization", token))
+                                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
+                                .andReturn();
+                System.out.println(result.getResponse().getContentAsString());
+        }
 
-    @Test
-    @Transactional
-    @Rollback(value = true)
-    @DisplayName("File: MissionController Method: updateMission")
-    public void updateMission() throws Exception {
-        String token = getTOKEN();
-        Mission addedMission = addMissionBeforeTest(token);
-        Mission Mission = new Mission("updateMission", "updateMission");
-        MissionDetails MissionDetails = new MissionDetails(addedMission.getMissionId(), "updateMission");
-        Mission.setMissionDetails(MissionDetails);
-        Mission.setMissionId(addedMission.getMissionId());
+        @Test
+        @Transactional
+        @Rollback(value = true)
+        @DisplayName("File: MissionController Method: updateMission")
+        public void updateMission() throws Exception {
+                String token = getTOKEN();
+                Mission addedMission = addMissionBeforeTest(token);
+                Mission Mission = new Mission("updateMission", "updateMission");
+                MissionDetails MissionDetails = new MissionDetails(addedMission.getMissionId(), "updateMission");
+                Mission.setMissionDetails(MissionDetails);
+                Mission.setMissionId(addedMission.getMissionId());
 
-        String body = JSON.toJSONString(Mission);
-        MvcResult result = mockMvc
-                .perform(get("/mission/updateMission?missionId=" + addedMission.getMissionId())
-                        .contentType(MediaType.APPLICATION_JSON_VALUE).content(body).header("Authorization", token))
-                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
-        System.out.println(result.getResponse().getContentAsString());
-    }
+                String body = JSON.toJSONString(Mission);
+                MvcResult result = mockMvc
+                                .perform(get("/mission/updateMission?missionId=" + addedMission.getMissionId())
+                                                .contentType(MediaType.APPLICATION_JSON_VALUE).content(body)
+                                                .header("Authorization", token))
+                                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
+                                .andReturn();
+                System.out.println(result.getResponse().getContentAsString());
+        }
 
-    @Test
-    @Transactional
-    @Rollback(value = true)
-    @DisplayName("File: MissionController Method: getAllMissions")
-    public void getAllMissions() throws Exception {
-        String token = getTOKEN();
-        MvcResult result = mockMvc
-                .perform(get("/mission/getAllMissions").contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .header("Authorization", token))
-                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
-        System.out.println(result.getResponse().getContentAsString());
-    }
+        @Test
+        @Transactional
+        @Rollback(value = true)
+        @DisplayName("File: MissionController Method: getAllMissions")
+        public void getAllMissions() throws Exception {
+                String token = getTOKEN();
+                MvcResult result = mockMvc
+                                .perform(get("/mission/getAllMissions").contentType(MediaType.APPLICATION_JSON_VALUE)
+                                                .header("Authorization", token))
+                                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
+                                .andReturn();
+                System.out.println(result.getResponse().getContentAsString());
+        }
 
-    @Test
-    @Transactional
-    @Rollback(value = true)
-    @DisplayName("File: MissionController Method: deleteMissions")
-    public void deleteMissions() throws Exception {
-        String token = getTOKEN();
-        Mission addedMission = addMissionBeforeTest(token);
-        MvcResult result = mockMvc
-                .perform(get("/mission/deleteMissions?missionIds=" + addedMission.getMissionId())
-                        .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
-                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
-        System.out.println(result.getResponse().getContentAsString());
-    }
+        @Test
+        @Transactional
+        @Rollback(value = true)
+        @DisplayName("File: MissionController Method: deleteMissions")
+        public void deleteMissions() throws Exception {
+                String token = getTOKEN();
+                Mission addedMission = addMissionBeforeTest(token);
+                MvcResult result = mockMvc
+                                .perform(get("/mission/deleteMissions?missionIds=" + addedMission.getMissionId())
+                                                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                                                .header("Authorization", token))
+                                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
+                                .andReturn();
+                System.out.println(result.getResponse().getContentAsString());
+        }
 
-    @Test
-    @Transactional
-    @Rollback(value = true)
-    @DisplayName("File: MissionController Method: deleteAllMissions")
-    public void deleteAllMissions() throws Exception {
-        String token = getTOKEN();
-        MvcResult result = mockMvc
-                .perform(get("/mission/deleteAllMissions").contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .header("Authorization", token))
-                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
-        System.out.println(result.getResponse().getContentAsString());
-    }
+        @Test
+        @Transactional
+        @Rollback(value = true)
+        @DisplayName("File: MissionController Method: deleteAllMissions")
+        public void deleteAllMissions() throws Exception {
+                String token = getTOKEN();
+                MvcResult result = mockMvc
+                                .perform(get("/mission/deleteAllMissions").contentType(MediaType.APPLICATION_JSON_VALUE)
+                                                .header("Authorization", token))
+                                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
+                                .andReturn();
+                System.out.println(result.getResponse().getContentAsString());
+        }
 
-    @Test
-    @Transactional
-    @Rollback(value = true)
-    @DisplayName("File: MissionController Method: deleteMission")
-    public void deleteMission() throws Exception {
-        String token = getTOKEN();
-        Mission addedMission = addMissionBeforeTest(token);
-        MvcResult result = mockMvc
-                .perform(get("/mission/deleteMission?missionId=" + addedMission.getMissionId())
-                        .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
-                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
-        System.out.println(result.getResponse().getContentAsString());
-    }
+        @Test
+        @Transactional
+        @Rollback(value = true)
+        @DisplayName("File: MissionController Method: deleteMission")
+        public void deleteMission() throws Exception {
+                String token = getTOKEN();
+                Mission addedMission = addMissionBeforeTest(token);
+                MvcResult result = mockMvc
+                                .perform(get("/mission/deleteMission?missionId=" + addedMission.getMissionId())
+                                                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                                                .header("Authorization", token))
+                                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
+                                .andReturn();
+                System.out.println(result.getResponse().getContentAsString());
+        }
 
+        @Test
+        @Transactional
+        @Rollback(value = true)
+        @DisplayName("File: ActivityController Method: ListPage")
+        public void ListPage() throws Exception {
+                String token = getTOKEN();
+                // Activity addedActivity = addActivityBeforeTest(token);
+
+                ListRequest listRequest = new ListRequest();
+                listRequest.setPageSize(10);
+                listRequest.setPageToken(1);
+
+                String body = JSON.toJSONString(listRequest);
+                System.out.println(body);
+                MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/activity/List").content(body)
+                                .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
+                                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
+                                .andReturn();
+                System.out.println(result.getResponse().getContentAsString());
+        }
 }
