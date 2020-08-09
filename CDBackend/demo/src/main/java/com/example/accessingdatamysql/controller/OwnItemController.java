@@ -30,22 +30,22 @@ public class OwnItemController {
   private UserService UserService;
 
   @RequestMapping(value = "/getOwnItem")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public OwnItem findOwnItemByOwnItemId(@RequestParam("ownItemId") Integer ownItemId) {
     return OwnItemService.getOneOwnItem(ownItemId);
   }
 
   @RequestMapping(value = "/addOwnItem")
-  @PreAuthorize("hasRole('ROLE_ADMIN') OR #newOwnItem.userName == authentication.name")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public @ResponseBody OwnItem addNewOwnItem(@RequestBody JSONObject newOwnItem) {
     OwnItem ownItem = JSON.parseObject(newOwnItem.getString("OwnItem"), OwnItem.class);
     return OwnItemService.addNewOwnItem(ownItem);
   }
 
   @RequestMapping(value = "/updateOwnItem")
-  @PreAuthorize("hasRole('ROLE_ADMIN') OR #updateOwnItem.userName == authentication.name")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public @ResponseBody OwnItem updateOwnItem(@RequestBody JSONObject updateOwnItem) {
-    OwnItem ownItem = JSON.parseObject(updateOwnItem.getString("OwnItem"), OwnItem.class);
-    return OwnItemService.updateOwnItem(ownItem);
+    return OwnItemService.updateOwnItem(JSON.parseObject(updateOwnItem.getString("OwnItem"), OwnItem.class));
   }
 
   // 获取指定页数的数据
@@ -53,7 +53,7 @@ public class OwnItemController {
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public JSONObject ListPage(@RequestBody ListRequest ListRequest) {
     ListRequest.setPageSize(general_page_size);
-    String request = JSON.toJSONString(ListRequest);
+    final String request = JSON.toJSONString(ListRequest);
     System.out.print(request);
     JSONObject response = OwnItemService.ListPage(ListRequest);
     return response;
@@ -84,4 +84,11 @@ public class OwnItemController {
     return OwnItemService.deleteOwnItem(userId, itemId);
   }
 
+  // 获取某一用户的所有拥有道具关系
+  @RequestMapping(value = "/getAllOwnItemsByUserName")
+  @PreAuthorize("hasRole('ROLE_ADMIN') OR #userName == authentication.name")
+  public List<OwnItem> getAllOwnItemsByUserName(@RequestParam("userName") String userName) {
+    final Integer userId = UserService.getOneUserByUserName(userName).getUserId();
+    return OwnItemService.getAllOwnItemsByUserId(userId);
+  }
 }
