@@ -114,21 +114,6 @@ export default {
         callback()
       }
     };
-    const validateSourceUri = (rule, value, callback) => {
-      if (value) {
-        if (validURL(value)) {
-          callback()
-        } else {
-          this.$message({
-            message: '外链url填写不正确',
-            type: 'error'
-          });
-          callback(new Error('外链url填写不正确'))
-        }
-      } else {
-        callback()
-      }
-    };
     return {
       limit: false,
       postForm: Object.assign({}, defaultForm),
@@ -138,15 +123,9 @@ export default {
         // image_uri: [{ validator: validateRequire }],
         title: [{ validator: validateRequire }],
         content: [{ validator: validateRequire }],
-        source_uri: [{ validator: validateSourceUri, trigger: 'blur' }]
       },
       tempRoute: {},
       displayTime: undefined
-    }
-  },
-  computed: {
-    contentShortLength() {
-      return this.postForm.content_short.length
     }
   },
   created() {
@@ -207,11 +186,7 @@ export default {
     };
 
 
-      request({
-        url: 'activity/addActivity',
-        method: 'post',
-        data: JSON.stringify(postData)
-      }).then(response => {
+      request.post('activity/addActivity', JSON.stringify(postData)).then(response => {
         if (response.data) {
           //
           this.resetArticle();

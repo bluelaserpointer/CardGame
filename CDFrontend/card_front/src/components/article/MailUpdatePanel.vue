@@ -123,18 +123,16 @@
       }
 
     },
-    computed: {
-      contentShortLength() {
-        return this.postForm.content_short.length
-      }
-    },
     watch:{
       updateContent:{
         handler(newVal, oldVal)
         {
           this.postForm.image_uri = newVal.mailImg;
           this.postForm.title = newVal.mailName;
-          this.$refs.editor.setContent(newVal.mailDescription);
+          if(newVal.mailDescription)
+            this.$refs['editor'].setContent(newVal.mailDescription);
+          else
+            this.$refs['editor'].setContent('');
         },
         deep:true
       },
@@ -150,7 +148,12 @@
 
       this.postForm.image_uri = this.updateContent.mailImg;
       this.postForm.title = this.updateContent.mailName;
-      this.$refs.editor.setContent(this.updateContent.mailDescription);
+      this.$nextTick(() => {
+        if(this.updateContent.mailDescription)
+          this.$refs['editor'].setContent(this.updateContent.mailDescription);
+        else
+          this.$refs['editor'].setContent('');
+      });
 
       this.tempRoute = Object.assign({}, this.$route)
     },
@@ -174,11 +177,7 @@
         postData.append('userName', localStorage.getItem('AdminName'));
         postData.append('password', this.confirmPassword);
 
-        request({
-          url: 'user/confirmDelete',
-          method: 'post',
-          data: postData
-        }).then(response => {
+        request.post('user/confirmDelete', postData).then(response => {
           if (response.data) {
             _this.confirmDelete = true
           } else {
@@ -196,11 +195,7 @@
         let _this = this;
         postData.append('mailId', this.updateContent.mailId);
 
-        request({
-          url: 'mail/deleteMail',
-          method: 'post',
-          data: postData
-        }).then(response => {
+        request.post('mail/deleteMail', postData).then(response => {
           if (response.data) {
             _this.deleteVisible = false;
             _this.$emit('getList', this.listQuery.page, this.listQuery.limit);
@@ -233,11 +228,7 @@
           }
         };
 
-        request({
-          url: 'mail/updateMail',
-          method: 'post',
-          data: JSON.stringify(postData)
-        }).then(response => {
+        request.post('mail/updateMail', JSON.stringify(postData)).then(response => {
           if (response.data) {
             //
             _this.$emit('getList', this.listQuery.page, this.listQuery.limit);

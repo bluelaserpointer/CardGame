@@ -135,20 +135,18 @@
       }
 
     },
-    computed: {
-      contentShortLength() {
-        return this.postForm.content_short.length
-      }
-    },
     watch:{
       updateContent:{
         handler(newVal, oldVal)
         {
           this.postForm.image_uri = newVal.activityImg;
           this.postForm.title = newVal.activityName;
-          this.$refs.editor.setContent(newVal.activityDescription);
           this.limit = newVal.type === "true";
           this.displayTime = newVal.start;
+          if(newVal.activityDescription)
+            this.$refs['editor'].setContent(newVal.activityDescription);
+          else
+            this.$refs['editor'].setContent('');
         },
         deep:true
       },
@@ -160,9 +158,15 @@
     created() {
       this.postForm.image_uri = this.updateContent.activityImg;
       this.postForm.title = this.updateContent.activityName;
-      this.$refs.editor.setContent(this.updateContent.activityDescription);
       this.limit = this.updateContent.type === "true";
       this.displayTime = this.updateContent.start;
+
+      this.$nextTick(() => {
+        if(this.updateContent.activityDescription)
+          this.$refs['editor'].setContent(this.updateContent.activityDescription);
+        else
+          this.$refs['editor'].setContent('');
+      });
 
       this.tempRoute = Object.assign({}, this.$route)
     },
@@ -186,11 +190,7 @@
         postData.append('userName', localStorage.getItem('AdminName'));
         postData.append('password', this.confirmPassword);
 
-        request({
-          url: 'user/confirmDelete',
-          method: 'post',
-          data: postData
-        }).then(response => {
+        request.post('user/confirmDelete', postData).then(response => {
           if (response.data) {
             _this.confirmDelete = true
           } else {
@@ -208,11 +208,7 @@
         let _this = this;
         postData.append('activityId', this.updateContent.activityId);
 
-        request({
-          url: 'activity/deleteActivity',
-          method: 'post',
-          data: postData
-        }).then(response => {
+        request.post('activity/deleteActivity', postData).then(response => {
           if (response.data) {
             _this.deleteVisible = false;
             _this.$emit('getList', this.listQuery.page, this.listQuery.limit);
@@ -257,11 +253,7 @@
           }
         };
 
-        request({
-          url: 'activity/updateActivity',
-          method: 'post',
-          data: postData
-        }).then(response => {
+        request.post('activity/updateActivity', postData).then(response => {
           if (response.data) {
             //
             _this.$emit('getList', this.listQuery.page, this.listQuery.limit);

@@ -146,21 +146,6 @@
           callback()
         }
       };
-      const validateSourceUri = (rule, value, callback) => {
-        if (value) {
-          if (validURL(value)) {
-            callback()
-          } else {
-            this.$message({
-              message: '外链url填写不正确',
-              type: 'error'
-            });
-            callback(new Error('外链url填写不正确'))
-          }
-        } else {
-          callback()
-        }
-      };
       return {
         postForm: Object.assign({}, defaultForm),
         loading: false,
@@ -169,7 +154,6 @@
           // image_uri: [{ validator: validateRequire }],
           title: [{ validator: validateRequire }],
           content: [{ validator: validateRequire }],
-          source_uri: [{ validator: validateSourceUri, trigger: 'blur' }]
         },
         tempRoute: {},
         userList: [],
@@ -191,11 +175,6 @@
         this.targetChosen = newVal.length > 0;
       }
     },
-    computed: {
-      contentShortLength() {
-        return this.postForm.content_short.length
-      }
-    },
     created() {
       // Why need to make a copy of this.$route here?
       // Because if you enter this page and quickly switch tag, may be in the execution of the setTagsViewTitle function, this.$route is no longer pointing to the current page
@@ -210,11 +189,7 @@
           pageToken: page,
           pageSize: limit
         };
-        request({
-          url: 'user/List',
-          method: 'post',
-          data: postData
-        }).then(response =>
+        request.post('user/List', postData).then(response =>
         {
           if(response.data)
           {
@@ -225,33 +200,36 @@
           }
         })
       },
-      handleSelectAll(){
-        this.handleClearAll();
-        for(let i in this.userList)
-        {
-          this.sendList.push(this.userList[i]);
-        }
-      },
-      handleClearAll(){
-        this.sendList = [];
-      },
+
+      // handleSelectAll(){
+      //   this.handleClearAll();
+      //   for(let i in this.userList)
+      //   {
+      //     this.sendList.push(this.userList[i]);
+      //   }
+      // },
+      // handleClearAll(){
+      //   this.sendList = [];
+      // },
+
       handleSendUser(row)
       {
         this.sendUser = row.userId;
       },
-      handleSendSrc(row)
-      {
-        let index = this.sendList.indexOf(row.userId);
-        if(index >= 0){
-          this.sendList.splice(index, 1);
-        }else{
-          this.sendList.push(row.userId);
-        }
-      },
-      handleSendDes(row)
-      {
-        this.sendList.splice(this.sendList.indexOf(row), 1);
-      },
+
+      // handleSendSrc(row)
+      // {
+      //   let index = this.sendList.indexOf(row.userId);
+      //   if(index >= 0){
+      //     this.sendList.splice(index, 1);
+      //   }else{
+      //     this.sendList.push(row.userId);
+      //   }
+      // },
+      // handleSendDes(row)
+      // {
+      //   this.sendList.splice(this.sendList.indexOf(row), 1);
+      // },
 
       uploadCover() {
         const _this = this;
@@ -272,6 +250,7 @@
         this.sendList = [];
       },
       submitForm() {
+
         // if(!this.targetChosen)
         // {
         //   this.$message.error('Target not chosen!');
@@ -292,13 +271,8 @@
           }
         };
 
-        request({
-          url: 'mail/addMail',
-          method: 'post',
-          data: JSON.stringify(postData)
-        }).then(response => {
+        request.post('mail/addMail', JSON.stringify(postData)).then(response => {
           if (response.data) {
-            //
             this.resetArticle();
             this.sendMail(response.data.mailId);
           } else {
@@ -316,22 +290,14 @@
         postData.append('mailId', mailId);
         if(!this.type)
         {
-          request({
-            url: 'mail/sendMailToAllUsers',
-            method: 'post',
-            data: postData
-          }).then(response => {
+          request.post('mail/sendMailToAllUsers', postData).then(response => {
 
           }).catch(response => {
 
           })
         }else{
           postData.append('userId', this.sendUser);
-          request({
-            url: 'mail/sendMail',
-            method: 'post',
-            data: postData
-          }).then(response => {
+          request.post('mail/sendMail', postData).then(response => {
 
           }).catch(response => {
 

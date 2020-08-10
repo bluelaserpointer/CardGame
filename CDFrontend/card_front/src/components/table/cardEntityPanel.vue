@@ -245,7 +245,7 @@ export default {
     deleteVisible() {
       this.confirmDelete = false;
       this.confirmPassword = '';
-    } // untested
+    }
   },
   created() {
     this.getList(1, this.listQuery.limit);
@@ -259,17 +259,17 @@ export default {
         pageToken: page,
         pageSize: limit
       };
-      request({
-        url: 'card/List',
-        method: 'post',
-        data: postData
-      }).then( response => {
+      request.post('card/List', postData).then( response => {
+        console.log("In response");
         if(response.data) {
           _this.list = response.data.result;
+          console.log("In if1");
+          console.log(_this.list);
           _this.listQuery.total = response.data.totalPages;
           _this.watchList();
         }else
         {
+          console.log("In if2");
           this.$message.error('Fetching Data Failed!');
         }
       })
@@ -291,11 +291,7 @@ export default {
       postData.append('userName', localStorage.getItem('AdminName'));
       postData.append('password', this.confirmPassword);
 
-      request({
-        url: 'user/confirmDelete',
-        method: 'post',
-        data: postData
-      }).then(response => {
+      request.post('user/confirmDelete', postData).then(response => {
         if (response.data) {
           _this.confirmDelete = true
         } else {
@@ -313,11 +309,7 @@ export default {
       const _this = this;
       postData.append('cardId', this.temp.cardId);
 
-      request({
-        url: 'card/deleteCard',
-        method: 'post',
-        data: postData
-      }).then(response => {
+      request.post('card/deleteCard',postData).then(response => {
         if (response.data) {
           _this.panelVisible = false;
           _this.deleteVisible = false;
@@ -356,54 +348,92 @@ export default {
       this.dialogStatus = 'create';
       this.panelVisible = true;
       this.$nextTick(() => {
-        _this.$refs.temp.clearValidate()
+        _this.$refs['temp'].clearValidate()
       })
     },
     createData(formName) {
       const _this = this;
-      this.$refs.temp.validate((valid) => {
+      this.$refs['temp'].validate((valid) => {
         if (valid) {
-          let postData = {
-            cardName: this.temp.cardName,
-            rarity: this.temp.rarity,
-            healthPoint: this.temp.healthPoint,
-            attack: this.temp.attack,
-            defense: this.temp.defense,
-            attackRange: this.temp.attackRange,
-            cd: this.temp.cd,
-            speed: this.temp.speed,
-            type: this.temp.type,
-            cardDetails: {
-              cardImg: this.temp.cardImg,
-              cardDescription: this.temp.cardDescription,
-              shortDescription: this.temp.shortDescription,
-            }
-          };
-
-          request({
-            url: 'card/addCard',
-            method: 'post',
-            data: JSON.stringify(postData)
-          }).then(response => {
-            if (response.data) {
-              // TODO: SHORTEN THE REQUESTS
-              _this.getList(this.listQuery.page, this.listQuery.limit);
-              _this.panelVisible = false;
-              _this.resetTemp();
-            }else {
-              this.$message.error('Creating Data failed!');
-            }
-          })
-            .catch(error =>
-              {
-                this.$message.error('Creating Data failed!');
-              }
-            );
+          this.submitCreate();
         } else {
           this.$message.error('Form Invalid!');
           return false;
         }
       });
+    },
+    submitCreate(){
+      let _this = this;
+      let postData = {
+        cardName: this.temp.cardName,
+        rarity: this.temp.rarity,
+        healthPoint: this.temp.healthPoint,
+        attack: this.temp.attack,
+        defense: this.temp.defense,
+        attackRange: this.temp.attackRange,
+        cd: this.temp.cd,
+        speed: this.temp.speed,
+        type: this.temp.type,
+        cardDetails: {
+          cardImg: this.temp.cardImg,
+          cardDescription: this.temp.cardDescription,
+          shortDescription: this.temp.shortDescription,
+        }
+      };
+
+      request.post('card/addCard', JSON.stringify(postData)).then(response => {
+        console.log("In response addCard");
+        if (response.data) {
+          // TODO: SHORTEN THE REQUESTS
+          console.log("In addCard");
+          _this.panelVisible = false;
+          _this.getList(this.listQuery.page, this.listQuery.limit);
+          _this.resetTemp();
+        }else {
+          this.$message.error('Creating Data failed!');
+        }
+      })
+        .catch(error =>
+          {
+            this.$message.error('Creating Data failed!');
+          }
+        );
+    },
+    submitUpdate(){
+      const _this = this;
+      let postData = {
+        cardId: this.temp.cardId,
+        cardName: this.temp.cardName,
+        rarity: this.temp.rarity,
+        healthPoint: this.temp.healthPoint,
+        attack: this.temp.attack,
+        defense: this.temp.defense,
+        attackRange: this.temp.attackRange,
+        cd: this.temp.cd,
+        speed: this.temp.speed,
+        type: this.temp.type,
+        cardDetails: {
+          cardId: this.temp.cardId,
+          cardImg: this.temp.cardImg,
+          cardDescription: this.temp.cardDescription,
+          shortDescription: this.temp.shortDescription,
+        }
+      };
+
+      request.post('card/updateCard',JSON.stringify(postData)).then(response => {
+        if(response.data) {
+          _this.getList(this.listQuery.page, this.listQuery.limit);
+          _this.panelVisible = false;
+          _this.resetTemp();
+        }else {
+          this.$message.error('Updating Data failed!');
+        }
+      })
+        .catch(error =>
+          {
+            this.$message.error('Updating Data failed!');
+          }
+        );
     },
     handleUpdate(row) {
       let _this = this;
@@ -411,52 +441,13 @@ export default {
       this.dialogStatus = 'update';
       this.panelVisible = true;
       this.$nextTick(() => {
-        _this.$refs.temp.clearValidate()
+        _this.$refs['temp'].clearValidate()
       })
     },
     updateData(formName) {
-
-      this.$refs.temp.validate((valid) => {
+      this.$refs['temp'].validate((valid) => {
         if (valid) {
-          const _this = this;
-
-          let postData = {
-            cardId: this.temp.cardId,
-            cardName: this.temp.cardName,
-            rarity: this.temp.rarity,
-            healthPoint: this.temp.healthPoint,
-            attack: this.temp.attack,
-            defense: this.temp.defense,
-            attackRange: this.temp.attackRange,
-            cd: this.temp.cd,
-            speed: this.temp.speed,
-            type: this.temp.type,
-            cardDetails: {
-              cardId: this.temp.cardId,
-              cardImg: this.temp.cardImg,
-              cardDescription: this.temp.cardDescription,
-              shortDescription: this.temp.shortDescription,
-            }
-          };
-
-          request({
-            url: 'card/updateCard',
-            method: 'post',
-            data: JSON.stringify(postData)
-          }).then(response => {
-            if(response.data) {
-              _this.getList(this.listQuery.page, this.listQuery.limit);
-              _this.panelVisible = false;
-              _this.resetTemp();
-            }else {
-              this.$message.error('Updating Data failed!');
-            }
-          })
-            .catch(error =>
-              {
-                this.$message.error('Updating Data failed!');
-              }
-            );
+          this.submitUpdate();
         } else {
           this.$message.error('Form Invalid!');
           return false;
@@ -471,14 +462,16 @@ export default {
       reader.readAsDataURL(file.files[0]);
       reader.onload = function() {
         _this.temp.cardImg = this.result;
+        console.log("result");
+        console.log(this.result);
       }
-    },  // untested
+    },
     sortChange(data) {
       const { prop, order } = data;
       if (prop === 'id') {
         this.sortByID(order)
       }
-    },  // untested
+    },
     sortByID(order) {
       if (order === 'ascending') {
         this.listQuery.sort = '+id'
@@ -486,24 +479,16 @@ export default {
         this.listQuery.sort = '-id'
       }
       this.handleFilter()
-    },  // untested
+    },
     getSortClass: function(key) {
       const sort = this.listQuery.sort;
       return sort === `+${key}` ? 'ascending' : 'descending'
-    } // untested
+    },
 
-    // handleFilter() {
-    //   this.listQuery.page = 1;
-    //   this.getList()
-    // },  // untested
-    // handleModifyStatus(row, status) {
-    //   this.$message({
-    //     message: '操作Success',
-    //     type: 'success'
-    //   });
-    //   row.status = status
-    // },  // untested
-
+    handleFilter() {
+      this.listQuery.page = 1;
+      this.getList()
+    },
   }
 }
 </script>

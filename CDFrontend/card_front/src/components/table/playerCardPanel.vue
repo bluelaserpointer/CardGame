@@ -205,16 +205,6 @@ export default {
   name: 'PlayerCardPanel',
   components: { Pagination },
   directives: { waves },
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        published: 'success',
-        draft: 'info',
-        deleted: 'danger'
-      };
-      return statusMap[status]
-    }
-  },
   data() {
     return {
       search: '',
@@ -308,11 +298,7 @@ export default {
         pageToken: page,
         pageSize: limit
       };
-      request({
-        url: 'ownCard/List',
-        method: 'post',
-        data: postData
-      }).then(response => {
+      request.post('ownCard/List', postData).then(response => {
         if(response.data) {
           this.list = response.data.result;
           this.listQuery.total = response.data.totalPages;
@@ -347,90 +333,86 @@ export default {
       this.dialogStatus = 'create';
       this.panelVisible = true;
       this.$nextTick(() => {
-        this.$refs.temp.clearValidate()
+        this.$refs['temp'].clearValidate()
       })
     },
+    submitCreate(){
+      let postData = new FormData();
+      postData.append('cardId', this.temp.cardId);
+      postData.append('userId', this.temp.userId);
+
+      request.post('ownCard/addOwnCard', postData).then(response => {
+        if (response.data) {
+          this.getList(this.listQuery.page, this.listQuery.limit);
+          this.panelVisible = false;
+        } else {
+          this.$message.error('Creating Data failed!');
+        }
+      })
+        .catch(error =>
+          {
+            this.$message.error('Creating Data failed!');
+          }
+        );
+    },
     createData(formName) {
-      this.$refs.temp.validate((valid) => {
+      this.$refs['temp'].validate((valid) => {
         if (valid) {
-
-          let postData = new FormData();
-          postData.append('cardId', this.temp.cardId);
-          postData.append('userId', this.temp.userId);
-
-          request({
-            url: 'ownCard/addOwnCard',
-            method: 'post',
-            data: postData
-          }).then(response => {
-            if (response.data) {
-              this.getList(this.listQuery.page, this.listQuery.limit);
-              this.panelVisible = false;
-            } else {
-              this.$message.error('Creating Data failed!');
-            }
-          })
-            .catch(error =>
-              {
-                this.$message.error('Creating Data failed!');
-              }
-            );
+          this.submitCreate();
         } else {
           this.$message.error('Form Invalid!');
           return false;
         }
       });
-
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row); // copy obj
       this.dialogStatus = 'update';
       this.panelVisible = true;
       this.$nextTick(() => {
-        this.$refs.temp.clearValidate()
+        this.$refs['temp'].clearValidate()
       })
     },
+    submitUpdate(){
+      let postData = {
+        ownCardId: this.temp.ownCardId,
+        cardId: this.temp.cardId,
+        userId: this.temp.userId,
+        cardLevel: this.temp.cardLevel,
+        cardCurExp: this.temp.cardCurExp,
+        cardLevelLimit: this.temp.cardLevelLimit,
+        repetitiveOwns: this.temp.repetitiveOwns,
+        accquireDate: this.formatDate(this.temp.accquireDate),
+
+        enhancePoint: this.temp.enhancePoint,
+        leftPoints: this.temp.leftPoints,
+        enhanceHP: this.temp.enhanceHP,
+        enhanceAttack: this.temp.enhanceAttack,
+        enhanceDefense: this.temp.enhanceDefense,
+        enhanceAttackRange: this.temp.enhanceAttackRange,
+        enhanceCD: this.temp.enhanceCD,
+        enhanceSpeed: this.temp.enhanceSpeed,
+      };
+
+      request.post('ownCard/updateOwnCard', postData).then(response => {
+        if (response.data) {
+          this.getList(this.listQuery.page, this.listQuery.limit);
+          this.panelVisible = false;
+          this.resetTemp();
+        } else {
+          this.$message.error('Updating Data failed!');
+        }
+      })
+        .catch(error =>
+          {
+            this.$message.error('Updating Data failed!');
+          }
+        );
+    },
     updateData(formName) {
-      this.$refs.temp.validate((valid) => {
+      this.$refs['temp'].validate((valid) => {
         if (valid) {
-          let postData = {
-            ownCardId: this.temp.ownCardId,
-            cardId: this.temp.cardId,
-            userId: this.temp.userId,
-            cardLevel: this.temp.cardLevel,
-            cardCurExp: this.temp.cardCurExp,
-            cardLevelLimit: this.temp.cardLevelLimit,
-            repetitiveOwns: this.temp.repetitiveOwns,
-            accquireDate: this.formatDate(this.temp.accquireDate),
-
-            enhancePoint: this.temp.enhancePoint,
-            leftPoints: this.temp.leftPoints,
-            enhanceHP: this.temp.enhanceHP,
-            enhanceAttack: this.temp.enhanceAttack,
-            enhanceDefense: this.temp.enhanceDefense,
-            enhanceAttackRange: this.temp.enhanceAttackRange,
-            enhanceCD: this.temp.enhanceCD,
-            enhanceSpeed: this.temp.enhanceSpeed,
-          };
-
-          request({
-            url: 'ownCard/updateOwnCard',
-            method: 'post',
-            data: postData
-          }).then(response => {
-            if (response.data) {
-              this.getList(this.listQuery.page, this.listQuery.limit);
-              this.panelVisible = false;
-              this.resetTemp();
-            } else {
-              this.$message.error('Updating Data failed!');
-            }
-          })
-            .catch(error =>
-              {
-                this.$message.error('Updating Data failed!');
-              }
-            );
+          this.submitUpdate();
         } else {
           this.$message.error('Form Invalid!');
           return false;
@@ -444,11 +426,7 @@ export default {
       postData.append('userName', localStorage.getItem('AdminName'));
       postData.append('password', this.confirmPassword);
 
-      request({
-        url: 'user/confirmDelete',
-        method: 'post',
-        data: postData
-      }).then(response => {
+      request.post('user/confirmDelete', postData).then(response => {
         if (response.data) {
           _this.confirmDelete = true
         } else {
@@ -468,11 +446,7 @@ export default {
       postData.append('cardId', this.temp.cardId);
 
 
-      request({
-        url: 'ownCard/deleteOwnCard',
-        method: 'post',
-        data: postData
-      }).then(response => {
+      request.post('ownCard/deleteOwnCard', postData).then(response => {
         if (response.data) {
           _this.panelVisible = false;
           _this.deleteVisible = false;
@@ -491,13 +465,6 @@ export default {
     handleFilter() {
       this.listQuery.page = 1;
       this.getList(this.listQuery.page, this.listQuery.limit);
-    },
-    handleModifyStatus(row, status) {
-      this.$message({
-        message: '操作Success',
-        type: 'success'
-      });
-      row.status = status
     },
     sortChange(data) {
       const { prop, order } = data;

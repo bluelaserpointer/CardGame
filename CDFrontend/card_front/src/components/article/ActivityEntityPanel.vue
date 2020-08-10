@@ -75,16 +75,6 @@ export default {
   name: 'ActivityEntityPanel',
   components: {ActivityUpdatePanel, Pagination },
   directives: { waves },
-  // filters: {
-  //   statusFilter(status) {
-  //     const statusMap = {
-  //       published: 'success',
-  //       draft: 'info',
-  //       deleted: 'danger'
-  //     };
-  //     return statusMap[status]
-  //   }
-  // },
   data() {
     return {
       search: '',
@@ -150,11 +140,7 @@ export default {
         pageToken: page,
         pageSize: limit
       };
-      request({
-        url: 'activity/List',
-        method: 'post',
-        data: postData
-      }).then(response => {
+      request.post('activity/List', postData).then(response => {
         if(response.data) {
           this.panelVisible = false;
           this.list = response.data.result;
@@ -175,13 +161,6 @@ export default {
     handleFilter() {
       this.listQuery.page = 1;
       this.getList(this.listQuery.page, this.listQuery.limit);
-    },
-    handleModifyStatus(row, status) {
-      this.$message({
-        message: '操作Success',
-        type: 'success'
-      });
-      row.status = status
     },
     sortChange(data) {
       const { prop, order } = data;

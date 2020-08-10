@@ -359,16 +359,6 @@ export default {
   name: 'PhaseEditPanel',
   components: { Pagination },
   directives: { waves },
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        published: 'success',
-        draft: 'info',
-        deleted: 'danger'
-      };
-      return statusMap[status]
-    }
-  },
   data() {
     return {
       mapData: null,
@@ -599,20 +589,12 @@ export default {
         }
       }
 
-      request({
-        url: 'chapter/getChapterDetailsByChapter',
-        method: 'post',
-        data: postData
-      }).then(response => {
+      request.post( 'chapter/getChapterDetailsByChapter', postData).then(response => {
         if (response.data) {
 
           _this.chapterData = response.data;
 
-          request({
-            url: 'chapter/getChapterPhasesByChapter',
-            method: 'post',
-            data: postData
-          }).then(res => {
+          request.post( 'chapter/getChapterPhasesByChapter', postData).then(res => {
             console.log(res.data);
             _this.chapterPhaseData = res.data;
             _this.handleRefreshPhase(1);
@@ -624,30 +606,6 @@ export default {
       }).catch(error => {
         this.$message.error('Fetching ChapterDetails Failed!');
       });
-
-
-      // axios.post('http://localhost:8080/chapter/getChapterDetailsByChapter', postData).then(response => {
-      //   if (response.data) {
-      //
-      //     _this.chapterData = response.data;
-      //     // console.log(response.data);
-      //     axios.post('http://localhost:8080/chapter/getChapterPhasesByChapter', postData).then(res => {
-      //       console.log(res.data);
-      //         _this.chapterPhaseData = res.data;
-      //         _this.handleRefreshPhase(1);
-      //     })
-      //     // .catch(error => {
-      //     //   this.$message.error('Fetching ChapterPhases Failed!');
-      //     // });
-      //
-      //   }else{
-      //     // this.$message.error('Fetching Data Failed!');
-      //   }
-      // })
-      // .catch(error => {
-      //   this.$message.error('Fetching ChapterDetails Failed!');
-      // });
-
 
     },
 
@@ -705,11 +663,7 @@ export default {
       postData.append('phaseId', this.currPhase);
       postData.append('phaseData', JSON.stringify(chapterPhaseData));
 
-      request({
-        url: 'chapter/updateChapte',
-        method: 'post',
-        data: postData
-      }).then(response => {
+      request.post( 'chapter/updateChapte', postData).then(response => {
         if (response.data) {
           _this.chapterData = response.data
         }else{
@@ -721,17 +675,6 @@ export default {
           this.$message.error('Updating Data Failed!');
         })
 
-      // axios.post(`http://localhost:8080/chapter/updateChapter`, postData).then(response => {
-      //   if (response.data) {
-      //     _this.chapterData = response.data
-      //   }else{
-      //     this.$message.error('Updating Data Failed!');
-      //   }
-      //   this.handleRefreshPhase(this.currPhase)
-      // })
-      //   .catch(error => {
-      //     this.$message.error('Updating Data Failed!');
-      //   })
     },
 
     transObjToMap(arr)
@@ -754,11 +697,7 @@ export default {
       postData.append('awardItems', JSON.stringify(this.transObjToMap(this.chapterAwardItems)));
       postData.append('awardCards', JSON.stringify(this.chapterAwardCards));
 
-      request({
-        url: 'chapter/updateChapterAwards',
-        method: 'post',
-        data: postData
-      }).then(response => {
+      request.post( 'chapter/updateChapterAwards', postData).then(response => {
         if (response.data) {
           this.chapterList = response.data;
         }else{
@@ -785,11 +724,7 @@ export default {
       postData.append('awardCards', JSON.stringify(this.phaseAwardCards));
 
 
-      request({
-        url: 'chapter/updateChapterPhaseAwards',
-        method: 'post',
-        data: postData
-      }).then(response => {
+      request.post( 'chapter/updateChapterPhaseAwards', postData).then(response => {
         if (response.data) {
           this.chapterPhaseData = response.data;
         }else{
@@ -807,11 +742,7 @@ export default {
         pageToken: page,
         pageSize: limit
       };
-      request({
-        url: 'item/List',
-        method: 'post',
-        data: postData
-      }).then(res => {
+      request.post( 'item/List', postData).then(res => {
         if(res.data) {
           this.itemAwardList = res.data.result;
           this.itemAwardListQuery.total = res.data.totalPages;
@@ -829,11 +760,7 @@ export default {
         pageToken: page,
         pageSize: limit
       };
-      request({
-        url: 'card/List',
-        method: 'post',
-        data: postData
-      }).then(res => {
+      request.post( 'card/List', postData).then(res => {
         if(res.data) {
           this.cardAwardList = res.data.result;
           this.cardAwardListQuery.total = res.data.totalPages;
@@ -850,11 +777,7 @@ export default {
         pageToken: page,
         pageSize: limit
       };
-      request({
-        url: 'card/List',
-        method: 'post',
-        data: postData
-      }).then(res => {
+      request.post( 'card/List', postData).then(res => {
         if(res.data) {
           this.cardList = res.data.result;
           this.cardListQuery.total = res.data.totalPages;
@@ -867,10 +790,7 @@ export default {
     },
 
     getList() {
-      request({
-        url: 'chapter/getAllChapters',
-        method: 'get',
-      }).then(response => {
+      request.get( 'chapter/getAllChapters').then(response => {
         if(response.data)
         {
           this.chapterList = response.data;

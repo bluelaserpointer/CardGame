@@ -130,17 +130,6 @@ export default {
   name: 'ItemEntityPanel',
   components: { Pagination },
   directives: { waves },
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        published: 'success',
-        draft: 'info',
-        deleted: 'danger'
-      };
-      return statusMap[status]
-    }
-
-  },
   data() {
     return {
       search: '',
@@ -209,11 +198,7 @@ export default {
       postData.append('userName', localStorage.getItem('AdminName'));
       postData.append('password', this.confirmPassword);
 
-      request({
-        url: 'user/confirmDelete',
-        method: 'post',
-        data: postData
-      }).then(response => {
+      request.post('user/confirmDelete', postData).then(response => {
         if (response.data) {
           _this.confirmDelete = true
         } else {
@@ -231,11 +216,7 @@ export default {
       const _this = this;
       postData.append('itemId', this.temp.itemId);
 
-      request({
-        url: 'item/deleteItem',
-        method: 'post',
-        data: postData
-      }).then(response => {
+      request.post('item/deleteItem', postData).then(response => {
         if (response.data) {
           _this.panelVisible = false;
           _this.deleteVisible = false;
@@ -269,11 +250,7 @@ export default {
         pageToken: page,
         pageSize: limit
       };
-      request({
-        url: 'item/List',
-        method: 'post',
-        data: postData
-      }).then( response => {
+      request.post('item/List', postData).then( response => {
         if(response.data) {
           _this.list = response.data.result;
           _this.listQuery.total = response.data.totalPages;
@@ -287,13 +264,6 @@ export default {
     handleFilter() {
       this.listQuery.page = 1;
       this.getList(this.listQuery.page, this.listQuery.limit);
-    },
-    handleModifyStatus(row, status) {
-      this.$message({
-        message: '操作Success',
-        type: 'success'
-      });
-      row.status = status
     },
     sortChange(data) {
       const { prop, order } = data;
@@ -323,94 +293,89 @@ export default {
       this.dialogStatus = 'create';
       this.panelVisible = true;
       this.$nextTick(() => {
-        this.$refs.temp.clearValidate()
+        this.$refs['temp'].clearValidate()
       })
     },
-    createData(formName) {
-      this.$refs.temp.validate((valid) => {
-        if (valid) {
-          let postData = {
-            itemName: this.temp.itemName,
-            price: this.temp.price,
-            itemDetails: {
-              itemImg: this.temp.itemImg,
-              itemDescription: this.temp.itemDescription
-            }
-          };
+    submitCreate(){
+      let postData = {
+        itemName: this.temp.itemName,
+        price: this.temp.price,
+        itemDetails: {
+          itemImg: this.temp.itemImg,
+          itemDescription: this.temp.itemDescription
+        }
+      };
 
-          request({
-            url: 'item/addItem',
-            method: 'post',
-            data: JSON.stringify(postData)
-          }).then(response => {
-            if (response.data) {
-              // TODO: SHORTEN THE REQUESTS
-              this.getList(this.listQuery.page, this.listQuery.limit);
-              this.panelVisible = false;
-            } else {
-              this.$message.error('Creating Data failed!');
-            }
-          })
-            .catch(error =>
-              {
-                this.$message.error('Creating Data failed!');
-              }
-            );
+      request.post('item/addItem', JSON.stringify(postData)).then(response => {
+        if (response.data) {
+          // TODO: SHORTEN THE REQUESTS
+          this.getList(this.listQuery.page, this.listQuery.limit);
+          this.panelVisible = false;
+        } else {
+          this.$message.error('Creating Data failed!');
+        }
+      })
+        .catch(error =>
+          {
+            this.$message.error('Creating Data failed!');
+          }
+        );
+    },
+    createData(formName) {
+      this.$refs['temp'].validate((valid) => {
+        if (valid) {
+          this.submitCreate();
         } else {
           this.$message.error('Form Invalid!');
           return false;
         }
       });
-
-
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row); // copy obj
       this.dialogStatus = 'update';
       this.panelVisible = true;
       this.$nextTick(() => {
-        this.$refs.temp.clearValidate()
+        this.$refs['temp'].clearValidate()
       })
     },
+    submitUpdate(){
+      const _this = this;
+
+      let postData = {
+        itemId: this.temp.itemId,
+        itemName: this.temp.itemName,
+        price: this.temp.price,
+        itemDetails: {
+          itemId: this.temp.itemId,
+          itemImg: this.temp.itemImg,
+          itemDescription: this.temp.itemDescription,
+        }
+      };
+
+      request.post('item/updateItem', JSON.stringify(postData)).then(response => {
+        if (response.data) {
+          this.getList(this.listQuery.page, this.listQuery.limit);
+          _this.panelVisible = false
+        } else {
+          this.$message.error('Updating Data failed!');
+        }
+      })
+        .catch(error =>
+          {
+            this.$message.error('Updating Data failed!');
+          }
+        );
+    },
     updateData(formName) {
-      this.$refs.temp.validate((valid) => {
+      this.$refs['temp'].validate((valid) => {
         if (valid) {
-          const _this = this;
-
-          let postData = {
-            itemId: this.temp.itemId,
-            itemName: this.temp.itemName,
-            price: this.temp.price,
-            itemDetails: {
-              itemId: this.temp.itemId,
-              itemImg: this.temp.itemImg,
-              itemDescription: this.temp.itemDescription,
-            }
-          };
-
-          request({
-            url: 'item/updateItem',
-            method: 'post',
-            data: JSON.stringify(postData)
-          }).then(response => {
-            if (response.data) {
-              this.getList(this.listQuery.page, this.listQuery.limit);
-              _this.panelVisible = false
-            } else {
-              this.$message.error('Updating Data failed!');
-            }
-          })
-            .catch(error =>
-              {
-                this.$message.error('Updating Data failed!');
-              }
-            );
+          this.submitUpdate();
         } else {
           this.$message.error('Form Invalid!');
           return false;
         }
       });
-
     },
     getSortClass: function(key) {
       const sort = this.listQuery.sort;
