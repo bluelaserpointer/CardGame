@@ -1,6 +1,6 @@
 package com.example.accessingdatamysql.repository;
 
-import com.example.accessingdatamysql.Classes.Pagination;
+import com.example.accessingdatamysql.Classes.ListPagination;
 import com.example.accessingdatamysql.entity.CrashReports;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import javax.transaction.Transactional;
 import java.util.List;
 
-public interface CrashReportsRepository extends JpaRepository<CrashReports, Integer>, Pagination<CrashReports> {
+public interface CrashReportsRepository extends JpaRepository<CrashReports, Integer>, ListPagination<CrashReports> {
     @Transactional
     @Query(value = "select * from crash_reports where cast(substr(record_time, 15, 2) as signed) <= 30 and record_time > DATE_SUB(NOW(),INTERVAL 6 MONTH) order by record_time", nativeQuery = true)
     List<CrashReports> findCrashReportsWithinHalfYear();

@@ -1,13 +1,11 @@
 package com.example.accessingdatamysql.dao;
 
-// import java.util.ArrayList;
 import java.util.List;
-// import java.util.Optional;
 
-import com.alibaba.fastjson.JSONObject;
+import com.example.accessingdatamysql.Classes.JSONPagination;
 import com.example.accessingdatamysql.entity.*;
 
-public interface MailDao {
+public interface MailDao extends JSONPagination {
         Mail getOneMail(Integer MailId);
 
         // Optional<MailDetails> findOneDetail(Integer id);
@@ -17,8 +15,6 @@ public interface MailDao {
         Mail addNewMail(Mail newMail);
 
         Mail updateMail(Mail updateMail);
-
-        JSONObject ListPage(Integer page_token, Integer page_size);
 
         List<Mail> getAllMails();
 

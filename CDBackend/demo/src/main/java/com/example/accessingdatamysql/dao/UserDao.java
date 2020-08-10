@@ -1,13 +1,11 @@
 package com.example.accessingdatamysql.dao;
 
-// import java.util.ArrayList;
 import java.util.List;
-// import java.util.Optional;
 
-import com.alibaba.fastjson.JSONObject;
+import com.example.accessingdatamysql.Classes.JSONPagination;
 import com.example.accessingdatamysql.entity.*;
 
-public interface UserDao {
+public interface UserDao extends JSONPagination {
         // 获取一个用户信息
         User getOneUser(Integer UserId);
 
@@ -19,9 +17,6 @@ public interface UserDao {
 
         // 获取所有用户信息
         List<User> getAllUsers();
-
-        // 获取指定页数的用户
-        JSONObject ListPage(Integer page_token, Integer page_size);
 
         // 删除部分用户
         String deleteUsers(List<Integer> UserIds);

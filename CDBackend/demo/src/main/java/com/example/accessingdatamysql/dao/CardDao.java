@@ -1,13 +1,10 @@
 package com.example.accessingdatamysql.dao;
 
-// import java.util.ArrayList;
 import java.util.List;
-// import java.util.Optional;
-
-import com.alibaba.fastjson.JSONObject;
+import com.example.accessingdatamysql.Classes.JSONPagination;
 import com.example.accessingdatamysql.entity.*;
 
-public interface CardDao {
+public interface CardDao extends JSONPagination {
         Card getOneCard(Integer cardId);
 
         // Optional<CardDetails> findOneDetail(Integer id);
@@ -17,8 +14,6 @@ public interface CardDao {
         Card addNewCard(Card newCard);
 
         Card updateCard(Card updateCard);
-
-        JSONObject ListPage(Integer page_token, Integer page_size);
 
         List<Card> getAllCards();
 

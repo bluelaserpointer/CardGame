@@ -1,20 +1,17 @@
 package com.example.accessingdatamysql.dao;
 
-import com.alibaba.fastjson.JSONObject;
+import com.example.accessingdatamysql.Classes.JSONPagination;
 import com.example.accessingdatamysql.entity.PveRecord;
 
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
-public interface PveRecordDao {
+public interface PveRecordDao extends JSONPagination {
     PveRecord addPveRecord(Integer userId, Integer chapterId, Integer phaseId, Integer result, String posRecord);
 
     PveRecord updatePveRecord(Integer pveRecordId, Integer userId, Integer chapterId, Integer phaseId, Integer result,
             Timestamp recordTime, String posRecord);
-
-    // 获取指定页数的用户
-    JSONObject ListPage(Integer page_token, Integer page_size);
 
     List<PveRecord> getAllPveRecords();
 

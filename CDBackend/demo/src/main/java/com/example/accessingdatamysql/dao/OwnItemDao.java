@@ -1,20 +1,16 @@
 package com.example.accessingdatamysql.dao;
 
-// import java.util.ArrayList;
 import java.util.List;
-// import java.util.Optional;
 
-import com.alibaba.fastjson.JSONObject;
+import com.example.accessingdatamysql.Classes.JSONPagination;
 import com.example.accessingdatamysql.entity.*;
 
-public interface OwnItemDao {
+public interface OwnItemDao extends JSONPagination {
         OwnItem getOneOwnItem(Integer OwnItemId);
 
         OwnItem addNewOwnItem(OwnItem newOwnItem);
 
         OwnItem updateOwnItem(OwnItem updateOwnItem);
-
-        JSONObject ListPage(Integer page_token, Integer page_size);
 
         List<OwnItem> getAllOwnItems();
 

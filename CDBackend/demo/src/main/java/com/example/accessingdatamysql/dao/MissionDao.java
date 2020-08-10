@@ -1,13 +1,11 @@
 package com.example.accessingdatamysql.dao;
 
-// import java.util.ArrayList;
 import java.util.List;
-// import java.util.Optional;
 
-import com.alibaba.fastjson.JSONObject;
+import com.example.accessingdatamysql.Classes.JSONPagination;
 import com.example.accessingdatamysql.entity.*;
 
-public interface MissionDao {
+public interface MissionDao extends JSONPagination {
         Mission getOneMission(Integer MissionId);
 
         // Optional<MissionDetails> findOneDetail(Integer id);
@@ -17,8 +15,6 @@ public interface MissionDao {
         Mission addNewMission(Mission newMission);
 
         Mission updateMission(Mission updateMission);
-
-        JSONObject ListPage(Integer page_token, Integer page_size);
 
         List<Mission> getAllMissions();
 
