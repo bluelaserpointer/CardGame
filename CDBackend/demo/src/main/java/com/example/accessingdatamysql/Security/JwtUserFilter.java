@@ -1,8 +1,8 @@
 package com.example.accessingdatamysql.Security;
 
-import com.example.accessingdatamysql.service.UserLoginRecordService;
 import com.example.accessingdatamysql.serviceimpl.UserLoginRecordServiceImpl;
 import com.example.accessingdatamysql.serviceimpl.UserServiceImpl;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -47,7 +47,11 @@ public class JwtUserFilter extends OncePerRequestFilter {
         if (authorizationHeader != null && authorizationHeader.startsWith(TOKEN_PREFIX)) {
             token = authorizationHeader.substring(7); // 获取token
 //            System.out.println("In parse branch1");
-            userName = jwtUtil.extractUsername(token); // 调用jwtUtil来从token中解析出用户名
+            try {
+                userName = jwtUtil.extractUsername(token); // 调用jwtUtil来从token中解析出用户名
+            } catch(ExpiredJwtException e) {
+                System.out.println("JwtUserFilter: received a expired token: " + e.getMessage());
+            }
 //            System.out.println("In parse branch2");
         }
 //        else{
