@@ -124,4 +124,10 @@ describe('PlayerItemPanel.vue', () => {
     expect(spyPost).toHaveBeenCalledTimes(8);
   });
 
+  it('PlayerItem Entity Panel Resolves Rest',  () => {
+    wrapper.vm.handleFilter();
+    wrapper.vm.sortChange({prop: 'id'});
+    wrapper.vm.sortByID('ascending');
+  });
+
 });

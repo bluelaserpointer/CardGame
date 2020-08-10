@@ -143,4 +143,10 @@ describe('PlayerEntityPanel.vue', () => {
   it('Player Entity Panel Resolves updateData result',  () => {
     expect(spyPost).toHaveBeenCalledTimes(8);
   });
+
+  it('Player Entity Panel Resolves Rest',  () => {
+    wrapper.vm.handleFilter();
+    wrapper.vm.sortChange({prop: 'id'});
+    wrapper.vm.sortByID('ascending');
+  });
 });

@@ -467,13 +467,6 @@ export default {
       this.listQuery.page = 1;
       this.getList(this.listQuery.page, this.listQuery.limit);
     },
-    handleModifyStatus(row, status) {
-      this.$message({
-        message: '操作Success',
-        type: 'success'
-      });
-      row.status = status
-    },
     sortChange(data) {
       const { prop, order } = data;
       if (prop === 'id') {

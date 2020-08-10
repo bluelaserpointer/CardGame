@@ -137,4 +137,10 @@ describe('PlayerCardPanel.vue', () => {
     expect(spyPost).toHaveBeenCalledTimes(8);
   });
 
+  it('PlayerCard Entity Panel Resolves Rest',  () => {
+    wrapper.vm.handleFilter();
+    wrapper.vm.sortChange({prop: 'id'});
+    wrapper.vm.sortByID('ascending');
+  });
+
 });
