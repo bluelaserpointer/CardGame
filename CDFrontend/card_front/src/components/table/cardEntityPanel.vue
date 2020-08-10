@@ -266,6 +266,7 @@ export default {
           console.log("In if1");
           console.log(_this.list);
           _this.listQuery.total = response.data.totalPages;
+          // _this.listQuery.total = 3;
           _this.watchList();
         }else
         {
@@ -487,7 +488,7 @@ export default {
 
     handleFilter() {
       this.listQuery.page = 1;
-      this.getList()
+      this.getList(this.listQuery.page, this.listQuery.limit);
     },
   }
 }

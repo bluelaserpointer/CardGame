@@ -220,7 +220,7 @@ export default {
         if (response.data) {
           _this.panelVisible = false;
           _this.deleteVisible = false;
-          _this.getList()
+          _this.getList(this.listQuery.page, this.listQuery.limit);
         } else {
           this.$message.error('Deleting Data failed!');
         }
@@ -254,6 +254,7 @@ export default {
         if(response.data) {
           _this.list = response.data.result;
           _this.listQuery.total = response.data.totalPages;
+          // _this.listQuery.total = 3;
           _this.watchList();
         }else
         {

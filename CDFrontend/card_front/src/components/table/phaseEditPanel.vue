@@ -656,6 +656,7 @@ export default {
 
 
     handleConfirm() {
+      console.log(this.posMap);
       let chapterPhaseData = Array.from(this.posMap);
       let postData = new FormData();
       let _this = this;
@@ -663,7 +664,7 @@ export default {
       postData.append('phaseId', this.currPhase);
       postData.append('phaseData', JSON.stringify(chapterPhaseData));
 
-      request.post( 'chapter/updateChapte', postData).then(response => {
+      request.post( 'chapter/updateChapterPhaseStrategy', postData).then(response => {
         if (response.data) {
           _this.chapterData = response.data
         }else{
