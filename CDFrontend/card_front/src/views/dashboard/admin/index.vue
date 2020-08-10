@@ -160,10 +160,7 @@ export default {
       this.crashReportId = setInterval(this.handleCrashReportFetch, 30000);
     },
     handleOnlineCountFetch(){
-      request({
-        url: 'record/onlineCountRecord/getOnlineCountRecord',
-        method: 'get'
-      }).then(response => {
+      request.get( 'record/onlineCountRecord/getOnlineCountRecord').then(response => {
         this.currData.onlineCount = response.data.onlineCount;
         this.onlineCounts.actualData.push(response.data.onlineCount);
         this.onlineCounts.actualAxis.push(moment(response.data.recordTime).format('MM-DD HH:mm'));
@@ -171,10 +168,7 @@ export default {
     },
     handlePveRecordFetch(){
       console.log("Here");
-      request({
-        url: 'record/pveRecord/getPveRecordsWithinOneDay',
-        method: 'get'
-      }).then(response => {
+      request.get( 'record/pveRecord/getPveRecordsWithinOneDay').then(response => {
         console.log(response);
         let arrData = [];
         let arrAxis = [];
@@ -191,10 +185,7 @@ export default {
       })
     },
     handleCrashReportFetch(){
-      request({
-        url: 'record/crashReport/getCrashReportsWithinOneDay',
-        method: 'get'
-      }).then(response => {
+      request.get( 'record/crashReport/getCrashReportsWithinOneDay').then(response => {
         console.log(response);
         let map = new Map();
         for(let i in response.data)
@@ -245,10 +236,7 @@ export default {
           dataType = 'OneDay';
           break;
       }
-      request({
-        url: `record/onlineCountRecord/getOnlineCountRecordsWithin${dataType}`,
-        method: 'get',
-      }).then(response => {
+      request.get( `record/onlineCountRecord/getOnlineCountRecordsWithin${dataType}`).then(response => {
         let arrData = [];
         let arrAxis = [];
         for(let i in response.data)
@@ -280,10 +268,7 @@ export default {
           dataType = 'OneDay';
           break;
       }
-      request({
-        url: `record/pveRecord/getPveRecordsWithin${dataType}`,
-        method: 'get',
-      }).then(response => {
+      request.get( `record/pveRecord/getPveRecordsWithin${dataType}`).then(response => {
         console.log(response);
 
         let arrData = [];
@@ -317,10 +302,7 @@ export default {
           dataType = 'OneDay';
           break;
       }
-      request({
-        url: `record/crashReport/getCrashReportsWithin${dataType}`,
-        method: 'get',
-      }).then(response => {
+      request.get( `record/crashReport/getCrashReportsWithin${dataType}`).then(response => {
         let map = new Map();
         for(let i in response.data)
         {

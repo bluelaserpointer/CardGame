@@ -130,17 +130,6 @@ export default {
   name: 'ItemEntityPanel',
   components: { Pagination },
   directives: { waves },
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        published: 'success',
-        draft: 'info',
-        deleted: 'danger'
-      };
-      return statusMap[status]
-    }
-
-  },
   data() {
     return {
       search: '',
@@ -275,13 +264,6 @@ export default {
     handleFilter() {
       this.listQuery.page = 1;
       this.getList(this.listQuery.page, this.listQuery.limit);
-    },
-    handleModifyStatus(row, status) {
-      this.$message({
-        message: '操作Success',
-        type: 'success'
-      });
-      row.status = status
     },
     sortChange(data) {
       const { prop, order } = data;

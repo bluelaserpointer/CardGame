@@ -17,17 +17,17 @@
       :data="list"
       @sort-change="sortChange"
     >
-      <el-table-column label="ID" prop="chapterId" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
+      <el-table-column label="ID" prop="chapterId" sortable="custom" align="center" width="80">
         <template slot-scope="{row}">
           <span class="link-type" @click="handleUpdate(row)">{{ row.chapterId }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="PhaseCount" prop="phaseNo" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
+      <el-table-column label="PhaseCount" prop="phaseNo" sortable="custom" align="center" width="80">
         <template slot-scope="{row}">
           <span>{{ row.phaseNo }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="PhaseType" prop="phaseType" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
+      <el-table-column label="PhaseType" prop="phaseType" sortable="custom" align="center" width="80">
         <template slot-scope="{row}">
           <span>{{ row.phaseType }}</span>
         </template>
@@ -131,7 +131,7 @@
       deleteVisible() {
         this.confirmDelete = false;
         this.confirmPassword = '';
-      } // untested
+      }
     },
     created() {
       this.getList()
@@ -139,10 +139,7 @@
     methods: {
       getList() {
         let _this = this;
-        request({
-          url: 'chapter/getAllChapters',
-          method: 'get',
-        }).then(response => {
+        request.get('chapter/getAllChapters').then(response => {
           if(response.data) {
             _this.list = response.data;
           }else
@@ -151,18 +148,13 @@
           }
         })
       },
-
       confirmIdentity() {
         const postData = new FormData();
         const _this = this;
         postData.append('userName', localStorage.getItem('AdminName'));
         postData.append('password', this.confirmPassword);
 
-        request({
-          url: 'user/confirmDelete',
-          method: 'post',
-          data: postData
-        }).then(response => {
+        request.post('user/confirmDelete', postData).then(response => {
           if (response.data) {
             _this.confirmDelete = true
           } else {
@@ -180,11 +172,7 @@
         const _this = this;
         postData.append('chapterId', this.temp.chapterId);
 
-        request({
-          url: 'chapter/deleteChapter',
-          method: 'post',
-          data: postData
-        }).then(response => {
+        request.post('chapter/deleteChapter', postData).then(response => {
           if (response.data) {
             _this.list = response.data;
             _this.panelVisible = false;
@@ -215,34 +203,31 @@
           this.$refs['temp'].clearValidate()
         })
       },
+      submitCreate(){
+        const postData = new FormData();
+        const _this = this;
+
+        postData.append('phaseNo', this.temp.phaseNo);
+        postData.append('phaseType', this.temp.phaseType);
+
+        request.post('chapter/addChapter', postData).then(response => {
+          if (response.data) {
+            _this.list = response.data;
+            _this.panelVisible = false;
+            _this.resetTemp();
+          }else {
+            this.$message.error('Creating Data failed!');
+          }
+          }).catch(error =>
+            {
+              this.$message.error('Creating Data failed!');
+            }
+          );
+      },
       createData(formName) {
         this.$refs.temp.validate((valid) => {
           if (valid) {
-            const postData = new FormData();
-            const _this = this;
-
-            postData.append('phaseNo', this.temp.phaseNo);
-            postData.append('phaseType', this.temp.phaseType);
-
-
-            request({
-              url: 'chapter/addChapter',
-              method: 'post',
-              data: postData
-            }).then(response => {
-              if (response.data) {
-                _this.list = response.data;
-                _this.panelVisible = false;
-                _this.resetTemp();
-              }else {
-                this.$message.error('Creating Data failed!');
-              }
-            })
-              .catch(error =>
-                {
-                  this.$message.error('Creating Data failed!');
-                }
-              );
+            this.submitCreate();
           } else {
             this.$message.error('Form Invalid!');
             return false;
@@ -258,34 +243,33 @@
           this.$refs['temp'].clearValidate()
         })
       },
+      submitUpdate(){
+        const postData = new FormData();
+        const _this = this;
+
+        postData.append('chapterId', this.temp.chapterId);
+        postData.append('phaseNo', this.temp.phaseNo);
+        postData.append('phaseType', this.temp.phaseType);
+
+        request.post('chapter/updateChapter', postData).then(response => {
+          if (response.data) {
+            _this.list = response.data;
+            _this.panelVisible = false;
+            _this.resetTemp();
+          }else {
+            this.$message.error('Updating Data failed!');
+          }
+        })
+          .catch(error =>
+            {
+              this.$message.error('Updating Data failed!');
+            }
+          );
+      },
       updateData(formName) {
         this.$refs.temp.validate((valid) => {
           if (valid) {
-            const postData = new FormData();
-            const _this = this;
-
-            postData.append('chapterId', this.temp.chapterId);
-            postData.append('phaseNo', this.temp.phaseNo);
-            postData.append('phaseType', this.temp.phaseType);
-
-            request({
-              url: 'chapter/updateChapter',
-              method: 'post',
-              data: postData
-            }).then(response => {
-              if (response.data) {
-                _this.list = response.data;
-                _this.panelVisible = false;
-                _this.resetTemp();
-              }else {
-                this.$message.error('Updating Data failed!');
-              }
-            })
-              .catch(error =>
-                {
-                  this.$message.error('Updating Data failed!');
-                }
-              );
+            this.submitUpdate();
           } else {
             this.$message.error('Form Invalid!');
             return false;
@@ -293,25 +277,6 @@
         });
 
       },
-
-      sortChange(data) {
-        const { prop, order } = data;
-        if (prop === 'id') {
-          this.sortByID(order)
-        }
-      },  // untested
-      sortByID(order) {
-        if (order === 'ascending') {
-          this.listQuery.sort = '+id'
-        } else {
-          this.listQuery.sort = '-id'
-        }
-        this.handleFilter()
-      },  // untested
-      getSortClass: function(key) {
-        const sort = this.listQuery.sort;
-        return sort === `+${key}` ? 'ascending' : 'descending'
-      } // untested
     }
   }
 </script>
