@@ -138,7 +138,7 @@ public class MissionDaoImpl implements MissionDao {
 
         // get the total pages of the result
         Integer totalPages = MissionRepository.findAll().size() / page_size;
-        if ((totalPages - page_size * totalPages) > 0) {
+        if ((MissionRepository.findAll().size() - page_size * totalPages) > 0) {
             totalPages += 1;
         }
         response.put("result", missions);

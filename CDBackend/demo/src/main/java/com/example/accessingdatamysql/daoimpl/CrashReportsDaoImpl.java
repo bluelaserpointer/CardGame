@@ -85,7 +85,7 @@ public class CrashReportsDaoImpl implements CrashReportsDao {
 
         // get the total pages of the result
         Integer totalPages = crashReportsRepository.findAll().size() / page_size;
-        if ((totalPages - page_size * totalPages) > 0) {
+        if ((crashReportsRepository.findAll().size() - page_size * totalPages) > 0) {
             totalPages += 1;
         }
         response.put("result", crashReports);

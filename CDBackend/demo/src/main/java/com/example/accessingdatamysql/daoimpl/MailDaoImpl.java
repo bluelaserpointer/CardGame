@@ -131,7 +131,7 @@ public class MailDaoImpl implements MailDao {
 
         // get the total pages of the result
         Integer totalPages = MailRepository.findAll().size() / page_size;
-        if ((totalPages - page_size * totalPages) > 0) {
+        if ((MailRepository.findAll().size() - page_size * totalPages) > 0) {
             totalPages += 1;
         }
         response.put("result", mails);

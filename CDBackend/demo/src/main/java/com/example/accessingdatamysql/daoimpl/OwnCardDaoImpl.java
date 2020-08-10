@@ -52,32 +52,33 @@ public class OwnCardDaoImpl implements OwnCardDao {
             final OwnCard originalOwnCard = optOwnCard.get();
             int leftUpgPt = originalOwnCard.getLeftPoints();
             Integer newEnhancedPt;
-            if((newEnhancedPt = updateOwnCard.getEnhanceAttack()) != null) {
+            if ((newEnhancedPt = updateOwnCard.getEnhanceAttack()) != null) {
                 leftUpgPt -= (newEnhancedPt - originalOwnCard.getEnhanceAttack());
                 originalOwnCard.setEnhanceAttack(newEnhancedPt);
             }
-            if((newEnhancedPt = updateOwnCard.getEnhanceAttackRange()) != null) {
+            if ((newEnhancedPt = updateOwnCard.getEnhanceAttackRange()) != null) {
                 leftUpgPt -= (newEnhancedPt - originalOwnCard.getEnhanceAttackRange());
                 originalOwnCard.setEnhanceAttackRange(newEnhancedPt);
             }
-            if((newEnhancedPt = updateOwnCard.getEnhanceCD()) != null) {
+            if ((newEnhancedPt = updateOwnCard.getEnhanceCD()) != null) {
                 leftUpgPt -= (newEnhancedPt - originalOwnCard.getEnhanceCD());
                 originalOwnCard.setEnhanceCD(newEnhancedPt);
             }
-            if((newEnhancedPt = updateOwnCard.getEnhanceDefense()) != null) {
+            if ((newEnhancedPt = updateOwnCard.getEnhanceDefense()) != null) {
                 leftUpgPt -= (newEnhancedPt - originalOwnCard.getEnhanceDefense());
                 originalOwnCard.setEnhanceDefense(newEnhancedPt);
             }
-            if((newEnhancedPt = updateOwnCard.getEnhanceHP()) != null) {
+            if ((newEnhancedPt = updateOwnCard.getEnhanceHP()) != null) {
                 leftUpgPt -= (newEnhancedPt - originalOwnCard.getEnhanceHP());
                 originalOwnCard.setEnhanceHP(newEnhancedPt);
             }
-            if((newEnhancedPt = updateOwnCard.getEnhanceSpeed()) != null) {
+            if ((newEnhancedPt = updateOwnCard.getEnhanceSpeed()) != null) {
                 leftUpgPt -= (newEnhancedPt - originalOwnCard.getEnhanceSpeed());
                 originalOwnCard.setEnhanceSpeed(newEnhancedPt);
             }
-            if(leftUpgPt < 0) {
-                System.out.println("OwnCardDaoImpl::redistributeUpgrades: Illegal redistribute! Left point: " + leftUpgPt);
+            if (leftUpgPt < 0) {
+                System.out.println(
+                        "OwnCardDaoImpl::redistributeUpgrades: Illegal redistribute! Left point: " + leftUpgPt);
                 return null;
             }
             originalOwnCard.setLeftPoints(leftUpgPt);
@@ -186,7 +187,7 @@ public class OwnCardDaoImpl implements OwnCardDao {
 
         // get the total pages of the result
         Integer totalPages = OwnCardRepository.findAll().size() / page_size;
-        if ((totalPages - page_size * totalPages) > 0) {
+        if ((OwnCardRepository.findAll().size() - page_size * totalPages) > 0) {
             totalPages += 1;
         }
         response.put("result", ownCards);

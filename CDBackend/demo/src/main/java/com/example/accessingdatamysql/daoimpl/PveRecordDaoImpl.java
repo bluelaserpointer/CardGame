@@ -123,7 +123,7 @@ public class PveRecordDaoImpl implements PveRecordDao {
 
         // get the total pages of the result
         Integer totalPages = pveRecordRepository.findAll().size() / page_size;
-        if ((totalPages - page_size * totalPages) > 0) {
+        if ((pveRecordRepository.findAll().size() - page_size * totalPages) > 0) {
             totalPages += 1;
         }
         // totalPages = totalPages + 1;
