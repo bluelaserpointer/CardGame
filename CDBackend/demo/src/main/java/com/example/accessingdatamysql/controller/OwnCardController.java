@@ -29,31 +29,42 @@ public class OwnCardController {
 
   // 获取一张用户拥有卡牌关系
   @RequestMapping(value = "/getOwnCard")
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public OwnCard findOwnCardByOwnCardId(@RequestParam("ownCardId") Integer ownCardId) {
     return OwnCardService.getOneOwnCard(ownCardId);
   }
 
   // 增加一个用户拥有卡牌关系
   @RequestMapping(value = "/addOwnCard")
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public @ResponseBody OwnCard addNewOwnCard(@RequestParam("userId") Integer userId,
+  @PreAuthorize("hasRole('ROLE_ADMIN') OR #userName == authentication.name")
+  public @ResponseBody OwnCard addNewOwnCard(@RequestParam("userName") String userName,
       @RequestParam("cardId") Integer cardId) {
+    Integer userId = UserService.getOneUserByUserName(userName).getUserId();
     return OwnCardService.addNewOwnCard(userId, cardId);
   }
 
   // 更新一个用户拥有卡牌关系
   @RequestMapping(value = "/updateOwnCard")
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public @ResponseBody OwnCard updateOwnCard(@RequestBody JSONObject updateOwnCard) {
-    return OwnCardService.updateOwnCard(JSON.parseObject(updateOwnCard.getString("OwnCard"), OwnCard.class));
+  @PreAuthorize("hasRole('ROLE_ADMIN') OR #updateOwnCard.userName == authentication.name")
+  public @ResponseBody OwnCard updateOwnCard(@RequestBody String updateOwnCard) {
+    // String json = updateOwnCard.getString("OwnCard")
+    JSONObject jsonObject = JSON.parseObject(updateOwnCard);
+    OwnCard ownCard = JSON.parseObject(jsonObject.getString("OwnCard"), OwnCard.class);
+    return OwnCardService.updateOwnCard(ownCard);
   }
 
   // 增加用户经验值(如果累计经验值超过升级所需经验值则升级后再返回OwnCard)
   @RequestMapping(value = "/addExp")
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public @ResponseBody OwnCard addExp(@RequestParam("userId") Integer userId, @RequestParam("cardId") Integer cardId,
+  @PreAuthorize("hasRole('ROLE_ADMIN') OR #userName == authentication.name")
+  public @ResponseBody OwnCard addExp(@RequestParam("userName") String userName, @RequestParam("cardId") Integer cardId,
       @RequestParam("exp") Integer exp) {
+    // System.out.println("Class: UserController Method: addExp Param: userId = " +
+    // userId + " exp = " + exp);
+    // JSONObject response = new JSONObject();
+    // response.put("userName", UserService.getOneUser(userId).getUserName());
+    // response.put("ownCard", OwnCardService.addExp(userId, cardId, exp));
+    // System.out.println(authentication.name);
+    Integer userId = UserService.getOneUserByUserName(userName).getUserId();
+
     return OwnCardService.addExp(userId, cardId, exp);
   }
 

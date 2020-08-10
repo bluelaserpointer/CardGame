@@ -1,6 +1,8 @@
 package com.example.accessingdatamysql.serviceimpl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.dao.OnlineCountRecordDao;
+import com.example.accessingdatamysql.entity.ListRequest;
 import com.example.accessingdatamysql.entity.OnlineCountRecord;
 import com.example.accessingdatamysql.service.OnlineCountRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,28 +17,32 @@ public class OnlineCountRecordServiceImpl implements OnlineCountRecordService {
     OnlineCountRecordDao onlineCountRecordDao;
 
     @Override
-    public void saveCount(){
+    public void saveCount() {
         onlineCountRecordDao.saveCount();
     }
 
-    public OnlineCountRecord getOnlineCountRecord(){
+    public OnlineCountRecord getOnlineCountRecord() {
         return onlineCountRecordDao.getOnlineCountRecord();
     }
 
-    public List<OnlineCountRecord> getAllOnlineCountRecords(){
+    public List<OnlineCountRecord> getAllOnlineCountRecords() {
         return onlineCountRecordDao.getAllOnlineCountRecords();
     }
 
-    public List<OnlineCountRecord> getOnlineCountRecordByRange(Timestamp start, Timestamp end)
-    {
+    public List<OnlineCountRecord> getOnlineCountRecordByRange(Timestamp start, Timestamp end) {
         return onlineCountRecordDao.getOnlineCountRecordByRange(start, end);
     }
 
-    public List<OnlineCountRecord> getOnlineCountRecordsWithinHalfYear(){
+    public List<OnlineCountRecord> getOnlineCountRecordsWithinHalfYear() {
         return onlineCountRecordDao.getOnlineCountRecordsWithinHalfYear();
     }
 
-    public List<OnlineCountRecord> getOnlineCountRecordsWithinOneDay(){
+    public List<OnlineCountRecord> getOnlineCountRecordsWithinOneDay() {
         return onlineCountRecordDao.getOnlineCountRecordsWithinOneDay();
+    }
+
+    @Override
+    public JSONObject ListPage(ListRequest listRequest) {
+        return onlineCountRecordDao.ListPage(listRequest.getPageToken(), listRequest.getPageSize());
     }
 }

@@ -2,6 +2,7 @@ package com.example.accessingdatamysql.repository;
 
 import com.example.accessingdatamysql.entity.CrashReports;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import javax.transaction.Transactional;
@@ -15,4 +16,9 @@ public interface CrashReportsRepository extends JpaRepository<CrashReports, Inte
     @Transactional
     @Query(value = "select * from crash_reports where record_time > DATE_SUB(NOW(),INTERVAL 1 DAY) order by record_time", nativeQuery = true)
     List<CrashReports> findCrashReportsWithinOneDay();
+
+    @Transactional
+    // @Modifying
+    @Query(value = "SELECT * from crash_reports LIMIT ?1,?2", nativeQuery = true)
+    List<CrashReports> ListPage(Integer start, Integer end);
 }

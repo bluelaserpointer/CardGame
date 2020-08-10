@@ -1,5 +1,7 @@
 package com.example.accessingdatamysql.service;
 
+import com.alibaba.fastjson.JSONObject;
+import com.example.accessingdatamysql.entity.ListRequest;
 import com.example.accessingdatamysql.entity.PveRecord;
 
 import java.sql.Timestamp;
@@ -13,6 +15,9 @@ public interface PveRecordService {
             Timestamp recordTime, String posRecord);
 
     List<PveRecord> getAllPveRecords();
+
+    // 获取指定页数的User
+    JSONObject ListPage(ListRequest listRequest);
 
     Map<String, Integer> getPveRecordStatistics();
 

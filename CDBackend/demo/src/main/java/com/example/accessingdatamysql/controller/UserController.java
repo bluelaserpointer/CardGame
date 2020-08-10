@@ -68,12 +68,26 @@ public class UserController {
     return response.toString();
   }
 
+  // 仅用于调试
+  @PostMapping("/unitTest")
+  public @ResponseBody String registerAdmin(@RequestBody User registerUser) {
+    final User existedUser = userService.getOneUserByUserName(registerUser.getUserName());
+    final JSONObject response = new JSONObject();
+    if (existedUser != null) {
+      response.put("failReason", "用户名已存在");
+    } else {
+      // registerUser.setIdentity(User.ROLE_ADMIN);
+      response.put("user", userService.addNewUser(registerUser));
+    }
+    return response.toString();
+  }
+
   // 更新一个用户信息
   @RequestMapping(value = "/updateUser")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public @ResponseBody User updateUser(@RequestBody JSONObject updateUser) {
-    User User = JSON.parseObject(updateUser.getString("User"), User.class);
-    return userService.updateUser(User);
+  public @ResponseBody User updateUser(@RequestBody User updateUser) {
+    // User User = JSON.parseObject(updateUser.getString("User"), User.class);
+    return userService.updateUser(updateUser);
   }
 
   // 获取所有用户信息

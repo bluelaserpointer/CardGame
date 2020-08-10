@@ -9,6 +9,7 @@ import com.example.accessingdatamysql.controller.UserController;
 import com.example.accessingdatamysql.entity.Activity;
 import com.example.accessingdatamysql.entity.ActivityDetails;
 import com.example.accessingdatamysql.entity.AuthRequest;
+import com.example.accessingdatamysql.entity.ListRequest;
 import com.example.accessingdatamysql.entity.User;
 
 import org.junit.Before;
@@ -95,8 +96,8 @@ public class ActivityControllerTest {
                 // System.out.println(TOKEN);
                 User addedUser = new User("postTest", "postTest", "postTest", "postTest", "ROLE_ADMIN");
                 String addU = JSON.toJSONString(addedUser);
-                System.out.println(addU);
-                mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/user/register")
+                // System.out.println(addU);
+                mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/user/unitTest")
                                 .contentType(MediaType.APPLICATION_JSON_VALUE).content(addU))
                                 .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
                 AuthRequest user = new AuthRequest();
@@ -110,6 +111,9 @@ public class ActivityControllerTest {
                                                 .contentType(MediaType.APPLICATION_JSON_VALUE).content(body))
                                 .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
                 TOKEN = result.getResponse().getContentAsString();
+                System.out.println(TOKEN);
+                JSONObject temp = JSON.parseObject(TOKEN);
+                TOKEN = temp.getString("token");
                 TOKEN = "Bearer " + TOKEN;
                 System.out.println(TOKEN);
                 return TOKEN;
@@ -267,6 +271,27 @@ public class ActivityControllerTest {
                                 .perform(get("/activity/deleteActivity?activityId=" + addedActivity.getActivityId())
                                                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                                                 .header("Authorization", token))
+                                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
+                                .andReturn();
+                System.out.println(result.getResponse().getContentAsString());
+        }
+
+        @Test
+        @Transactional
+        @Rollback(value = true)
+        @DisplayName("File: ActivityController Method: ListPage")
+        public void ListPage() throws Exception {
+                String token = getTOKEN();
+                // Activity addedActivity = addActivityBeforeTest(token);
+
+                ListRequest listRequest = new ListRequest();
+                listRequest.setPageSize(10);
+                listRequest.setPageToken(1);
+
+                String body = JSON.toJSONString(listRequest);
+                System.out.println(body);
+                MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/activity/List").content(body)
+                                .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
                                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
                                 .andReturn();
                 System.out.println(result.getResponse().getContentAsString());
