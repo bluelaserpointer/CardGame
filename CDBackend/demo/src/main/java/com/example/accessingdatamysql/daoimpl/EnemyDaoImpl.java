@@ -125,7 +125,7 @@ public class EnemyDaoImpl implements EnemyDao {
 
         // get the total pages of the result
         Integer totalPages = EnemyRepository.findAll().size() / page_size;
-        if ((totalPages - page_size * totalPages) > 0) {
+        if ((EnemyRepository.findAll().size() - page_size * totalPages) > 0) {
             totalPages += 1;
         }
         response.put("result", enemies);

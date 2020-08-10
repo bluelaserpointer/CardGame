@@ -34,9 +34,10 @@ public class OwnItemDaoImpl implements OwnItemDao {
         return ownItem;
 
     }
+
     public OwnItem addNewOwnItem(Integer userId, Integer itemId, Integer itemAmount) {
         OwnItem ownItem = this.findOwnItemByUserIdEqualsAndItemIdEquals(userId, itemId);
-        if(ownItem == null) {
+        if (ownItem == null) {
             ownItem = new OwnItem();
             ownItem.setUserId(userId);
             ownItem.setItemId(itemId);
@@ -132,7 +133,7 @@ public class OwnItemDaoImpl implements OwnItemDao {
 
         // get the total pages of the result
         Integer totalPages = OwnItemRepository.findAll().size() / page_size;
-        if ((totalPages - page_size * totalPages) > 0) {
+        if ((OwnItemRepository.findAll().size() - page_size * totalPages) > 0) {
             totalPages += 1;
         }
         response.put("result", ownItems);

@@ -108,7 +108,7 @@ public class UserDaoImpl implements UserDao {
 
         // get the total pages of the result
         Integer totalPages = UserRepository.findAll().size() / page_size;
-        if ((totalPages - page_size * totalPages) > 0) {
+        if ((UserRepository.findAll().size() - page_size * totalPages) > 0) {
             totalPages += 1;
         }
         // totalPages = totalPages + 1;

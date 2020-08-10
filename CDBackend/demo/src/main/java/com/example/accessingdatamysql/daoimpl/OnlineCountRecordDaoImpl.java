@@ -66,7 +66,7 @@ public class OnlineCountRecordDaoImpl implements OnlineCountRecordDao {
 
         // get the total pages of the result
         Integer totalPages = onlineCountRecordRepository.findAll().size() / page_size;
-        if ((totalPages - page_size * totalPages) > 0) {
+        if ((onlineCountRecordRepository.findAll().size() - page_size * totalPages) > 0) {
             totalPages += 1;
         }
         // totalPages = totalPages + 1;
