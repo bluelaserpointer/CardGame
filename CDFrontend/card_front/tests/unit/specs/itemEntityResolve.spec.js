@@ -145,4 +145,9 @@ describe('ItemEntityPanel.vue', () => {
     expect(spyPost).toHaveBeenCalledTimes(8);
   });
 
+  it('Item Entity Panel Resolves Rest',  () => {
+    wrapper.vm.handleFilter();
+    wrapper.vm.sortChange({prop: 'id'});
+    wrapper.vm.sortByID('ascending');
+  });
 });

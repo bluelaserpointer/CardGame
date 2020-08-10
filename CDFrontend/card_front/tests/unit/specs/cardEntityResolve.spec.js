@@ -178,4 +178,10 @@ describe('CardEntityPanel.vue', () => {
     expect(spyPost).toHaveBeenCalledTimes(8);
   });
 
+  it('Card Entity Panel Resolves Rest', () => {
+    wrapper.vm.handleFilter();
+    wrapper.vm.sortChange({prop: 'id'});
+    wrapper.vm.sortByID('ascending');
+  });
+
 });

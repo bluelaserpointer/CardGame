@@ -3,8 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "test:unit": "vue-cli-service test:unit",
+    "test:watch": "vue-cli-service test:unit --watch",
     "test:cov": "vue-cli-service test:unit --coverage",
-    "test:unit": "vue-cli-service test:unit --watch",
+    "test:all": "vue-cli-service test:unit --coverage --watch",
     "lint": "eslint --ext .js,.vue src",
     "build:prod": "vue-cli-service build",
     "build:stage": "vue-cli-service build --mode staging",
@@ -85,6 +87,7 @@
     "jest-mock-axios": "^4.2.1",
     "lint-staged": "8.1.5",
     "mockjs": "1.0.1-beta3",
+    "moxios": "^0.4.0",
     "nyc": "^15.1.0",
     "plop": "2.3.0",
     "runjs": "4.3.2",
@@ -131,8 +134,12 @@
     "all": true
   },
   "jest": {
+    "moduleFileExtensions": [
+      "js", "jsx", "json"
+    ],
     "transform": {
       "^.+\\.(ts|html)$": "<rootDir>/node_modules/axios/index.js",
+      "^.+\\.js$": "<rootDir>/src/utils/request.js",
       "^.+\\.js$": "babel-jest"
     },
     "transformIgnorePatterns": [

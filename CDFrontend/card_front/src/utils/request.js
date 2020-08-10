@@ -4,15 +4,18 @@ import { getToken } from '@/utils/auth'
 import axios from 'axios'
 
 // create an axios instance
-const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
-  // withCredentials: true, // send cookies when cross-domain requests
-  timeout: 5000, // request timeout
-  // headers: {'Content-Type': 'multipart/form-data'}
-});
+// const service = axios.create({
+//   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
+//   // withCredentials: true, // send cookies when cross-domain requests
+//   timeout: 5000, // request timeout
+//   // headers: {'Content-Type': 'multipart/form-data'}
+// });
+
+axios.defaults.timeout = 5000;
+axios.defaults.baseURL = process.env.VUE_APP_BASE_API;
 
 // request interceptor
-service.interceptors.request.use(
+axios.interceptors.request.use(
   config => {
     // do something before request is sent
       // console.log(process.env.port);
@@ -32,13 +35,13 @@ service.interceptors.request.use(
   },
   error => {
     // do something with request error
-    console.log(error); // for debug
+    // console.log(error); // for debug
     return Promise.reject(error)
   }
 );
 
 // response interceptor
-service.interceptors.response.use(
+axios.interceptors.response.use(
   /**
    * If you want to get http information such as headers or status
    * Please return  response => response
@@ -51,8 +54,8 @@ service.interceptors.response.use(
    */
   response => {
     const res = response.data;
-    console.log("Within response");
-    console.log(response);
+    // console.log("Within response");
+    // console.log(response);
 
     // if the custom code is not 20000, it is judged as an error.
     if (response.status !== 200) {
@@ -77,11 +80,12 @@ service.interceptors.response.use(
       }
       return Promise.reject(new Error(res.message || 'Error'))
     } else {
+      console.log("Returning response");
       return response
     }
   },
   error => {
-    console.log('err' + error); // for debug
+    // console.log('err' + error); // for debug
     Message({
       message: error.message,
       type: 'error',
@@ -91,5 +95,5 @@ service.interceptors.response.use(
   }
 );
 
-export default service
+export default axios
 // module.exports = service;
