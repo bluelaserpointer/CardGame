@@ -1,3 +1,5 @@
+import Vuex from "vuex";
+
 const validateStub = {
   render: () => {},
   methods: {
@@ -16,10 +18,13 @@ import Element from 'element-ui';
 
 const localVue = createLocalVue();
 localVue.use(Element);
+localVue.use(Vuex);
 
+let store = new Vuex.Store();
 
 describe('MailUpdatePanel.vue', () => {
   const wrapper = shallowMount(MailUpdatePanel, {
+    store,
     localVue,
     stubs:{
       'Tinymce': validateStub
@@ -50,6 +55,10 @@ describe('MailUpdatePanel.vue', () => {
   });
 
   it('Mail Update Panel Resolves submitForm', async () => {
+    wrapper.vm.postForm.title = "TestTitle";
+    wrapper.vm.postForm.content = "TestContent";
+    wrapper.vm.postForm.image_uri = undefined;
+
     expect(spyPost).toHaveBeenCalledTimes(0);
     mockAdapter.onAny().reply(200, true);
 
@@ -107,6 +116,22 @@ describe('MailUpdatePanel.vue', () => {
     wrapper.vm.$nextTick(() => {
       expect(spyPost).toHaveBeenCalledTimes(4);
     });
+  });
+
+  it('Mail Update Panel Resolves submitForm Rest', () => {
+    wrapper.vm.updateContent = {mailImg: 'Img', mailName: 'Name', mailDescription: 'Description'};
+    wrapper.vm.deleteVisible = true;
+    wrapper.vm.$nextTick(() => {
+      done();
+    });
+
+    wrapper.vm.updateContent = {mailImg: 'Img', mailName: 'Name'};
+    wrapper.vm.$nextTick(() => {
+      done();
+    });
+
+    wrapper.vm.setTagsViewTitle();
+    wrapper.vm.setPageTitle();
   });
 
 });

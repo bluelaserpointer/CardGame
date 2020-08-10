@@ -60,16 +60,6 @@ export default {
   name: 'MailEntityPanel',
   components: {MailUpdatePanel, Pagination },
   directives: { waves },
-  // filters: {
-  //   statusFilter(status) {
-  //     const statusMap = {
-  //       published: 'success',
-  //       draft: 'info',
-  //       deleted: 'danger'
-  //     };
-  //     return statusMap[status]
-  //   }
-  // },
   data() {
     return {
       search: '',
@@ -115,25 +105,12 @@ export default {
       }
       this.list = list;
     },
-    uploadCover() {
-      const _this = this;
-      var file = this.$refs.img;
-      var reader = new FileReader();
-      reader.readAsDataURL(file.files[0]);
-      reader.onload = function() {
-        _this.temp.mailImg = this.result
-      }
-    },
     getList(page, limit) {
       let postData = {
         pageToken: page,
         pageSize: limit
       };
-      request({
-        url: 'mail/List',
-        method: 'post',
-        data: postData
-      }).then(response => {
+      request.post( 'mail/List', postData).then(response => {
         if(response.data) {
           this.panelVisible = false;
           this.list = response.data.result;
@@ -153,18 +130,9 @@ export default {
 
 
 
-
-
     handleFilter() {
       this.listQuery.page = 1;
       this.getList()
-    },
-    handleModifyStatus(row, status) {
-      this.$message({
-        message: '操作Success',
-        type: 'success'
-      });
-      row.status = status
     },
     sortChange(data) {
       const { prop, order } = data;

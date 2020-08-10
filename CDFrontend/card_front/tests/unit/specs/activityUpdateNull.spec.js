@@ -11,25 +11,28 @@ import MockAdapter from "axios-mock-adapter";
 
 
 import {createLocalVue, mount, shallowMount} from '@vue/test-utils'
-import MailUpdatePanel from '@/components/article/MailUpdatePanel'
+import ActivityUpdatePanel from '@/components/article/ActivityUpdatePanel'
 import Element from 'element-ui';
+import moment from 'moment';
 
 const localVue = createLocalVue();
 localVue.use(Element);
 
 
-describe('MailUpdatePanel.vue', () => {
-  const wrapper = shallowMount(MailUpdatePanel, {
+describe('ActivityUpdatePanel.vue', () => {
+  const wrapper = shallowMount(ActivityUpdatePanel, {
     localVue,
     stubs:{
       'Tinymce': validateStub
     },
     propsData:{
       updateContent: {
-        mail: 0,
-        mailImg : '0',
-        mailName : '0',
-        mailDescription : '0',
+        activity: 0,
+        activityImg : '0',
+        activityName : '0',
+        activityDescription : '0',
+        type : 'true',
+        start : '0',
       }
     }
   });
@@ -41,68 +44,52 @@ describe('MailUpdatePanel.vue', () => {
   let mockAdapter = new MockAdapter(axios);
   let spyPost = jest.spyOn(axios, "post");
 
-  it('Mail Update Panel Nulls submitForm', async () => {
+
+  it('Activity Update Panel Nulls submitForm', async () => {
     wrapper.vm.postForm.title = "TestTitle";
     wrapper.vm.postForm.content = "TestContent";
     wrapper.vm.postForm.image_uri = undefined;
 
-    expect(spyPost).toHaveBeenCalledTimes(0);
+    wrapper.vm.limit = false;
+
     mockAdapter.onAny().reply(200, false);
 
+    expect(spyPost).toHaveBeenCalledTimes(0);
     await wrapper.vm.submitForm();
-  });
 
-  it('Mail Update Panel Nulls submitForm Result', () => {
     wrapper.vm.$nextTick(() => {
       expect(spyPost).toHaveBeenCalledTimes(1);
     })
   });
 
-  it('Mail Entity Panel Nulls confirmIdentity', async () => {
+  it('Activity Entity Panel Nulls confirmIdentity', async () => {
     wrapper.vm.confirmDelete = false;
+
     mockAdapter.onAny().reply(200, false);
 
     await wrapper.vm.confirmIdentity();
-  });
 
-  it('Mail Entity Panel Nulls confirmIdentity Result', () => {
     wrapper.vm.$nextTick(() => {
       expect(wrapper.vm.confirmDelete).toBeFalsy();
       expect(spyPost).toHaveBeenCalledTimes(2);
     });
   });
 
-  it('Mail Entity Panel Nulls deleteData',  async () => {
+  it('Activity Entity Panel Nulls deleteData',  async () => {
     wrapper.vm.confirmDelete = true;
+    wrapper.vm.panelVisible = true;
+    wrapper.vm.deleteVisible = true;
 
     mockAdapter.onAny().reply(200, false);
 
     await wrapper.vm.deleteData();
-  });
 
-  it('Mail Entity Panel Nulls deleteData Result',  () => {
     wrapper.vm.$nextTick(() => {
       expect(wrapper.vm.panelVisible).toBeTruthy();
       expect(wrapper.vm.deleteVisible).toBeTruthy();
       expect(spyPost).toHaveBeenCalledTimes(3);
     });
-  });
 
-
-  it('Mail Update Panel Nulls submitForm branchLast', async () => {
-    wrapper.vm.postForm.image_uri = undefined;
-    wrapper.vm.postForm.title = undefined;
-    wrapper.vm.postForm.content = undefined;
-
-    mockAdapter.onAny().reply(200, false);
-
-    await wrapper.vm.submitForm();
-  });
-
-  it('Mail Update Panel Nulls submitForm branchLast Result', () => {
-    wrapper.vm.$nextTick(() => {
-      expect(spyPost).toHaveBeenCalledTimes(4);
-    });
   });
 
 });
