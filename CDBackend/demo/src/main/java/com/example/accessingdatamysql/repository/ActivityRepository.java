@@ -24,13 +24,12 @@ public interface ActivityRepository extends JpaRepository<Activity, Integer>, Pa
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE Activity u SET u = :newActivity WHERE u.activityId = :activityId")
+    @Query(value = "UPDATE activity u SET u = :newActivity WHERE u.activityId = :activityId")
     int updateActivityStatus(@Param("newActivity") Activity newActivity, @Param("activityId") Integer ActivityId);
 
     @Transactional
     @Modifying
-    @Query(value = "SELECT * from Activity LIMIT ?1,?2", nativeQuery = true)
-    @Override
+    @Query(value = "SELECT * from activity LIMIT ?1,?2", nativeQuery = true)
     List<Activity> ListPage(Integer start, Integer end);
 
 }

@@ -23,13 +23,12 @@ public interface MailRepository extends JpaRepository<Mail, Integer>, Pagination
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE Mail u SET u = :newMail WHERE u.mailId = :MailId")
+    @Query(value = "UPDATE mail u SET u = :newMail WHERE u.mailId = :MailId")
     int updateMailStatus(@Param("newMail") Mail newMail, @Param("MailId") Integer MailId);
 
     @Transactional
     @Modifying
-    @Query(value = "SELECT * from Mail LIMIT ?1,?2", nativeQuery = true)
-    @Override
+    @Query(value = "SELECT * from mail LIMIT ?1,?2", nativeQuery = true)
     List<Mail> ListPage(Integer start, Integer end);
 
 }

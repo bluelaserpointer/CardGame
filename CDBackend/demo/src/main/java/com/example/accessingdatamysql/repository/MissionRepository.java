@@ -24,13 +24,12 @@ public interface MissionRepository extends JpaRepository<Mission, Integer>, Pagi
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE Mission u SET u = :newMission WHERE u.missionId = :MissionId")
+    @Query(value = "UPDATE mission u SET u = :newMission WHERE u.missionId = :MissionId")
     int updateMissionStatus(@Param("newMission") Mission newMission, @Param("MissionId") Integer MissionId);
 
     @Transactional
     @Modifying
-    @Override
-    @Query(value = "SELECT * from Mission LIMIT ?1,?2", nativeQuery = true)
+    @Query(value = "SELECT * from mission LIMIT ?1,?2", nativeQuery = true)
     List<Mission> ListPage(Integer start, Integer end);
 
 }

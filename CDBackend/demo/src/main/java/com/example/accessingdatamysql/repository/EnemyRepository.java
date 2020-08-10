@@ -23,13 +23,12 @@ public interface EnemyRepository extends JpaRepository<Enemy, Integer>, Paginati
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE Enemy u SET u = :newEnemy WHERE u.enemyId = :enemyId")
+    @Query(value = "UPDATE enemy u SET u = :newEnemy WHERE u.enemyId = :enemyId")
     int updateEnemyStatus(@Param("newEnemy") Enemy newEnemy, @Param("enemyId") Integer enemyId);
 
     @Transactional
     @Modifying
-    @Query(value = "SELECT * from Enemy LIMIT ?1,?2", nativeQuery = true)
-    @Override
+    @Query(value = "SELECT * from enemy LIMIT ?1,?2", nativeQuery = true)
     List<Enemy> ListPage(Integer start, Integer end);
 
 }

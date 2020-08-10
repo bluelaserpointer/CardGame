@@ -23,13 +23,12 @@ public interface ItemRepository extends JpaRepository<Item, Integer>, Pagination
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE Item u SET u = :newItem WHERE u.itemId = :ItemId")
+    @Query(value = "UPDATE item u SET u = :newItem WHERE u.itemId = :ItemId")
     int updateItemStatus(@Param("newItem") Item newItem, @Param("ItemId") Integer ItemId);
 
     @Transactional
     @Modifying
-    @Query(value = "SELECT * from Item LIMIT ?1,?2", nativeQuery = true)
-    @Override
+    @Query(value = "SELECT * from item LIMIT ?1,?2", nativeQuery = true)
     List<Item> ListPage(Integer start, Integer end);
 
 }

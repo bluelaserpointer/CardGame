@@ -30,13 +30,12 @@ public interface UserRepository extends JpaRepository<User, Integer>, Pagination
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE User u SET u = :newUser WHERE u.userId = :UserId")
+    @Query(value = "UPDATE user u SET u = :newUser WHERE u.userId = :UserId")
     int updateUserStatus(@Param("newUser") User newUser, @Param("UserId") Integer UserId);
 
     @Transactional
     @Modifying
-    @Query(value = "SELECT * from User LIMIT ?1,?2", nativeQuery = true)
-    @Override
+    @Query(value = "SELECT * from user LIMIT ?1,?2", nativeQuery = true)
     List<User> ListPage(Integer start, Integer end);
 
     // List<User> findByFirstName(@Param("firstname") String firstname);
