@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
+
+import com.example.accessingdatamysql.Classes.Pagination;
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.accessingdatamysql.entity.*;
 import org.springframework.data.repository.query.Param;
@@ -14,7 +16,7 @@ import org.springframework.data.jpa.repository.*;
 // This will be AUTO IMPLEMENTED by Spring into a Bean called userRepository
 // CRUD refers Create, Read, Update, Delete
 
-public interface OwnItemRepository extends JpaRepository<OwnItem, Integer> {
+public interface OwnItemRepository extends JpaRepository<OwnItem, Integer>, Pagination<OwnItem> {
     @Modifying
     @Transactional
     void deleteOwnItemByUserIdEqualsAndItemIdEquals(Integer userId, Integer itemId);
@@ -31,6 +33,7 @@ public interface OwnItemRepository extends JpaRepository<OwnItem, Integer> {
 
     @Transactional
     @Modifying
+    @Override
     @Query(value = "SELECT * from own_item LIMIT ?1,?2", nativeQuery = true)
     List<OwnItem> ListPage(Integer start, Integer end);
 }

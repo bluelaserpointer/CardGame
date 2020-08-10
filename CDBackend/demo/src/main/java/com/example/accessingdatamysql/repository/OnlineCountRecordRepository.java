@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.repository;
 
+import com.example.accessingdatamysql.Classes.Pagination;
 import com.example.accessingdatamysql.entity.OnlineCountRecord;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -9,7 +10,7 @@ import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.List;
 
-public interface OnlineCountRecordRepository extends JpaRepository<OnlineCountRecord, Timestamp> {
+public interface OnlineCountRecordRepository extends JpaRepository<OnlineCountRecord, Timestamp>, Pagination<OnlineCountRecord> {
     List<OnlineCountRecord> findOnlineCountRecordsByRecordTimeGreaterThanEqualAndRecordTimeLessThanEqual(
             Timestamp start, Timestamp end);
 
@@ -27,5 +28,6 @@ public interface OnlineCountRecordRepository extends JpaRepository<OnlineCountRe
 
     @Transactional
     @Query(value = "SELECT * from online_count_record LIMIT ?1,?2", nativeQuery = true)
+    @Override
     List<OnlineCountRecord> ListPage(Integer start, Integer end);
 }

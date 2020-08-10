@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.repository;
 
+import com.example.accessingdatamysql.Classes.Pagination;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.*;
 
@@ -15,7 +16,7 @@ import javax.transaction.Transactional;
 // This will be AUTO IMPLEMENTED by Spring into a Bean called userRepository
 // CRUD refers Create, Read, Update, Delete
 
-public interface UserRepository extends JpaRepository<User, Integer> {
+public interface UserRepository extends JpaRepository<User, Integer>, Pagination<User> {
     User findUserByUserNameEquals(String userName);
 
     // @Query("SELECT t.title FROM Todo t where t.id = :id")
@@ -35,6 +36,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Transactional
     @Modifying
     @Query(value = "SELECT * from User LIMIT ?1,?2", nativeQuery = true)
+    @Override
     List<User> ListPage(Integer start, Integer end);
 
     // List<User> findByFirstName(@Param("firstname") String firstname);

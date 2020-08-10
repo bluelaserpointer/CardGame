@@ -3,6 +3,8 @@ package com.example.accessingdatamysql.repository;
 import java.util.List;
 
 import javax.transaction.Transactional;
+
+import com.example.accessingdatamysql.Classes.Pagination;
 import org.springframework.data.jpa.repository.*;
 import com.example.accessingdatamysql.entity.*;
 import org.springframework.data.repository.query.Param;
@@ -10,7 +12,7 @@ import org.springframework.data.repository.query.Param;
 // This will be AUTO IMPLEMENTED by Spring into a Bean called userRepository
 // CRUD refers Create, Read, Update, Delete
 
-public interface ItemRepository extends JpaRepository<Item, Integer> {
+public interface ItemRepository extends JpaRepository<Item, Integer>, Pagination<Item> {
 
     // @Transactional
     // @Modifying
@@ -27,6 +29,7 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
     @Transactional
     @Modifying
     @Query(value = "SELECT * from Item LIMIT ?1,?2", nativeQuery = true)
+    @Override
     List<Item> ListPage(Integer start, Integer end);
 
 }
