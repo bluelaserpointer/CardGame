@@ -24,8 +24,8 @@ public interface MissionRepository extends PaginationJpaRepository<Mission, Inte
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE mission u SET u = :newMission WHERE u.missionId = :MissionId")
-    int updateMissionStatus(@Param("newMission") Mission newMission, @Param("MissionId") Integer MissionId);
+    @Query(value = "UPDATE Mission u SET u = :newMission WHERE u.missionId = :MissionId")
+    void updateMissionStatus(@Param("newMission") Mission newMission, @Param("MissionId") Integer MissionId);
 
     @Transactional
     @Modifying

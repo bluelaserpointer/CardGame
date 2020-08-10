@@ -2,5 +2,8 @@ package com.example.accessingdatamysql.Classes;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PaginationJpaRepository<T, ID> extends RepositoryPagination<T>, JpaRepository<T, ID> {
+import java.util.List;
+
+public interface PaginationJpaRepository<T, ID> extends JpaRepository<T, ID> {
+    List<T> ListPage(Integer start, Integer end);
 }

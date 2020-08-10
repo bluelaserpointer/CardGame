@@ -5,11 +5,9 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import com.example.accessingdatamysql.Classes.PaginationJpaRepository;
-import com.example.accessingdatamysql.Classes.RepositoryPagination;
 import org.springframework.data.jpa.repository.*;
 import com.example.accessingdatamysql.entity.*;
 import org.springframework.data.repository.query.Param;
-// import java.util.Optional;
 // This will be AUTO IMPLEMENTED by Spring into a Bean called userRepository
 // CRUD refers Create, Read, Update, Delete
 
@@ -25,8 +23,8 @@ public interface ActivityRepository extends PaginationJpaRepository<Activity, In
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE activityy u SET u = :newActivity WHERE u.activityId = :activityId")
-    int updateActivityStatus(@Param("newActivity") Activity newActivity, @Param("activityId") Integer ActivityId);
+    @Query(value = "UPDATE Activity u SET u = :newActivity WHERE u.activityId = :activityId")
+    void updateActivityStatus(@Param("newActivity") Activity newActivity, @Param("activityId") Integer ActivityId);
 
     @Transactional
     @Modifying

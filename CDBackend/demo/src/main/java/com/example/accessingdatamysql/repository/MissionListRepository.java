@@ -20,8 +20,8 @@ public interface MissionListRepository extends JpaRepository<MissionList, Intege
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE mission_list u SET u = :newMissionList WHERE u.missionListId = :MissionListId")
-    int updateMissionListStatus(@Param("newMissionList") MissionList newMissionList,
+    @Query(value = "UPDATE MissionList u SET u = :newMissionList WHERE u.missionListId = :MissionListId")
+    void updateMissionListStatus(@Param("newMissionList") MissionList newMissionList,
             @Param("MissionListId") Integer MissionListId);
 
 }

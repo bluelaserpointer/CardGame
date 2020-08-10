@@ -22,7 +22,7 @@ public interface ItemRepository extends PaginationJpaRepository<Item, Integer> {
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE item u SET u = :newItem WHERE u.itemId = :ItemId")
+    @Query(value = "UPDATE Item u SET u = :newItem WHERE u.itemId = :ItemId")
     int updateItemStatus(@Param("newItem") Item newItem, @Param("ItemId") Integer ItemId);
 
     @Transactional

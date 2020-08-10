@@ -23,8 +23,8 @@ public interface MailRepository extends PaginationJpaRepository<Mail, Integer> {
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE mail u SET u = :newMail WHERE u.mailId = :MailId")
-    int updateMailStatus(@Param("newMail") Mail newMail, @Param("MailId") Integer MailId);
+    @Query(value = "UPDATE Mail u SET u = :newMail WHERE u.mailId = :MailId")
+    void updateMailStatus(@Param("newMail") Mail newMail, @Param("MailId") Integer MailId);
 
     @Transactional
     @Modifying

@@ -20,7 +20,7 @@ public interface MailBoxRepository extends JpaRepository<MailBox, Integer> {
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE mail_box u SET u = :newMailBox WHERE u.mailBoxId = :MailBoxId")
+    @Query(value = "UPDATE MailBox u SET u = :newMailBox WHERE u.mailBoxId = :MailBoxId")
     int updateMailBoxStatus(@Param("newMailBox") MailBox newMailBox, @Param("MailBoxId") Integer MailBoxId);
 
 }

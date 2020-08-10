@@ -23,7 +23,7 @@ public interface EnemyRepository extends PaginationJpaRepository<Enemy, Integer>
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE enemy u SET u = :newEnemy WHERE u.enemyId = :enemyId")
+    @Query(value = "UPDATE Enemy u SET u = :newEnemy WHERE u.enemyId = :enemyId")
     int updateEnemyStatus(@Param("newEnemy") Enemy newEnemy, @Param("enemyId") Integer enemyId);
 
     @Transactional

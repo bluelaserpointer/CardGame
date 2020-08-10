@@ -25,8 +25,8 @@ public interface OwnItemRepository extends PaginationJpaRepository<OwnItem, Inte
     // List<OwnItem> findByUserId(Integer userId);
     @Transactional
     @Modifying
-    @Query(value = "UPDATE own_item u SET u = :newOwnItem WHERE u.ownItemId = :OwnItemId")
-    int updateOwnItemStatus(@Param("newOwnItem") OwnItem newOwnItem, @Param("OwnItemId") Integer OwnItemId);
+    @Query(value = "UPDATE OwnItem u SET u = :newOwnItem WHERE u.ownItemId = :OwnItemId")
+    void updateOwnItemStatus(@Param("newOwnItem") OwnItem newOwnItem, @Param("OwnItemId") Integer OwnItemId);
 
     @Transactional
     @Modifying

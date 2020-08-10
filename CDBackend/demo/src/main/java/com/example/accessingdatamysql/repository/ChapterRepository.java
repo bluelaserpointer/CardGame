@@ -15,7 +15,7 @@ public interface ChapterRepository extends JpaRepository<Chapter, Integer> {
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE chapter u SET u = :newChapter WHERE u.chapterId = :ChapterId")
+    @Query(value = "UPDATE Chapter u SET u = :newChapter WHERE u.chapterId = :ChapterId")
     int updateChapterStatus(@Param("newChapter") Chapter newChapter, @Param("ChapterId") Integer ChapterId);
 
 }

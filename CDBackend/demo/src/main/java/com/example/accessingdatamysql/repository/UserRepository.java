@@ -27,8 +27,8 @@ public interface UserRepository extends PaginationJpaRepository<User, Integer> {
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE user u SET u = :newUser WHERE u.userId = :UserId")
-    int updateUserStatus(@Param("newUser") User newUser, @Param("UserId") Integer UserId);
+    @Query(value = "UPDATE User u SET u = :newUser WHERE u.userId = :UserId")
+    void updateUserStatus(@Param("newUser") User newUser, @Param("UserId") Integer UserId);
 
     @Transactional
     @Modifying
