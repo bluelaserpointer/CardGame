@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity // This tells Hibernate to make a table out of this class
-@Table(name = "UserLoginRecord", schema = "cardgame")
+@Table(name = "user_login_record", schema = "cardgame")
 @JsonIgnoreProperties(value = { "handler", "hibernateLazyInitializer" })
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userLoginRecordId")
 @org.hibernate.annotations.Proxy(lazy = false)

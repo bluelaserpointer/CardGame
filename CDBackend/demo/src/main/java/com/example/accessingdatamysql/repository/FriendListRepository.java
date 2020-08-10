@@ -1,10 +1,10 @@
 package com.example.accessingdatamysql.repository;
 
 import javax.transaction.Transactional;
+
 import org.springframework.data.jpa.repository.*;
 import com.example.accessingdatamysql.entity.*;
 import org.springframework.data.repository.query.Param;
-// import java.util.Optional;
 // This will be AUTO IMPLEMENTED by Spring into a Bean called userRepository
 // CRUD refers Create, Read, Update, Delete
 

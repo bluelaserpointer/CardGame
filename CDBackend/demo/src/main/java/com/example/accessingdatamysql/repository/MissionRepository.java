@@ -3,6 +3,8 @@ package com.example.accessingdatamysql.repository;
 import java.util.List;
 
 import javax.transaction.Transactional;
+
+import com.example.accessingdatamysql.Classes.Pagination;
 import org.springframework.data.jpa.repository.*;
 import com.example.accessingdatamysql.entity.*;
 import org.springframework.data.repository.query.Param;
@@ -10,7 +12,7 @@ import org.springframework.data.repository.query.Param;
 // This will be AUTO IMPLEMENTED by Spring into a Bean called userRepository
 // CRUD refers Create, Read, Update, Delete
 
-public interface MissionRepository extends JpaRepository<Mission, Integer> {
+public interface MissionRepository extends JpaRepository<Mission, Integer>, Pagination<Mission> {
 
     // @Transactional
     // @Modifying

@@ -124,7 +124,7 @@ public class ItemDaoImpl implements ItemDao {
 
         // get the nextPageToken
         Integer nextPageToken;
-        if ((ItemRepository.findAll().size() - (page_token * page_size)) <= 0) {
+        if ((ItemRepository.count() - (page_token * page_size)) <= 0) {
             response.put("nextPageToken", "");
         } else {
             nextPageToken = page_token + 1;
@@ -132,8 +132,8 @@ public class ItemDaoImpl implements ItemDao {
         }
 
         // get the total pages of the result
-        Integer totalPages = ItemRepository.findAll().size() / page_size;
-        if ((ItemRepository.findAll().size() - page_size * totalPages) > 0) {
+        int totalPages = (int)ItemRepository.count() / page_size;
+        if ((ItemRepository.count() - page_size * totalPages) > 0) {
             totalPages += 1;
         }
         response.put("result", items);

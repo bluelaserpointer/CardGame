@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity // This tells Hibernate to make a table out of this class
-@Table(name = "User", schema = "cardgame")
+@Table(name = "user", schema = "cardgame")
 @JsonIgnoreProperties(value = { "handler", "hibernateLazyInitializer" })
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userId")
 @org.hibernate.annotations.Proxy(lazy = false)

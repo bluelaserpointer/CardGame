@@ -1,10 +1,14 @@
 package com.example.accessingdatamysql.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Map;
 
 @Entity // This tells Hibernate to make a table out of this class
+@Table(name = "chapter", schema = "cardgame")
+@JsonIgnoreProperties(value = { "handler", "hibernateLazyInitializer", "fieldHandler" })
 public class Chapter {
     @Id
     @Column(name = "chapter_id")

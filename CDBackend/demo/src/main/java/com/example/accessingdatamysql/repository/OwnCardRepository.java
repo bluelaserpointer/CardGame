@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.repository;
 
+import com.example.accessingdatamysql.Classes.Pagination;
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.accessingdatamysql.entity.*;
 import org.springframework.data.jpa.repository.Modifying;
@@ -11,7 +12,7 @@ import java.util.Optional;
 
 import org.springframework.data.repository.query.Param;
 
-public interface OwnCardRepository extends JpaRepository<OwnCard, Integer> {
+public interface OwnCardRepository extends JpaRepository<OwnCard, Integer>, Pagination<OwnCard> {
     Optional<OwnCard> findOwnCardByUserIdEqualsAndCardIdEquals(Integer userId, Integer cardId);
 
     @Query(value = "SELECT u from own_card u where u.userId = ?1", nativeQuery = true)
@@ -32,6 +33,7 @@ public interface OwnCardRepository extends JpaRepository<OwnCard, Integer> {
 
     @Transactional
     @Modifying
+    @Override
     @Query(value = "SELECT * from own_card LIMIT ?1,?2", nativeQuery = true)
     List<OwnCard> ListPage(Integer start, Integer end);
 

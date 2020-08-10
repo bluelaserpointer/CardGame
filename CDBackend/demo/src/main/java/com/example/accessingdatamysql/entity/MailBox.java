@@ -6,14 +6,14 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.*;
 
 @Entity
-@Table(name = "MailBox", schema = "cardgame")
+@Table(name = "mail_box", schema = "cardgame")
 @JsonIgnoreProperties(value = { "handler", "hibernateLazyInitializer", "fieldHandler" })
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "mailBoxId")
 
 public class MailBox {
     // 邮箱Id（应该保持跟用户的userId一样）
     @Id
-    @Column(name = "mailBoxId", nullable = false)
+    @Column(name = "mail_box_id", nullable = false)
     private Integer mailBoxId;
     // 邮箱内村的邮箱
     @Column

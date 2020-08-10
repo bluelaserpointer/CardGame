@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.repository;
 
+import com.example.accessingdatamysql.Classes.Pagination;
 import com.example.accessingdatamysql.entity.PveRecord;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -8,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import javax.transaction.Transactional;
 import java.util.List;
 
-public interface PveRecordRepository extends JpaRepository<PveRecord, Integer> {
+public interface PveRecordRepository extends JpaRepository<PveRecord, Integer>, Pagination<PveRecord> {
     List<PveRecord> findPveRecordsByUserIdEquals(Integer userId);
 
     @Transactional
@@ -29,5 +30,6 @@ public interface PveRecordRepository extends JpaRepository<PveRecord, Integer> {
 
     @Transactional
     @Query(value = "SELECT * from pve_record LIMIT ?1,?2", nativeQuery = true)
+    @Override
     List<PveRecord> ListPage(Integer start, Integer end);
 }

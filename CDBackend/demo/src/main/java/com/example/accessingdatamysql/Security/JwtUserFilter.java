@@ -1,7 +1,5 @@
 package com.example.accessingdatamysql.Security;
 
-import com.example.accessingdatamysql.serviceimpl.UserLoginRecordServiceImpl;
-import com.example.accessingdatamysql.serviceimpl.UserServiceImpl;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,10 +25,6 @@ public class JwtUserFilter extends OncePerRequestFilter {
     private JwtUtil jwtUtil;
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
-    @Autowired
-    private UserLoginRecordServiceImpl userLoginRecordService;
-    @Autowired
-    private UserServiceImpl userService;
     @Autowired
     private OnlineCounter onlineCounter;
 

@@ -6,14 +6,14 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.*;
 
 @Entity
-@Table(name = "MissionList", schema = "cardgame")
+@Table(name = "mission_list", schema = "cardgame")
 @JsonIgnoreProperties(value = { "handler", "hibernateLazyInitializer", "fieldHandler" })
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "missionListId")
 
 public class MissionList {
     // 任务清单Id（应该保持跟用户的userId一样）
     @Id
-    @Column(name = "missionListId", nullable = false)
+    @Column(name = "mission_list_id", nullable = false)
     private Integer missionListId;
     // 任务清单内还未完成的任务（如果完成了直接从这里删除）
     @ManyToMany
