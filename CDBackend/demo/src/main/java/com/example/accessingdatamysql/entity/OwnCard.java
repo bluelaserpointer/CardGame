@@ -7,7 +7,7 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.*;
 
 @Entity
-@Table(name = "OwnCard", schema = "cardgame")
+@Table(name = "own_card", schema = "cardgame")
 @JsonIgnoreProperties(value = { "handler", "hibernateLazyInitializer", "fieldHandler" })
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "ownCardId")
 public class OwnCard {

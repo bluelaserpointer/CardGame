@@ -124,7 +124,7 @@ public class OwnItemDaoImpl implements OwnItemDao {
 
         // get the nextPageToken
         Integer nextPageToken;
-        if ((OwnItemRepository.findAll().size() - (page_token * page_size)) <= 0) {
+        if ((OwnItemRepository.count() - (page_token * page_size)) <= 0) {
             response.put("nextPageToken", "");
         } else {
             nextPageToken = page_token + 1;
@@ -132,8 +132,8 @@ public class OwnItemDaoImpl implements OwnItemDao {
         }
 
         // get the total pages of the result
-        Integer totalPages = OwnItemRepository.findAll().size() / page_size;
-        if ((OwnItemRepository.findAll().size() - page_size * totalPages) > 0) {
+        int totalPages = (int)OwnItemRepository.count() / page_size;
+        if ((OwnItemRepository.count() - page_size * totalPages) > 0) {
             totalPages += 1;
         }
         response.put("result", ownItems);

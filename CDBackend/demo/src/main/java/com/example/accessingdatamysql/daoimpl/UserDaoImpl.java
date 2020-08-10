@@ -99,7 +99,7 @@ public class UserDaoImpl implements UserDao {
 
         // get the nextPageToken
         Integer nextPageToken;
-        if ((UserRepository.findAll().size() - (page_token * page_size)) <= 0) {
+        if ((UserRepository.count() - (page_token * page_size)) <= 0) {
             response.put("nextPageToken", "");
         } else {
             nextPageToken = page_token + 1;
@@ -107,8 +107,8 @@ public class UserDaoImpl implements UserDao {
         }
 
         // get the total pages of the result
-        Integer totalPages = UserRepository.findAll().size() / page_size;
-        if ((UserRepository.findAll().size() - page_size * totalPages) > 0) {
+        int totalPages = (int)UserRepository.count() / page_size;
+        if ((UserRepository.count() - page_size * totalPages) > 0) {
             totalPages += 1;
         }
         // totalPages = totalPages + 1;

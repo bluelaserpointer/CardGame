@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
-@Table(name = "Card", schema = "cardgame")
+@Table(name = "card", schema = "cardgame")
 @JsonIgnoreProperties(value = { "handler", "hibernateLazyInitializer", "fieldHandler" })
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "cardId")
 
@@ -40,7 +40,7 @@ public class Card {
     // 可能需要添加技能相关的attributes
 
     public Card() {
-    };
+    }
 
     public Card(String rarity, String cardName, Integer healthPoint, Integer attack, Integer defense,
             Integer attackRange, Double cd, Integer speed, Integer type) {

@@ -57,7 +57,7 @@ public class OnlineCountRecordDaoImpl implements OnlineCountRecordDao {
 
         // get the nextPageToken
         Integer nextPageToken;
-        if ((onlineCountRecordRepository.findAll().size() - (page_token * page_size)) <= 0) {
+        if ((onlineCountRecordRepository.count() - (page_token * page_size)) <= 0) {
             response.put("nextPageToken", "");
         } else {
             nextPageToken = page_token + 1;
@@ -65,8 +65,8 @@ public class OnlineCountRecordDaoImpl implements OnlineCountRecordDao {
         }
 
         // get the total pages of the result
-        Integer totalPages = onlineCountRecordRepository.findAll().size() / page_size;
-        if ((onlineCountRecordRepository.findAll().size() - page_size * totalPages) > 0) {
+        int totalPages = (int)onlineCountRecordRepository.count() / page_size;
+        if ((onlineCountRecordRepository.count() - page_size * totalPages) > 0) {
             totalPages += 1;
         }
         // totalPages = totalPages + 1;

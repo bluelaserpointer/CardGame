@@ -4,13 +4,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.dao.ActivityDao;
 import com.example.accessingdatamysql.repository.*;
 import com.example.accessingdatamysql.entity.*;
-
-// import org.hibernate.validator.constraints.ISBN;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-// import java.sql.Timestamp;
-// import java.io.Console;
 import java.util.*;
 
 @Repository
@@ -82,9 +78,9 @@ public class ActivityDaoImpl implements ActivityDao {
     }
 
     public String deleteActivities(List<Integer> ActivityIds) {
-        for (int i = 0; i < ActivityIds.size(); i++) {
-            ActivityRepository.deleteById(ActivityIds.get(i));
-            ActivityDetailsRepository.deleteActivityDetailsByActivityIdEquals(ActivityIds.get(i));
+        for (Integer activityId : ActivityIds) {
+            ActivityRepository.deleteById(activityId);
+            ActivityDetailsRepository.deleteActivityDetailsByActivityIdEquals(activityId);
         }
         return "Deleted Activities by id";
     }
@@ -118,8 +114,8 @@ public class ActivityDaoImpl implements ActivityDao {
         }
 
         // get the nextPageToken
-        Integer nextPageToken;
-        if ((ActivityRepository.findAll().size() - (page_token * page_size)) <= 0) {
+        int nextPageToken;
+        if ((ActivityRepository.count() - (page_token * page_size)) <= 0) {
             response.put("nextPageToken", "");
         } else {
             nextPageToken = page_token + 1;
@@ -127,8 +123,8 @@ public class ActivityDaoImpl implements ActivityDao {
         }
 
         // get the total pages of the result
-        Integer totalPages = ActivityRepository.findAll().size() / page_size;
-        if ((ActivityRepository.findAll().size() - page_size * totalPages) > 0) {
+        int totalPages = (int)ActivityRepository.count() / page_size;
+        if ((ActivityRepository.count() - page_size * totalPages) > 0) {
             totalPages += 1;
         }
         response.put("result", activities);

@@ -52,7 +52,7 @@ public class UserLoginRecordDaoImpl implements UserLoginRecordDao {
 
         // get the nextPageToken
         Integer nextPageToken;
-        if ((userLoginRecordRepository.findAll().size() - (page_token * page_size)) <= 0) {
+        if ((userLoginRecordRepository.count() - (page_token * page_size)) <= 0) {
             response.put("nextPageToken", "");
         } else {
             nextPageToken = page_token + 1;
@@ -60,8 +60,8 @@ public class UserLoginRecordDaoImpl implements UserLoginRecordDao {
         }
 
         // get the total pages of the result
-        Integer totalPages = userLoginRecordRepository.findAll().size() / page_size;
-        if ((userLoginRecordRepository.findAll().size() - page_size * totalPages) > 0) {
+        int totalPages = (int)userLoginRecordRepository.count() / page_size;
+        if ((userLoginRecordRepository.count() - page_size * totalPages) > 0) {
             totalPages += 1;
         }
         // totalPages = totalPages + 1;

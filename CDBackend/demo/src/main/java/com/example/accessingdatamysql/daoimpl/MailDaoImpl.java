@@ -86,9 +86,9 @@ public class MailDaoImpl implements MailDao {
     }
 
     public String deleteMails(List<Integer> MailIds) {
-        for (int i = 0; i < MailIds.size(); i++) {
-            MailRepository.deleteById(MailIds.get(i));
-            MailDetailsRepository.deleteMailDetailsByMailIdEquals(MailIds.get(i));
+        for (Integer mailId : MailIds) {
+            MailRepository.deleteById(mailId);
+            MailDetailsRepository.deleteMailDetailsByMailIdEquals(mailId);
         }
         return "Deleted Mails by id";
     }
@@ -121,8 +121,8 @@ public class MailDaoImpl implements MailDao {
         }
 
         // get the nextPageToken
-        Integer nextPageToken;
-        if ((MailRepository.findAll().size() - (page_token * page_size)) <= 0) {
+        int nextPageToken;
+        if ((MailRepository.count() - (page_token * page_size)) <= 0) {
             response.put("nextPageToken", "");
         } else {
             nextPageToken = page_token + 1;
@@ -130,8 +130,8 @@ public class MailDaoImpl implements MailDao {
         }
 
         // get the total pages of the result
-        Integer totalPages = MailRepository.findAll().size() / page_size;
-        if ((MailRepository.findAll().size() - page_size * totalPages) > 0) {
+        int totalPages = (int)MailRepository.count() / page_size;
+        if ((MailRepository.count() - page_size * totalPages) > 0) {
             totalPages += 1;
         }
         response.put("result", mails);

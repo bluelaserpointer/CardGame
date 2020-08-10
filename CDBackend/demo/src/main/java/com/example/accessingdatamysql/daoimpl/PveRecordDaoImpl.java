@@ -114,7 +114,7 @@ public class PveRecordDaoImpl implements PveRecordDao {
 
         // get the nextPageToken
         Integer nextPageToken;
-        if ((pveRecordRepository.findAll().size() - (page_token * page_size)) <= 0) {
+        if ((pveRecordRepository.count() - (page_token * page_size)) <= 0) {
             response.put("nextPageToken", "");
         } else {
             nextPageToken = page_token + 1;
@@ -122,8 +122,8 @@ public class PveRecordDaoImpl implements PveRecordDao {
         }
 
         // get the total pages of the result
-        Integer totalPages = pveRecordRepository.findAll().size() / page_size;
-        if ((pveRecordRepository.findAll().size() - page_size * totalPages) > 0) {
+        int totalPages = (int)pveRecordRepository.count() / page_size;
+        if ((pveRecordRepository.count() - page_size * totalPages) > 0) {
             totalPages += 1;
         }
         // totalPages = totalPages + 1;

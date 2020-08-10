@@ -124,7 +124,7 @@ public class CardDaoImpl implements CardDao {
 
         // get the nextPageToken
         Integer nextPageToken;
-        if ((CardRepository.findAll().size() - (page_token * page_size)) <= 0) {
+        if ((CardRepository.count() - (page_token * page_size)) <= 0) {
             response.put("nextPageToken", "");
         } else {
             nextPageToken = page_token + 1;
@@ -132,8 +132,8 @@ public class CardDaoImpl implements CardDao {
         }
 
         // get the total pages of the result
-        Integer totalPages = CardRepository.findAll().size() / page_size;
-        if ((CardRepository.findAll().size() - page_size * totalPages) > 0) {
+        int totalPages = (int)CardRepository.count() / page_size;
+        if ((CardRepository.count() - page_size * totalPages) > 0) {
             totalPages += 1;
         }
         response.put("result", cards);
