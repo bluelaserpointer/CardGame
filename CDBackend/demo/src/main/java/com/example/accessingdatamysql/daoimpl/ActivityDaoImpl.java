@@ -128,7 +128,7 @@ public class ActivityDaoImpl implements ActivityDao {
 
         // get the total pages of the result
         Integer totalPages = ActivityRepository.findAll().size() / page_size;
-        if ((totalPages - page_size * totalPages) > 0) {
+        if ((ActivityRepository.findAll().size() - page_size * totalPages) > 0) {
             totalPages += 1;
         }
         response.put("result", activities);

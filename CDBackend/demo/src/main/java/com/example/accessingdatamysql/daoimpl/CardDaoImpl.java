@@ -133,7 +133,7 @@ public class CardDaoImpl implements CardDao {
 
         // get the total pages of the result
         Integer totalPages = CardRepository.findAll().size() / page_size;
-        if ((totalPages - page_size * totalPages) > 0) {
+        if ((CardRepository.findAll().size() - page_size * totalPages) > 0) {
             totalPages += 1;
         }
         response.put("result", cards);
