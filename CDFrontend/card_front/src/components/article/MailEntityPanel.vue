@@ -132,7 +132,7 @@ export default {
 
     handleFilter() {
       this.listQuery.page = 1;
-      this.getList()
+      this.getList(this.listQuery.page, this.listQuery.limit);
     },
     sortChange(data) {
       const { prop, order } = data;
