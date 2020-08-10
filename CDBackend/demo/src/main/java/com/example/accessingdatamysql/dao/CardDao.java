@@ -1,10 +1,10 @@
 package com.example.accessingdatamysql.dao;
 
 import java.util.List;
-import com.example.accessingdatamysql.Classes.JSONPagination;
+import com.example.accessingdatamysql.Classes.DaoPagination;
 import com.example.accessingdatamysql.entity.*;
 
-public interface CardDao extends JSONPagination {
+public interface CardDao extends DaoPagination {
         Card getOneCard(Integer cardId);
 
         // Optional<CardDetails> findOneDetail(Integer id);

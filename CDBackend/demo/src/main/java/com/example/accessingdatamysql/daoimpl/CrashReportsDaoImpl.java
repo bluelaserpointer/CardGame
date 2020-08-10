@@ -60,37 +60,11 @@ public class CrashReportsDaoImpl implements CrashReportsDao {
 
     @Override
     public JSONObject ListPage(Integer page_token, Integer page_size) {
-        JSONObject response = new JSONObject();
-
-        // get the result data
-        Integer start = (page_token - 1) * page_size;
-        // Integer end = page_token * page_size - 1;
-        List<CrashReports> crashReports = crashReportsRepository.ListPage(start, page_size);
-        for (int i = 0; i < crashReports.size(); i++) {
-            CrashReports crashReport = crashReports.get(i);
-            Optional<CrashReportsDetail> crashReportDetails = crashReportsDetailRepository
-                    .findCrashReportsDetailByReportIdEquals(crashReport.getReportId());
-            crashReportDetails.ifPresent(crashReport::setDetail);
-            crashReports.set(i, crashReport);
-        }
-
-        // get the nextPageToken
-        Integer nextPageToken;
-        if ((crashReportsRepository.count() - (page_token * page_size)) <= 0) {
-            response.put("nextPageToken", "");
-        } else {
-            nextPageToken = page_token + 1;
-            response.put("nextPageToken", nextPageToken);
-        }
-
-        // get the total pages of the result
-        int totalPages = (int)crashReportsRepository.count() / page_size;
-        if ((crashReportsRepository.count() - page_size * totalPages) > 0) {
-            totalPages += 1;
-        }
-        response.put("result", crashReports);
-        response.put("totalPages", totalPages);
-
-        return response;
-    };
+        return this.ListPage(page_token, page_size, crashReportsRepository, crashReport -> {
+            crashReportsDetailRepository
+                    .findCrashReportsDetailByReportIdEquals(crashReport.getReportId())
+                    .ifPresent(crashReport::setDetail);
+            return crashReport;
+        });
+    }
 }

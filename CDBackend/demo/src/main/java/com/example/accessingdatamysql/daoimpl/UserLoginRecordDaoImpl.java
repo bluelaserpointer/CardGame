@@ -17,8 +17,7 @@ public class UserLoginRecordDaoImpl implements UserLoginRecordDao {
 
     @Override
     public void userLogin(final Integer userId) {
-        final UserLoginRecord userLoginRecord = new UserLoginRecord(userId);
-        userLoginRecordRepository.save(userLoginRecord);
+        userLoginRecordRepository.save(new UserLoginRecord(userId));
     }
 
     public void userLogout(final Integer userId, final Integer type, final Timestamp logoutTime) {
@@ -43,32 +42,6 @@ public class UserLoginRecordDaoImpl implements UserLoginRecordDao {
 
     @Override
     public JSONObject ListPage(final Integer page_token, final Integer page_size) {
-        JSONObject response = new JSONObject();
-
-        // get the result data
-        Integer start = (page_token - 1) * page_size;
-        // Integer end = page_token * page_size - 1;
-        List<UserLoginRecord> users = userLoginRecordRepository.ListPage(start, page_size);
-
-        // get the nextPageToken
-        Integer nextPageToken;
-        if ((userLoginRecordRepository.count() - (page_token * page_size)) <= 0) {
-            response.put("nextPageToken", "");
-        } else {
-            nextPageToken = page_token + 1;
-            response.put("nextPageToken", nextPageToken);
-        }
-
-        // get the total pages of the result
-        int totalPages = (int)userLoginRecordRepository.count() / page_size;
-        if ((userLoginRecordRepository.count() - page_size * totalPages) > 0) {
-            totalPages += 1;
-        }
-        // totalPages = totalPages + 1;
-
-        response.put("result", users);
-        response.put("totalPages", totalPages);
-
-        return response;
+        return this.ListPage(page_token, page_size, userLoginRecordRepository);
     }
 }

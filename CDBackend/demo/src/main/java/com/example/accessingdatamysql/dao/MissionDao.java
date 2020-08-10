@@ -2,10 +2,10 @@ package com.example.accessingdatamysql.dao;
 
 import java.util.List;
 
-import com.example.accessingdatamysql.Classes.JSONPagination;
+import com.example.accessingdatamysql.Classes.DaoPagination;
 import com.example.accessingdatamysql.entity.*;
 
-public interface MissionDao extends JSONPagination {
+public interface MissionDao extends DaoPagination {
         Mission getOneMission(Integer MissionId);
 
         // Optional<MissionDetails> findOneDetail(Integer id);

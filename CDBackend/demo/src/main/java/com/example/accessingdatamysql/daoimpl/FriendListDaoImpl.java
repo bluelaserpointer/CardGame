@@ -14,11 +14,11 @@ import java.util.*;
 @Repository
 public class FriendListDaoImpl implements FriendListDao {
     @Autowired
-    private FriendListRepository FriendListRepository;
+    private FriendListRepository friendListRepository;
 
     @Override
     public FriendList getOneFriendList(Integer FriendListId) {
-        FriendList FriendList = FriendListRepository.getOne(FriendListId);
+        FriendList FriendList = friendListRepository.getOne(FriendListId);
         return FriendList;
     }
 
@@ -36,17 +36,17 @@ public class FriendListDaoImpl implements FriendListDao {
 
         FriendList FriendList = new FriendList(userId);
         // System.out.println("new FriendList has an Id of : " + n.getFriendListId());
-        FriendListRepository.save(FriendList);
+        friendListRepository.save(FriendList);
         return "Saved FriendList";
 
     }
 
     public String updateFriendList(Integer FriendListId, List<Integer> friendIds) {
 
-        FriendList FriendList = FriendListRepository.getOne(FriendListId);
+        FriendList FriendList = friendListRepository.getOne(FriendListId);
         // System.out.println("old FriendList has an Id of : " + n.getFriendListId());
         FriendList.setFriendIds(friendIds);
-        FriendListRepository.updateFriendListStatus(FriendList, FriendListId);
+        friendListRepository.updateFriendListStatus(FriendList, FriendListId);
         // return "Modified FriendList";
 
         return "modified FriendList: " + FriendList.getFriendListId();
@@ -54,19 +54,19 @@ public class FriendListDaoImpl implements FriendListDao {
     }
 
     public List<FriendList> getAllFriendLists() {
-        List<FriendList> FriendLists = FriendListRepository.findAll();
+        List<FriendList> FriendLists = friendListRepository.findAll();
         return FriendLists;
     }
 
     public String deleteFriendLists(List<Integer> FriendListIds) {
         for (int i = 0; i < FriendListIds.size(); i++) {
-            FriendListRepository.deleteById(FriendListIds.get(i));
+            friendListRepository.deleteById(FriendListIds.get(i));
         }
         return "Deleted FriendLists by id";
     }
 
     public String deleteAll() {
-        FriendListRepository.deleteAll();
+        friendListRepository.deleteAll();
         return "Deleted All FriendLists";
     }
 }

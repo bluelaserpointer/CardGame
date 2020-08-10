@@ -1,9 +1,7 @@
 package com.example.accessingdatamysql.repository;
 
-import com.example.accessingdatamysql.entity.Chapter;
 import com.example.accessingdatamysql.entity.ChapterPhase;
 import com.example.accessingdatamysql.entity.ChapterPhaseEntityId;
-import com.example.accessingdatamysql.entity.Mission;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

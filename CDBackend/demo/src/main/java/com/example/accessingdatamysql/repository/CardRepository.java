@@ -4,7 +4,8 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
-import com.example.accessingdatamysql.Classes.ListPagination;
+import com.example.accessingdatamysql.Classes.PaginationJpaRepository;
+import com.example.accessingdatamysql.Classes.RepositoryPagination;
 import org.springframework.data.jpa.repository.*;
 import com.example.accessingdatamysql.entity.*;
 import org.springframework.data.repository.query.Param;
@@ -12,7 +13,7 @@ import org.springframework.data.repository.query.Param;
 // This will be AUTO IMPLEMENTED by Spring into a Bean called userRepository
 // CRUD refers Create, Read, Update, Delete
 
-public interface CardRepository extends JpaRepository<Card, Integer>, ListPagination<Card> {
+public interface CardRepository extends PaginationJpaRepository<Card, Integer> {
 
     // @Transactional
     // @Modifying

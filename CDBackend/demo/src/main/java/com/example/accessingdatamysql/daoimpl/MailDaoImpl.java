@@ -15,14 +15,14 @@ import java.util.*;
 @Repository
 public class MailDaoImpl implements MailDao {
     @Autowired
-    private MailRepository MailRepository;
+    private MailRepository mailRepository;
     @Autowired
-    private MailDetailsRepository MailDetailsRepository;
+    private MailDetailsRepository mailDetailsRepository;
 
     @Override
     public Mail getOneMail(Integer MailId) {
-        Mail Mail = MailRepository.getOne(MailId);
-        Optional<MailDetails> MailDetails = MailDetailsRepository.findMailDetailsByMailIdEquals(MailId);
+        Mail Mail = mailRepository.getOne(MailId);
+        Optional<MailDetails> MailDetails = mailDetailsRepository.findMailDetailsByMailIdEquals(MailId);
         MailDetails.ifPresent(Mail::setMailDetails);
         return Mail;
     }
@@ -39,10 +39,10 @@ public class MailDaoImpl implements MailDao {
     public Mail addNewMail(Mail newMail) {
         Mail Mail = new Mail(newMail.getMailName());
         // System.out.println("new Mail has an Id of : " + n.getMailId());
-        MailRepository.save(Mail);
+        mailRepository.save(Mail);
         MailDetails MailDetails = new MailDetails(Mail.getMailId(), newMail.getMailDetails().getMailImg(),
                 newMail.getMailDetails().getMailDescription());
-        MailDetailsRepository.save(MailDetails);
+        mailDetailsRepository.save(MailDetails);
         Mail.setMailDetails(MailDetails);
         return Mail;
 
@@ -50,13 +50,13 @@ public class MailDaoImpl implements MailDao {
 
     public Mail updateMail(Mail updateMail) {
 
-        Mail Mail = MailRepository.getOne(updateMail.getMailId());
+        Mail Mail = mailRepository.getOne(updateMail.getMailId());
         // System.out.println("old Mail has an Id of : " + n.getMailId());
         Mail.setMailName(updateMail.getMailName());
 
-        MailRepository.updateMailStatus(Mail, updateMail.getMailId());
+        mailRepository.updateMailStatus(Mail, updateMail.getMailId());
 
-        Optional<MailDetails> optMailDetails = MailDetailsRepository
+        Optional<MailDetails> optMailDetails = mailDetailsRepository
                 .findMailDetailsByMailIdEquals(updateMail.getMailId());
         MailDetails mailDetails = new MailDetails(updateMail.getMailId(), "", "");
         if (optMailDetails.isPresent()) {
@@ -68,17 +68,17 @@ public class MailDaoImpl implements MailDao {
 
         mailDetails.setMailDescription(updateMail.getMailDetails().getMailDescription());
         mailDetails.setMailImg(updateMail.getMailDetails().getMailImg());
-        MailDetailsRepository.save(mailDetails);
+        mailDetailsRepository.save(mailDetails);
         updateMail.setMailDetails(mailDetails);
         return updateMail;
 
     }
 
     public List<Mail> getAllMails() {
-        List<Mail> Mails = MailRepository.findAll();
+        List<Mail> Mails = mailRepository.findAll();
         for (int i = 0; i < Mails.size(); i++) {
             Mail Mail = Mails.get(i);
-            Optional<MailDetails> MailDetails = MailDetailsRepository.findMailDetailsByMailIdEquals(Mail.getMailId());
+            Optional<MailDetails> MailDetails = mailDetailsRepository.findMailDetailsByMailIdEquals(Mail.getMailId());
             MailDetails.ifPresent(Mail::setMailDetails);
             Mails.set(i, Mail);
         }
@@ -87,56 +87,31 @@ public class MailDaoImpl implements MailDao {
 
     public String deleteMails(List<Integer> MailIds) {
         for (Integer mailId : MailIds) {
-            MailRepository.deleteById(mailId);
-            MailDetailsRepository.deleteMailDetailsByMailIdEquals(mailId);
+            mailRepository.deleteById(mailId);
+            mailDetailsRepository.deleteMailDetailsByMailIdEquals(mailId);
         }
         return "Deleted Mails by id";
     }
 
     public String deleteAll() {
-        MailRepository.deleteAll();
-        MailDetailsRepository.deleteAll();
+        mailRepository.deleteAll();
+        mailDetailsRepository.deleteAll();
         return "Deleted All Mails";
     }
 
     public List<Mail> deleteMail(Integer mailId) {
-        MailRepository.deleteById(mailId);
-        MailDetailsRepository.deleteMailDetailsByMailIdEquals(mailId);
+        mailRepository.deleteById(mailId);
+        mailDetailsRepository.deleteMailDetailsByMailIdEquals(mailId);
         return getAllMails();
     }
 
     @Override
     public JSONObject ListPage(Integer page_token, Integer page_size) {
-        JSONObject response = new JSONObject();
-
-        // get the result data
-        Integer start = (page_token - 1) * page_size;
-        // Integer end = page_token * page_size - 1;
-        List<Mail> mails = MailRepository.ListPage(start, page_size);
-        for (int i = 0; i < mails.size(); i++) {
-            Mail Mail = mails.get(i);
-            Optional<MailDetails> MailDetails = MailDetailsRepository.findMailDetailsByMailIdEquals(Mail.getMailId());
-            MailDetails.ifPresent(Mail::setMailDetails);
-            mails.set(i, Mail);
-        }
-
-        // get the nextPageToken
-        int nextPageToken;
-        if ((MailRepository.count() - (page_token * page_size)) <= 0) {
-            response.put("nextPageToken", "");
-        } else {
-            nextPageToken = page_token + 1;
-            response.put("nextPageToken", nextPageToken);
-        }
-
-        // get the total pages of the result
-        int totalPages = (int)MailRepository.count() / page_size;
-        if ((MailRepository.count() - page_size * totalPages) > 0) {
-            totalPages += 1;
-        }
-        response.put("result", mails);
-        response.put("totalPages", totalPages);
-
-        return response;
+        return this.ListPage(page_token, page_size, mailRepository, mail -> {
+            mailDetailsRepository
+                    .findMailDetailsByMailIdEquals(mail.getMailId())
+                    .ifPresent(mail::setMailDetails);
+            return mail;
+        });
     }
 }

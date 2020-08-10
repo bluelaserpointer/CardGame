@@ -14,16 +14,16 @@ import java.util.*;
 @Repository
 public class ChatHistoryDaoImpl implements ChatHistoryDao {
     @Autowired
-    private ChatHistoryRepository ChatHistoryRepository;
+    private ChatHistoryRepository chatHistoryRepository;
 
     @Override
     public Optional<ChatHistory> getOneChatHistory(Integer fromId, Integer toId) {
-        Optional<ChatHistory> chatHistory = ChatHistoryRepository.findChatHistoryByFromIdEquals(fromId);
+        Optional<ChatHistory> chatHistory = chatHistoryRepository.findChatHistoryByFromIdEquals(fromId);
         if (chatHistory.isPresent()) {
             return chatHistory;
         }
-        if (ChatHistoryRepository.findChatHistoryByToIdEquals(toId).isPresent()) {
-            chatHistory = ChatHistoryRepository.findChatHistoryByToIdEquals(toId);
+        if (chatHistoryRepository.findChatHistoryByToIdEquals(toId).isPresent()) {
+            chatHistory = chatHistoryRepository.findChatHistoryByToIdEquals(toId);
             return chatHistory;
         }
         return chatHistory;
@@ -43,7 +43,7 @@ public class ChatHistoryDaoImpl implements ChatHistoryDao {
 
         ChatHistory ChatHistory = new ChatHistory(fromId, toId);
         // System.out.println("new ChatHistory has an Id of : " + n.getChatHistoryId());
-        ChatHistoryRepository.save(ChatHistory);
+        chatHistoryRepository.save(ChatHistory);
         return "Saved ChatHistory";
 
     }
@@ -54,7 +54,7 @@ public class ChatHistoryDaoImpl implements ChatHistoryDao {
         // System.out.println("old ChatHistory has an Id of : " + n.getChatHistoryId());
         if (ChatHistory.isPresent()) {
             ChatHistory.get().setMessages(messages);
-            ChatHistoryRepository.save(ChatHistory.get());
+            chatHistoryRepository.save(ChatHistory.get());
         }
 
         return "modified ChatHistory: from " + ChatHistory.get().getFromId() + ChatHistory.get().getToId();
@@ -62,19 +62,19 @@ public class ChatHistoryDaoImpl implements ChatHistoryDao {
     }
 
     public List<ChatHistory> getAllChatHistorys() {
-        List<ChatHistory> ChatHistorys = ChatHistoryRepository.findAll();
+        List<ChatHistory> ChatHistorys = chatHistoryRepository.findAll();
         return ChatHistorys;
     }
 
     public String deleteChatHistorys(List<Integer> ChatHistoryIds) {
         for (int i = 0; i < ChatHistoryIds.size(); i++) {
-            ChatHistoryRepository.deleteById(ChatHistoryIds.get(i));
+            chatHistoryRepository.deleteById(ChatHistoryIds.get(i));
         }
         return "Deleted ChatHistorys by id";
     }
 
     public String deleteAll() {
-        ChatHistoryRepository.deleteAll();
+        chatHistoryRepository.deleteAll();
         return "Deleted All ChatHistorys";
     }
 }
