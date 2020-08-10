@@ -20,6 +20,10 @@ public class MailBox {
     @ElementCollection(targetClass = Integer.class)
     private List<Integer> mailIds;
 
+    public MailBox() {
+
+    }
+
     // mailBoxid应该要等于userId（一对一关系，（不用自动生成的方法了））
     public MailBox(Integer mailBoxId) {
         this.mailBoxId = mailBoxId;

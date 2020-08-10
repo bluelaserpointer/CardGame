@@ -133,7 +133,7 @@ public class ItemDaoImpl implements ItemDao {
 
         // get the total pages of the result
         Integer totalPages = ItemRepository.findAll().size() / page_size;
-        if ((totalPages - page_size * totalPages) > 0) {
+        if ((ItemRepository.findAll().size() - page_size * totalPages) > 0) {
             totalPages += 1;
         }
         response.put("result", items);
