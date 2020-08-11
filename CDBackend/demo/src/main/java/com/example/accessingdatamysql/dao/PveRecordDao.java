@@ -1,13 +1,13 @@
 package com.example.accessingdatamysql.dao;
 
-import com.example.accessingdatamysql.Classes.DaoPagination;
+import com.example.accessingdatamysql.Classes.PaginationDao;
 import com.example.accessingdatamysql.entity.PveRecord;
 
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
-public interface PveRecordDao extends DaoPagination {
+public interface PveRecordDao extends PaginationDao {
     PveRecord addPveRecord(Integer userId, Integer chapterId, Integer phaseId, Integer result, String posRecord);
 
     PveRecord updatePveRecord(Integer pveRecordId, Integer userId, Integer chapterId, Integer phaseId, Integer result,

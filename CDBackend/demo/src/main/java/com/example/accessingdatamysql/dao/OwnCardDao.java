@@ -2,10 +2,10 @@ package com.example.accessingdatamysql.dao;
 
 import java.util.List;
 
-import com.example.accessingdatamysql.Classes.DaoPagination;
+import com.example.accessingdatamysql.Classes.PaginationDao;
 import com.example.accessingdatamysql.entity.*;
 
-public interface OwnCardDao extends DaoPagination {
+public interface OwnCardDao extends PaginationDao {
         // 用ownCardId找某一个用户拥有卡牌的关系
         OwnCard getOneOwnCard(Integer OwncardId);
 

@@ -20,7 +20,8 @@ public class MissionList {
     @JoinColumn(name = "missions", unique = false)
     private List<Mission> missions;
 
-    // MissionListid应该要等于userId（一对一关系，（不用自动生成的方法了））
+    public MissionList() {};
+    // MissionListId应该要等于userId（一对一关系，（不用自动生成的方法了））
     public MissionList(Integer MissionListId) {
         this.missionListId = MissionListId;
     }

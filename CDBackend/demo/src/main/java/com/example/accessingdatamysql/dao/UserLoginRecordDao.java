@@ -1,12 +1,12 @@
 package com.example.accessingdatamysql.dao;
 
-import com.example.accessingdatamysql.Classes.DaoPagination;
+import com.example.accessingdatamysql.Classes.PaginationDao;
 import com.example.accessingdatamysql.entity.UserLoginRecord;
 
 import java.sql.Timestamp;
 import java.util.List;
 
-public interface UserLoginRecordDao extends DaoPagination {
+public interface UserLoginRecordDao extends PaginationDao {
     void userLogin(Integer userId);
 
     void userLogout(Integer userId, Integer type, Timestamp logoutTime);

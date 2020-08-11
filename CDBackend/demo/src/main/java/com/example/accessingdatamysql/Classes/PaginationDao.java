@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import java.util.List;
 import java.util.function.UnaryOperator;
 
-public interface DaoPagination {
+public interface PaginationDao {
     JSONObject ListPage(Integer start, Integer end);
     default <T, ID> JSONObject ListPage(Integer page_token, Integer page_size, PaginationJpaRepository<T, ID> repository, UnaryOperator<T> detailAdder) {
         final JSONObject response = new JSONObject();

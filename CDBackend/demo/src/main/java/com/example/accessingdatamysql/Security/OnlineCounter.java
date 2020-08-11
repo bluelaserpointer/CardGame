@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.Map;
 import static com.example.accessingdatamysql.Security.SecurityConstants.countMap;
 
@@ -50,14 +49,13 @@ public class OnlineCounter {
     public Integer getOnlineCount(){
         int onlineCount = 0;
         //获取countMap的迭代器
-        Iterator iterator = countMap.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<String,Object>  entry = (Map.Entry<String, Object>) iterator.next();
+        for (Object o : countMap.entrySet()) {
+            Map.Entry<String, Object> entry = (Map.Entry<String, Object>) o;
             Long value = (Long) entry.getValue();
             if (value > System.currentTimeMillis()) {
                 //过期时间大于当前时间则没有过期
                 onlineCount++;
-            }else{
+            } else {
                 countMap.remove(entry);
             }
 

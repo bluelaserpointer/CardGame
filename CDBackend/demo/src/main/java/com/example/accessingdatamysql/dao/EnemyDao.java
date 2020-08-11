@@ -2,10 +2,10 @@ package com.example.accessingdatamysql.dao;
 
 import java.util.List;
 
-import com.example.accessingdatamysql.Classes.DaoPagination;
+import com.example.accessingdatamysql.Classes.PaginationDao;
 import com.example.accessingdatamysql.entity.*;
 
-public interface EnemyDao extends DaoPagination {
+public interface EnemyDao extends PaginationDao {
 
         Enemy getOneEnemy(Integer enemyId);
 

@@ -2,10 +2,10 @@ package com.example.accessingdatamysql.dao;
 
 import java.util.List;
 
-import com.example.accessingdatamysql.Classes.DaoPagination;
+import com.example.accessingdatamysql.Classes.PaginationDao;
 import com.example.accessingdatamysql.entity.*;
 
-public interface MailDao extends DaoPagination {
+public interface MailDao extends PaginationDao {
         Mail getOneMail(Integer MailId);
 
         // Optional<MailDetails> findOneDetail(Integer id);

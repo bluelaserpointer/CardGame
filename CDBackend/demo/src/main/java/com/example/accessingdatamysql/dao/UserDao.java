@@ -2,10 +2,10 @@ package com.example.accessingdatamysql.dao;
 
 import java.util.List;
 
-import com.example.accessingdatamysql.Classes.DaoPagination;
+import com.example.accessingdatamysql.Classes.PaginationDao;
 import com.example.accessingdatamysql.entity.*;
 
-public interface UserDao extends DaoPagination {
+public interface UserDao extends PaginationDao {
         // 获取一个用户信息
         User getOneUser(Integer UserId);
 
