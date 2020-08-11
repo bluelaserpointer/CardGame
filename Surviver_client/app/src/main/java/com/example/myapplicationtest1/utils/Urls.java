@@ -5,7 +5,7 @@ public class Urls {
     //Edward: http://192.168.175.1:8080/
     //Jun: http://192.168.254.1:8080/
     //Online: http://ec2-35-173-219-114.compute-1.amazonaws.com:8080/
-    public static final String URLHead = IS_LOCAL_MODE ? "http://192.168.254.1:8080/" : "http://ec2-35-173-219-114.compute-1.amazonaws.com:8080/";
+    public static final String URLHead = IS_LOCAL_MODE ? "http://192.168.254.1:8080/" : "http://35.174.18.246:8080/";
     /////////////
     //Users
     /////////////
@@ -49,7 +49,7 @@ public class Urls {
     //CrashReports
     /////////////
     public static String uploadCrashReport() {
-        return "crashReports/add";
+        return "crashReports/add?userId=" + Cache.userId + "&clientVersion=" + Utils.CLIENT_VERSION;
     }
     /////////////
     //Records

@@ -18,6 +18,10 @@ public class CrashReports {
 
     private Timestamp recordTime;
 
+    private Integer userId;
+
+    private Double clientVersion;
+
     @Transient
     private CrashReportsDetail detail;
 
@@ -48,5 +52,17 @@ public class CrashReports {
     }
     public void setRecordTime(Timestamp recordTime) {
         this.recordTime = recordTime;
+    }
+    public Integer getUserId() {
+        return userId;
+    }
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+    public Double getClientVersion() {
+        return clientVersion;
+    }
+    public void setClientVersion(Double clientVersion) {
+        this.clientVersion = clientVersion;
     }
 }

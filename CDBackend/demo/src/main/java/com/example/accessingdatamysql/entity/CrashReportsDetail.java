@@ -5,22 +5,26 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "CrashReportsDetail")
 public class CrashReportsDetail {
     private Integer reportId;
-    private String content;
+    private String stackTrace;
+    private String deviceInfo;
 
-    public CrashReportsDetail(){}
+    public CrashReportsDetail() {}
 
-    public CrashReportsDetail(Integer reportId, String content) {
+    public CrashReportsDetail(Integer reportId, String stackTrace, String deviceInfo) {
         this.reportId = reportId;
-        this.content = content;
+        this.stackTrace = stackTrace;
+        this.deviceInfo = deviceInfo;
     }
 
     public Integer getReportId() {
         return reportId;
     }
-    public void setContent(String content) {
-        this.content = content;
+    public void setStackTrace(String stackTrace) {
+        this.stackTrace = stackTrace;
     }
-    public String getContent() {
-        return content;
+    public String getStackTrace() {
+        return stackTrace;
     }
+    public void setDeviceInfo(String deviceInfo) { this.deviceInfo = deviceInfo; }
+    public String getDeviceInfo() { return deviceInfo; }
 }
