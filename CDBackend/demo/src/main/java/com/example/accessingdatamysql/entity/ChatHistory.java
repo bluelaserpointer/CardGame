@@ -15,6 +15,8 @@ public class ChatHistory {
 
     private List<String> messages;
 
+    public ChatHistory(){}
+
     public ChatHistory(Integer fromId, Integer toId) {
         this.fromId = fromId;
         this.toId = toId;

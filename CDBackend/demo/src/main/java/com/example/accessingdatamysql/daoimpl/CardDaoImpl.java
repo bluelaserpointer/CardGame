@@ -107,7 +107,7 @@ public class CardDaoImpl implements CardDao {
 
     @Override
     public JSONObject ListPage(Integer page_token, Integer page_size) {
-        return this.ListPage(page_token, page_token, cardRepository, card -> {
+        return this.ListPage(page_token, page_size, cardRepository, card -> {
             cardDetailsRepository
                     .findCardDetailsByCardIdEquals(card.getCardId())
                     .ifPresent(card::setCardDetails);

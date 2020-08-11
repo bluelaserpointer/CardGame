@@ -25,6 +25,8 @@ public class ChapterDetails {
 
     private Integer cardId;
 
+    public ChapterDetails(){}
+
     public Integer getChapterId() {
         return chapterId;
     }
