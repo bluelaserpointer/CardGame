@@ -7,6 +7,8 @@ public class CrashReportsDetail {
     private Integer reportId;
     private String content;
 
+    public CrashReportsDetail(){}
+
     public CrashReportsDetail(Integer reportId, String content) {
         this.reportId = reportId;
         this.content = content;

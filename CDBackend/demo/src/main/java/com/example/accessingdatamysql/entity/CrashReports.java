@@ -23,6 +23,8 @@ public class CrashReports {
 
     private Boolean checked;
 
+    public CrashReports(){}
+
     public Integer getReportId() {
         return reportId;
     }

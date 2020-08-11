@@ -23,6 +23,8 @@ public class Chapter {
     @ElementCollection(targetClass = Integer.class)
     private List<Integer> awardCards;
 
+    public Chapter(){}
+
     private Integer phaseNo;
 
     public Integer getChapterId() {
