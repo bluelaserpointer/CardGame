@@ -1,8 +1,7 @@
 package com.example.accessingdatamysql.repository;
 
-import com.example.accessingdatamysql.Classes.ListPagination;
+import com.example.accessingdatamysql.Classes.PaginationJpaRepository;
 import com.example.accessingdatamysql.entity.UserLoginRecord;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
@@ -10,7 +9,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
-public interface UserLoginRecordRepository extends JpaRepository<UserLoginRecord, Integer>, ListPagination<UserLoginRecord> {
+public interface UserLoginRecordRepository extends PaginationJpaRepository<UserLoginRecord, Integer> {
     List<UserLoginRecord> findUserLoginRecordByUserIdEqualsAndLogoutTimeIsNullOrderByUserLoginRecordIdAsc(
             Integer userId);
 

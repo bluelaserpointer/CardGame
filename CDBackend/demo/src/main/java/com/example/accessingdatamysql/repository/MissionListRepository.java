@@ -4,7 +4,7 @@ import javax.transaction.Transactional;
 import org.springframework.data.jpa.repository.*;
 import com.example.accessingdatamysql.entity.*;
 import org.springframework.data.repository.query.Param;
-// import java.util.Optional;
+
 // This will be AUTO IMPLEMENTED by Spring into a Bean called userRepository
 // CRUD refers Create, Read, Update, Delete
 
@@ -20,8 +20,8 @@ public interface MissionListRepository extends JpaRepository<MissionList, Intege
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE mission_list u SET u = :newMissionList WHERE u.missionListId = :MissionListId")
-    int updateMissionListStatus(@Param("newMissionList") MissionList newMissionList,
+    @Query(value = "UPDATE MissionList u SET u = :newMissionList WHERE u.missionListId = :MissionListId")
+    void updateMissionListStatus(@Param("newMissionList") MissionList newMissionList,
             @Param("MissionListId") Integer MissionListId);
 
 }

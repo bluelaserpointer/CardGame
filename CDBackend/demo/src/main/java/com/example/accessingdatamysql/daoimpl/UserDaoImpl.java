@@ -5,13 +5,9 @@ import com.example.accessingdatamysql.dao.UserDao;
 import com.example.accessingdatamysql.repository.*;
 import com.example.accessingdatamysql.entity.*;
 
-// import org.hibernate.validator.constraints.ISBN;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javassist.expr.NewArray;
-
-// import java.io.Console;
 import java.util.*;
 
 @Repository
@@ -28,42 +24,40 @@ public class UserDaoImpl implements UserDao {
     // 添加一个新用户
     @Override
     public User addNewUser(User newUser) {
-        User User = new User(newUser.getUserName(), newUser.getEmail(), newUser.getPassword(), newUser.getPhoneNumber(),
+        final User user = new User(newUser.getUserName(), newUser.getEmail(), newUser.getPassword(), newUser.getPhoneNumber(),
                 newUser.getIdentity());
         // System.out.println("new User has an Id of : " + n.getUserId());
-        UserRepository.save(User);
-        return User;
+        UserRepository.save(user);
+        return user;
     }
 
     // 更新一个用户信息
     @Override
     public User updateUser(User newUser) {
-
-        User User = UserRepository.getOne(newUser.getUserId());
+        final User user = UserRepository.getOne(newUser.getUserId());
         // System.out.println("old User has an Id of : " + n.getUserId());
-        User.updateUser(newUser.getUserName(), newUser.getEmail(), newUser.getPassword(), newUser.getPhoneNumber(),
+        user.updateUser(newUser.getUserName(), newUser.getEmail(), newUser.getPassword(), newUser.getPhoneNumber(),
                 newUser.getCredits(), newUser.getAccess(), newUser.getLevel(), newUser.getCurExpPoint(),
                 newUser.getStamina(), newUser.getMoney(), newUser.getGrade(), newUser.getEngKnowledge(),
                 newUser.getMathKnowledge(), newUser.getChiKnowledge(), newUser.getIdentity());
 
-        UserRepository.updateUserStatus(User, newUser.getUserId());
+        UserRepository.updateUserStatus(user, newUser.getUserId());
         // return "Modified User";
-        return User;
+        return user;
 
     }
 
     // 获取所有用户信息
     @Override
     public List<User> getAllUsers() {
-        List<User> Users = UserRepository.findAll();
-        return Users;
+        return UserRepository.findAll();
     }
 
     // 删除部分用户
     @Override
     public String deleteUsers(List<Integer> UserIds) {
-        for (int i = 0; i < UserIds.size(); i++) {
-            UserRepository.deleteById(UserIds.get(i));
+        for (Integer userId : UserIds) {
+            UserRepository.deleteById(userId);
         }
         return "Deleted Users by id";
     }
@@ -90,32 +84,6 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public JSONObject ListPage(Integer page_token, Integer page_size) {
-        JSONObject response = new JSONObject();
-
-        // get the result data
-        Integer start = (page_token - 1) * page_size;
-        // Integer end = page_token * page_size - 1;
-        List<User> users = UserRepository.ListPage(start, page_size);
-
-        // get the nextPageToken
-        Integer nextPageToken;
-        if ((UserRepository.count() - (page_token * page_size)) <= 0) {
-            response.put("nextPageToken", "");
-        } else {
-            nextPageToken = page_token + 1;
-            response.put("nextPageToken", nextPageToken);
-        }
-
-        // get the total pages of the result
-        int totalPages = (int)UserRepository.count() / page_size;
-        if ((UserRepository.count() - page_size * totalPages) > 0) {
-            totalPages += 1;
-        }
-        // totalPages = totalPages + 1;
-
-        response.put("result", users);
-        response.put("totalPages", totalPages);
-
-        return response;
+        return this.ListPage(page_token, page_size, UserRepository, null);
     }
 }

@@ -20,7 +20,7 @@ public interface BlackListRepository extends JpaRepository<BlackList, Integer> {
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE black_list u SET u = :newBlackList WHERE u.blackListId= :BlackListId")
-    int updateBlackListStatus(@Param("newBlackList") BlackList newBlackList, @Param("BlackListId") Integer BlackListId);
+    @Query(value = "UPDATE BlackList u SET u = :newBlackList WHERE u.blackListId= :BlackListId")
+    void updateBlackListStatus(@Param("newBlackList") BlackList newBlackList, @Param("BlackListId") Integer BlackListId);
 
 }

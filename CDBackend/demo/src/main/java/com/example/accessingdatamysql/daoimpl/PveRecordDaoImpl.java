@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.dao.PveRecordDao;
 import com.example.accessingdatamysql.entity.PveRecord;
 import com.example.accessingdatamysql.repository.PveRecordRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,16 +23,12 @@ public class PveRecordDaoImpl implements PveRecordDao {
 
     // 将 String类型的 "[[2,1], [3,2], [4,3]]" 等 List<List> 形式转换为 Map
     public Map<Integer, Integer> parsePosRecord(String awardItems) {
-        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
-        ObjectMapper mapper = new ObjectMapper();
-
         try {
-            map = mapper.readValue(awardItems, new TypeReference<HashMap<Integer, Integer>>() {
-            });
-        } catch (Exception e) {
+            return new ObjectMapper().readValue(awardItems, new TypeReference<HashMap<Integer, Integer>>() {});
+        } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        return map;
+        return new HashMap<>();
     }
 
     @Override
@@ -105,32 +102,6 @@ public class PveRecordDaoImpl implements PveRecordDao {
 
     @Override
     public JSONObject ListPage(Integer page_token, Integer page_size) {
-        JSONObject response = new JSONObject();
-
-        // get the result data
-        Integer start = (page_token - 1) * page_size;
-        // Integer end = page_token * page_size - 1;
-        List<PveRecord> pveRecords = pveRecordRepository.ListPage(start, page_size);
-
-        // get the nextPageToken
-        Integer nextPageToken;
-        if ((pveRecordRepository.count() - (page_token * page_size)) <= 0) {
-            response.put("nextPageToken", "");
-        } else {
-            nextPageToken = page_token + 1;
-            response.put("nextPageToken", nextPageToken);
-        }
-
-        // get the total pages of the result
-        int totalPages = (int)pveRecordRepository.count() / page_size;
-        if ((pveRecordRepository.count() - page_size * totalPages) > 0) {
-            totalPages += 1;
-        }
-        // totalPages = totalPages + 1;
-
-        response.put("result", pveRecords);
-        response.put("totalPages", totalPages);
-
-        return response;
+        return this.ListPage(page_token, page_size, pveRecordRepository);
     }
 }

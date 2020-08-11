@@ -16,12 +16,11 @@ import java.util.*;
 @Repository
 public class OwnItemDaoImpl implements OwnItemDao {
     @Autowired
-    private OwnItemRepository OwnItemRepository;
+    private OwnItemRepository ownItemRepository;
 
     @Override
     public OwnItem getOneOwnItem(Integer OwnItemId) {
-        OwnItem OwnItem = OwnItemRepository.getOne(OwnItemId);
-        return OwnItem;
+        return ownItemRepository.getOne(OwnItemId);
     }
 
     public OwnItem addNewOwnItem(OwnItem newOwnItem) {
@@ -30,7 +29,7 @@ public class OwnItemDaoImpl implements OwnItemDao {
         final OwnItem ownItem = new OwnItem(newOwnItem.getUserId(), newOwnItem.getItemId(), newOwnItem.getItemCount(),
                 acquireDate);
         // System.out.println("new OwnItem has an Id of : " + n.getOwnItemId());
-        OwnItemRepository.save(ownItem);
+        ownItemRepository.save(ownItem);
         return ownItem;
 
     }
@@ -45,101 +44,69 @@ public class OwnItemDaoImpl implements OwnItemDao {
             this.addNewOwnItem(ownItem);
         } else {
             ownItem.setItemCount(ownItem.getItemCount() + itemAmount);
-            OwnItemRepository.save(ownItem);
+            ownItemRepository.save(ownItem);
         }
         return ownItem;
     }
 
     public OwnItem updateOwnItem(OwnItem updateOwnItem) {
-        Timestamp accquireDate = new Timestamp(System.currentTimeMillis());
-        OwnItem OwnItem = OwnItemRepository.getOne(updateOwnItem.getOwnItemId());
+        final OwnItem ownItem = ownItemRepository.getOne(updateOwnItem.getOwnItemId());
         // System.out.println("old Card has an Id of : " + n.getCardId());
-        OwnItem.setOwnItem(updateOwnItem.getUserId(), updateOwnItem.getItemId(), updateOwnItem.getItemCount(),
-                accquireDate);
+        ownItem.setOwnItem(updateOwnItem.getUserId(), updateOwnItem.getItemId(), updateOwnItem.getItemCount(),
+                new Timestamp(System.currentTimeMillis()));
 
-        OwnItemRepository.updateOwnItemStatus(OwnItem, updateOwnItem.getOwnItemId());
+        ownItemRepository.updateOwnItemStatus(ownItem, updateOwnItem.getOwnItemId());
         // return "Modified Card";
         // Image = Image.replace(' ', '+');
-        return OwnItem;
+        return ownItem;
 
     }
 
     public List<OwnItem> getAllOwnItems() {
-        List<OwnItem> OwnItems = OwnItemRepository.findAll();
-        return OwnItems;
+        return ownItemRepository.findAll();
     }
 
     public OwnItem findOwnItemByUserIdEqualsAndItemIdEquals(Integer userId, Integer itemId) {
-        Optional<OwnItem> optOwnItem = OwnItemRepository.findOwnItemByUserIdEqualsAndItemIdEquals(userId, itemId);
-        if (optOwnItem.isPresent()) {
-            return optOwnItem.get();
-        }
-        return null;
+        return ownItemRepository.findOwnItemByUserIdEqualsAndItemIdEquals(userId, itemId).orElse(null);
     }
 
     @Override
     public OwnItem repeatOwnItem(OwnItem ownItem, Integer itemCount) {
         ownItem.setItemCount(itemCount);
-        OwnItemRepository.updateOwnItemStatus(ownItem, ownItem.getOwnItemId());
+        ownItemRepository.updateOwnItemStatus(ownItem, ownItem.getOwnItemId());
         return ownItem;
     }
 
     public List<OwnItem> getAllOwnItemsByUserId(Integer userId) {
-        List<OwnItem> OwnItems = getAllOwnItems();
-        List<OwnItem> UserOwnItems = new ArrayList<OwnItem>();
-        for (int i = 0; i < OwnItems.size(); i++) {
-            OwnItem OwnItem = OwnItems.get(i);
-            if (OwnItem.getUserId().equals(userId)) {
-                UserOwnItems.add(OwnItem);
+        List<OwnItem> userOwnItems = new ArrayList<>();
+        for (com.example.accessingdatamysql.entity.OwnItem ownItem : getAllOwnItems()) {
+            if (ownItem.getUserId().equals(userId)) {
+                userOwnItems.add(ownItem);
             }
         }
-        return UserOwnItems;
+        return userOwnItems;
     }
 
-    public String deleteOwnItems(List<Integer> OwnItemIds) {
-        for (int i = 0; i < OwnItemIds.size(); i++) {
-            OwnItemRepository.deleteById(OwnItemIds.get(i));
+    public String deleteOwnItems(List<Integer> ownItemIds) {
+        for (Integer ownItemId : ownItemIds) {
+            ownItemRepository.deleteById(ownItemId);
         }
         return "Deleted OwnItems by id";
     }
 
     public String deleteAll() {
-        OwnItemRepository.deleteAll();
+        ownItemRepository.deleteAll();
         return "Deleted All OwnItems";
     }
 
     public List<OwnItem> deleteOwnItem(Integer userId, Integer itemId) {
-        OwnItemRepository.deleteOwnItemByUserIdEqualsAndItemIdEquals(userId, itemId);
+        ownItemRepository.deleteOwnItemByUserIdEqualsAndItemIdEquals(userId, itemId);
         return getAllOwnItems();
     }
 
     @Override
     public JSONObject ListPage(Integer page_token, Integer page_size) {
-        JSONObject response = new JSONObject();
-
-        // get the result data
-        Integer start = (page_token - 1) * page_size;
-        // Integer end = page_token * page_size - 1;
-        List<OwnItem> ownItems = OwnItemRepository.ListPage(start, page_size);
-
-        // get the nextPageToken
-        Integer nextPageToken;
-        if ((OwnItemRepository.count() - (page_token * page_size)) <= 0) {
-            response.put("nextPageToken", "");
-        } else {
-            nextPageToken = page_token + 1;
-            response.put("nextPageToken", nextPageToken);
-        }
-
-        // get the total pages of the result
-        int totalPages = (int)OwnItemRepository.count() / page_size;
-        if ((OwnItemRepository.count() - page_size * totalPages) > 0) {
-            totalPages += 1;
-        }
-        response.put("result", ownItems);
-        response.put("totalPages", totalPages);
-
-        return response;
+        return this.ListPage(page_token, page_size, ownItemRepository);
     }
 
 }

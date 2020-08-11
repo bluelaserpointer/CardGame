@@ -1,12 +1,12 @@
 package com.example.accessingdatamysql.dao;
 
-import com.example.accessingdatamysql.Classes.JSONPagination;
+import com.example.accessingdatamysql.Classes.PaginationDao;
 import com.example.accessingdatamysql.entity.OnlineCountRecord;
 
 import java.sql.Timestamp;
 import java.util.List;
 
-public interface OnlineCountRecordDao extends JSONPagination {
+public interface OnlineCountRecordDao extends PaginationDao {
     void saveCount();
 
     OnlineCountRecord getOnlineCountRecord();

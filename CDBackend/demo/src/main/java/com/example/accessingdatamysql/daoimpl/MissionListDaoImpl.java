@@ -14,53 +14,51 @@ import java.util.*;
 @Repository
 public class MissionListDaoImpl implements MissionListDao {
     @Autowired
-    private MissionListRepository MissionListRepository;
+    private MissionListRepository missionListRepository;
 
     @Override
     public MissionList getOneMissionList(Integer MissionListId) {
-        MissionList MissionList = MissionListRepository.getOne(MissionListId);
-        return MissionList;
+        return missionListRepository.getOne(MissionListId);
     }
 
     public String addNewMissionList(Integer userId) {
 
         MissionList MissionList = new MissionList(userId);
         // System.out.println("new MissionList has an Id of : " + n.getMissionListId());
-        MissionListRepository.save(MissionList);
+        missionListRepository.save(MissionList);
         return "Saved MissionList";
 
     }
 
     public String updateMissionList(Integer MissionListId, List<Mission> Missions) {
 
-        MissionList MissionList = MissionListRepository.getOne(MissionListId);
+        MissionList MissionList = missionListRepository.getOne(MissionListId);
         // System.out.println("old MissionList has an Id of : " + n.getMissionListId());
         MissionList.setMissions(Missions);
 
-        MissionListRepository.updateMissionListStatus(MissionList, MissionListId);
+        missionListRepository.updateMissionListStatus(MissionList, MissionListId);
         return "modified MissionList: " + MissionList.getMissionListId();
 
     }
 
     public List<MissionList> getAllMissionLists() {
-        List<MissionList> MissionLists = MissionListRepository.findAll();
-        return MissionLists;
+        return missionListRepository.findAll();
     }
 
     public String deleteMissionLists(List<Integer> MissionListIds) {
-        for (int i = 0; i < MissionListIds.size(); i++) {
-            MissionListRepository.deleteById(MissionListIds.get(i));
+        for (Integer missionListId : MissionListIds) {
+            missionListRepository.deleteById(missionListId);
         }
         return "Deleted MissionLists by id";
     }
 
     public String deleteAll() {
-        MissionListRepository.deleteAll();
+        missionListRepository.deleteAll();
         return "Deleted All MissionLists";
     }
 
     public List<MissionList> deleteMissionList(Integer MissionListId) {
-        MissionListRepository.deleteById(MissionListId);
+        missionListRepository.deleteById(MissionListId);
         return getAllMissionLists();
     }
 }

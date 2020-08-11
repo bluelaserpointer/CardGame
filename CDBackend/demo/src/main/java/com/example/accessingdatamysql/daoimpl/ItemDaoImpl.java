@@ -15,14 +15,14 @@ import java.util.*;
 @Repository
 public class ItemDaoImpl implements ItemDao {
     @Autowired
-    private ItemRepository ItemRepository;
+    private ItemRepository itemRepository;
     @Autowired
-    private ItemDetailsRepository ItemDetailsRepository;
+    private ItemDetailsRepository itemDetailsRepository;
 
     @Override
     public Item getOneItem(Integer ItemId) {
-        Item Item = ItemRepository.getOne(ItemId);
-        Optional<ItemDetails> ItemDetails = ItemDetailsRepository.findItemDetailsByItemIdEquals(ItemId);
+        Item Item = itemRepository.getOne(ItemId);
+        Optional<ItemDetails> ItemDetails = itemDetailsRepository.findItemDetailsByItemIdEquals(ItemId);
         ItemDetails.ifPresent(Item::setItemDetails);
         return Item;
     }
@@ -40,10 +40,10 @@ public class ItemDaoImpl implements ItemDao {
 
         Item Item = new Item(newItem.getItemName(), newItem.getPrice());
         // System.out.println("new Item has an Id of : " + n.getItemId());
-        ItemRepository.save(Item);
+        itemRepository.save(Item);
         ItemDetails ItemDetails = new ItemDetails(Item.getItemId(), newItem.getItemDetails().getItemImg(),
                 newItem.getItemDetails().getItemDescription());
-        ItemDetailsRepository.save(ItemDetails);
+        itemDetailsRepository.save(ItemDetails);
         Item.setItemDetails(ItemDetails);
         return Item;
 
@@ -51,13 +51,13 @@ public class ItemDaoImpl implements ItemDao {
 
     public Item updateItem(Item updateItem) {
         System.out.println(updateItem);
-        Item Item = ItemRepository.getOne(updateItem.getItemId());
+        Item Item = itemRepository.getOne(updateItem.getItemId());
         // System.out.println("old Item has an Id of : " + n.getItemId());
         Item.setItem(updateItem.getItemName(), updateItem.getPrice());
 
-        ItemRepository.updateItemStatus(Item, updateItem.getItemId());
+        itemRepository.updateItemStatus(Item, updateItem.getItemId());
 
-        Optional<ItemDetails> optItemDetails = ItemDetailsRepository
+        Optional<ItemDetails> optItemDetails = itemDetailsRepository
                 .findItemDetailsByItemIdEquals(updateItem.getItemId());
         ItemDetails itemDetails = new ItemDetails(updateItem.getItemId(), "", "");
         System.out.println(itemDetails);
@@ -70,17 +70,17 @@ public class ItemDaoImpl implements ItemDao {
 
         itemDetails.setItemDescription(updateItem.getItemDetails().getItemDescription());
         itemDetails.setItemImg(updateItem.getItemDetails().getItemImg());
-        ItemDetailsRepository.save(itemDetails);
+        itemDetailsRepository.save(itemDetails);
         Item.setItemDetails(itemDetails);
         return Item;
 
     }
 
     public List<Item> getAllItems() {
-        List<Item> Items = ItemRepository.findAll();
+        List<Item> Items = itemRepository.findAll();
         for (int i = 0; i < Items.size(); i++) {
             Item Item = Items.get(i);
-            Optional<ItemDetails> ItemDetails = ItemDetailsRepository.findItemDetailsByItemIdEquals(Item.getItemId());
+            Optional<ItemDetails> ItemDetails = itemDetailsRepository.findItemDetailsByItemIdEquals(Item.getItemId());
             ItemDetails.ifPresent(Item::setItemDetails);
             Items.set(i, Item);
         }
@@ -89,56 +89,31 @@ public class ItemDaoImpl implements ItemDao {
 
     public String deleteItems(List<Integer> ItemIds) {
         for (int i = 0; i < ItemIds.size(); i++) {
-            ItemRepository.deleteById(ItemIds.get(i));
-            ItemDetailsRepository.deleteItemDetailsByItemIdEquals(ItemIds.get(i));
+            itemRepository.deleteById(ItemIds.get(i));
+            itemDetailsRepository.deleteItemDetailsByItemIdEquals(ItemIds.get(i));
         }
         return "Deleted Items by id";
     }
 
     public String deleteAll() {
-        ItemRepository.deleteAll();
-        ItemDetailsRepository.deleteAll();
+        itemRepository.deleteAll();
+        itemDetailsRepository.deleteAll();
         return "Deleted All Items";
     }
 
     public List<Item> deleteItem(Integer itemId) {
-        ItemRepository.deleteById(itemId);
-        ItemDetailsRepository.deleteItemDetailsByItemIdEquals(itemId);
+        itemRepository.deleteById(itemId);
+        itemDetailsRepository.deleteItemDetailsByItemIdEquals(itemId);
         return getAllItems();
     }
 
     @Override
     public JSONObject ListPage(Integer page_token, Integer page_size) {
-        JSONObject response = new JSONObject();
-
-        // get the result data
-        Integer start = (page_token - 1) * page_size;
-        // Integer end = page_token * page_size - 1;
-        List<Item> items = ItemRepository.ListPage(start, page_size);
-        for (int i = 0; i < items.size(); i++) {
-            Item Item = items.get(i);
-            Optional<ItemDetails> ItemDetails = ItemDetailsRepository.findItemDetailsByItemIdEquals(Item.getItemId());
-            ItemDetails.ifPresent(Item::setItemDetails);
-            items.set(i, Item);
-        }
-
-        // get the nextPageToken
-        Integer nextPageToken;
-        if ((ItemRepository.count() - (page_token * page_size)) <= 0) {
-            response.put("nextPageToken", "");
-        } else {
-            nextPageToken = page_token + 1;
-            response.put("nextPageToken", nextPageToken);
-        }
-
-        // get the total pages of the result
-        int totalPages = (int)ItemRepository.count() / page_size;
-        if ((ItemRepository.count() - page_size * totalPages) > 0) {
-            totalPages += 1;
-        }
-        response.put("result", items);
-        response.put("totalPages", totalPages);
-
-        return response;
-    };
+        return this.ListPage(page_token, page_size, itemRepository, item -> {
+            itemDetailsRepository
+                    .findItemDetailsByItemIdEquals(item.getItemId())
+                    .ifPresent(item::setItemDetails);
+            return item;
+        });
+    }
 }

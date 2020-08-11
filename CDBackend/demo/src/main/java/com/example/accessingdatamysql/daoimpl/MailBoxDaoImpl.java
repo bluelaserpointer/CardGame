@@ -14,11 +14,11 @@ import java.util.*;
 @Repository
 public class MailBoxDaoImpl implements MailBoxDao {
     @Autowired
-    private MailBoxRepository MailBoxRepository;
+    private MailBoxRepository mailBoxRepository;
 
     @Override
     public MailBox getOneMailBox(Integer MailBoxId) {
-        MailBox MailBox = MailBoxRepository.getOne(MailBoxId);
+        MailBox MailBox = mailBoxRepository.getOne(MailBoxId);
         return MailBox;
     }
 
@@ -26,36 +26,36 @@ public class MailBoxDaoImpl implements MailBoxDao {
 
         MailBox MailBox = new MailBox(userId);
         // System.out.println("new MailBox has an Id of : " + n.getMailBoxId());
-        MailBoxRepository.save(MailBox);
+        mailBoxRepository.save(MailBox);
         return "Saved MailBox";
 
     }
 
     public String updateMailBox(Integer MailBoxId, List<Integer> mails) {
 
-        MailBox MailBox = MailBoxRepository.getOne(MailBoxId);
+        MailBox MailBox = mailBoxRepository.getOne(MailBoxId);
         // System.out.println("old MailBox has an Id of : " + n.getMailBoxId());
         MailBox.setMails(mails);
 
-        MailBoxRepository.updateMailBoxStatus(MailBox, MailBoxId);
+        mailBoxRepository.updateMailBoxStatus(MailBox, MailBoxId);
         return "modified MailBox: " + MailBox.getMailBoxId();
 
     }
 
     public List<MailBox> getAllMailBoxs() {
-        List<MailBox> MailBoxs = MailBoxRepository.findAll();
+        List<MailBox> MailBoxs = mailBoxRepository.findAll();
         return MailBoxs;
     }
 
     public String deleteMailBoxs(List<Integer> MailBoxIds) {
         for (int i = 0; i < MailBoxIds.size(); i++) {
-            MailBoxRepository.deleteById(MailBoxIds.get(i));
+            mailBoxRepository.deleteById(MailBoxIds.get(i));
         }
         return "Deleted MailBoxs by id";
     }
 
     public String deleteAll() {
-        MailBoxRepository.deleteAll();
+        mailBoxRepository.deleteAll();
         return "Deleted All MailBoxs";
     }
 }

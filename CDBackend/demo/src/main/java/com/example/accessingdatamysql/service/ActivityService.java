@@ -1,7 +1,5 @@
 package com.example.accessingdatamysql.service;
 
-import java.sql.Timestamp;
-
 import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.entity.Activity;
 import com.example.accessingdatamysql.entity.ListRequest;

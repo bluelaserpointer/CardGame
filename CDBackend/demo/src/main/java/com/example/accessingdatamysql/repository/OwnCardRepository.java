@@ -1,7 +1,6 @@
 package com.example.accessingdatamysql.repository;
 
-import com.example.accessingdatamysql.Classes.ListPagination;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.example.accessingdatamysql.Classes.PaginationJpaRepository;
 import com.example.accessingdatamysql.entity.*;
 import org.springframework.data.jpa.repository.Modifying;
 
@@ -12,15 +11,8 @@ import java.util.Optional;
 
 import org.springframework.data.repository.query.Param;
 
-public interface OwnCardRepository extends JpaRepository<OwnCard, Integer>, ListPagination<OwnCard> {
+public interface OwnCardRepository extends PaginationJpaRepository<OwnCard, Integer> {
     Optional<OwnCard> findOwnCardByUserIdEqualsAndCardIdEquals(Integer userId, Integer cardId);
-
-    @Query(value = "SELECT u from own_card u where u.userId = ?1", nativeQuery = true)
-    List<OwnCard> findByUserId(Integer userId);
-
-    // 这里还没有测试过可能会出现bug
-    @Query(value = "SELECT u from own_card u where u.userId = ?1 and u.cardId = ?2", nativeQuery = true)
-    OwnCard findByUserIdCardId(Integer userId, Integer cardId);
 
     @Modifying
     @Transactional
@@ -28,8 +20,8 @@ public interface OwnCardRepository extends JpaRepository<OwnCard, Integer>, List
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE own_card u SET u = :newOwnCard WHERE u.ownCardId = :ownCardId")
-    int updateOwnCardStatus(@Param("newOwnCard") OwnCard newOwnCard, @Param("ownCardId") Integer ownCardId);
+    @Query(value = "UPDATE OwnCard u SET u = :newOwnCard WHERE u.ownCardId = :ownCardId")
+    void updateOwnCardStatus(@Param("newOwnCard") OwnCard newOwnCard, @Param("ownCardId") Integer ownCardId);
 
     @Transactional
     @Modifying

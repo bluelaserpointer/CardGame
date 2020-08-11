@@ -15,14 +15,14 @@ import java.util.*;
 @Repository
 public class CardDaoImpl implements CardDao {
     @Autowired
-    private CardRepository CardRepository;
+    private CardRepository cardRepository;
     @Autowired
-    private CardDetailsRepository CardDetailsRepository;
+    private CardDetailsRepository cardDetailsRepository;
 
     @Override
     public Card getOneCard(Integer cardId) {
-        Card card = CardRepository.getOne(cardId);
-        Optional<CardDetails> cardDetails = CardDetailsRepository.findCardDetailsByCardIdEquals(cardId);
+        Card card = cardRepository.getOne(cardId);
+        Optional<CardDetails> cardDetails = cardDetailsRepository.findCardDetailsByCardIdEquals(cardId);
         cardDetails.ifPresent(card::setCardDetails);
         return card;
     }
@@ -32,24 +32,24 @@ public class CardDaoImpl implements CardDao {
         Card card = new Card(newCard.getRarity(), newCard.getCardName(), newCard.getHealthPoint(), newCard.getAttack(),
                 newCard.getDefense(), newCard.getAttackRange(), newCard.getCd(), newCard.getSpeed(), newCard.getType());
         // System.out.println("new Card has an Id of : " + n.getCardId());
-        CardRepository.save(card);
+        cardRepository.save(card);
         CardDetails cardDetails = new CardDetails(card.getCardId(), newCard.getCardDetails().getCardImg(),
                 newCard.getCardDetails().getShortDescription(), newCard.getCardDetails().getCardDescription());
-        CardDetailsRepository.save(cardDetails);
+        cardDetailsRepository.save(cardDetails);
         card.setCardDetails(cardDetails);
         return card;
 
     }
 
     public Card updateCard(Card updateCard) {
-        Card card = CardRepository.getOne(updateCard.getCardId());
+        Card card = cardRepository.getOne(updateCard.getCardId());
         // System.out.println("old Card has an Id of : " + n.getCardId());
         card.setCard(updateCard.getRarity(), updateCard.getCardName(), updateCard.getHealthPoint(),
                 updateCard.getAttack(), updateCard.getDefense(), updateCard.getAttackRange(), updateCard.getCd(),
                 updateCard.getSpeed(), updateCard.getType());
 
-        CardRepository.updateCardStatus(card, updateCard.getCardId());
-        Optional<CardDetails> optCardDetails = CardDetailsRepository
+        cardRepository.updateCardStatus(card, updateCard.getCardId());
+        Optional<CardDetails> optCardDetails = cardDetailsRepository
                 .findCardDetailsByCardIdEquals(updateCard.getCardId());
         CardDetails cardDetails = new CardDetails(updateCard.getCardId(), "", "", "");
         if (optCardDetails.isPresent()) {
@@ -62,7 +62,7 @@ public class CardDaoImpl implements CardDao {
         cardDetails.setCardDescription(updateCard.getCardDetails().getCardDescription());
         cardDetails.setShortDescription(updateCard.getCardDetails().getShortDescription());
         cardDetails.setCardImg(updateCard.getCardDetails().getCardImg());
-        CardDetailsRepository.save(cardDetails);
+        cardDetailsRepository.save(cardDetails);
 
         card.setCardDetails(cardDetails);
 
@@ -70,10 +70,10 @@ public class CardDaoImpl implements CardDao {
     }
 
     public List<Card> getAllCards() {
-        List<Card> Cards = CardRepository.findAll();
+        List<Card> Cards = cardRepository.findAll();
         for (int i = 0; i < Cards.size(); i++) {
             Card card = Cards.get(i);
-            Optional<CardDetails> CardDetails = CardDetailsRepository.findCardDetailsByCardIdEquals(card.getCardId());
+            Optional<CardDetails> CardDetails = cardDetailsRepository.findCardDetailsByCardIdEquals(card.getCardId());
             CardDetails.ifPresent(card::setCardDetails);
             Cards.set(i, card);
         }
@@ -82,64 +82,37 @@ public class CardDaoImpl implements CardDao {
 
     public String deleteCards(List<Integer> cardIds) {
         for (int i = 0; i < cardIds.size(); i++) {
-            CardRepository.deleteById(cardIds.get(i));
-            CardDetailsRepository.deleteCardDetailsByCardIdEquals(cardIds.get(i));
+            cardRepository.deleteById(cardIds.get(i));
+            cardDetailsRepository.deleteCardDetailsByCardIdEquals(cardIds.get(i));
         }
         return "Deleted Cards by id";
     }
 
     public String deleteAll() {
-        CardRepository.deleteAll();
-        CardDetailsRepository.deleteAll();
+        cardRepository.deleteAll();
+        cardDetailsRepository.deleteAll();
         return "Deleted All Cards";
     }
 
     public List<Card> deleteCard(Integer cardId) {
-        CardRepository.deleteById(cardId);
-        CardDetailsRepository.deleteCardDetailsByCardIdEquals(cardId);
+        cardRepository.deleteById(cardId);
+        cardDetailsRepository.deleteCardDetailsByCardIdEquals(cardId);
         return getAllCards();
     }
 
     @Override
     public List<Card> getByRarityAndType(String rarity, Integer type) {
-        return CardRepository.getByRarityAndType(rarity, type);
+        return cardRepository.getByRarityAndType(rarity, type);
     }
 
     @Override
     public JSONObject ListPage(Integer page_token, Integer page_size) {
-
-        JSONObject response = new JSONObject();
-
-        // get the result data
-        Integer start = (page_token - 1) * page_size;
-        // System.out.print("Start: " + start + " End: " + end);
-        List<Card> cards = CardRepository.ListPage(start, page_size);
-        System.out.print("Size: " + cards.size());
-        for (int i = 0; i < cards.size(); i++) {
-            Card card = cards.get(i);
-            Optional<CardDetails> cardDetails = CardDetailsRepository.findCardDetailsByCardIdEquals(card.getCardId());
-            cardDetails.ifPresent(card::setCardDetails);
-            cards.set(i, card);
-        }
-
-        // get the nextPageToken
-        Integer nextPageToken;
-        if ((CardRepository.count() - (page_token * page_size)) <= 0) {
-            response.put("nextPageToken", "");
-        } else {
-            nextPageToken = page_token + 1;
-            response.put("nextPageToken", nextPageToken);
-        }
-
-        // get the total pages of the result
-        int totalPages = (int)CardRepository.count() / page_size;
-        if ((CardRepository.count() - page_size * totalPages) > 0) {
-            totalPages += 1;
-        }
-        response.put("result", cards);
-        response.put("totalPages", totalPages);
-
-        return response;
+        return this.ListPage(page_token, page_token, cardRepository, card -> {
+            cardDetailsRepository
+                    .findCardDetailsByCardIdEquals(card.getCardId())
+                    .ifPresent(card::setCardDetails);
+            return card;
+        });
     }
 
 }

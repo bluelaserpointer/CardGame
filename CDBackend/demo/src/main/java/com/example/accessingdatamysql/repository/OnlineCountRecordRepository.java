@@ -1,15 +1,14 @@
 package com.example.accessingdatamysql.repository;
 
-import com.example.accessingdatamysql.Classes.ListPagination;
+import com.example.accessingdatamysql.Classes.PaginationJpaRepository;
 import com.example.accessingdatamysql.entity.OnlineCountRecord;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.List;
 
-public interface OnlineCountRecordRepository extends JpaRepository<OnlineCountRecord, Timestamp>, ListPagination<OnlineCountRecord> {
+public interface OnlineCountRecordRepository extends PaginationJpaRepository<OnlineCountRecord, Timestamp> {
     List<OnlineCountRecord> findOnlineCountRecordsByRecordTimeGreaterThanEqualAndRecordTimeLessThanEqual(
             Timestamp start, Timestamp end);
 

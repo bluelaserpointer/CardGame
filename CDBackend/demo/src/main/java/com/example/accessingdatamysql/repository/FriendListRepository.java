@@ -20,7 +20,7 @@ public interface FriendListRepository extends JpaRepository<FriendList, Integer>
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE friend_list u SET u = :newFriendList WHERE u.friendListId = :FriendListId")
+    @Query(value = "UPDATE FriendList u SET u = :newFriendList WHERE u.friendListId = :FriendListId")
     int updateFriendListStatus(@Param("newFriendList") FriendList newFriendList,
             @Param("FriendListId") Integer FriendListId);
 

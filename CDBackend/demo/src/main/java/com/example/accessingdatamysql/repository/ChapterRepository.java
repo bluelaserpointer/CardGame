@@ -1,7 +1,6 @@
 package com.example.accessingdatamysql.repository;
 
 import com.example.accessingdatamysql.entity.Chapter;
-import com.example.accessingdatamysql.entity.Mission;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,7 +15,7 @@ public interface ChapterRepository extends JpaRepository<Chapter, Integer> {
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE chapter u SET u = :newChapter WHERE u.chapterId = :ChapterId")
+    @Query(value = "UPDATE Chapter u SET u = :newChapter WHERE u.chapterId = :ChapterId")
     int updateChapterStatus(@Param("newChapter") Chapter newChapter, @Param("ChapterId") Integer ChapterId);
 
 }

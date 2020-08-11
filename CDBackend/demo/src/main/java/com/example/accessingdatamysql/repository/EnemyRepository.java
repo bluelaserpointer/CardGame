@@ -4,15 +4,15 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
-import com.example.accessingdatamysql.Classes.ListPagination;
+import com.example.accessingdatamysql.Classes.PaginationJpaRepository;
 import org.springframework.data.jpa.repository.*;
 import com.example.accessingdatamysql.entity.*;
 import org.springframework.data.repository.query.Param;
-// import java.util.Optional;
+
 // This will be AUTO IMPLEMENTED by Spring into a Bean called userRepository
 // CRUD refers Create, Read, Update, Delete
 
-public interface EnemyRepository extends JpaRepository<Enemy, Integer>, ListPagination<Enemy> {
+public interface EnemyRepository extends PaginationJpaRepository<Enemy, Integer> {
 
     // @Transactional
     // @Modifying
@@ -23,7 +23,7 @@ public interface EnemyRepository extends JpaRepository<Enemy, Integer>, ListPagi
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE enemy u SET u = :newEnemy WHERE u.enemyId = :enemyId")
+    @Query(value = "UPDATE Enemy u SET u = :newEnemy WHERE u.enemyId = :enemyId")
     int updateEnemyStatus(@Param("newEnemy") Enemy newEnemy, @Param("enemyId") Integer enemyId);
 
     @Transactional

@@ -20,8 +20,7 @@ public class OnlineCountRecord {
     private Integer onlineCount;
     private Integer inPlayCount;
 
-    public OnlineCountRecord() {
-    };
+    public OnlineCountRecord() {}
 
     public OnlineCountRecord(Integer onlineCount, Integer inPlayCount) {
         this.recordTime = new Timestamp(System.currentTimeMillis());
