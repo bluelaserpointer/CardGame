@@ -21,8 +21,8 @@ public class CrashReportServiceImpl implements CrashReportService {
     }
 
     @Override
-    public void addNew(String reportContent) {
-        crashReportsDao.addNew(reportContent);
+    public void addNew(Double clientVersion, Integer userId, String stackTrace, String deviceInfo) {
+        crashReportsDao.addNew(clientVersion, userId, stackTrace, deviceInfo);
     }
 
     public List<CrashReports> getCrashReportsWithinHalfYear() {

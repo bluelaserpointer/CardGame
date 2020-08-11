@@ -112,24 +112,19 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         //stack trace
         final StringWriter sw = new StringWriter();
         e.printStackTrace(new PrintWriter(sw, true));
-        mMessage.put("StackTrace", sw.toString());
         //build state
         collectErrorMessages();
-        //client info
-        mMessage.put("ClientVersion", String.valueOf(Utils.CLIENT_VERSION));
-        //user info
-        mMessage.put("UserName", Cache.userName);
         //save reports
         //saveErrorMessages(e);
-        final JSONObject jsonObject = new JSONObject(mMessage);
-        System.out.println("CrashHandler: Made a crash report: " + jsonObject.toString());
         final JSONObject report = new JSONObject();
         try {
-            report.accumulate("deviceInfo", jsonObject.toString());
+            report.put("stackTrace", sw.toString());
+            report.put("deviceInfo", mMessage);
         } catch (JSONException e2) {
             e2.printStackTrace();
             return false;
         }
+        System.out.println("CrashHandler: Made a crash report: " + report.toString());
         HttpClient.doPostShort(Urls.uploadCrashReport(), report.toString());
         return true;
     }

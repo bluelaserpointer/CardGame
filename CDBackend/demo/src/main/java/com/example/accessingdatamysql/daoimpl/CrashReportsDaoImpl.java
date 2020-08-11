@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class CrashReportsDaoImpl implements CrashReportsDao {
@@ -28,19 +27,21 @@ public class CrashReportsDaoImpl implements CrashReportsDao {
     }
 
     @Override
-    public void addNew(String reportsContent) {
+    public void addNew(Double clientVersion, Integer userId, String stackTrace, String deviceInfo) {
         final CrashReports reports = new CrashReports();
         reports.setRecordTime(new Timestamp(System.currentTimeMillis()));
+        reports.setClientVersion(clientVersion);
+        reports.setUserId(userId);
         crashReportsRepository.save(reports);
-        System.out.println("CrashReportsDaoImpl: saving: " + reportsContent + " at id " + reports.getReportId());
-        crashReportsDetailRepository.save(new CrashReportsDetail(reports.getReportId(), reportsContent));
+        System.out.println("(Hey don't worry, this is client-side bug reports!)");
+        System.out.println("CrashReportsDaoImpl: saving: " + stackTrace + " at id " + reports.getReportId());
+        crashReportsDetailRepository.save(new CrashReportsDetail(reports.getReportId(), stackTrace, deviceInfo));
     }
 
     public List<CrashReports> getCrashReportsWithinHalfYear() {
         // return null;
         List<CrashReports> crashReports = crashReportsRepository.findCrashReportsWithinHalfYear();
-        for (int i = 0; i < crashReports.size(); i++) {
-            CrashReports report = crashReports.get(i);
+        for (CrashReports report : crashReports) {
             crashReportsDetailRepository.findCrashReportsDetailByReportIdEquals(report.getReportId())
                     .ifPresent(report::setDetail);
         }
@@ -50,8 +51,7 @@ public class CrashReportsDaoImpl implements CrashReportsDao {
     public List<CrashReports> getCrashReportsWithinOneDay() {
         // return null;
         List<CrashReports> crashReports = crashReportsRepository.findCrashReportsWithinOneDay();
-        for (int i = 0; i < crashReports.size(); i++) {
-            CrashReports report = crashReports.get(i);
+        for (CrashReports report : crashReports) {
             crashReportsDetailRepository.findCrashReportsDetailByReportIdEquals(report.getReportId())
                     .ifPresent(report::setDetail);
         }

@@ -8,7 +8,7 @@ import java.util.List;
 public interface CrashReportsDao extends PaginationDao {
     CrashReports getOne(Integer id);
 
-    void addNew(String reportsContent);
+    void addNew(Double clientVersion, Integer userId, String stackTrace, String deviceInfo);
 
     List<CrashReports> getCrashReportsWithinHalfYear();
 

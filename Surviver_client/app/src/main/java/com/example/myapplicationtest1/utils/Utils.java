@@ -7,8 +7,6 @@ import android.widget.Button;
 
 import com.example.myapplicationtest1.HttpClient;
 import com.example.myapplicationtest1.R;
-import com.example.myapplicationtest1.game.contents.engine.Subject;
-import com.example.myapplicationtest1.game.contents.unit.Knowledge;
 import com.example.myapplicationtest1.page.HomePage;
 import com.example.myapplicationtest1.page.Page;
 

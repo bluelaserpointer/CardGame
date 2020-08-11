@@ -18,6 +18,7 @@ public class MapPage extends Page {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map);
+        int a = 0/0;
         super.setJump(R.id.return_button, HomePage.class);
         final RecyclerView chapterRecyclerView = findViewById(R.id.chapterList);
         chapterRecyclerView.setLayoutManager(new LinearLayoutManager(MapPage.this));
