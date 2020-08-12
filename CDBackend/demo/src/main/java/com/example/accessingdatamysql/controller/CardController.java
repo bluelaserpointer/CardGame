@@ -38,8 +38,6 @@ public class CardController {
   @RequestMapping(value = "/updateCard")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public @ResponseBody Card updateCard(@RequestBody Card updateCard) {
-    // System.out.println("In controller");
-
     return CardService.updateCard(updateCard);
   }
 
@@ -48,10 +46,9 @@ public class CardController {
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public JSONObject ListPage(@RequestBody ListRequest ListRequest) {
     ListRequest.setPageSize(general_page_size);
-    String request = JSON.toJSONString(ListRequest);
+    final String request = JSON.toJSONString(ListRequest);
     System.out.print(request);
-    JSONObject response = CardService.ListPage(ListRequest);
-    return response;
+    return CardService.ListPage(ListRequest);
   }
 
   @RequestMapping(value = "/getAllCards")

@@ -22,9 +22,9 @@ public class PveRecordDaoImpl implements PveRecordDao {
     private PveRecordRepository pveRecordRepository;
 
     // 将 String类型的 "[[2,1], [3,2], [4,3]]" 等 List<List> 形式转换为 Map
-    public Map<Integer, Integer> parsePosRecord(String awardItems) {
+    public Map<Integer, Integer> parsePosRecord(String mapStr) {
         try {
-            return new ObjectMapper().readValue(awardItems, new TypeReference<HashMap<Integer, Integer>>() {});
+            return new ObjectMapper().readValue(mapStr, new TypeReference<HashMap<Integer, Integer>>() {});
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -34,7 +34,7 @@ public class PveRecordDaoImpl implements PveRecordDao {
     @Override
     public PveRecord addPveRecord(Integer userId, Integer chapterId, Integer phaseId, Integer result,
             String posRecord) {
-        PveRecord pveRecord = new PveRecord(userId, chapterId, phaseId, result);
+        final PveRecord pveRecord = new PveRecord(userId, chapterId, phaseId, result);
         pveRecord.setPosRecord(parsePosRecord(posRecord));
         pveRecord.setRecordTime(new Timestamp(System.currentTimeMillis()));
 
@@ -44,15 +44,13 @@ public class PveRecordDaoImpl implements PveRecordDao {
     @Override
     public PveRecord updatePveRecord(Integer pveRecordId, Integer userId, Integer chapterId, Integer phaseId,
             Integer result, Timestamp recordTime, String posRecord) {
-        Optional<PveRecord> optPveRecord = pveRecordRepository.findById(pveRecordId);
-
+        final Optional<PveRecord> optPveRecord = pveRecordRepository.findById(pveRecordId);
         if (optPveRecord.isPresent()) {
-            PveRecord pveRecord = optPveRecord.get();
+            final PveRecord pveRecord = optPveRecord.get();
             pveRecord.setPveRecord(userId, chapterId, phaseId, result, recordTime);
             pveRecord.setPosRecord(parsePosRecord(posRecord));
             return pveRecordRepository.save(pveRecord);
         }
-
         return null;
     }
 

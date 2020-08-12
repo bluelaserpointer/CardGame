@@ -17,6 +17,8 @@ import com.example.myapplicationtest1.page.BattleFinishPage;
 import com.example.myapplicationtest1.page.Page;
 import com.example.myapplicationtest1.pageParts.ChapterListAdapter;
 import com.example.myapplicationtest1.utils.Cache;
+import com.example.myapplicationtest1.utils.GameState;
+import com.example.myapplicationtest1.utils.MapStringUtil;
 import com.example.myapplicationtest1.utils.Urls;
 
 import org.json.JSONArray;
@@ -50,6 +52,9 @@ public class GameCanvas extends MyCanvas {
     @Override
     public void touched(int x, int y) {
         if(stage.isGameClear || stage.isGameOver) {
+            HttpClient.doPostShort(
+                    Urls.phaseClear(ChapterListAdapter.selectedChapter + 1, ChapterListAdapter.selectedPhase + 1, stage.isGameClear ? GameState.WIN.ordinal() : GameState.LOSE.ordinal())
+                    , MapStringUtil.mapToString(Cache.formation));
             Page.jump(context, BattleFinishPage.class);
         }
     }

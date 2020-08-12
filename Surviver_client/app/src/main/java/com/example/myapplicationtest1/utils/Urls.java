@@ -43,8 +43,14 @@ public class Urls {
         return "chapter/getAllChapters";
     }
     public static String getChapterPhaseDetails(int chapterId, int phaseId) {
-        System.out.println("reading " + chapterId + ", " + phaseId);
         return "chapter/getChapterDetailsByChapterAndByPhase?chapterId=" + chapterId + "&phaseId=" + phaseId;
+    }
+    public static String phaseClear(int chapterId, int phaseId, int result) {
+        System.out.println("putting |" + MapStringUtil.mapToString(Cache.formation) + "|");
+        return "chapter/phaseClear?userName=" + Cache.userName
+                + "&chapterId=" + chapterId
+                + "&phaseId=" + phaseId
+                + "&result=" + result;
     }
     /////////////
     //CrashReports
