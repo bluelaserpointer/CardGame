@@ -37,17 +37,17 @@ public class MapStringUtil {
      * @param str
      * @return
      */
-    public static Map<Integer, Object> stringToMap(String str) {
+    public static Map<Integer, Integer> stringToMap(String str) {
         //根据逗号截取字符串数组
         final String[] str1 = str.split(",");
         //创建Map对象
-        final Map<Integer, Object> map = new HashMap<>();
+        final Map<Integer, Integer> map = new HashMap<>();
         //循环加入map集合
-        for (int i = 0; i < str1.length; i++) {
+        for (String s : str1) {
             //根据":"截取字符串数组
-            final String[] str2 = str1[i].split(":");
+            final String[] str2 = s.split(":");
             //str2[0]为KEY,str2[1]为值
-            map.put(Integer.valueOf(str2[0]), str2[1]);
+            map.put(Integer.valueOf(str2[0]), Integer.valueOf(str2[1]));
         }
         return map;
     }

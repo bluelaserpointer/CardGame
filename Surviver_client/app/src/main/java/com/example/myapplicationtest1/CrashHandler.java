@@ -9,9 +9,7 @@ import android.os.Looper;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-import com.example.myapplicationtest1.utils.Cache;
 import com.example.myapplicationtest1.utils.Urls;
-import com.example.myapplicationtest1.utils.Utils;
 
 import org.json.JSONException;
 import org.json.JSONObject;

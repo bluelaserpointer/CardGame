@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplicationtest1.R;
 import com.example.myapplicationtest1.pageParts.TeamTableAdapter;
+import com.example.myapplicationtest1.utils.Cache;
 import com.example.myapplicationtest1.utils.Utils;
 
 import java.util.HashMap;
@@ -34,22 +35,21 @@ public class TeamPage extends Page {
     public static int setOnEditPos(int pos) {
         return onEditPos = pos;
     }
-    public static HashMap<Integer, Integer> formation = new HashMap<>();
     public static void setFormationToOnEditPos(int ownCardId) {
         System.out.println("TeamPage: onEditPos(" + onEditPos + ")");
-        for(Map.Entry<Integer, Integer> entry : formation.entrySet()) { //remove oldPosition
+        for(Map.Entry<Integer, Integer> entry : Cache.formation.entrySet()) { //remove oldPosition
             if(entry.getValue().equals(ownCardId)) {
                 if(entry.getKey().equals(onEditPos)) { //no effect edit
                     System.out.println("TeamPage: duplicated edit");
                     return;
                 }
                 System.out.println("TeamPage: moving the same at " + entry.getKey());
-                formation.remove(entry.getKey());
+                Cache.formation.remove(entry.getKey());
                 break;
             }
         }
         System.out.println("TeamPage: set at " + onEditPos);
-        formation.put(onEditPos, ownCardId);
+        Cache.formation.put(onEditPos, ownCardId);
         onEditPos = -1;
     }
 }

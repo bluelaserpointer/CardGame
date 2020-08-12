@@ -42,8 +42,9 @@ public class Urls {
     public static String getAllChapters() {
         return "chapter/getAllChapters";
     }
-    public static String getChapterDetail(int chapterId) {
-        return "chapter/getChapterDetailsByChapter?chapterId=" + chapterId;
+    public static String getChapterPhaseDetails(int chapterId, int phaseId) {
+        System.out.println("reading " + chapterId + ", " + phaseId);
+        return "chapter/getChapterDetailsByChapterAndByPhase?chapterId=" + chapterId + "&phaseId=" + phaseId;
     }
     /////////////
     //CrashReports

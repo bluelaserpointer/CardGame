@@ -54,7 +54,7 @@ public class GameCanvas extends MyCanvas {
     public void fetch() {
         try {
             //load enemy formation
-            final JSONArray arr = new JSONArray(HttpClient.doGetShort(Urls.getChapterDetail(ChapterListAdapter.selectedPhase)));
+            final JSONArray arr = new JSONArray(HttpClient.doGetShort(Urls.getChapterPhaseDetails(ChapterListAdapter.selectedChapter + 1, ChapterListAdapter.selectedPhase + 1)));
             for(int i = 0; i < arr.length(); ++i) {
                 final JSONObject posInfo = arr.getJSONObject(i);
                 final int pos = posInfo.getInt("positionId");
@@ -64,7 +64,9 @@ public class GameCanvas extends MyCanvas {
             }
             //load friend formation
             //TODO: this is dummy!
-            stage.addUnit(new Knowledge(Cache.cards.get(0)).respawn(100, 800));
+            final Cache.Card card = Cache.cards.get(1);
+            if(card != null)
+                stage.addUnit(new Knowledge(card).respawn(100, 800));
 
         } catch (JSONException e) {
             e.printStackTrace();
