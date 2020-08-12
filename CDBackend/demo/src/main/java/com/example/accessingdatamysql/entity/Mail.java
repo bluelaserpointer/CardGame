@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 public class Mail {
     // 邮件Id
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer mailId;
     // 邮件标题
     private String mailName;

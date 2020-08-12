@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "reportId")
 public class CrashReports {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer reportId;
 
     private Timestamp recordTime;
@@ -23,29 +23,37 @@ public class CrashReports {
 
     private Boolean checked;
 
-    public CrashReports(){}
+    public CrashReports() {
+    }
 
     public Integer getReportId() {
         return reportId;
     }
+
     public void setDetail(CrashReportsDetail detail) {
         this.detail = detail;
     }
+
     public CrashReportsDetail getDetail() {
         return detail;
     }
+
     public void setChecked(Boolean checked) {
         this.checked = checked;
     }
+
     public Boolean getChecked() {
         return checked;
     }
+
     public void setReportId(Integer reportId) {
         this.reportId = reportId;
     }
+
     public Timestamp getRecordTime() {
         return recordTime;
     }
+
     public void setRecordTime(Timestamp recordTime) {
         this.recordTime = recordTime;
     }

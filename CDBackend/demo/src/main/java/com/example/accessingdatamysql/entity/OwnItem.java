@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 public class OwnItem {
     // 拥有道具关系Id（PK）
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer ownItemId;
     // 拥有道具的用户的userId
     private Integer userId;

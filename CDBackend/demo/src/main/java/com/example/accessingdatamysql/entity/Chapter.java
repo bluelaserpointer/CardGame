@@ -12,7 +12,7 @@ import java.util.Map;
 public class Chapter {
     @Id
     @Column(name = "chapter_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer chapterId;
 
     @Column
@@ -23,7 +23,8 @@ public class Chapter {
     @ElementCollection(targetClass = Integer.class)
     private List<Integer> awardCards;
 
-    public Chapter(){}
+    public Chapter() {
+    }
 
     private Integer phaseNo;
 
