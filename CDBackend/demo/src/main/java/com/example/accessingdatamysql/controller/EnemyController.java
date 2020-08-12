@@ -39,8 +39,6 @@ public class EnemyController {
   @RequestMapping(value = "/updateEnemy")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public @ResponseBody Enemy updateEnemy(@RequestBody Enemy updateEnemy) {
-    // System.out.println("In controller");
-
     return EnemyService.updateEnemy(updateEnemy);
   }
 
@@ -49,10 +47,9 @@ public class EnemyController {
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public JSONObject ListPage(@RequestBody ListRequest ListRequest) {
     ListRequest.setPageSize(general_page_size);
-    String request = JSON.toJSONString(ListRequest);
+    final String request = JSON.toJSONString(ListRequest);
     System.out.print(request);
-    JSONObject response = EnemyService.ListPage(ListRequest);
-    return response;
+    return EnemyService.ListPage(ListRequest);
   }
 
   @RequestMapping(value = "/getAllEnemies")

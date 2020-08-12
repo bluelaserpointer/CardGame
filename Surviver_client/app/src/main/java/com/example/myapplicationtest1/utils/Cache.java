@@ -1,5 +1,7 @@
 package com.example.myapplicationtest1.utils;
 
+import android.content.Context;
+
 import com.example.myapplicationtest1.CardStatusEnum;
 import com.example.myapplicationtest1.HttpClient;
 import com.example.myapplicationtest1.R;
@@ -65,9 +67,10 @@ public class Cache {
     /////////////
     //general
     /////////////
-    public static void reloadAll() {
+    public static void reloadAll(Context context) {
         Cache.loadCardsFromNet();
         Cache.loadOwnCardsFromNet();
+        Cache.loadFormation(context);
     }
     /////////////
     //card
@@ -129,7 +132,6 @@ public class Cache {
         try {
             final JSONArray cardsJson = new JSONArray(HttpClient.doGetShort(Urls.getAllCards()));
             for(index = 0; index < cardsJson.length(); ++index) {
-                System.out.println("CachedCard: " + index);
                 final JSONObject cardJson = cardsJson.getJSONObject(index);
                 final Card card = new Card();
                 card.cardName = cardJson.getString("cardName");
@@ -141,13 +143,28 @@ public class Cache {
                 card.cd = cardJson.getDouble("cd");
                 card.speed = cardJson.getInt("speed");
                 card.type = cardJson.getInt("type");
-                cards.put(cardJson.getInt("cardId"), card);
+                final int cardId = cardJson.getInt("cardId");
+                System.out.println("CachedCard: " + cardId);
+                cards.put(cardId, card);
             }
             return index;
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return index*-1;
+    }
+    /////////////
+    //chapter
+    /////////////
+    public static class Chapter {
+        public final HashMap<Integer, ChapterDetail> phases = new HashMap<>();
+    }
+    public static class ChapterDetail {
+
+    }
+    public static final HashMap<Integer, Chapter> chapters = new HashMap<>();
+    public static void loadChaptersFromNet() {
+
     }
     /////////////
     //ownCard
@@ -216,7 +233,7 @@ public class Cache {
         }
     }
     public static final HashMap<Integer, OwnCard> ownCards = new HashMap<>();
-    public static boolean loadOwnCardsFromNet() {
+    public static int loadOwnCardsFromNet() {
         int index = 0;
         try {
             final JSONArray ownCardsJson = new JSONArray(HttpClient.doGetShort(Urls.getAllOwnCard()));
@@ -243,15 +260,24 @@ public class Cache {
                 //TODO: Need change them to latest logic
                 ownCards.put(ownCardJson.getInt("ownCardId"), ownCard);
             }
-            return true;
+            return index;
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return false;
+        return index;
     }
     /////////////
     //formation
     /////////////
-    public final HashMap<Integer, Integer> formation = new HashMap<>();
-
+    public static final HashMap<Integer, Integer> formation = new HashMap<>();
+    public static void saveFormation(Context context) {
+        Utils.writeFile(context, "formation.txt", MapStringUtil.mapToString(Cache.formation));
+    }
+    public static void loadFormation(Context context) {
+        final String str = Utils.readFile(context, "formation.txt");
+        if(str != null) {
+            Cache.formation.clear();
+            Cache.formation.putAll(MapStringUtil.stringToMap(str));
+        }
+    }
 }

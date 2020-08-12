@@ -33,6 +33,7 @@ public class ChapterListAdapter extends RecyclerView.Adapter <ChapterListAdapter
         }
     }
     private ChapterInfo[] chapters;
+    public static int selectedChapter;
     public static int selectedPhase;
 
     public ChapterListAdapter(Context context) {
@@ -82,11 +83,12 @@ public class ChapterListAdapter extends RecyclerView.Adapter <ChapterListAdapter
             view.performClick();
             if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
                 System.out.println("ChapterListAdapter: clicked chapter is " + position);
+                selectedChapter = position;
                 TableLayout layout;
                 final FrameLayout mapContent = ((Activity)context).findViewById(R.id.mapContent);
                 switch (position) { //chapter
                     case 0:
-                        layout = (TableLayout)View.inflate(((Activity)context), R.layout.chapter_map_0, null);
+                        layout = (TableLayout)View.inflate(context, R.layout.chapter_map_0, null);
                         mapContent.removeAllViews();
                         mapContent.addView(layout);
                         this.setEnterPhaseTouchListener(layout.findViewById(R.id.phase0), 0);

@@ -42,8 +42,15 @@ public class Urls {
     public static String getAllChapters() {
         return "chapter/getAllChapters";
     }
-    public static String getChapterDetail(int chapterId) {
-        return "chapter/getChapterDetailsByChapter?chapterId=" + chapterId;
+    public static String getChapterPhaseDetails(int chapterId, int phaseId) {
+        return "chapter/getChapterDetailsByChapterAndByPhase?chapterId=" + chapterId + "&phaseId=" + phaseId;
+    }
+    public static String phaseClear(int chapterId, int phaseId, int result) {
+        System.out.println("putting |" + MapStringUtil.mapToString(Cache.formation) + "|");
+        return "chapter/phaseClear?userName=" + Cache.userName
+                + "&chapterId=" + chapterId
+                + "&phaseId=" + phaseId
+                + "&result=" + result;
     }
     /////////////
     //CrashReports

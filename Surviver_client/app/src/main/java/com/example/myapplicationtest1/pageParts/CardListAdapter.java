@@ -1,6 +1,7 @@
 package com.example.myapplicationtest1.pageParts;
 
 import android.content.Context;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplicationtest1.R;
@@ -32,6 +34,7 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardLi
         return new CardListViewHolder(LayoutInflater.from(context).inflate(R.layout.card_list_item, parent, false));
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onBindViewHolder(@NonNull CardListViewHolder holder, int position) {
         ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
@@ -47,10 +50,10 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardLi
         holder.itemView.setOnClickListener(v -> {}); //???I don't know why, but it helps itself receive more kinds of motionEvent.
         holder.itemView.setOnTouchListener((v, motionEvent) -> {
             v.performClick();
-            System.out.println("CardListAdapter: action: " + motionEvent.getAction());
             if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
                 if(TeamPage.getOnEditPos() != -1) {
                     TeamPage.setFormationToOnEditPos(oCardEntry.getKey());
+                    Cache.saveFormation(context);
                     Page.jump(context, TeamPage.class);
                 } else {
                     CardDetailPage.selectingOwnCard = Cache.ownCards.get(oCardEntry.getKey());

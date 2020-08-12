@@ -17,11 +17,15 @@ import com.example.myapplicationtest1.page.BattleFinishPage;
 import com.example.myapplicationtest1.page.Page;
 import com.example.myapplicationtest1.pageParts.ChapterListAdapter;
 import com.example.myapplicationtest1.utils.Cache;
+import com.example.myapplicationtest1.utils.GameState;
+import com.example.myapplicationtest1.utils.MapStringUtil;
 import com.example.myapplicationtest1.utils.Urls;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Map;
 
 public class GameCanvas extends MyCanvas {
     final Context context;
@@ -48,13 +52,16 @@ public class GameCanvas extends MyCanvas {
     @Override
     public void touched(int x, int y) {
         if(stage.isGameClear || stage.isGameOver) {
+            HttpClient.doPostShort(
+                    Urls.phaseClear(ChapterListAdapter.selectedChapter + 1, ChapterListAdapter.selectedPhase + 1, stage.isGameClear ? GameState.WIN.ordinal() : GameState.LOSE.ordinal())
+                    , MapStringUtil.mapToString(Cache.formation));
             Page.jump(context, BattleFinishPage.class);
         }
     }
     public void fetch() {
         try {
             //load enemy formation
-            final JSONArray arr = new JSONArray(HttpClient.doGetShort(Urls.getChapterDetail(ChapterListAdapter.selectedPhase)));
+            final JSONArray arr = new JSONArray(HttpClient.doGetShort(Urls.getChapterPhaseDetails(ChapterListAdapter.selectedChapter + 1, ChapterListAdapter.selectedPhase + 1)));
             for(int i = 0; i < arr.length(); ++i) {
                 final JSONObject posInfo = arr.getJSONObject(i);
                 final int pos = posInfo.getInt("positionId");
@@ -63,9 +70,11 @@ public class GameCanvas extends MyCanvas {
                 stage.addUnit(new Enemy(MyUnit.loadAsEnemy(Urls.getCard(posInfo.getInt("cardId")))).respawn(x, y));
             }
             //load friend formation
-            //TODO: this is dummy!
-            stage.addUnit(new Knowledge(Cache.cards.get(0)).respawn(100, 800));
-
+            for(Map.Entry<Integer, Integer> posAndOwnCardId : Cache.formation.entrySet()) {
+                final int pos = posAndOwnCardId.getKey();
+                final Cache.OwnCard ownCard = Cache.ownCards.get(posAndOwnCardId.getValue());
+                stage.addUnit(new Knowledge(ownCard).respawn(100 + pos%5*100, 100 + pos/5*100));
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
