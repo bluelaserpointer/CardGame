@@ -80,18 +80,19 @@
                 android:layout_weight="8.5"
                 android:orientation="horizontal">
 
-                <ListView
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/mailList"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="3">
+                    android:layout_weight="3" />
 
-                </ListView>
-
-                <ListView
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/mailContent"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="7" />
+                    android:layout_weight="7">
 
+                </androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
         </LinearLayout>
 

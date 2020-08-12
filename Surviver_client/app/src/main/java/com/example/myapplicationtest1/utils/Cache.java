@@ -72,6 +72,7 @@ public class Cache {
         Cache.loadOwnCardsFromNet();
         Cache.loadFormation(context);
         Cache.loadActivitiesFromNet();
+        Cache.loadMailsFromNet();
     }
     /////////////
     //card
@@ -307,6 +308,35 @@ public class Cache {
                 final int activityId = activityJson.getInt("activityId");
                 System.out.println("CachedActivity: " + activityId);
                 activities.put(activityId, activity);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    /////////////
+    //mail
+    /////////////
+    public static class Mail {
+        public String title;
+        public String time;
+        public String content;
+        public String imgBase64;
+    }
+    public static final HashMap<Integer, Mail> mails = new HashMap<>();
+    public static void loadMailsFromNet() {
+        try {
+            final JSONArray mailsJson = new JSONArray(HttpClient.doGetShort(Urls.getMailBox()));
+            for(int i = 0; i < mailsJson.length(); ++i) {
+                final JSONObject mailJson = mailsJson.getJSONObject(i);
+                final Mail mail = new Mail();
+                mail.title = mailJson.getString("mailName");
+                mail.time = mailJson.getString("mailTime");
+                final JSONObject mailDetailJson = mailJson.getJSONObject("mailDetails");
+                mail.content = mailDetailJson.getString("mailDescription");
+                mail.imgBase64 = mailDetailJson.getString("mailImg");
+                final int mailId = mailJson.getInt("mailId");
+                System.out.println("CachedMail: " + mailId);
+                mails.put(mailId, mail);
             }
         } catch (JSONException e) {
             e.printStackTrace();

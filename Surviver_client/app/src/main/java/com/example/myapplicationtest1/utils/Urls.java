@@ -80,6 +80,12 @@ public class Urls {
         return "activity/getActivity?activityId=" + activityId;
     }
     /////////////
+    //Mails
+    /////////////
+    public static String getMailBox() {
+        return  "user/getMailBox?userName=" + Cache.userName;
+    }
+    /////////////
     //Missions
     /////////////
     public static String getAllMissions() {
