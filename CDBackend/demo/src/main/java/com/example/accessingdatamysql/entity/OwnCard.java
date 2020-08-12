@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.*;
 public class OwnCard {
     // 拥有卡牌这一关系的Id
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer ownCardId;
     // 拥有卡片的用户的Id
     private Integer userId;

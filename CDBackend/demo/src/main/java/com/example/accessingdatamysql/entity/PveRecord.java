@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 public class PveRecord {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer pveRecordId;
     private Integer userId;
     private Integer chapterId;
@@ -36,16 +36,14 @@ public class PveRecord {
     public PveRecord() {
     }
 
-    public PveRecord(Integer userId, Integer chapterId, Integer phaseId, Integer result)
-    {
+    public PveRecord(Integer userId, Integer chapterId, Integer phaseId, Integer result) {
         this.userId = userId;
         this.chapterId = chapterId;
         this.phaseId = phaseId;
         this.result = result;
     }
 
-    public void setPveRecord(Integer userId, Integer chapterId, Integer phaseId, Integer result, Timestamp recordTime)
-    {
+    public void setPveRecord(Integer userId, Integer chapterId, Integer phaseId, Integer result, Timestamp recordTime) {
         this.userId = userId;
         this.chapterId = chapterId;
         this.phaseId = phaseId;
