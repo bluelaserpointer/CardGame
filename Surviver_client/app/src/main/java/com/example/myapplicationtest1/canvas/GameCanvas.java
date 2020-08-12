@@ -23,6 +23,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Map;
+
 public class GameCanvas extends MyCanvas {
     final Context context;
     public GameCanvas(Context context) { //动态实例化view用到;
@@ -63,11 +65,11 @@ public class GameCanvas extends MyCanvas {
                 stage.addUnit(new Enemy(MyUnit.loadAsEnemy(Urls.getCard(posInfo.getInt("cardId")))).respawn(x, y));
             }
             //load friend formation
-            //TODO: this is dummy!
-            final Cache.Card card = Cache.cards.get(1);
-            if(card != null)
-                stage.addUnit(new Knowledge(card).respawn(100, 800));
-
+            for(Map.Entry<Integer, Integer> posAndOwnCardId : Cache.formation.entrySet()) {
+                final int pos = posAndOwnCardId.getKey();
+                final Cache.OwnCard ownCard = Cache.ownCards.get(posAndOwnCardId.getValue());
+                stage.addUnit(new Knowledge(ownCard).respawn(100 + pos%5*100, 100 + pos/5*100));
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
