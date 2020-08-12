@@ -71,6 +71,7 @@ public class Cache {
         Cache.loadCardsFromNet();
         Cache.loadOwnCardsFromNet();
         Cache.loadFormation(context);
+        Cache.loadActivitiesFromNet();
     }
     /////////////
     //card
@@ -278,6 +279,37 @@ public class Cache {
         if(str != null) {
             Cache.formation.clear();
             Cache.formation.putAll(MapStringUtil.stringToMap(str));
+        }
+    }
+    /////////////
+    //activity
+    /////////////
+    public static class Activity {
+        public String title;
+        public String type;
+        public String description;
+        public String time;
+        public String imgBase64;
+    }
+    public static HashMap<Integer, Activity> activities = new HashMap<>();
+    public static void loadActivitiesFromNet() {
+        try {
+            final JSONArray activitiesJson = new JSONArray(HttpClient.doGetShort(Urls.getAllActivities()));
+            for(int i = 0; i < activitiesJson.length(); ++i) {
+                final JSONObject activityJson = activitiesJson.getJSONObject(i);
+                final Activity activity = new Activity();
+                activity.title = activityJson.getString("activityName");
+                activity.type = activityJson.getString("type");
+                activity.time = activityJson.getString("start");
+                final JSONObject detailJson = activityJson.getJSONObject("activityDetails");
+                activity.description = detailJson.getString("activityDescription");
+                activity.imgBase64 = detailJson.getString("activityImg");
+                final int activityId = activityJson.getInt("activityId");
+                System.out.println("CachedActivity: " + activityId);
+                activities.put(activityId, activity);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 }

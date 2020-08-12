@@ -37,16 +37,16 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardLi
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onBindViewHolder(@NonNull CardListViewHolder holder, int position) {
-        ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
+        final ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
         layoutParams.height = 500;
         holder.itemView.setLayoutParams(layoutParams);
         final Map.Entry<Integer, Cache.OwnCard> oCardEntry = this.oCardEntryIterator.next();
-        final Cache.OwnCard params = oCardEntry.getValue();
-        holder.cardImageView.setImageResource(R.drawable.greentmp);
-        holder.cardNameTextView.setText(params.card.cardName);
-        holder.cardRarityTextView.setText("SSR");
-        holder.cardLevelTextView.setText("Lv: " + params.cardLevel + "/" + params.cardLevelLimit);
-        holder.cardExpTextView.setText("exp: " + params.cardCurExp + "/" + 100);
+        final Cache.OwnCard ownCard = oCardEntry.getValue();
+        holder.cardImageView.setImageResource(ownCard.card.drawableId);
+        holder.cardNameTextView.setText(ownCard.card.cardName);
+        holder.cardRarityTextView.setText(ownCard.card.rarity);
+        holder.cardLevelTextView.setText("Lv: " + ownCard.cardLevel + "/" + ownCard.cardLevelLimit);
+        holder.cardExpTextView.setText("exp: " + ownCard.cardCurExp + "/" + 100);
         holder.itemView.setOnClickListener(v -> {}); //???I don't know why, but it helps itself receive more kinds of motionEvent.
         holder.itemView.setOnTouchListener((v, motionEvent) -> {
             v.performClick();
