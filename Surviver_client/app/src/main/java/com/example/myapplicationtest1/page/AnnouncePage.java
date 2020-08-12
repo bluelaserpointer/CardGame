@@ -1,6 +1,5 @@
 package com.example.myapplicationtest1.page;
 
-import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
@@ -9,14 +8,9 @@ import android.widget.ImageView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myapplicationtest1.HttpClient;
 import com.example.myapplicationtest1.R;
 import com.example.myapplicationtest1.pageParts.ActivityListAdapter;
 import com.example.myapplicationtest1.utils.Cache;
-import com.example.myapplicationtest1.utils.Urls;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class AnnouncePage extends Page {
     @Override
