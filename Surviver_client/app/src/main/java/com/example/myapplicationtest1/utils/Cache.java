@@ -71,6 +71,8 @@ public class Cache {
         Cache.loadCardsFromNet();
         Cache.loadOwnCardsFromNet();
         Cache.loadFormation(context);
+        Cache.loadActivitiesFromNet();
+        Cache.loadMailsFromNet();
     }
     /////////////
     //card
@@ -278,6 +280,66 @@ public class Cache {
         if(str != null) {
             Cache.formation.clear();
             Cache.formation.putAll(MapStringUtil.stringToMap(str));
+        }
+    }
+    /////////////
+    //activity
+    /////////////
+    public static class Activity {
+        public String title;
+        public String type;
+        public String description;
+        public String time;
+        public String imgBase64;
+    }
+    public static HashMap<Integer, Activity> activities = new HashMap<>();
+    public static void loadActivitiesFromNet() {
+        try {
+            final JSONArray activitiesJson = new JSONArray(HttpClient.doGetShort(Urls.getAllActivities()));
+            for(int i = 0; i < activitiesJson.length(); ++i) {
+                final JSONObject activityJson = activitiesJson.getJSONObject(i);
+                final Activity activity = new Activity();
+                activity.title = activityJson.getString("activityName");
+                activity.type = activityJson.getString("type");
+                activity.time = activityJson.getString("start");
+                final JSONObject detailJson = activityJson.getJSONObject("activityDetails");
+                activity.description = detailJson.getString("activityDescription");
+                activity.imgBase64 = detailJson.getString("activityImg");
+                final int activityId = activityJson.getInt("activityId");
+                System.out.println("CachedActivity: " + activityId);
+                activities.put(activityId, activity);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    /////////////
+    //mail
+    /////////////
+    public static class Mail {
+        public String title;
+        public String time;
+        public String content;
+        public String imgBase64;
+    }
+    public static final HashMap<Integer, Mail> mails = new HashMap<>();
+    public static void loadMailsFromNet() {
+        try {
+            final JSONArray mailsJson = new JSONArray(HttpClient.doGetShort(Urls.getMailBox()));
+            for(int i = 0; i < mailsJson.length(); ++i) {
+                final JSONObject mailJson = mailsJson.getJSONObject(i);
+                final Mail mail = new Mail();
+                mail.title = mailJson.getString("mailName");
+                mail.time = mailJson.getString("mailTime");
+                final JSONObject mailDetailJson = mailJson.getJSONObject("mailDetails");
+                mail.content = mailDetailJson.getString("mailDescription");
+                mail.imgBase64 = mailDetailJson.getString("mailImg");
+                final int mailId = mailJson.getInt("mailId");
+                System.out.println("CachedMail: " + mailId);
+                mails.put(mailId, mail);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 }

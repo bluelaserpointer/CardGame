@@ -5,12 +5,12 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.widget.ImageView;
 
-import com.example.myapplicationtest1.HttpClient;
-import com.example.myapplicationtest1.R;
-import com.example.myapplicationtest1.utils.Urls;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.example.myapplicationtest1.R;
+import com.example.myapplicationtest1.pageParts.ActivityListAdapter;
+import com.example.myapplicationtest1.utils.Cache;
 
 public class AnnouncePage extends Page {
     @Override
@@ -19,20 +19,27 @@ public class AnnouncePage extends Page {
         setContentView(R.layout.announce);
         super.setJump(R.id.return_button, HomePage.class);
 
-        try {
-            final JSONObject json = new JSONObject(HttpClient.doGetShort(Urls.getActivity(1)));
-            super.setText_TextView(R.id.activityTitle, json.getString("activityName"));
-            super.setText_TextView(R.id.activityTime, json.getString("start"));
-            final JSONObject detailJson = json.getJSONObject("activityDetails");
-            final String imgBase64 = detailJson.getString("activityImg");
-            super.setText_TextView(R.id.activityDescription, detailJson.getString("activityDescription"));
-            if(!imgBase64.isEmpty()) {
-                System.out.println(imgBase64);
+        final RecyclerView activityListViewer = findViewById(R.id.activityList);
+        activityListViewer.setLayoutManager(new LinearLayoutManager(AnnouncePage.this));
+        activityListViewer.setAdapter(new ActivityListAdapter(AnnouncePage.this));
+    }
+    public void setActivityInfo(int activityId) {
+        if(activityId == -1) {
+            return;
+        }
+        final Cache.Activity activity = Cache.activities.get(activityId);
+        super.setText_TextView(R.id.activityTitle, activity.time);
+        super.setText_TextView(R.id.activityTime, activity.time);
+        final String imgBase64 = activity.imgBase64;
+        super.setText_TextView(R.id.activityDescription, activity.description);
+        if(!imgBase64.isEmpty()) {
+            try {
                 final byte[] decodedString = Base64.decode(imgBase64, Base64.DEFAULT);
                 ((ImageView) super.findViewById(R.id.activityImage)).setImageBitmap(BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
+            } catch (RuntimeException e) {
+                System.out.println("AnnouncePage: Fail to load " + imgBase64);
+                e.printStackTrace();
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
     }
 }
