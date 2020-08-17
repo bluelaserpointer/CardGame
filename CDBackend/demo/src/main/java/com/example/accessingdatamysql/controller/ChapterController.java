@@ -125,9 +125,9 @@ public class ChapterController {
     // }
 
     @RequestMapping(value = "/phaseClear")
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR #userName == authentication.name")
-    public @ResponseBody String phaseClear(String userName, Integer chapterId, Integer phaseId, Integer result, @RequestBody JSONObject usedCardsIdAndPosJSON) {
-        System.out.println("phaseClear: " + userName + ", chapterId: " + chapterId + ", phaseId: " + phaseId + ", posAndOwnCardId: " + usedCardsIdAndPosJSON);
-        return chapterService.phaseClear(userName, chapterId, phaseId, result, usedCardsIdAndPosJSON.toString());
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR #userId.toString() == authentication.name")
+    public @ResponseBody String phaseClear(Integer userId, Integer chapterId, Integer phaseId, Integer result, @RequestBody JSONObject usedCardsIdAndPosJSON) {
+        System.out.println("phaseClear: " + userId + ", chapterId: " + chapterId + ", phaseId: " + phaseId + ", posAndOwnCardId: " + usedCardsIdAndPosJSON);
+        return chapterService.phaseClear(userId, chapterId, phaseId, result, usedCardsIdAndPosJSON.toString());
     }
 }

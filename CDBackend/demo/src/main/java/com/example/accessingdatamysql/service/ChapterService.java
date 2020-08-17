@@ -37,5 +37,5 @@ public interface ChapterService {
 
     ChapterPhase getOneChapterPhase(Integer chapterId, Integer chapterPhaseId);
 
-    String phaseClear(String userName, int chapterId, int phaseId, int result, String usedCardsIdAndPosString);
+    String phaseClear(Integer userId, Integer chapterId, Integer phaseId, Integer result, String usedCardsIdAndPosString);
 }

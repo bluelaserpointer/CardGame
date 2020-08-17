@@ -28,7 +28,6 @@ public class FriendList {
 
     public Integer getFriendListId() {
         return friendListId;
-
     }
 
     // 应该不会更改friendListid

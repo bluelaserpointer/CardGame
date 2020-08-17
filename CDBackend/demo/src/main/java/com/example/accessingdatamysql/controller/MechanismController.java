@@ -24,11 +24,11 @@ public class MechanismController {
 
   // 抽卡逻辑在这里
   @RequestMapping(value = "/drawCard")
-  @PreAuthorize("hasRole('ROLE_ADMIN') OR #userName == authentication.name")
-  public String drawCard(@RequestParam("userName") String userName, @RequestParam("chi") Integer chi, @RequestParam("mat") Integer mat,
+  @PreAuthorize("hasRole('ROLE_ADMIN') OR #userId.toString() == authentication.name")
+  public String drawCard(@RequestParam("userId") Integer userId, @RequestParam("chi") Integer chi, @RequestParam("mat") Integer mat,
       @RequestParam("eng") Integer eng) {
     final JSONObject jsonObject = new JSONObject();
-    jsonObject.put("drawnCardId", mechanismService.drawCard(userName, chi, mat, eng));
+    jsonObject.put("drawnCardId", mechanismService.drawCard(userId, chi, mat, eng));
     return jsonObject.toString();
   }
 

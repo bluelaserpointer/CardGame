@@ -6,5 +6,5 @@ package com.example.accessingdatamysql.service;
 
 public interface MechanismService {
 
-        Integer drawCard(String userName, Integer chi, Integer mat, Integer eng);
+        Integer drawCard(Integer userId, Integer chi, Integer mat, Integer eng);
 }

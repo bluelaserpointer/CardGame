@@ -4,14 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
-// import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import static com.example.accessingdatamysql.GlobalConstants.general_page_size;
 
-import java.sql.Timestamp;
-// import java.sql.Timestamp;
 import java.util.*;
 
 import com.example.accessingdatamysql.service.OwnCardService;
@@ -35,27 +31,25 @@ public class OwnCardController {
 
   // 增加一个用户拥有卡牌关系
   @RequestMapping(value = "/addOwnCard")
-  @PreAuthorize("hasRole('ROLE_ADMIN') OR #userName == authentication.name")
-  public @ResponseBody OwnCard addNewOwnCard(@RequestParam("userName") String userName,
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  public @ResponseBody OwnCard addNewOwnCard(@RequestParam("userId") Integer userId,
       @RequestParam("cardId") Integer cardId) {
-    Integer userId = UserService.getOneUserByUserName(userName).getUserId();
     return OwnCardService.addNewOwnCard(userId, cardId);
   }
 
   // 更新一个用户拥有卡牌关系
   @RequestMapping(value = "/updateOwnCard")
-  @PreAuthorize("hasRole('ROLE_ADMIN') OR #updateOwnCard.userName == authentication.name")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   public @ResponseBody OwnCard updateOwnCard(@RequestBody String updateOwnCard) {
-    // String json = updateOwnCard.getString("OwnCard")
-    JSONObject jsonObject = JSON.parseObject(updateOwnCard);
-    OwnCard ownCard = JSON.parseObject(jsonObject.getString("OwnCard"), OwnCard.class);
+    final JSONObject jsonObject = JSON.parseObject(updateOwnCard);
+    final OwnCard ownCard = JSON.parseObject(jsonObject.getString("OwnCard"), OwnCard.class);
     return OwnCardService.updateOwnCard(ownCard);
   }
 
   // 增加用户经验值(如果累计经验值超过升级所需经验值则升级后再返回OwnCard)
   @RequestMapping(value = "/addExp")
-  @PreAuthorize("hasRole('ROLE_ADMIN') OR #userName == authentication.name")
-  public @ResponseBody OwnCard addExp(@RequestParam("userName") String userName, @RequestParam("cardId") Integer cardId,
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  public @ResponseBody OwnCard addExp(@RequestParam("userId") Integer userId, @RequestParam("cardId") Integer cardId,
       @RequestParam("exp") Integer exp) {
     // System.out.println("Class: UserController Method: addExp Param: userId = " +
     // userId + " exp = " + exp);
@@ -63,7 +57,6 @@ public class OwnCardController {
     // response.put("userName", UserService.getOneUser(userId).getUserName());
     // response.put("ownCard", OwnCardService.addExp(userId, cardId, exp));
     // System.out.println(authentication.name);
-    Integer userId = UserService.getOneUserByUserName(userName).getUserId();
 
     return OwnCardService.addExp(userId, cardId, exp);
   }
@@ -81,10 +74,8 @@ public class OwnCardController {
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public JSONObject ListPage(@RequestBody ListRequest ListRequest) {
     ListRequest.setPageSize(general_page_size);
-    String request = JSON.toJSONString(ListRequest);
-    System.out.print(request);
-    JSONObject response = OwnCardService.ListPage(ListRequest);
-    return response;
+    System.out.print(JSON.toJSONString(ListRequest));
+    return OwnCardService.ListPage(ListRequest);
   }
 
   // 获取所有用户拥有卡牌关系
@@ -95,10 +86,9 @@ public class OwnCardController {
   }
 
   // 获取某一用户的所有拥有卡牌关系
-  @RequestMapping(value = "/getAllOwnCardsByUserName")
-  @PreAuthorize("hasRole('ROLE_ADMIN') OR #userName == authentication.name")
-  public List<OwnCard> getAllOwnCardsByUserName(@RequestParam("userName") String userName) {
-    Integer userId = UserService.getOneUserByUserName(userName).getUserId();
+  @RequestMapping(value = "/getAllOwnCardsByUserId")
+  @PreAuthorize("hasRole('ROLE_ADMIN') OR #userId.toString() == authentication.name")
+  public List<OwnCard> getAllOwnCardsByUserName(@RequestParam("userId") Integer userId) {
     return OwnCardService.getAllOwnCardsByUserId(userId);
   }
 

@@ -19,10 +19,10 @@ public class MechanismServiceImpl implements MechanismService {
     private OwnCardService ownCardService;
 
     @Override
-    public Integer drawCard(String userName, Integer chi, Integer mat, Integer eng) {
-        final User user = userService.getOneUserByUserName(userName);
+    public Integer drawCard(Integer userId, Integer chi, Integer mat, Integer eng) {
+        final User user = userService.getOneUser(userId);
         // LotteSpring(subject rarity)
-        System.out.println("MechanismServiceImpl: " + userName + "requested card draw with resources chi: " + chi + " mat: " + mat + " eng: " + eng);
+        System.out.println("MechanismServiceImpl: " + user.getUserName() + "requested card draw with resources chi: " + chi + " mat: " + mat + " eng: " + eng);
 
         //resource check
         if(user.getChiKnowledge() < chi) {

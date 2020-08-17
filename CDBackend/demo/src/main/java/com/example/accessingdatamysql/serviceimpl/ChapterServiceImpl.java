@@ -87,10 +87,9 @@ public class ChapterServiceImpl implements ChapterService {
     }
 
     @Override
-    public String phaseClear(String userName, int chapterId, int phaseId, int result, String usedCardsIdAndPosString) {
+    public String phaseClear(Integer userId, Integer chapterId, Integer phaseId, Integer result, String usedCardsIdAndPosString) {
         //TODO: Need a check logic for if user is cheating.
         //TODO: seems redundant to get a userId by userName
-        final Integer userId = userService.getOneUserByUserName(userName).getUserId();
         final Chapter chapter = chapterDao.getOneChapter(chapterId);
         final GameState state = GameState.values()[result];
         final LinkedList<Integer> awardCardsId = new LinkedList<>();

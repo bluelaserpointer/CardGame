@@ -32,17 +32,17 @@ public class JwtUserFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
             FilterChain filterChain) throws ServletException, IOException {
         // 从request中提取出Authorization Header
-        String authorizationHeader = httpServletRequest.getHeader(HEADER_STRING);
+        final String authorizationHeader = httpServletRequest.getHeader(HEADER_STRING);
 //        System.out.println("In doFilter");
         String token = null;
-        String userName = null;
+        String userIdStr = null;
         // 如果Authorization Header不为空且有Bearer作为开头
 //        System.out.println(authorizationHeader);
         if (authorizationHeader != null && authorizationHeader.startsWith(TOKEN_PREFIX)) {
             token = authorizationHeader.substring(7); // 获取token
 //            System.out.println("In parse branch1");
             try {
-                userName = jwtUtil.extractUsername(token); // 调用jwtUtil来从token中解析出用户名
+                userIdStr = jwtUtil.extractUserIdStr(token); // 调用jwtUtil来从token中解析出用户名
             } catch(ExpiredJwtException e) {
                 System.out.println("JwtUserFilter: received a expired token: " + e.getMessage());
             }
@@ -53,11 +53,13 @@ public class JwtUserFilter extends OncePerRequestFilter {
 //        }
 //        System.out.println("After parse");
         // 如果解析成功
-        if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (userIdStr != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             // 调用UserDetailsServiceImpl从repository中找出该用户
-            UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
+            final UserDetails userDetails = userDetailsService.loadUserByUsername(userIdStr);
             // 核实token与该用户名再一次重新生成的token是否吻合
+//            System.out.println(userIdStr + "at A vs " + userDetails.getUsername());
             if (jwtUtil.validateToken(token, userDetails)) {
+//                System.out.println(userDetails.getUsername() + "at B");
 //                System.out.println("Logged in");
                 onlineCounter.insertToken(token);
 
@@ -66,11 +68,13 @@ public class JwtUserFilter extends OncePerRequestFilter {
                 usernamePasswordAuthenticationToken
                         .setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-            }else{
+//                System.out.println(userDetails.getUsername() + "at C");
+            } else {
 //                System.out.println("Logged out");
 //                userLoginRecordService.userLogout(userService.getOneUserByUserName(userName).getUserId(),2);
             }
         }
         filterChain.doFilter(httpServletRequest, httpServletResponse);
+//        System.out.println("at D");
     }
 }

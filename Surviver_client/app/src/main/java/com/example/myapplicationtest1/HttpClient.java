@@ -2,7 +2,6 @@ package com.example.myapplicationtest1;
 
 import android.os.StrictMode;
 
-import com.example.myapplicationtest1.page.Page;
 import com.example.myapplicationtest1.utils.Cache;
 import com.example.myapplicationtest1.utils.Urls;
 
