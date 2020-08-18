@@ -30,7 +30,6 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     public List<Activity> getAllActivities() {
-        System.out.println("Inside service");
         return ActivityDao.getAllActivities();
     }
 

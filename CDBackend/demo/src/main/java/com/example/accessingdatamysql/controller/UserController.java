@@ -133,23 +133,23 @@ public class UserController {
   @PostMapping("/login")
   public String identifyUser(@RequestBody AuthRequest authRequest) {
     final String userName = authRequest.getUserName(), password = authRequest.getPassword();
-    System.out.print("UserController: login request: " + userName + ", " + password + " -> ");
+    final String LOG_HEAD = "UserController: login request: " + userName + ", " + password + " -> ";
     final User user = userService.getOneUserByUserName(userName);
     final JSONObject response = new JSONObject();
     if (user == null) {
-      System.out.println("refused(wrong username)");
+      System.out.println(LOG_HEAD + "refused(wrong username)");
       response.put("failReason", "用户名或密码错误");
     } else if (!user.getPassword().equals(password)) {
-      System.out.println("refused(wrong password)");
+      System.out.println(LOG_HEAD + "refused(wrong password)");
       response.put("failReason", "用户名或密码错误");
     } else if (!user.getAccess()) {
-      System.out.println("refused(banned user)");
+      System.out.println(LOG_HEAD + "refused(banned user)");
       response.put("failReason", "用户已被禁止登录，详见游戏官网");
     } else {
-      System.out.println("accepted");
-      authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userName, password));
+      System.out.println(LOG_HEAD + "accepted");
+      authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUserId(), password));
       userLoginRecordService.userLogin(user.getUserId());
-      response.put("token", jwtUtil.generateToken(userName));
+      response.put("token", jwtUtil.generateToken(String.valueOf(user.getUserId())));
       response.put("user", user);
     }
     return response.toString();
@@ -178,9 +178,8 @@ public class UserController {
 
   // 获取用户的游戏信箱
   @RequestMapping(value = "/getMailBox")
-  @PreAuthorize("hasRole('ROLE_ADMIN') OR #userName == authentication.name")
-  public @ResponseBody List<Mail> getUserMailBox(@RequestParam("userName") String userName) {
-    Integer userId = userService.getOneUserByUserName(userName).getUserId();
+  @PreAuthorize("hasRole('ROLE_ADMIN') OR #userId.toString() == authentication.name")
+  public @ResponseBody List<Mail> getUserMailBox(@RequestParam("userId") Integer userId) {
     return mailBoxService.getOneUserMails(userId);
   }
 }
