@@ -45,7 +45,6 @@ public class ChapterServiceImpl implements ChapterService {
     }
 
     public List<Chapter> getAllChapters() {
-        System.out.println("In service");
         return chapterDao.getAllChapters();
     }
 

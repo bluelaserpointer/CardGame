@@ -13,9 +13,9 @@ public class Urls {
     public static String login() {
         return "user/login";
     }
-    public static String getUser() {
-        return "user/getUser?userId=" + Cache.userId;
-    }
+//    public static String getUser() {
+//        return "user/getUser?userId=" + Cache.userId;
+//    }
     public static String register() {
         return "user/register";
     }
@@ -48,7 +48,7 @@ public class Urls {
     }
     public static String phaseClear(int chapterId, int phaseId, int result) {
         System.out.println("putting |" + MapStringUtil.mapToString(Cache.formation) + "|");
-        return "chapter/phaseClear?userName=" + Cache.userName
+        return "chapter/phaseClear?userId=" + Cache.userId
                 + "&chapterId=" + chapterId
                 + "&phaseId=" + phaseId
                 + "&result=" + result;

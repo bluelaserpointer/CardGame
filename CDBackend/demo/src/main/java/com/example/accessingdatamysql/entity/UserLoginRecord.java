@@ -27,7 +27,7 @@ public class UserLoginRecord {
     private Integer type;
 
     public UserLoginRecord() {
-    };
+    }
 
     public UserLoginRecord(Integer userId) {
         this.loginTime = new Timestamp(System.currentTimeMillis());
