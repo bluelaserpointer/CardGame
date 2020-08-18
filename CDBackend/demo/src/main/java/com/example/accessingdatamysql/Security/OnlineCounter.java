@@ -1,66 +1,40 @@
 package com.example.accessingdatamysql.Security;
 
-import io.jsonwebtoken.Claims;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
 import java.util.Map;
-import static com.example.accessingdatamysql.Security.SecurityConstants.countMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class OnlineCounter {
 
-    @Autowired
-    private JwtUtil jwtUtil;
-
-    //每次打开此类只初始化一次countMap
-//    private static Map countMap = new ConcurrentHashMap<String,Object>();
+    private final Map<String, Long> userIdStrAndLastActiveTime = new ConcurrentHashMap<>();
 
     /**
-     * @description: 解析token并且将数据插入CountMap中
-     * @param token
-     * @return: void
+     * 更新用户最后活跃时间，用于在线用户数统计
+     * @param userIdStr 用户ID文字列
      */
 
-    public void insertToken(String token){
-        //获得当前时间(毫秒)
-        long currentTime = System.currentTimeMillis();
-        //解析token，获得签发时间
-        Claims claims = null;
-
-        try {
-//            claims = JWTUtils.parseJWT(token);
-            claims = jwtUtil.extractAllClaims(token);
-        } catch (Exception e) {
-            throw new RuntimeException("token不存在或已过期");
-        }
-
-        Date issuedAt = claims.getIssuedAt();
-        //以签发时间为key。当前时间+60s为value存入countMap中
-        countMap.put(issuedAt.toString(),currentTime + 60 * 1000);
+    public void updateUserLastActiveTime(String userIdStr) {
+        //用户ID文字列为key，当前时间+60s为value存入countMap中
+        userIdStrAndLastActiveTime.put(userIdStr, System.currentTimeMillis() + 60 * 1000);
     }
 
     /**
-     * @description: 获取当前在线用户数
-     * @param
-     * @return: java.lang.Integer
+     * 获取当前在线用户数
+     * @return 在线用户数
      */
-    public Integer getOnlineCount(){
+    public Integer getOnlineCount() {
         int onlineCount = 0;
         //获取countMap的迭代器
-        for (Object o : countMap.entrySet()) {
-            Map.Entry<String, Object> entry = (Map.Entry<String, Object>) o;
-            Long value = (Long) entry.getValue();
-            if (value > System.currentTimeMillis()) {
+        for (Map.Entry<String, Long> entry : userIdStrAndLastActiveTime.entrySet()) {
+            if (entry.getValue() > System.currentTimeMillis()) {
                 //过期时间大于当前时间则没有过期
-                onlineCount++;
+                ++onlineCount;
             } else {
-                countMap.remove(entry);
+                userIdStrAndLastActiveTime.remove(entry.getKey());
             }
-
         }
-
         return onlineCount;
     }
 }

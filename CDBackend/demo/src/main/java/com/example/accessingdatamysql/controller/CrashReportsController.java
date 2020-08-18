@@ -3,7 +3,6 @@ package com.example.accessingdatamysql.controller;
 import com.example.accessingdatamysql.entity.CrashReports;
 import com.example.accessingdatamysql.entity.CrashReportsDetail;
 import com.example.accessingdatamysql.service.CrashReportService;
-import com.example.accessingdatamysql.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +13,6 @@ import org.springframework.web.bind.annotation.*;
 public class CrashReportsController {
     @Autowired
     private CrashReportService crashReportService;
-    @Autowired
-    private UserService userService;
 
     @PostMapping(value = "/add")
     public @ResponseBody void addCrashReport(@RequestParam("userId") Integer userId, @RequestParam("clientVersion") Double clientVersion, @RequestBody CrashReportsDetail crashReportDetail) {

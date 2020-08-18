@@ -28,6 +28,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 //        }
 
         // Identity 要写成 "ROLE_ADMIN","ROLE_USER"
-        return new User(String.valueOf(applicationUser.getUserId()), applicationUser.getPassword(), AuthorityUtils.createAuthorityList(applicationUser.getIdentity()));
+        return new User(String.valueOf(userId), applicationUser.getPassword(), AuthorityUtils.createAuthorityList(applicationUser.getIdentity()));
     }
 }

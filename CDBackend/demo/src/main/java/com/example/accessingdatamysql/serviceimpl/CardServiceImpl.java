@@ -25,7 +25,6 @@ public class CardServiceImpl implements CardService {
     }
 
     public Card updateCard(Card updateCard) {
-        System.out.println("In service");
         return CardDao.updateCard(updateCard);
     }
 

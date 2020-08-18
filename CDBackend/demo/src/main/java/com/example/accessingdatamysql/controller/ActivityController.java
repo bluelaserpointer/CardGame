@@ -5,10 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.accessingdatamysql.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-// import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Timestamp;
 import java.util.*;
 
 import static com.example.accessingdatamysql.GlobalConstants.general_page_size;
@@ -50,9 +48,9 @@ public class ActivityController {
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public JSONObject ListPage(@RequestBody ListRequest ListRequest) {
     ListRequest.setPageSize(general_page_size);
-    String request = JSON.toJSONString(ListRequest);
+    final String request = JSON.toJSONString(ListRequest);
     System.out.print(request);
-    JSONObject response = ActivityService.ListPage(ListRequest);
+    final JSONObject response = ActivityService.ListPage(ListRequest);
     System.out.print(JSON.toJSONString(response));
     return response;
 
