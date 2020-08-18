@@ -61,8 +61,7 @@ public class OwnItemController {
     ListRequest.setPageSize(general_page_size);
     final String request = JSON.toJSONString(ListRequest);
     System.out.print(request);
-    JSONObject response = OwnItemService.ListPage(ListRequest);
-    return response;
+    return OwnItemService.ListPage(ListRequest);
   }
 
   @RequestMapping(value = "/getAllOwnItems")
@@ -86,7 +85,6 @@ public class OwnItemController {
   @RequestMapping(value = "/deleteOwnItem")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public List<OwnItem> deleteOwnItem(@RequestParam("userId") Integer userId, @RequestParam("itemId") Integer itemId) {
-    System.out.println("In controller");
     return OwnItemService.deleteOwnItem(userId, itemId);
   }
 

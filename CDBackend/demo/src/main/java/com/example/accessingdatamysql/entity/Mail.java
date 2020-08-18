@@ -4,6 +4,8 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.*;
 
+import java.sql.Timestamp;
+
 @Entity
 @Table(name = "mail", schema = "cardgame")
 @JsonIgnoreProperties(value = { "handler", "hibernateLazyInitializer", "fieldHandler" })
@@ -11,13 +13,15 @@ import com.fasterxml.jackson.annotation.*;
 public class Mail {
     // 邮件Id
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer mailId;
     // 邮件标题
     private String mailName;
     // 邮件详情（包括描述，图片等）
     @Transient
     private MailDetails mailDetails;
+    // 发送日期
+    private Timestamp mailTime;
 
     public Mail() {
     }
@@ -50,4 +54,11 @@ public class Mail {
         this.mailDetails = mailDetails;
     }
 
+    public Timestamp getMailTime() {
+        return mailTime;
+    }
+
+    public void setMailTime(Timestamp mailTime) {
+        this.mailTime = mailTime;
+    }
 }

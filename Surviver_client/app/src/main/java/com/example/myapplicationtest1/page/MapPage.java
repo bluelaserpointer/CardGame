@@ -1,7 +1,6 @@
 package com.example.myapplicationtest1.page;
 
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,9 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplicationtest1.R;
 import com.example.myapplicationtest1.pageParts.ChapterListAdapter;
 import com.example.myapplicationtest1.utils.Utils;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class MapPage extends Page {
     @Override

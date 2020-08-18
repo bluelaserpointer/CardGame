@@ -80,17 +80,45 @@
                 android:layout_weight="8.5"
                 android:orientation="horizontal">
 
-                <ListView
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/mailList"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="3">
 
-                </ListView>
+                </androidx.recyclerview.widget.RecyclerView>
 
-                <ListView
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="7" />
+                    android:layout_weight="7"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/mailTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0"
+                        android:text="title"
+                        android:textSize="36sp" />
+
+                    <TextView
+                        android:id="@+id/mailTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0"
+                        android:text="time"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/mailContent"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0"
+                        android:text="description"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
 
             </LinearLayout>
         </LinearLayout>

@@ -5,7 +5,7 @@ public class Urls {
     //Edward: http://192.168.175.1:8080/
     //Jun: http://192.168.254.1:8080/
     //Online: http://ec2-35-173-219-114.compute-1.amazonaws.com:8080/
-    public static final String URLHead = IS_LOCAL_MODE ? "http://192.168.254.1:8080/" : "http://ec2-35-173-219-114.compute-1.amazonaws.com:8080/";
+    public static final String URLHead = IS_LOCAL_MODE ? "http://192.168.254.1:8080/" : "http://35.174.18.246:8080/";
     /////////////
     //Users
     /////////////
@@ -42,14 +42,21 @@ public class Urls {
     public static String getAllChapters() {
         return "chapter/getAllChapters";
     }
-    public static String getChapterDetail(int chapterId) {
-        return "chapter/getChapterDetailsByChapter?chapterId=" + chapterId;
+    public static String getChapterPhaseDetails(int chapterId, int phaseId) {
+        return "chapter/getChapterDetailsByChapterAndByPhase?chapterId=" + chapterId + "&phaseId=" + phaseId;
+    }
+    public static String phaseClear(int chapterId, int phaseId, int result) {
+        System.out.println("putting |" + MapStringUtil.mapToString(Cache.formation) + "|");
+        return "chapter/phaseClear?userName=" + Cache.userName
+                + "&chapterId=" + chapterId
+                + "&phaseId=" + phaseId
+                + "&result=" + result;
     }
     /////////////
     //CrashReports
     /////////////
     public static String uploadCrashReport() {
-        return "crashReports/add";
+        return "crashReports/add?userId=" + Cache.userId + "&clientVersion=" + Utils.CLIENT_VERSION;
     }
     /////////////
     //Records
@@ -71,6 +78,12 @@ public class Urls {
     }
     public static String getActivity(int activityId) {
         return "activity/getActivity?activityId=" + activityId;
+    }
+    /////////////
+    //Mails
+    /////////////
+    public static String getMailBox() {
+        return  "user/getMailBox?userName=" + Cache.userName;
     }
     /////////////
     //Missions

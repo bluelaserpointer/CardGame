@@ -15,7 +15,7 @@ import java.sql.Timestamp;
 public class UserLoginRecord {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userLoginRecordId;
 
     private Integer userId;
@@ -34,8 +34,7 @@ public class UserLoginRecord {
         this.userId = userId;
     }
 
-    public void setUserLoginRecord(Integer type)
-    {
+    public void setUserLoginRecord(Integer type) {
         this.logoutTime = new Timestamp(System.currentTimeMillis());
         this.type = type;
     }
@@ -79,6 +78,5 @@ public class UserLoginRecord {
     public void setType(Integer type) {
         this.type = type;
     }
-
 
 }

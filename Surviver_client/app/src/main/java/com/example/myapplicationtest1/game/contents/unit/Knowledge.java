@@ -1,35 +1,33 @@
 package com.example.myapplicationtest1.game.contents.unit;
 
-import com.example.myapplicationtest1.R;
 import com.example.myapplicationtest1.game.core.GHQ;
-import com.example.myapplicationtest1.game.paint.ImageFrame;
 import com.example.myapplicationtest1.game.paint.dot.DotPaint;
 import com.example.myapplicationtest1.game.preset.unit.Unit;
 import com.example.myapplicationtest1.utils.Cache;
 
 public class Knowledge extends MyUnit {
-	public final Cache.Card card;
+	public final Cache.OwnCard ownCard;
 	public final DotPaint standPaint;
 	
-	private Knowledge(Cache.Card card, DotPaint additionalStandImage) {
-		super(card.cardName, card.drawableId, FRIEND);
+	private Knowledge(Cache.OwnCard ownCard, DotPaint additionalStandImage) {
+		super(ownCard.card.cardName, ownCard.card.drawableId, FRIEND);
 		standPaint = additionalStandImage;
-		this.card = card;
+		this.ownCard = ownCard;
 	}
-	public Knowledge(Cache.Card card) {
-		super(card.cardName, card.drawableId, FRIEND);
+	public Knowledge(Cache.OwnCard ownCard) {
+		super(ownCard.card.cardName, ownCard.card.drawableId, FRIEND);
 		standPaint = getDotPaint();
-		this.card = card;
+		this.ownCard = ownCard;
 	}
 	@Override
 	public Knowledge respawn(int x, int y) {
 		super.respawn(x, y);
-		maxHP = hp = card.healthPoint;
-		atk = card.attack;
-		def = card.defense;
-		atkRange = card.attackRange;
-		cd = card.cd;
-		spd = card.speed;
+		maxHP = hp = ownCard.healthPoint();
+		atk = ownCard.attack();
+		def = ownCard.defense();
+		atkRange = ownCard.attackRange();
+		cd = ownCard.cd();
+		spd = ownCard.speed();
 		return this;
 	}
 	@Override

@@ -7,8 +7,6 @@ import android.widget.Button;
 
 import com.example.myapplicationtest1.HttpClient;
 import com.example.myapplicationtest1.R;
-import com.example.myapplicationtest1.game.contents.engine.Subject;
-import com.example.myapplicationtest1.game.contents.unit.Knowledge;
 import com.example.myapplicationtest1.page.HomePage;
 import com.example.myapplicationtest1.page.Page;
 
@@ -19,7 +17,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
 
 public class Utils {
     public static final double CLIENT_VERSION = 0.1;
@@ -37,7 +34,7 @@ public class Utils {
         Utils.doLogin(context);
     }
     public static void doLogin(Context context) {
-        Cache.reloadAll();
+        Cache.reloadAll(context);
         Page.jump(context, HomePage.class);
     }
     public static boolean writeJSONToFile(Context context, String fileName, JSONObject jsonObject) {

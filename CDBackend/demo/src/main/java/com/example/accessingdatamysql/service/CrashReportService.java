@@ -9,7 +9,7 @@ import java.util.List;
 public interface CrashReportService {
     CrashReports getOne(Integer reportId);
 
-    void addNew(String reportContent);
+    void addNew(Double clientVersion, Integer userId, String stackTrace, String deviceInfo);
 
     // 获取指定页数的User
     JSONObject ListPage(ListRequest listRequest);

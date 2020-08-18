@@ -3,6 +3,7 @@ package com.example.accessingdatamysql.controller;
 import com.example.accessingdatamysql.entity.CrashReports;
 import com.example.accessingdatamysql.entity.CrashReportsDetail;
 import com.example.accessingdatamysql.service.CrashReportService;
+import com.example.accessingdatamysql.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -13,12 +14,17 @@ import org.springframework.web.bind.annotation.*;
 public class CrashReportsController {
     @Autowired
     private CrashReportService crashReportService;
+    @Autowired
+    private UserService userService;
 
     @PostMapping(value = "/add")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public @ResponseBody void addCrashReport(@RequestBody CrashReportsDetail crashReportsDetail) {
-        System.out.println("CrashReportsController: received content: " + crashReportsDetail.getContent());
-        crashReportService.addNew(crashReportsDetail.getContent());
+    public @ResponseBody void addCrashReport(@RequestParam("userId") Integer userId, @RequestParam("clientVersion") Double clientVersion, @RequestBody CrashReportsDetail crashReportDetail) {
+        System.out.println("CrashReportsController: received content: " + "userId: " + userId + ", clientVersion: " + clientVersion);
+        crashReportService.addNew(
+                clientVersion,
+                userId,
+                crashReportDetail.getStackTrace(),
+                crashReportDetail.getDeviceInfo());
     }
 
     @GetMapping(value = "/get")

@@ -2,9 +2,7 @@ package com.example.accessingdatamysql.entity;
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity // This tells Hibernate to make a table out of this class
 @Table(name = "chapter_details", schema = "cardgame")
@@ -24,6 +22,8 @@ public class ChapterDetails {
     private Integer positionId;
 
     private Integer cardId;
+
+    public ChapterDetails(){}
 
     public Integer getChapterId() {
         return chapterId;

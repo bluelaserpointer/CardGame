@@ -19,8 +19,8 @@ public class PveRecordServiceImpl implements PveRecordService {
 
     @Override
     public PveRecord addPveRecord(Integer userId, Integer chapterId, Integer phaseId, Integer result,
-            String posRecord) {
-        return pveRecordDao.addPveRecord(userId, chapterId, phaseId, result, posRecord);
+            String posRecordStr) {
+        return pveRecordDao.addPveRecord(userId, chapterId, phaseId, result, posRecordStr);
     }
 
     public PveRecord updatePveRecord(Integer pveRecordId, Integer userId, Integer chapterId, Integer phaseId,

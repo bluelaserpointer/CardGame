@@ -3,7 +3,6 @@ package com.example.myapplicationtest1.game.contents.engine;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-import com.example.myapplicationtest1.HttpClient;
 import com.example.myapplicationtest1.R;
 import com.example.myapplicationtest1.game.contents.unit.Enemy;
 import com.example.myapplicationtest1.game.contents.unit.Knowledge;
@@ -12,9 +11,6 @@ import com.example.myapplicationtest1.game.paint.ImageFrame;
 import com.example.myapplicationtest1.game.physics.stage.GHQStage;
 import com.example.myapplicationtest1.game.preset.unit.Unit;
 import com.example.myapplicationtest1.game.storage.TableStorage;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class MyStage extends GHQStage {
     private ImageFrame battleBGIF = ImageFrame.create(R.drawable.battlebg);
@@ -45,7 +41,7 @@ public class MyStage extends GHQStage {
         for(Knowledge unit : formationTS) {
             if(unit == null)
                 continue;
-            switch(unit.card.subject()) {
+            switch(unit.ownCard.card.subject()) {
                 case CHI:
                     ++Enemy.chiCount;
                     break;

@@ -1,6 +1,7 @@
 package com.example.myapplicationtest1.pageParts;
 
 import android.content.Context;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplicationtest1.R;
@@ -32,25 +34,26 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardLi
         return new CardListViewHolder(LayoutInflater.from(context).inflate(R.layout.card_list_item, parent, false));
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onBindViewHolder(@NonNull CardListViewHolder holder, int position) {
-        ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
+        final ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
         layoutParams.height = 500;
         holder.itemView.setLayoutParams(layoutParams);
         final Map.Entry<Integer, Cache.OwnCard> oCardEntry = this.oCardEntryIterator.next();
-        final Cache.OwnCard params = oCardEntry.getValue();
-        holder.cardImageView.setImageResource(R.drawable.greentmp);
-        holder.cardNameTextView.setText(params.card.cardName);
-        holder.cardRarityTextView.setText("SSR");
-        holder.cardLevelTextView.setText("Lv: " + params.cardLevel + "/" + params.cardLevelLimit);
-        holder.cardExpTextView.setText("exp: " + params.cardCurExp + "/" + 100);
+        final Cache.OwnCard ownCard = oCardEntry.getValue();
+        holder.cardImageView.setImageResource(ownCard.card.drawableId);
+        holder.cardNameTextView.setText(ownCard.card.cardName);
+        holder.cardRarityTextView.setText(ownCard.card.rarity);
+        holder.cardLevelTextView.setText("Lv: " + ownCard.cardLevel + "/" + ownCard.cardLevelLimit);
+        holder.cardExpTextView.setText("exp: " + ownCard.cardCurExp + "/" + 100);
         holder.itemView.setOnClickListener(v -> {}); //???I don't know why, but it helps itself receive more kinds of motionEvent.
         holder.itemView.setOnTouchListener((v, motionEvent) -> {
             v.performClick();
-            System.out.println("CardListAdapter: action: " + motionEvent.getAction());
             if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
                 if(TeamPage.getOnEditPos() != -1) {
                     TeamPage.setFormationToOnEditPos(oCardEntry.getKey());
+                    Cache.saveFormation(context);
                     Page.jump(context, TeamPage.class);
                 } else {
                     CardDetailPage.selectingOwnCard = Cache.ownCards.get(oCardEntry.getKey());
