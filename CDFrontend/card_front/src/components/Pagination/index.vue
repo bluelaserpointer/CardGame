@@ -1,5 +1,19 @@
 <template>
-  <div :class="{'hidden':hidden}" class="pagination-container">
+  <div :class="{'hidden':hidden}" class="pagination-container" v-if="small">
+    <el-pagination
+      small
+      :background="background"
+      :current-page.sync="currentPage"
+      :page-size.sync="pageSize"
+      :layout="layoutSmall"
+      :page-sizes="pageSizes"
+      :total="total"
+      v-bind="$attrs"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+    />
+  </div>
+  <div :class="{'hidden':hidden}" class="pagination-container" v-else>
     <el-pagination
       :background="background"
       :current-page.sync="currentPage"
@@ -20,6 +34,10 @@ import { scrollTo } from '@/utils/scroll-to'
 export default {
   name: 'Pagination',
   props: {
+    small: {
+      type: Boolean,
+      default: false
+    },
     total: {
       required: true,
       type: Number
@@ -37,6 +55,10 @@ export default {
       default() {
         return [10, 20, 30, 50]
       }
+    },
+    layoutSmall: {
+      type: String,
+      default: 'prev, pager, next, jumper'
     },
     layout: {
       type: String,

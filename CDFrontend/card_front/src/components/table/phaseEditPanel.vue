@@ -1,7 +1,7 @@
 <template>
-  <div class="app-container" style="display: grid; grid-template-rows: 5% 95%;">
-    <div class="filter-container" style="width: 100%; grid-row: 1 / span 1; display:grid; grid-template-columns: 50% 50%; grid-column-gap: 5px;">
-      <div style="grid-column: 1 / span 2; display:grid; grid-template-columns: 50% 50%; grid-column-gap: 5px">
+  <div class="app-container" style="display: grid; grid-template-rows: 5vh 80vh; width: 100%">
+    <div style="display:grid; grid-template-columns: 50% 50%; grid-row: 1 / span 1; width: 100%; grid-column-gap: 5px;">
+      <div style="display:grid; grid-template-columns: 50% 50%; grid-column: 1 / span 2; grid-column-gap: 5px">
         <div style="display:grid; grid-template-columns: 50% 50%; grid-column-gap: 5px">
           <span style="margin-left: auto;" class="chapterSelectArea">Chapter:
             <el-select v-model="currChapter" class="chapterSelect" placeholder="请选择" @change="handleChangeChapter">
@@ -55,12 +55,12 @@
       </div>
     </div>
 
-    <div style="display: grid; width: 100%; height: 100%; grid-template-columns: 50% 50%">
-      <div style="display: grid; width: 100%; height: 100%; grid-column: 1 / span 1; grid-template-rows: 50% 50%">
-        <div style="display: grid; grid-row: 1 / span 1; width: 100%; grid-template-columns: 50% 50%">
-          <div>
+    <div style="display: grid; width: 100%; height: 80vh; grid-template-columns: 50% 50%;">
+      <div style="display: grid; grid-template-rows: 45% 45% 10%; grid-column: 1 / span 1;">
+        <div style="display: grid; grid-row: 1 / span 1; grid-template-columns: 50% 50%">
+          <div style="display: grid; grid-template-rows: 70% 30%;">
             <el-table
-            style="grid-column: 1 / span 1"
+            style="grid-row: 1 / span 1"
             :key="tableKey"
             v-loading="listLoading"
             :data="itemAwardList"
@@ -107,11 +107,11 @@
               </template>
             </el-table-column>
           </el-table>
-            <pagination v-show="itemAwardListQuery.total > 0" :total.sync="itemAwardListQuery.total * itemAwardListQuery.limit" :page.sync="itemAwardListQuery.page" :limit.sync="itemAwardListQuery.limit" @pagination="getItemAwardList(itemAwardListQuery.page, itemAwardListQuery.limit)" />
+            <pagination v-show="itemAwardListQuery.total > 0" :small="true" :total.sync="itemAwardListQuery.total * itemAwardListQuery.limit" :page.sync="itemAwardListQuery.page" :limit.sync="itemAwardListQuery.limit" @pagination="getItemAwardList(itemAwardListQuery.page, itemAwardListQuery.limit)" />
           </div>
-          <div>
+          <div style="display: grid; grid-template-rows: 70% 30%;">
             <el-table
-            style="grid-column: 2 / span 1"
+            style="grid-row: 1 / span 1"
             :key="tableKey"
           v-loading="listLoading"
           :data="cardAwardList"
@@ -133,7 +133,7 @@
               <span>{{ row.cardName }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="Phase" align="center">
+          <el-table-column label="Phase" align="center" width="auto">
             <template slot-scope="scope">
               <el-button
                 size="mini"
@@ -145,7 +145,7 @@
                 @click="phaseMinusCard(scope.$index, scope.row)">-</el-button>
             </template>
           </el-table-column>
-          <el-table-column label="Chapter" align="center">
+          <el-table-column label="Chapter" align="center" width="auto">
             <template slot-scope="scope">
               <el-button
                 size="mini"
@@ -158,93 +158,40 @@
             </template>
           </el-table-column>
         </el-table>
-            <pagination v-show="cardAwardListQuery.total > 0" :total.sync="cardAwardListQuery.total * cardAwardListQuery.limit" :page.sync="cardAwardListQuery.page" :limit.sync="cardAwardListQuery.limit" @pagination="getCardAwardList(cardAwardListQuery.page, cardAwardListQuery.limit)" />
+            <pagination v-show="cardAwardListQuery.total > 0" :small="true" :total.sync="cardAwardListQuery.total * cardAwardListQuery.limit" :page.sync="cardAwardListQuery.page" :limit.sync="cardAwardListQuery.limit" @pagination="getCardAwardList(cardAwardListQuery.page, cardAwardListQuery.limit)" />
           </div>
         </div>
 
-        <div style="display: grid; grid-row: 2 / span 1; width: 100%; height: 100%; grid-template-columns: 50% 50%">
-          <div style="display: grid; height: 100%; grid-template-columns: 50% 50%">
-            <div>
-              <el-table
-              :key="tableKey"
-              v-loading="listLoading"
-              :data="phaseAwardItems"
-              class="phaseAwardItemsTable"
-              border
-              fit
-              highlight-current-row
-              style="width: 100%; grid-column: 1 / span 1"
-              height="350"
-              max-height="350"
-              @sort-change="sortChange"
-            >
-              <el-table-column label="ItemId" prop="itemId" sortable="custom" align="center" width="130" :class-name="getSortClass('id')">
-                <template slot-scope="{row}">
-                  <span>{{ row.itemId }}</span>
-                </template>
-              </el-table-column>
-              <el-table-column label="Qty" align="center">
-                <template slot-scope="{row}">
-                  <span class="link-type">{{ row.quantity }}</span>
-                </template>
-              </el-table-column>
-            </el-table>
-            </div>
-            <div>
-              <el-table
-              :key="tableKey"
-              v-loading="listLoading"
-              :data="phaseAwardCards"
-              class="phaseAwardCardsTable"
-              border
-              fit
-              highlight-current-row
-              style="width: 100%; grid-column: 2 / span 1"
-              height="350"
-              max-height="350"
-              @sort-change="sortChange"
-            >
-              <el-table-column label="CardId" prop="itemId" sortable="custom" align="center" :class-name="getSortClass('id')">
-                <template slot-scope="{row}">
-                  <span>{{ row }}</span>
-                </template>
-              </el-table-column>
-            </el-table>
-            </div>
-          </div>
-          <div style="display: grid; height: 100%; grid-template-columns: 50% 50%">
-            <div>
-              <el-table
-              :key="tableKey"
-              v-loading="listLoading"
-              :data="chapterAwardItems"
-              class="chapterAwardItemsTable"
-              border
-              fit
-              highlight-current-row
-              style="width: 100%; grid-column: 1 / span 1"
-              height="350"
-              max-height="350"
-              @sort-change="sortChange"
-            >
-              <el-table-column label="ItemId" prop="itemId" sortable="custom" align="center" width="130" :class-name="getSortClass('id')">
-                <template slot-scope="{row}">
-                  <span>{{ row.itemId }}</span>
-                </template>
-              </el-table-column>
-              <el-table-column label="Qty" align="center">
-                <template slot-scope="{row}">
-                  <span class="link-type">{{ row.quantity }}</span>
-                </template>
-              </el-table-column>
-            </el-table>
-            </div>
-            <div>
-              <el-table
+        <div style="display: grid; grid-row: 2 / span 1; grid-template-columns: 25% 25% 25% 25%">
+          <el-table
           :key="tableKey"
           v-loading="listLoading"
-          :data="chapterAwardCards"
-          class="chapterAwardCardsTable"
+          :data="phaseAwardItems"
+          class="phaseAwardItemsTable"
+          border
+          fit
+          highlight-current-row
+          style="width: 100%; grid-column: 1 / span 1"
+          height="350"
+          max-height="350"
+          @sort-change="sortChange"
+        >
+          <el-table-column label="ItemId" prop="itemId" sortable="custom" align="center" width="130" :class-name="getSortClass('id')">
+            <template slot-scope="{row}">
+              <span>{{ row.itemId }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="Qty" align="center">
+            <template slot-scope="{row}">
+              <span class="link-type">{{ row.quantity }}</span>
+            </template>
+          </el-table-column>
+        </el-table>
+          <el-table
+          :key="tableKey"
+          v-loading="listLoading"
+          :data="phaseAwardCards"
+          class="phaseAwardCardsTable"
           border
           fit
           highlight-current-row
@@ -259,22 +206,64 @@
             </template>
           </el-table-column>
         </el-table>
-            </div>
-          </div>
+          <el-table
+          :key="tableKey"
+          v-loading="listLoading"
+          :data="chapterAwardItems"
+          class="chapterAwardItemsTable"
+          border
+          fit
+          highlight-current-row
+          style="width: 100%; grid-column: 1 / span 1"
+          height="350"
+          max-height="350"
+          @sort-change="sortChange"
+        >
+          <el-table-column label="ItemId" prop="itemId" sortable="custom" align="center" width="130" :class-name="getSortClass('id')">
+            <template slot-scope="{row}">
+              <span>{{ row.itemId }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="Qty" align="center">
+            <template slot-scope="{row}">
+              <span class="link-type">{{ row.quantity }}</span>
+            </template>
+          </el-table-column>
+        </el-table>
+          <el-table
+        :key="tableKey"
+        v-loading="listLoading"
+        :data="chapterAwardCards"
+        class="chapterAwardCardsTable"
+        border
+        fit
+        highlight-current-row
+        style="width: 100%; grid-column: 2 / span 1"
+        height="350"
+        max-height="350"
+        @sort-change="sortChange"
+      >
+        <el-table-column label="CardId" prop="itemId" sortable="custom" align="center" :class-name="getSortClass('id')">
+          <template slot-scope="{row}">
+            <span>{{ row }}</span>
+          </template>
+        </el-table-column>
+      </el-table>
         </div>
-        <div style="display: grid; grid-template-columns: 50% 50%">
+
+        <div style="display: grid; grid-row: 3 / span 1; grid-template-columns: 50% 50%">
           <el-button class="confirmPhaseAwardButton" @click="handlePhaseAwardConfirm">Confirm Phase</el-button>
           <el-button class="confirmChapterAwardButton" @click="handleChapterAwardConfirm">Confirm Chapter</el-button>
         </div>
       </div>
 
-      <div style="display: grid; width: 100%; height: 100%; grid-column: 2 / span 1; grid-template-rows: 50% 50%">
+      <div style="display: grid; height: 100%; grid-column: 2 / span 1; grid-template-rows: 50% 50%">
         <div style="margin: auto; width:350px; display: grid; grid-row: 1 / span 1; grid-template-columns: auto auto auto auto auto; grid-template-rows: auto auto auto auto auto;">
           <div v-for="pos in 25">
             <el-button :style="{'background':(posList.includes(pos) ? '#85b2dc' : '#fff'), 'color': (posList.includes(pos) ? '#fff' : '#000'), 'width': '80px'}" @click="placeCard(pos)">{{ pos }}</el-button>
           </div>
         </div>
-        <div>
+        <div style="display: grid; grid-template-rows: 90% 10%; grid-row: 2 / span 1;">
           <el-table
           :key="tableKey"
           v-loading="listLoading"
@@ -282,7 +271,7 @@
           border
           fit
           highlight-current-row
-          style="margin-right:auto; width: 100%; grid-row: 2 / span 1"
+          style="margin-right:auto; width: 100%; grid-row: 1 / span 1"
           height="350"
           max-height="350"
           @current-change="handleCardChoose"
@@ -342,7 +331,7 @@
             </template>
           </el-table-column>
         </el-table>
-          <pagination v-show="cardListQuery.total > 0" :total.sync="cardListQuery.total * cardListQuery.limit" :page.sync="cardListQuery.page" :limit.sync="cardListQuery.limit" @pagination="getCardList(cardListQuery.page, cardListQuery.limit)" />
+          <pagination style="grid-row: 2 / span 1" :small="true" v-show="cardListQuery.total > 0" :total.sync="cardListQuery.total * cardListQuery.limit" :page.sync="cardListQuery.page" :limit.sync="cardListQuery.limit" @pagination="getCardList(cardListQuery.page, cardListQuery.limit)" />
         </div>
       </div>
     </div>
