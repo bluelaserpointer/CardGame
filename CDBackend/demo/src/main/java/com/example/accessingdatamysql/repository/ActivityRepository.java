@@ -27,7 +27,6 @@ public interface ActivityRepository extends PaginationJpaRepository<Activity, In
     void updateActivityStatus(@Param("newActivity") Activity newActivity, @Param("activityId") Integer ActivityId);
 
     @Transactional
-    @Modifying
     @Query(value = "SELECT * from activity LIMIT ?1,?2", nativeQuery = true)
     List<Activity> ListPage(Integer start, Integer end);
 

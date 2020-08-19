@@ -18,7 +18,6 @@ public interface UserLoginRecordRepository extends PaginationJpaRepository<UserL
     List<UserLoginRecord> findUserLoginRecordsByLogoutTimeIsNullOrderByUserLoginRecordIdAsc();
 
     @Transactional
-    @Modifying
     @Query(value = "SELECT * from user_login_record LIMIT ?1,?2", nativeQuery = true)
     @Override
     List<UserLoginRecord> ListPage(Integer start, Integer end);

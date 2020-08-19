@@ -66,15 +66,16 @@ public class ActivityDaoImpl implements ActivityDao {
     }
 
     public List<Activity> getAllActivities() {
-        List<Activity> Activities = activityRepository.findAll();
-        for (int i = 0; i < Activities.size(); i++) {
-            Activity Activity = Activities.get(i);
-            Optional<ActivityDetails> ActivityDetails = activityDetailsRepository
-                    .findActivityDetailsByActivityIdEquals(Activity.getActivityId());
-            ActivityDetails.ifPresent(Activity::setActivityDetails);
-            Activities.set(i, Activity);
+        //TODO: 可能还可以优化，这是每当要查询时才生成HashMap的版本
+        final HashMap<Integer, ActivityDetails> activityIdAndDetails
+                = new HashMap<>();
+        for(ActivityDetails details : activityDetailsRepository.findAll()) {
+            activityIdAndDetails.put(details.getActivityId(), details);
         }
-        return Activities;
+        final List<Activity> activities = activityRepository.findAll();
+        activities.forEach(activity ->
+                activity.setActivityDetails(activityIdAndDetails.get(activity.getActivityId())));
+        return activities;
     }
 
     public String deleteActivities(List<Integer> ActivityIds) {

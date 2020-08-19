@@ -27,7 +27,6 @@ public interface MailRepository extends PaginationJpaRepository<Mail, Integer> {
     void updateMailStatus(@Param("newMail") Mail newMail, @Param("MailId") Integer MailId);
 
     @Transactional
-    @Modifying
     @Query(value = "SELECT * from mail LIMIT ?1,?2", nativeQuery = true)
     List<Mail> ListPage(Integer start, Integer end);
 

@@ -2,6 +2,7 @@ package com.example.accessingdatamysql.repository;
 
 import com.example.accessingdatamysql.Classes.PaginationJpaRepository;
 import com.example.accessingdatamysql.entity.*;
+import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.data.jpa.repository.Modifying;
 
 import javax.transaction.Transactional;
@@ -24,9 +25,10 @@ public interface OwnCardRepository extends PaginationJpaRepository<OwnCard, Inte
     void updateOwnCardStatus(@Param("newOwnCard") OwnCard newOwnCard, @Param("ownCardId") Integer ownCardId);
 
     @Transactional
-    @Modifying
     @Override
     @Query(value = "SELECT * from own_card LIMIT ?1,?2", nativeQuery = true)
     List<OwnCard> ListPage(Integer start, Integer end);
 
+    @Transactional
+    List<OwnCard> findAllByUserIdEquals(Integer userId);
 }

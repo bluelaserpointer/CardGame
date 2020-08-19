@@ -43,13 +43,12 @@ public class MailBoxServiceImpl implements MailBoxService {
 
     @Override
     public List<Mail> getOneUserMails(Integer MailBoxId) {
-        List<Integer> mailIds = getOneMailBox(MailBoxId).getMailIds();
-        List<Mail> userMails = new ArrayList<Mail>();
-        for (int i = 0; i < mailIds.size(); i++) {
-            Mail userMail = MailDao.getOneMail(mailIds.get(i));
+        final List<Integer> mailIds = getOneMailBox(MailBoxId).getMailIds();
+        final List<Mail> userMails = new ArrayList<>();
+        for (Integer mailId : mailIds) {
+            Mail userMail = MailDao.getOneMail(mailId);
             userMails.add(userMail);
         }
-
         return userMails;
     }
 }

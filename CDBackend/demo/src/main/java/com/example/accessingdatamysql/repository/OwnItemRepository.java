@@ -29,8 +29,10 @@ public interface OwnItemRepository extends PaginationJpaRepository<OwnItem, Inte
     void updateOwnItemStatus(@Param("newOwnItem") OwnItem newOwnItem, @Param("OwnItemId") Integer OwnItemId);
 
     @Transactional
-    @Modifying
     @Override
     @Query(value = "SELECT * from own_item LIMIT ?1,?2", nativeQuery = true)
     List<OwnItem> ListPage(Integer start, Integer end);
+
+    @Transactional
+    List<OwnItem> findAllByUserIdEquals(Integer userId);
 }

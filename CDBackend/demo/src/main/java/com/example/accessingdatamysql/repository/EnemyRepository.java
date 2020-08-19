@@ -27,7 +27,6 @@ public interface EnemyRepository extends PaginationJpaRepository<Enemy, Integer>
     int updateEnemyStatus(@Param("newEnemy") Enemy newEnemy, @Param("enemyId") Integer enemyId);
 
     @Transactional
-    @Modifying
     @Query(value = "SELECT * from enemy LIMIT ?1,?2", nativeQuery = true)
     List<Enemy> ListPage(Integer start, Integer end);
 

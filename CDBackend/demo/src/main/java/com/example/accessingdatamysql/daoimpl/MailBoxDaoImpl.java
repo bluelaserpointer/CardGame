@@ -18,8 +18,7 @@ public class MailBoxDaoImpl implements MailBoxDao {
 
     @Override
     public MailBox getOneMailBox(Integer MailBoxId) {
-        MailBox MailBox = mailBoxRepository.getOne(MailBoxId);
-        return MailBox;
+        return mailBoxRepository.getOne(MailBoxId);
     }
 
     public String addNewMailBox(Integer userId) {
@@ -43,13 +42,12 @@ public class MailBoxDaoImpl implements MailBoxDao {
     }
 
     public List<MailBox> getAllMailBoxs() {
-        List<MailBox> MailBoxs = mailBoxRepository.findAll();
-        return MailBoxs;
+        return mailBoxRepository.findAll();
     }
 
     public String deleteMailBoxs(List<Integer> MailBoxIds) {
-        for (int i = 0; i < MailBoxIds.size(); i++) {
-            mailBoxRepository.deleteById(MailBoxIds.get(i));
+        for (Integer mailBoxId : MailBoxIds) {
+            mailBoxRepository.deleteById(mailBoxId);
         }
         return "Deleted MailBoxs by id";
     }

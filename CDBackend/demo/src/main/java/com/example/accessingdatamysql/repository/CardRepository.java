@@ -26,7 +26,6 @@ public interface CardRepository extends PaginationJpaRepository<Card, Integer> {
     void updateCardStatus(@Param("newCard") Card newCard, @Param("CardId") Integer CardId);
 
     @Transactional
-    @Modifying
     @Query(value = "SELECT * from card LIMIT ?1,?2", nativeQuery = true)
     List<Card> ListPage(Integer start, Integer amount);
 

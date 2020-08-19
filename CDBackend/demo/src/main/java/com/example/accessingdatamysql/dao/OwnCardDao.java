@@ -40,6 +40,6 @@ public interface OwnCardDao extends PaginationDao {
         // 删除单个拥有卡牌关系
         List<OwnCard> deleteOwnCard(Integer userId, Integer cardId);
 
-        Integer CaluculateLeftPoints(OwnCard ownCard);
+        Integer calculateLeftPoints(OwnCard ownCard);
 
 }
