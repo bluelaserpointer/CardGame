@@ -67,7 +67,7 @@ public class ActivityDaoImpl implements ActivityDao {
 
     public List<Activity> getAllActivities() {
         //TODO: 可能还可以优化，这是每当要查询时才生成HashMap的版本
-        final HashMap<Integer, ActivityDetails> activityIdAndDetails
+        final HashMap<Integer,  ActivityDetails> activityIdAndDetails
                 = new HashMap<>();
         for(ActivityDetails details : activityDetailsRepository.findAll()) {
             activityIdAndDetails.put(details.getActivityId(), details);

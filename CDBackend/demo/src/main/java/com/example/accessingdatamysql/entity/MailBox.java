@@ -15,7 +15,7 @@ public class MailBox {
     @Id
     @Column(name = "mail_box_id", nullable = false)
     private Integer mailBoxId;
-    // 邮箱内村的邮箱
+    // 邮箱内存的邮箱
     @Column
     @ElementCollection(targetClass = Integer.class)
     private List<Integer> mailIds;
