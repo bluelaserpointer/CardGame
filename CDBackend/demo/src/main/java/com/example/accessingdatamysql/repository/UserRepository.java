@@ -31,7 +31,6 @@ public interface UserRepository extends PaginationJpaRepository<User, Integer> {
     void updateUserStatus(@Param("newUser") User newUser, @Param("UserId") Integer UserId);
 
     @Transactional
-    @Modifying
     @Query(value = "SELECT * from user LIMIT ?1,?2", nativeQuery = true)
     List<User> ListPage(Integer start, Integer end);
 

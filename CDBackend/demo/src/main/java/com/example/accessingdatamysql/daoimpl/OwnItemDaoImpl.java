@@ -78,13 +78,7 @@ public class OwnItemDaoImpl implements OwnItemDao {
     }
 
     public List<OwnItem> getAllOwnItemsByUserId(Integer userId) {
-        List<OwnItem> userOwnItems = new ArrayList<>();
-        for (com.example.accessingdatamysql.entity.OwnItem ownItem : getAllOwnItems()) {
-            if (ownItem.getUserId().equals(userId)) {
-                userOwnItems.add(ownItem);
-            }
-        }
-        return userOwnItems;
+        return ownItemRepository.findAllByUserIdEquals(userId);
     }
 
     public String deleteOwnItems(List<Integer> ownItemIds) {

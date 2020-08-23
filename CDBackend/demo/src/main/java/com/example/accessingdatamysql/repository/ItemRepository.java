@@ -26,7 +26,6 @@ public interface ItemRepository extends PaginationJpaRepository<Item, Integer> {
     int updateItemStatus(@Param("newItem") Item newItem, @Param("ItemId") Integer ItemId);
 
     @Transactional
-    @Modifying
     @Query(value = "SELECT * from item LIMIT ?1,?2", nativeQuery = true)
     List<Item> ListPage(Integer start, Integer end);
 

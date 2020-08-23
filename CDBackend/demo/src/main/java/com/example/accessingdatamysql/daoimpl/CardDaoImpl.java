@@ -70,14 +70,14 @@ public class CardDaoImpl implements CardDao {
     }
 
     public List<Card> getAllCards() {
-        List<Card> Cards = cardRepository.findAll();
-        for (int i = 0; i < Cards.size(); i++) {
-            Card card = Cards.get(i);
-            Optional<CardDetails> CardDetails = cardDetailsRepository.findCardDetailsByCardIdEquals(card.getCardId());
-            CardDetails.ifPresent(card::setCardDetails);
-            Cards.set(i, card);
+        //TODO: 可能还可以优化，这是每当要查询时才生成HashMap的版本
+        final HashMap<Integer, CardDetails> cardIdAndDetails = new HashMap<>();
+        for(CardDetails details : cardDetailsRepository.findAll()) {
+            cardIdAndDetails.put(details.getCardId(), details);
         }
-        return Cards;
+        final List<Card> cards = cardRepository.findAll();
+        cards.forEach(card -> card.setCardDetails(cardIdAndDetails.get(card.getCardId())));
+        return cards;
     }
 
     public String deleteCards(List<Integer> cardIds) {

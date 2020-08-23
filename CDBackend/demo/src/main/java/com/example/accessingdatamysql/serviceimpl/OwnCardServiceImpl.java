@@ -8,7 +8,6 @@ import com.example.accessingdatamysql.service.OwnCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.util.*;
 
 @Service
@@ -91,7 +90,7 @@ public class OwnCardServiceImpl implements OwnCardService {
                 newExp -= expToNextLevel;
                 ownCard.setCardLevel(ownCard.getCardLevel() + 1); // 要升级
                 ownCard.setEnhancePoint(ownCard.getCardLevel() * 5); // 每次升级要增加5个强化点数
-                OwnCardDao.CaluculateLeftPoints(ownCard); // 更新剩余点数
+                OwnCardDao.calculateLeftPoints(ownCard); // 更新剩余点数
             }
         }
         ownCard.setCardCurExp(newExp);

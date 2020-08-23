@@ -62,7 +62,7 @@ public class LoginInputPage extends Page {
         }
         if(Utils.identifyUser(userName, password)) {
             System.out.println("InputIdentification succeeded!!!!!!!!!!!!!!!!");
-            Utils.doLogin(getApplicationContext(), userName, password);
+            Utils.doLogin(view.getContext(), userName, password);
         } else {
             System.out.println("LoginInputPage: identification failed: " + Utils.loginFailReason);
             ((TextView)findViewById(R.id.loginStatus)).setText(Utils.loginFailReason);

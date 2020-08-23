@@ -5,11 +5,9 @@ import com.example.accessingdatamysql.dao.MailDao;
 import com.example.accessingdatamysql.repository.*;
 import com.example.accessingdatamysql.entity.*;
 
-// import org.hibernate.validator.constraints.ISBN;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-// import java.io.Console;
 import java.util.*;
 
 @Repository
@@ -75,14 +73,15 @@ public class MailDaoImpl implements MailDao {
     }
 
     public List<Mail> getAllMails() {
-        List<Mail> Mails = mailRepository.findAll();
-        for (int i = 0; i < Mails.size(); i++) {
-            Mail Mail = Mails.get(i);
-            Optional<MailDetails> MailDetails = mailDetailsRepository.findMailDetailsByMailIdEquals(Mail.getMailId());
-            MailDetails.ifPresent(Mail::setMailDetails);
-            Mails.set(i, Mail);
+        //TODO: 可能还可以优化，这是每当要查询时才生成HashMap的版本
+        final HashMap<Integer, MailDetails> mailIdAndDetails = new HashMap<>();
+        for(MailDetails details : mailDetailsRepository.findAll()) {
+            mailIdAndDetails.put(details.getMailId(), details);
         }
-        return Mails;
+        final List<Mail> mails = mailRepository.findAll();
+        mails.forEach(mail ->
+                mail.setMailDetails(mailIdAndDetails.get(mail.getMailId())));
+        return mails;
     }
 
     public String deleteMails(List<Integer> MailIds) {

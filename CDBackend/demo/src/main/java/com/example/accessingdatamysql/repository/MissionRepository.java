@@ -28,7 +28,6 @@ public interface MissionRepository extends PaginationJpaRepository<Mission, Inte
     void updateMissionStatus(@Param("newMission") Mission newMission, @Param("MissionId") Integer MissionId);
 
     @Transactional
-    @Modifying
     @Query(value = "SELECT * from mission LIMIT ?1,?2", nativeQuery = true)
     List<Mission> ListPage(Integer start, Integer end);
 
