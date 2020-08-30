@@ -51,7 +51,9 @@ public class MultiHttpSecurityConfig {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http.cors().and().csrf().disable().authorizeRequests().antMatchers(HttpMethod.POST, "/user/register")
-                    .permitAll().antMatchers(HttpMethod.POST, "/user/login").permitAll()
+                    .permitAll()
+                    .antMatchers(HttpMethod.POST, "/user/login").permitAll()
+                    .antMatchers(HttpMethod.GET, "/").permitAll()
                     .antMatchers(HttpMethod.POST, "/user/unitTest").permitAll().anyRequest().authenticated().and()
                     // .addFilter(new JWTAuthenticationFilter(authenticationManager()))
                     // .addFilter(new JWTAuthorizationFilter(authenticationManager()))
