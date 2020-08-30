@@ -1,5 +1,7 @@
 package com.example.accessingdatamysql;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -17,6 +19,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @EnableJpaRepositories(basePackages = "com.example.accessingdatamysql.repository")
 @EnableScheduling
@@ -50,5 +53,11 @@ public class AccessingDataMysqlApplication {
     // SpringApplication.run(AccessingDataMysqlApplication.class, args);
 
   }
-
+  @GetMapping("/")
+  public String sayHello() throws UnknownHostException {
+    String hostname = "Unknown";
+    InetAddress address = InetAddress.getLocalHost();
+    hostname = address.getHostName();
+    return hostname;
+  }
 }
