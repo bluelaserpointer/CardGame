@@ -1,12 +1,12 @@
 package com.example.myapplicationtest1.utils;
 
 public class Urls {
-    public static final boolean IS_LOCAL_MODE = true;
+    public static final boolean IS_LOCAL_MODE = false;
     //Edward: http://192.168.175.1:8080/
     //Jun: http://192.168.254.1:8080/
     //Jun: 192.168.1.3
     //Online: http://ec2-35-173-219-114.compute-1.amazonaws.com:8080/
-    public static final String URLHead = IS_LOCAL_MODE ? "http://192.168.1.3:8080/" : "http://35.174.18.246:8080/";
+    public static final String URLHead = IS_LOCAL_MODE ? "http://192.168.1.3:8080/" : "http://15.164.237.23:30326/";
     /////////////
     //Users
     /////////////
