@@ -4,6 +4,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
 import com.example.myapplicationtest1.R;
+import com.example.myapplicationtest1.StartPage;
 import com.example.myapplicationtest1.utils.Utils;
 
 import org.junit.Before;
@@ -33,7 +34,7 @@ public class CardStoragePageTest {
     @Before
     public void setUp() {
         Utils.setSharedPreference(rule.getActivity());
-        Utils.identifyUser("SuperUser", "111111");
+        Utils.identifyUser(StartPage.staticActivity, "SuperUser", "111111");
     }
 
     @Test

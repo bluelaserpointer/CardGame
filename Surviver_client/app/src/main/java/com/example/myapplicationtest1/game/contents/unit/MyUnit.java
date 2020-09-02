@@ -1,5 +1,7 @@
 package com.example.myapplicationtest1.game.contents.unit;
 
+import android.content.Context;
+
 import com.example.myapplicationtest1.HttpClient;
 import com.example.myapplicationtest1.R;
 import com.example.myapplicationtest1.game.contents.bullet.Bullets;
@@ -117,10 +119,10 @@ public abstract class MyUnit extends Unit implements HasDotPaint {
 	public DotPaint getDotPaint() {
 		return dotPaint;
 	}
-	public static Enemy.EnemyParameter loadAsEnemy(String fetchURL) {
+	public static Enemy.EnemyParameter loadAsEnemy(Context context, String fetchURL) {
 		Enemy.EnemyParameter enemyParameter = null;
 		try {
-			final JSONObject enemyInfo = new JSONObject(HttpClient.doGetShort(fetchURL));
+			final JSONObject enemyInfo = new JSONObject(HttpClient.doGetShort(context, fetchURL));
 			enemyParameter = new Enemy.EnemyParameter(
 					enemyInfo.getString("cardName"),
 					ImageFrame.create(R.drawable.tongyongc),

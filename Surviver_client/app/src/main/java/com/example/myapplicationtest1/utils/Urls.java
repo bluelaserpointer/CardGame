@@ -1,7 +1,7 @@
 package com.example.myapplicationtest1.utils;
 
 public class Urls {
-    public static final boolean IS_LOCAL_MODE = false;
+    public static final boolean IS_LOCAL_MODE = true;
     //Edward: http://192.168.175.1:8080/
     //Jun: http://192.168.254.1:8080/
     //Jun: 192.168.1.3

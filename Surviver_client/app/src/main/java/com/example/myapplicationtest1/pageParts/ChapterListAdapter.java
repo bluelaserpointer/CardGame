@@ -42,7 +42,12 @@ public class ChapterListAdapter extends RecyclerView.Adapter <ChapterListAdapter
     }
     public void fetch() {
         try {
-            final JSONArray arr = new JSONArray(HttpClient.doGetShort(Urls.getAllChapters()));
+            final String data = HttpClient.doGetShort(context, Urls.getAllChapters());
+            if(data == null || data.isEmpty()) {
+                chapters = new ChapterInfo[0];
+                return;
+            }
+            final JSONArray arr = new JSONArray(data);
             chapters = new ChapterInfo[arr.length()];
             for(int i = 0; i < chapters.length; ++i) {
                 //TODO: waiting backend change its name to "phaseMaxNo"

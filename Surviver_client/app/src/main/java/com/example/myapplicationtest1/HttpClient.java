@@ -1,5 +1,6 @@
 package com.example.myapplicationtest1;
 
+import android.content.Context;
 import android.os.StrictMode;
 
 import com.example.myapplicationtest1.utils.Cache;
@@ -19,13 +20,13 @@ public class HttpClient {
     private static final int CONNECT_TIMEOUT = 3000;
     private static final int READ_TIMEOUT = 60000;
     public static final String TIMEOUT_SIGN = "CONNECTION TIMEOUT";
-    public static String doGetShort(String url) {
-        return doRequest(Urls.URLHead + url, null);
+    public static String doGetShort(Context context, String url) {
+        return doRequest(context, Urls.URLHead + url, null);
     }
-    public static String doPostShort(String url, String param) {
-        return doRequest(Urls.URLHead + url, param);
+    public static String doPostShort(Context context, String url, String param) {
+        return doRequest(context, Urls.URLHead + url, param);
     }
-    private static String doRequest(String httpUrl, String param) {
+    private static String doRequest(Context context, String httpUrl, String param) {
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
         HttpURLConnection connection = null;
         try {
@@ -71,7 +72,7 @@ public class HttpClient {
                 }
             }
         } catch (SocketTimeoutException e) {
-            StartPage.backWithConnectionError(); //发生错误则返回登录页面
+            StartPage.backWithConnectionError(context); //发生错误则返回登录页面
             return TIMEOUT_SIGN;
         } catch (IOException e) {
             e.printStackTrace();
