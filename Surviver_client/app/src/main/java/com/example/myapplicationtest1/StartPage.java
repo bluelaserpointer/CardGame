@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
@@ -76,7 +77,7 @@ public class StartPage extends AppCompatActivity {
                 hide();
             }
             connectedTimeOutHappen = false;
-            if (Utils.identifyUser()) {
+            if (Utils.identifyUser(this)) {
                 System.out.println("StartPage: Identification succeed.");
                 Utils.doLogin(this);
             } else if (connectedTimeOutHappen) {
@@ -237,9 +238,9 @@ public class StartPage extends AppCompatActivity {
         }
         recyclerView.setAdapter(adapter);
     }
-    public static void backWithConnectionError() {
+    public static void backWithConnectionError(Context context) {
         connectedTimeOutHappen = true;
         Cache.token = null;
-        Page.jump(StartPage.staticActivity, StartPage.class);
+        Page.jump(context, StartPage.class);
     }
 }

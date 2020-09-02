@@ -80,11 +80,11 @@ public class Utils {
     public static String getPassword() {
         return sp == null ? "SP_NULL" : sp.getString("password", "NOT_LOGGED");
     }
-    public static boolean identifyUser() {
-        return identifyUser(getUserName(), getPassword());
+    public static boolean identifyUser(Context context) {
+        return identifyUser(context, getUserName(), getPassword());
     }
     public static String loginFailReason;
-    public static boolean identifyUser(String userName, String password) {
+    public static boolean identifyUser(Context context, String userName, String password) {
         //判断输入的用户名和密码是否正确
 //        final String data = HttpClient.doGetShort("user/identifyUser?"
 //                + "userName=" + userName + "&password=" + password);
@@ -94,7 +94,7 @@ public class Utils {
             jsonBody.accumulate("userName", userName);
             jsonBody.accumulate("password", password);
             System.out.println("Utils: " + jsonBody.toString());
-            data = HttpClient.doPostShort(Urls.login(), jsonBody.toString());
+            data = HttpClient.doPostShort(context, Urls.login(), jsonBody.toString());
             System.out.println("Utils: data: " + data);
             if(data == null)
                 return false;

@@ -76,7 +76,7 @@ public class LotteAnimationCanvas extends MyCanvas {
             animationFrame = 0;
             JSONObject drawnCardJson;
             try {
-                drawnCardJson = new JSONObject(HttpClient.doGetShort(Urls.drawCard(betCHI, betMAT, betENG)));
+                drawnCardJson = new JSONObject(HttpClient.doGetShort(super.getContext(), Urls.drawCard(betCHI, betMAT, betENG)));
                 lastDrawnCard = Cache.cards.get(drawnCardJson.getInt("drawnCardId"));
                 lastDrawnCardImage = ImageFrame.create(lastDrawnCard.drawableId);
             } catch (JSONException e) {

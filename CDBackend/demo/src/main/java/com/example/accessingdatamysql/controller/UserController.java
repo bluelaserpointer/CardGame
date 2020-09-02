@@ -63,7 +63,9 @@ public class UserController {
       response.put("failReason", "用户名已存在");
     } else {
       registerUser.setIdentity(User.ROLE_USER);
-      response.put("user", userService.addNewUser(registerUser));
+      final User createdUser = userService.addNewUser(registerUser);
+      response.put("user", createdUser);
+      mailBoxService.addNewMailBox(createdUser.getUserId());
     }
     return response.toString();
   }

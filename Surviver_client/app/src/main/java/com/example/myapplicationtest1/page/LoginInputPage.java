@@ -38,10 +38,10 @@ public class LoginInputPage extends Page {
             registerInfo.put("password", password);
             registerInfo.put("phoneNumber", phoneNumber);
             registerInfo.put("email", mailAddress);
-            final JSONObject response = new JSONObject(HttpClient.doPostShort(Urls.register(), registerInfo.toString()));
+            final JSONObject response = new JSONObject(HttpClient.doPostShort(this, Urls.register(), registerInfo.toString()));
             if(response.has("failReason")) {
                 ((TextView)findViewById(R.id.loginStatus)).setText("注册失败: " + response.getString("failReason"));
-            } else  if(Utils.identifyUser(userName, password)) {
+            } else  if(Utils.identifyUser(this, userName, password)) {
                 ((TextView)findViewById(R.id.loginStatus)).setText("注册成功");
                 Utils.doLogin(this, userName, password);
             }
@@ -60,7 +60,7 @@ public class LoginInputPage extends Page {
             ((TextView)findViewById(R.id.loginStatus)).setText("密码未输入");
             return;
         }
-        if(Utils.identifyUser(userName, password)) {
+        if(Utils.identifyUser(this, userName, password)) {
             System.out.println("InputIdentification succeeded!!!!!!!!!!!!!!!!");
             Utils.doLogin(view.getContext(), userName, password);
         } else {

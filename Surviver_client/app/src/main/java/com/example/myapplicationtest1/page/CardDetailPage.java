@@ -16,8 +16,6 @@ import com.example.myapplicationtest1.utils.Urls;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Arrays;
-
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class CardDetailPage extends Page {
     public static Cache.OwnCard selectingOwnCard;
@@ -42,7 +40,7 @@ public class CardDetailPage extends Page {
                 if(hasChange) {
                     jsonObject.put("ownCardId", selectingOwnCard.ownCardId);
                     System.out.println("CardDetailPage: redistribution is " + jsonObject.toString());
-                    HttpClient.doPostShort(Urls.redistributeUpgrades(), jsonObject.toString());
+                    HttpClient.doPostShort(this, Urls.redistributeUpgrades(), jsonObject.toString());
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

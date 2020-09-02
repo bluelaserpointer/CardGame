@@ -123,7 +123,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
             return false;
         }
         System.out.println("CrashHandler: Made a crash report: " + report.toString());
-        HttpClient.doPostShort(Urls.uploadCrashReport(), report.toString());
+        HttpClient.doPostShort(StartPage.staticActivity, Urls.uploadCrashReport(), report.toString());
         return true;
     }
 
