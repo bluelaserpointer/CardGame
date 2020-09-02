@@ -1,6 +1,7 @@
 package com.example.accessingdatamysql.daoimpl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.accessingdatamysql.GlobalConstants;
 import com.example.accessingdatamysql.dao.ItemDao;
 import com.example.accessingdatamysql.repository.*;
 import com.example.accessingdatamysql.entity.*;
@@ -39,7 +40,7 @@ public class ItemDaoImpl implements ItemDao {
     public Item addNewItem(Item newItem) {
 
         Item Item = new Item(newItem.getItemName(), newItem.getPrice());
-        // System.out.println("new Item has an Id of : " + n.getItemId());
+        // GlobalConstants.printIfDoDebug("new Item has an Id of : " + n.getItemId());
         itemRepository.save(Item);
         ItemDetails ItemDetails = new ItemDetails(Item.getItemId(), newItem.getItemDetails().getItemImg(),
                 newItem.getItemDetails().getItemDescription());
@@ -50,9 +51,9 @@ public class ItemDaoImpl implements ItemDao {
     }
 
     public Item updateItem(Item updateItem) {
-        System.out.println(updateItem);
+        GlobalConstants.printIfDoDebug(updateItem);
         Item Item = itemRepository.getOne(updateItem.getItemId());
-        // System.out.println("old Item has an Id of : " + n.getItemId());
+        // GlobalConstants.printIfDoDebug("old Item has an Id of : " + n.getItemId());
         Item.setItem(updateItem.getItemName(), updateItem.getPrice());
 
         itemRepository.updateItemStatus(Item, updateItem.getItemId());
@@ -60,12 +61,12 @@ public class ItemDaoImpl implements ItemDao {
         Optional<ItemDetails> optItemDetails = itemDetailsRepository
                 .findItemDetailsByItemIdEquals(updateItem.getItemId());
         ItemDetails itemDetails = new ItemDetails(updateItem.getItemId(), "", "");
-        System.out.println(itemDetails);
+        GlobalConstants.printIfDoDebug(itemDetails);
         if (optItemDetails.isPresent()) {
-            System.out.println("Item Exists");
+            GlobalConstants.printIfDoDebug("Item Exists");
             itemDetails = optItemDetails.get();
         } else {
-            System.out.println("Item doesn't exist");
+            GlobalConstants.printIfDoDebug("Item doesn't exist");
         }
 
         itemDetails.setItemDescription(updateItem.getItemDetails().getItemDescription());

@@ -1,6 +1,7 @@
 package com.example.accessingdatamysql.serviceimpl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.accessingdatamysql.GlobalConstants;
 import com.example.accessingdatamysql.dao.*;
 import com.example.accessingdatamysql.entity.*;
 import com.example.accessingdatamysql.service.UserService;
@@ -68,8 +69,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public Integer identifyUser(String userName, String password) {
         User fetchUser = userDao.getOneUserByUserName(userName);
-        System.out.println("Identify User:");
-        System.out.println(fetchUser);
+        GlobalConstants.printIfDoDebug("Identify User:");
+        GlobalConstants.printIfDoDebug(fetchUser);
         if (fetchUser == null) {
             return -1; // 不存在用户
         }
@@ -91,11 +92,11 @@ public class UserServiceImpl implements UserService {
     public User addExp(Integer userId, Integer exp) {
         User user = userDao.getOneUser(userId);
         Integer expToNextLevel = expToLevelUp(user.getLevel());
-        System.out.println("UserService -> addExp:");
-        System.out.println("Before Modification: ");
-        System.out.println("User: userId = " + userId + " userName = " + user.getUserName() + " level = "
+        GlobalConstants.printIfDoDebug("UserService -> addExp:");
+        GlobalConstants.printIfDoDebug("Before Modification: ");
+        GlobalConstants.printIfDoDebug("User: userId = " + userId + " userName = " + user.getUserName() + " level = "
                 + user.getLevel() + " curExpPoint = " + user.getCurExpPoint() + " exp = " + exp);
-        System.out.println("expToNextLevel: " + expToNextLevel);
+        GlobalConstants.printIfDoDebug("expToNextLevel: " + expToNextLevel);
         Integer newExp = user.getCurExpPoint() + exp;
         if (newExp > expToNextLevel) {
             newExp -= expToNextLevel;
@@ -103,8 +104,8 @@ public class UserServiceImpl implements UserService {
         }
         user.setCurExpPoint(newExp);
         updateUser(user);
-        System.out.println("After Modification: ");
-        System.out.println("User: userId = " + userId + " userName = " + user.getUserName() + " level = "
+        GlobalConstants.printIfDoDebug("After Modification: ");
+        GlobalConstants.printIfDoDebug("User: userId = " + userId + " userName = " + user.getUserName() + " level = "
                 + user.getLevel() + " curExpPoint = " + user.getCurExpPoint());
 
         return user;
@@ -120,7 +121,7 @@ public class UserServiceImpl implements UserService {
         // return base;
         double IncreaseRate = 1.05;
         double result = Math.round(Math.pow(IncreaseRate, userLevel - 1) * base); // 小数采用四舍五入法
-        System.out.println(result);
+        GlobalConstants.printIfDoDebug(result);
         return (int) result;
     }
 

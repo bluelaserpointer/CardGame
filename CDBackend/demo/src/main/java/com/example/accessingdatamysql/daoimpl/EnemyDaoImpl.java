@@ -1,6 +1,7 @@
 package com.example.accessingdatamysql.daoimpl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.accessingdatamysql.GlobalConstants;
 import com.example.accessingdatamysql.dao.EnemyDao;
 import com.example.accessingdatamysql.repository.*;
 import com.example.accessingdatamysql.entity.*;
@@ -32,13 +33,13 @@ public class EnemyDaoImpl implements EnemyDao {
         Enemy enemy = new Enemy(newEnemy.getEnemyName(), newEnemy.getHealthPoint(), newEnemy.getAttack(),
                 newEnemy.getDefense(), newEnemy.getAttackRange(), newEnemy.getCd(), newEnemy.getSpeed());
         enemyRepository.save(enemy);
-        System.out.println(enemy.getEnemyName());
+        GlobalConstants.printIfDoDebug(enemy.getEnemyName());
 
         EnemyDetails enemyDetails = new EnemyDetails(enemy.getEnemyId(), newEnemy.getEnemyDetails().getEnemyImg(),
                 newEnemy.getEnemyDetails().getShortDescription(), newEnemy.getEnemyDetails().getEnemyDescription());
         enemyDetailsRepository.save(enemyDetails);
         enemy.setEnemyDetails(enemyDetails);
-        System.out.println(enemyDetails.getEnemyDescription());
+        GlobalConstants.printIfDoDebug(enemyDetails.getEnemyDescription());
         return enemy;
     }
 
@@ -52,10 +53,10 @@ public class EnemyDaoImpl implements EnemyDao {
                 .findEnemyDetailsByEnemyIdEquals(Enemy.getEnemyId());
         EnemyDetails EnemyDetails = new EnemyDetails(Enemy.getEnemyId(), "", "", "");
         if (optEnemyDetails.isPresent()) {
-            System.out.println("Enemy Exists");
+            GlobalConstants.printIfDoDebug("Enemy Exists");
             EnemyDetails = optEnemyDetails.get();
         } else {
-            System.out.println("Enemy doesn't exist");
+            GlobalConstants.printIfDoDebug("Enemy doesn't exist");
         }
 
         EnemyDetails.setEnemyDescription(Enemy.getEnemyDetails().getEnemyDescription());

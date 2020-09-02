@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.Security;
 
+import com.example.accessingdatamysql.GlobalConstants;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -34,24 +35,24 @@ public class JwtUserFilter extends OncePerRequestFilter {
             FilterChain filterChain) throws ServletException, IOException {
         // 从request中提取出Authorization Header
         final String authorizationHeader = httpServletRequest.getHeader(HEADER_STRING);
-//        System.out.println("In doFilter");
+//        GlobalConstants.printIfDoDebug("In doFilter");
         String userIdStr = null;
         // 如果Authorization Header不为空且有Bearer作为开头
-//        System.out.println(authorizationHeader);
+//        GlobalConstants.printIfDoDebug(authorizationHeader);
         if (authorizationHeader != null && authorizationHeader.startsWith(TOKEN_PREFIX)) {
             final String token = authorizationHeader.substring(7); // 获取token
-//            System.out.println("In parse branch1");
+//            GlobalConstants.printIfDoDebug("In parse branch1");
             try {
                 userIdStr = jwtUtil.extractUserIdStr(token); // 调用jwtUtil来从token中解析出用户名
             } catch(ExpiredJwtException e) { //这里检测了token是否已过期
-                System.out.println("JwtUserFilter: received a expired token: " + e.getMessage());
+                GlobalConstants.printIfDoDebug("JwtUserFilter: received a expired token: " + e.getMessage());
             }
-//            System.out.println("In parse branch2");
+//            GlobalConstants.printIfDoDebug("In parse branch2");
         }
 //        else{
-//            System.out.println("In parse branch3");
+//            GlobalConstants.printIfDoDebug("In parse branch3");
 //        }
-//        System.out.println("After parse");
+//        GlobalConstants.printIfDoDebug("After parse");
         // 如果解析成功
         final SecurityContext securityContext = SecurityContextHolder.getContext();
         if (userIdStr != null && securityContext.getAuthentication() == null) {
@@ -60,7 +61,7 @@ public class JwtUserFilter extends OncePerRequestFilter {
             // 调用UserDetailsServiceImpl从repository中找出该用户
             final UserDetails userDetails = userDetailsService.loadUserByUsername(userIdStr);
             // 核实token与该用户名再一次重新生成的token是否吻合 <- 应该不用了，以前在这里同时做的过期检测也不用了 by izumi
-//            System.out.println(userIdStr + "at A vs " + userDetails.getUsername());
+//            GlobalConstants.printIfDoDebug(userIdStr + "at A vs " + userDetails.getUsername());
 
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                     userDetails, null, userDetails.getAuthorities());
@@ -69,6 +70,6 @@ public class JwtUserFilter extends OncePerRequestFilter {
             securityContext.setAuthentication(usernamePasswordAuthenticationToken);
         }
         filterChain.doFilter(httpServletRequest, httpServletResponse);
-//        System.out.println("at D");
+//        GlobalConstants.printIfDoDebug("at D");
     }
 }

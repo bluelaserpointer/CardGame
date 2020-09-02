@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.Security;
 
+import com.example.accessingdatamysql.GlobalConstants;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
@@ -60,7 +61,7 @@ public class MultiHttpSecurityConfig {
                     // // this disables session creation on Spring Security
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
             http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-            System.out.println("User Configuration");
+            GlobalConstants.printIfDoDebug("User Configuration");
         }
 
         @Override

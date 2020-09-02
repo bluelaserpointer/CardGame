@@ -1,6 +1,7 @@
 package com.example.accessingdatamysql.serviceimpl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.accessingdatamysql.GlobalConstants;
 import com.example.accessingdatamysql.dao.*;
 import com.example.accessingdatamysql.entity.*;
 import com.example.accessingdatamysql.service.OwnCardService;
@@ -73,13 +74,13 @@ public class OwnCardServiceImpl implements OwnCardService {
     public OwnCard addExp(final Integer userId, final Integer cardId, final Integer exp) {
         final OwnCard ownCard = OwnCardDao.findOwnCardByUserIdEqualsAndCardIdEquals(userId, cardId);
         final Integer expToNextLevel = expToLevelUp(ownCard.getCardLevel());
-        // System.out.println("UserService -> addExp:");
-        // System.out.println("Before Modification: ");
-        // System.out.println("User: userId = " + userId + " userName = " +
+        // GlobalConstants.printIfDoDebug("UserService -> addExp:");
+        // GlobalConstants.printIfDoDebug("Before Modification: ");
+        // GlobalConstants.printIfDoDebug("User: userId = " + userId + " userName = " +
         // user.getUserName() + " level = "
         // + user.getLevel() + " curExpPoint = " + user.getCurExpPoint() + " exp = " +
         // exp);
-        // System.out.println("expToNextLevel: " + expToNextLevel);
+        // GlobalConstants.printIfDoDebug("expToNextLevel: " + expToNextLevel);
 
         Integer newExp = ownCard.getCardCurExp() + exp;
         if (newExp > expToNextLevel) {
@@ -95,8 +96,8 @@ public class OwnCardServiceImpl implements OwnCardService {
         }
         ownCard.setCardCurExp(newExp);
         updateOwnCard(ownCard);
-        // System.out.println("After Modification: ");
-        // System.out.println("User: userId = " + userId + " userName = " +
+        // GlobalConstants.printIfDoDebug("After Modification: ");
+        // GlobalConstants.printIfDoDebug("User: userId = " + userId + " userName = " +
         // user.getUserName() + " level = "
         // + user.getLevel() + " curExpPoint = " + user.getCurExpPoint());
 
@@ -106,10 +107,10 @@ public class OwnCardServiceImpl implements OwnCardService {
     // 计算升级需要的经验值
     @Override
     public Integer expToLevelUp(final Integer cardLevel) {
-        final Integer base = 100; // 等级为1时需要100经验值
+        final int base = 100; // 等级为1时需要100经验值
         final double IncreaseRate = 1.05;
         final double result = Math.round(Math.pow(IncreaseRate, cardLevel - 1) * base); // 小数采用四舍五入法
-        System.out.println(result);
+        GlobalConstants.printIfDoDebug(result);
         return (int) result;
     }
 

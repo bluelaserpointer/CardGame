@@ -13,7 +13,7 @@ insert into card(card_id, attack, attack_range, card_name, cd, defense, health_p
 insert into card(card_id, attack, attack_range, card_name, cd, defense, health_point, rarity, speed, type)
 	select 5, 800, 10000, "奇变偶不变", 15, 100, 1000, "UR", 60, 2;
 insert into card(card_id, attack, attack_range, card_name, cd, defense, health_point, rarity, speed, type)
-	select 6, 600, 600, "数形结合", 30, 50 700, "UR", 60, 2;
+	select 6, 600, 600, "数形结合", 30, 50, 700, "UR", 60, 2;
 insert into card(card_id, attack, attack_range, card_name, cd, defense, health_point, rarity, speed, type)
 	select 7, 100, 100, "欧亨利式结尾", 100, 700, 3000, "UR", 60, 1;
 insert into card(card_id, attack, attack_range, card_name, cd, defense, health_point, rarity, speed, type)
@@ -54,9 +54,9 @@ insert into card(card_id, attack, attack_range, card_name, cd, defense, health_p
 	select 25, 300, 50, "壮志饥餐胡虏肉", 100, 400, 1600, "R", 60, 1;
 insert into card(card_id, attack, attack_range, card_name, cd, defense, health_point, rarity, speed, type)
 	select 26, 5000, 20, "十万旌旗斩阎罗", 3000, 250, 1800, "R", 60, 1;
-insert into card(cainsert into card(card_id, attack, attack_range, card_name, cd, defense, health_point, rarity, speed, type)
+insert into card(card_id, attack, attack_range, card_name, cd, defense, health_point, rarity, speed, type)
 	select 27, 150, 100, "五十弦翻塞外声", 20, 1500, 50, "R", 60, 1;
-insert into card(cainsert into card(card_id, attack, attack_range, card_name, cd, defense, health_point, rarity, speed, type)
+insert into card(card_id, attack, attack_range, card_name, cd, defense, health_point, rarity, speed, type)
 	select 28, 0, 1, "我花开后百花杀", 100, 100, 100, "R", 1, 1;
 insert into card(card_id, attack, attack_range, card_name, cd, defense, health_point, rarity, speed, type)
 	select 29, -100, 200, "人间正道是沧桑", 30, 300, 1000, "R", 60, 1;
@@ -92,10 +92,10 @@ insert into card(card_id, attack, attack_range, card_name, cd, defense, health_p
 #Give SuperUser(id: 2) a 生动形象(id: 8)
 insert into own_card(own_card_id, accquire_date, card_id, user_id, card_cur_exp,
 
-										card_level, card_level_limit, repetitive_owns,enhance_attack,
+										card_level, card_level_limit, repetitive_owns, enhance_attack,
 
 										enhance_attack_range, enhance_defense, enhance_point, enhance_speed,
 
 										left_points, enhancecd, enhancehp)
 
-select 0, CURRENT_TIMESTAMP(), 8, 2, 50, 25, 100, k % 10, 20, 20, 20, 20, 20, 80, 5, 100;
+select 0, CURRENT_TIMESTAMP(), 8, 2, 50, 25, 100, 1, 20, 20, 20, 20, 20, 80, 5, 100;

@@ -24,7 +24,7 @@ public class MissionListDaoImpl implements MissionListDao {
     public String addNewMissionList(Integer userId) {
 
         MissionList MissionList = new MissionList(userId);
-        // System.out.println("new MissionList has an Id of : " + n.getMissionListId());
+        // GlobalConstants.printIfDoDebug("new MissionList has an Id of : " + n.getMissionListId());
         missionListRepository.save(MissionList);
         return "Saved MissionList";
 
@@ -33,7 +33,7 @@ public class MissionListDaoImpl implements MissionListDao {
     public String updateMissionList(Integer MissionListId, List<Mission> Missions) {
 
         MissionList MissionList = missionListRepository.getOne(MissionListId);
-        // System.out.println("old MissionList has an Id of : " + n.getMissionListId());
+        // GlobalConstants.printIfDoDebug("old MissionList has an Id of : " + n.getMissionListId());
         MissionList.setMissions(Missions);
 
         missionListRepository.updateMissionListStatus(MissionList, MissionListId);

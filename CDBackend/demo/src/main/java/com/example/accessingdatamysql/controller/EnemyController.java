@@ -31,7 +31,7 @@ public class EnemyController {
   @RequestMapping(value = "/addEnemy")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public @ResponseBody Enemy addNewEnemy(@RequestBody Enemy newEnemy) {
-    // System.out.println("Class: EnemyController Method: addNewEnemy Param: ");
+    // GlobalConstants.printIfDoDebug("Class: EnemyController Method: addNewEnemy Param: ");
 
     return EnemyService.addNewEnemy(newEnemy);
   }

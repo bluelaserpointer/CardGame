@@ -2,6 +2,7 @@ package com.example.accessingdatamysql.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.example.accessingdatamysql.GlobalConstants;
 import com.example.accessingdatamysql.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,7 +39,7 @@ public class ItemController {
   @RequestMapping(value = "/updateItem")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public @ResponseBody Item updateItem(@RequestBody Item updateItem) {
-    System.out.println(updateItem);
+    GlobalConstants.printIfDoDebug(updateItem);
     return ItemService.updateItem(updateItem);
   }
 

@@ -24,7 +24,7 @@ public class MailBoxDaoImpl implements MailBoxDao {
     public String addNewMailBox(Integer userId) {
 
         MailBox MailBox = new MailBox(userId);
-        // System.out.println("new MailBox has an Id of : " + n.getMailBoxId());
+        // GlobalConstants.printIfDoDebug("new MailBox has an Id of : " + n.getMailBoxId());
         mailBoxRepository.save(MailBox);
         return "Saved MailBox";
 
@@ -33,7 +33,7 @@ public class MailBoxDaoImpl implements MailBoxDao {
     public String updateMailBox(Integer MailBoxId, List<Integer> mails) {
 
         MailBox MailBox = mailBoxRepository.getOne(MailBoxId);
-        // System.out.println("old MailBox has an Id of : " + n.getMailBoxId());
+        // GlobalConstants.printIfDoDebug("old MailBox has an Id of : " + n.getMailBoxId());
         MailBox.setMails(mails);
 
         mailBoxRepository.updateMailBoxStatus(MailBox, MailBoxId);
