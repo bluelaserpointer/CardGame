@@ -28,7 +28,7 @@ public class OwnItemDaoImpl implements OwnItemDao {
 
         final OwnItem ownItem = new OwnItem(newOwnItem.getUserId(), newOwnItem.getItemId(), newOwnItem.getItemCount(),
                 acquireDate);
-        // System.out.println("new OwnItem has an Id of : " + n.getOwnItemId());
+        // GlobalConstants.printIfDoDebug("new OwnItem has an Id of : " + n.getOwnItemId());
         ownItemRepository.save(ownItem);
         return ownItem;
 
@@ -51,7 +51,7 @@ public class OwnItemDaoImpl implements OwnItemDao {
 
     public OwnItem updateOwnItem(OwnItem updateOwnItem) {
         final OwnItem ownItem = ownItemRepository.getOne(updateOwnItem.getOwnItemId());
-        // System.out.println("old Card has an Id of : " + n.getCardId());
+        // GlobalConstants.printIfDoDebug("old Card has an Id of : " + n.getCardId());
         ownItem.setOwnItem(updateOwnItem.getUserId(), updateOwnItem.getItemId(), updateOwnItem.getItemCount(),
                 new Timestamp(System.currentTimeMillis()));
 

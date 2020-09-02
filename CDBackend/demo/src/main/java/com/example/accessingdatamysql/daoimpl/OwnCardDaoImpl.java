@@ -1,6 +1,7 @@
 package com.example.accessingdatamysql.daoimpl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.accessingdatamysql.GlobalConstants;
 import com.example.accessingdatamysql.dao.OwnCardDao;
 import com.example.accessingdatamysql.repository.*;
 import com.example.accessingdatamysql.entity.*;
@@ -33,14 +34,14 @@ public class OwnCardDaoImpl implements OwnCardDao {
 
     // 更新一个用户拥有某张卡牌的所有信息
     public OwnCard updateOwnCard(OwnCard updateOwnCard) {
-        System.out.println(updateOwnCard);
+        GlobalConstants.printIfDoDebug(updateOwnCard);
         Optional<OwnCard> optOwnCard = ownCardRepository
                 .findOwnCardByUserIdEqualsAndCardIdEquals(updateOwnCard.getUserId(), updateOwnCard.getCardId());
         if (optOwnCard.isPresent()) {
             ownCardRepository.updateOwnCardStatus(updateOwnCard, updateOwnCard.getOwnCardId());
             return updateOwnCard;
         }
-        System.out.println("Not In isPresent");
+        GlobalConstants.printIfDoDebug("Not In isPresent");
         return null;
     }
 
@@ -76,7 +77,7 @@ public class OwnCardDaoImpl implements OwnCardDao {
                 originalOwnCard.setEnhanceSpeed(newEnhancedPt);
             }
             if (leftUpgPt < 0) {
-                System.out.println(
+                GlobalConstants.printIfDoDebug(
                         "OwnCardDaoImpl::redistributeUpgrades: Illegal redistribute! Left point: " + leftUpgPt);
                 return null;
             }
@@ -84,7 +85,7 @@ public class OwnCardDaoImpl implements OwnCardDao {
             ownCardRepository.updateOwnCardStatus(updateOwnCard, updateOwnCard.getOwnCardId());
             return updateOwnCard;
         }
-        System.out.println("OwnCardDaoImpl::redistributeUpgrades: Not found id: " + updateOwnCard.getOwnCardId());
+        GlobalConstants.printIfDoDebug("OwnCardDaoImpl::redistributeUpgrades: Not found id: " + updateOwnCard.getOwnCardId());
         return null;
     }
 

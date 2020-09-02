@@ -26,7 +26,7 @@ public class UserDaoImpl implements UserDao {
     public User addNewUser(User newUser) {
         final User user = new User(newUser.getUserName(), newUser.getEmail(), newUser.getPassword(), newUser.getPhoneNumber(),
                 newUser.getIdentity());
-        // System.out.println("new User has an Id of : " + n.getUserId());
+        // GlobalConstants.printIfDoDebug("new User has an Id of : " + n.getUserId());
         UserRepository.save(user);
         return user;
     }
@@ -35,7 +35,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User updateUser(User newUser) {
         final User user = UserRepository.getOne(newUser.getUserId());
-        // System.out.println("old User has an Id of : " + n.getUserId());
+        // GlobalConstants.printIfDoDebug("old User has an Id of : " + n.getUserId());
         user.updateUser(newUser.getUserName(), newUser.getEmail(), newUser.getPassword(), newUser.getPhoneNumber(),
                 newUser.getCredits(), newUser.getAccess(), newUser.getLevel(), newUser.getCurExpPoint(),
                 newUser.getStamina(), newUser.getMoney(), newUser.getGrade(), newUser.getEngKnowledge(),

@@ -25,7 +25,7 @@ public class BlackListDaoImpl implements BlackListDao {
     public String addNewBlackList(Integer userId) {
 
         BlackList BlackList = new BlackList(userId);
-        // System.out.println("new BlackList has an Id of : " + n.getBlackListId());
+        // GlobalConstants.printIfDoDebug("new BlackList has an Id of : " + n.getBlackListId());
         blackListRepository.save(BlackList);
         return "Saved BlackList";
 
@@ -34,7 +34,7 @@ public class BlackListDaoImpl implements BlackListDao {
     public String updateBlackList(Integer BlackListId, List<Integer> blockIds) {
 
         BlackList BlackList = blackListRepository.getOne(BlackListId);
-        // System.out.println("old BlackList has an Id of : " + n.getBlackListId());
+        // GlobalConstants.printIfDoDebug("old BlackList has an Id of : " + n.getBlackListId());
         BlackList.setBlockIds(blockIds);
         blackListRepository.updateBlackListStatus(BlackList, BlackListId);
 

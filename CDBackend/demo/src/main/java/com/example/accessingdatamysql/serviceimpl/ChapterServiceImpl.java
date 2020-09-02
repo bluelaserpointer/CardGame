@@ -101,7 +101,7 @@ public class ChapterServiceImpl implements ChapterService {
             awardCardsId.addAll(phase.getAwardCards());
             awardItemsIdAndAmount.putAll(phase.getAwardItems());
             //return chapter awards
-            if (chapter.getPhaseNo() == phaseId) {
+            if (chapter.getPhaseNo().equals(phaseId)) {
                 awardCardsId.addAll(chapter.getAwardCards());
                 awardItemsIdAndAmount.putAll(chapter.getAwardItems());
             }

@@ -1,6 +1,7 @@
 package com.example.accessingdatamysql.daoimpl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.accessingdatamysql.GlobalConstants;
 import com.example.accessingdatamysql.dao.CardDao;
 import com.example.accessingdatamysql.repository.*;
 import com.example.accessingdatamysql.entity.*;
@@ -31,7 +32,7 @@ public class CardDaoImpl implements CardDao {
 
         Card card = new Card(newCard.getRarity(), newCard.getCardName(), newCard.getHealthPoint(), newCard.getAttack(),
                 newCard.getDefense(), newCard.getAttackRange(), newCard.getCd(), newCard.getSpeed(), newCard.getType());
-        // System.out.println("new Card has an Id of : " + n.getCardId());
+        // GlobalConstants.printIfDoDebug("new Card has an Id of : " + n.getCardId());
         cardRepository.save(card);
         CardDetails cardDetails = new CardDetails(card.getCardId(), newCard.getCardDetails().getCardImg(),
                 newCard.getCardDetails().getShortDescription(), newCard.getCardDetails().getCardDescription());
@@ -43,7 +44,7 @@ public class CardDaoImpl implements CardDao {
 
     public Card updateCard(Card updateCard) {
         Card card = cardRepository.getOne(updateCard.getCardId());
-        // System.out.println("old Card has an Id of : " + n.getCardId());
+        // GlobalConstants.printIfDoDebug("old Card has an Id of : " + n.getCardId());
         card.setCard(updateCard.getRarity(), updateCard.getCardName(), updateCard.getHealthPoint(),
                 updateCard.getAttack(), updateCard.getDefense(), updateCard.getAttackRange(), updateCard.getCd(),
                 updateCard.getSpeed(), updateCard.getType());
@@ -53,10 +54,10 @@ public class CardDaoImpl implements CardDao {
                 .findCardDetailsByCardIdEquals(updateCard.getCardId());
         CardDetails cardDetails = new CardDetails(updateCard.getCardId(), "", "", "");
         if (optCardDetails.isPresent()) {
-            System.out.println("Card Exists");
+            GlobalConstants.printIfDoDebug("Card Exists");
             cardDetails = optCardDetails.get();
         } else {
-            System.out.println("Card doesn't exist");
+            GlobalConstants.printIfDoDebug("Card doesn't exist");
         }
 
         cardDetails.setCardDescription(updateCard.getCardDetails().getCardDescription());

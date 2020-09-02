@@ -1,6 +1,7 @@
 package com.example.accessingdatamysql.daoimpl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.accessingdatamysql.GlobalConstants;
 import com.example.accessingdatamysql.dao.ActivityDao;
 import com.example.accessingdatamysql.repository.*;
 import com.example.accessingdatamysql.entity.*;
@@ -28,7 +29,7 @@ public class ActivityDaoImpl implements ActivityDao {
     public Activity addNewActivity(Activity newActivity) {
 
         Activity Activity = new Activity(newActivity.getType(), newActivity.getActivityName(), newActivity.getStart());
-        // System.out.println("new Activity has an Id of : " + n.getActivityId());
+        // GlobalConstants.printIfDoDebug("new Activity has an Id of : " + n.getActivityId());
         activityRepository.save(Activity);
         ActivityDetails ActivityDetails = new ActivityDetails(Activity.getActivityId(),
                 newActivity.getActivityDetails().getActivityImg(),
@@ -41,7 +42,7 @@ public class ActivityDaoImpl implements ActivityDao {
 
         Activity Activity = activityRepository.getOne(updateActivity.getActivityId());
 
-        // System.out.println("old Activity has an Id of : " + n.getActivityId());
+        // GlobalConstants.printIfDoDebug("old Activity has an Id of : " + n.getActivityId());
         Activity.setActivity(updateActivity.getType(), updateActivity.getActivityName(), updateActivity.getStart());
 
         activityRepository.updateActivityStatus(Activity, updateActivity.getActivityId());
@@ -51,10 +52,10 @@ public class ActivityDaoImpl implements ActivityDao {
         ActivityDetails activityDetails = new ActivityDetails(updateActivity.getActivityId(), "", "");
 
         if (optActivityDetails.isPresent()) {
-            System.out.println("Activity Exists");
+            GlobalConstants.printIfDoDebug("Activity Exists");
             activityDetails = optActivityDetails.get();
         } else {
-            System.out.println("Activity doesn't exist");
+            GlobalConstants.printIfDoDebug("Activity doesn't exist");
         }
 
         activityDetails.setActivityDescription(updateActivity.getActivityDetails().getActivityDescription());

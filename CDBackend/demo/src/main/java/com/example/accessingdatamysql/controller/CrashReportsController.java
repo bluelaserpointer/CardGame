@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.controller;
 
+import com.example.accessingdatamysql.GlobalConstants;
 import com.example.accessingdatamysql.entity.CrashReports;
 import com.example.accessingdatamysql.entity.CrashReportsDetail;
 import com.example.accessingdatamysql.service.CrashReportService;
@@ -16,7 +17,7 @@ public class CrashReportsController {
 
     @PostMapping(value = "/add")
     public @ResponseBody void addCrashReport(@RequestParam("userId") Integer userId, @RequestParam("clientVersion") Double clientVersion, @RequestBody CrashReportsDetail crashReportDetail) {
-        System.out.println("CrashReportsController: received content: " + "userId: " + userId + ", clientVersion: " + clientVersion);
+        GlobalConstants.printIfDoDebug("CrashReportsController: received content: " + "userId: " + userId + ", clientVersion: " + clientVersion);
         crashReportService.addNew(
                 clientVersion,
                 userId,

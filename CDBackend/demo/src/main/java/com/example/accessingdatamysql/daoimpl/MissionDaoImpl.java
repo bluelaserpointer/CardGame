@@ -1,6 +1,7 @@
 package com.example.accessingdatamysql.daoimpl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.accessingdatamysql.GlobalConstants;
 import com.example.accessingdatamysql.dao.MissionDao;
 import com.example.accessingdatamysql.repository.*;
 import com.example.accessingdatamysql.entity.*;
@@ -39,10 +40,10 @@ public class MissionDaoImpl implements MissionDao {
     // }
 
     public Mission addNewMission(Mission newMission) {
-        // System.out.println(MissionDescription);
+        // GlobalConstants.printIfDoDebug(MissionDescription);
         Mission Mission = new Mission(newMission.getType(), newMission.getMissionName());
         Mission.setAwardItems(newMission.getAwardItems());
-        // System.out.println("new Mission has an Id of : " + n.getMissionId());
+        // GlobalConstants.printIfDoDebug("new Mission has an Id of : " + n.getMissionId());
         missionRepository.save(Mission);
         MissionDetails MissionDetails = new MissionDetails(Mission.getMissionId(),
                 newMission.getMissionDetails().getMissionDescription());
@@ -55,7 +56,7 @@ public class MissionDaoImpl implements MissionDao {
     public Mission updateMission(Mission updateMission) {
 
         Mission Mission = missionRepository.getOne(updateMission.getMissionId());
-        // System.out.println("old Mission has an Id of : " + n.getMissionId());
+        // GlobalConstants.printIfDoDebug("old Mission has an Id of : " + n.getMissionId());
         Mission.setMission(updateMission.getType(), updateMission.getMissionName());
         Mission.setAwardItems(updateMission.getAwardItems());
 
@@ -65,10 +66,10 @@ public class MissionDaoImpl implements MissionDao {
                 .findMissionDetailsByMissionIdEquals(updateMission.getMissionId());
         MissionDetails MissionDetails = new MissionDetails(updateMission.getMissionId(), "");
         if (optMissionDetails.isPresent()) {
-            System.out.println("Mission Exists");
+            GlobalConstants.printIfDoDebug("Mission Exists");
             MissionDetails = optMissionDetails.get();
         } else {
-            System.out.println("Mission doesn't exist");
+            GlobalConstants.printIfDoDebug("Mission doesn't exist");
         }
 
         MissionDetails.setMissionDescription(updateMission.getMissionDetails().getMissionDescription());

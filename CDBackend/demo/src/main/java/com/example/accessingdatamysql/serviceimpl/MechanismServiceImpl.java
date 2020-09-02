@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.serviceimpl;
 
+import com.example.accessingdatamysql.GlobalConstants;
 import com.example.accessingdatamysql.entity.Card;
 import com.example.accessingdatamysql.entity.User;
 import com.example.accessingdatamysql.service.*;
@@ -22,17 +23,17 @@ public class MechanismServiceImpl implements MechanismService {
     public Integer drawCard(Integer userId, Integer chi, Integer mat, Integer eng) {
         final User user = userService.getOneUser(userId);
         // LotteSpring(subject rarity)
-        System.out.println("MechanismServiceImpl: " + user.getUserName() + "requested card draw with resources chi: " + chi + " mat: " + mat + " eng: " + eng);
+        GlobalConstants.printIfDoDebug("MechanismServiceImpl: " + user.getUserName() + "requested card draw with resources chi: " + chi + " mat: " + mat + " eng: " + eng);
 
         //resource check
         if(user.getChiKnowledge() < chi) {
-            System.out.println("!!!MechanismServiceImpl: Illegal left resource of chi " + user.getChiKnowledge() + " with requested " + chi);
+            GlobalConstants.printIfDoDebug("!!!MechanismServiceImpl: Illegal left resource of chi " + user.getChiKnowledge() + " with requested " + chi);
             return -1;
         }if(user.getMathKnowledge() < mat) {
-            System.out.println("!!!MechanismServiceImpl: Illegal left resource of mat " + user.getMathKnowledge() + " with requested " + mat);
+            GlobalConstants.printIfDoDebug("!!!MechanismServiceImpl: Illegal left resource of mat " + user.getMathKnowledge() + " with requested " + mat);
             return -1;
         }if(user.getEngKnowledge() < eng) {
-            System.out.println("!!!MechanismServiceImpl: Illegal left resource of eng " + user.getEngKnowledge() + " with requested " + eng);
+            GlobalConstants.printIfDoDebug("!!!MechanismServiceImpl: Illegal left resource of eng " + user.getEngKnowledge() + " with requested " + eng);
             return -1;
         }
         //calculate rarity and type
@@ -83,15 +84,15 @@ public class MechanismServiceImpl implements MechanismService {
         //choose random one in same rarity and same type
         final String rarityStr = Rarity.values()[rarity].toString();
         final List<Card> cardSpring = cardService.getByRarityAndType(rarityStr , subject);
-        System.out.println("MechanismServiceImpl: search for " + rarityStr + " in " + subject + ": found " + cardSpring.size());
+        GlobalConstants.printIfDoDebug("MechanismServiceImpl: search for " + rarityStr + " in " + subject + ": found " + cardSpring.size());
         final Card drawnCard;
         if(cardSpring.isEmpty()) { //Ouch...I guess the rarity does not exist in that subject.
-            System.out.println("!!!MechanismServiceImpl: Could not found any card. Trying returning random card.");
+            GlobalConstants.printIfDoDebug("!!!MechanismServiceImpl: Could not found any card. Trying returning random card.");
             drawnCard = cardService.getAllCards().get(0);
         } else {
             drawnCard = cardSpring.get((int) (Math.random() * cardSpring.size()));
         }
-        System.out.println("MechanismServiceImpl: drawnCard is " + drawnCard.getCardName());
+        GlobalConstants.printIfDoDebug("MechanismServiceImpl: drawnCard is " + drawnCard.getCardName());
         //consume resources
         user.setChiKnowledge(user.getChiKnowledge() - chi);
         user.setMathKnowledge(user.getMathKnowledge() - mat);

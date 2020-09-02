@@ -56,8 +56,8 @@ public class AccessingDataMysqlApplication {
   @GetMapping("/")
   public String sayHello() throws UnknownHostException {
     String hostname = "Unknown";
-    InetAddress address = InetAddress.getLocalHost();
-    hostname = address.getHostName();
+//    InetAddress address = InetAddress.getLocalHost();
+//    hostname = address.getHostName();
     return hostname;
   }
 }
