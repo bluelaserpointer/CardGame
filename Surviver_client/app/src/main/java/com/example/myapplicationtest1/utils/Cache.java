@@ -304,7 +304,7 @@ public class Cache {
                 activity.time = activityJson.getString("start");
                 final JSONObject detailJson = activityJson.getJSONObject("activityDetails");
                 activity.description = detailJson.getString("activityDescription");
-                activity.imgBase64 = detailJson.getString("activityImg");
+                activity.imgBase64 = formatBase64(detailJson.getString("activityImg"));
                 final int activityId = activityJson.getInt("activityId");
                 System.out.println("CachedActivity: " + activityId);
                 activities.put(activityId, activity);
@@ -333,7 +333,7 @@ public class Cache {
                 mail.time = mailJson.getString("mailTime");
                 final JSONObject mailDetailJson = mailJson.getJSONObject("mailDetails");
                 mail.content = mailDetailJson.getString("mailDescription");
-                mail.imgBase64 = mailDetailJson.getString("mailImg");
+                mail.imgBase64 = formatBase64(mailDetailJson.getString("mailImg"));
                 final int mailId = mailJson.getInt("mailId");
                 System.out.println("CachedMail: " + mailId);
                 mails.put(mailId, mail);
@@ -341,5 +341,8 @@ public class Cache {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+    private static String formatBase64(String base64) {
+        return base64.substring(base64.indexOf(",")); //don't include "data:image/png;base64,"
     }
 }
