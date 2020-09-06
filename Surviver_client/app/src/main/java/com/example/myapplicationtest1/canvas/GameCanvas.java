@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
 
@@ -63,18 +64,21 @@ public class GameCanvas extends MyCanvas {
                 return;
             }
             final JSONArray arr = new JSONArray(enemyPositionsData);
+            final int displayW = getResources().getDisplayMetrics().widthPixels;
+            final int displayH = getResources().getDisplayMetrics().heightPixels;
             for(int i = 0; i < arr.length(); ++i) {
                 final JSONObject posInfo = arr.getJSONObject(i);
                 final int pos = posInfo.getInt("positionId");
-                final int x = 500 + pos%5*100;
-                final int y = 100 + pos/5*100;
+                final int x = displayW/2 + 150 + pos%5*100;
+                final int y = displayH/2 - 250 + pos/5*100;
+                System.out.println(pos + ": " + x + ", " + y);
                 stage.addUnit(new Enemy(MyUnit.loadAsEnemy(super.getContext(), Urls.getCard(posInfo.getInt("cardId")))).respawn(x, y));
             }
             //load friend formation
             for(Map.Entry<Integer, Integer> posAndOwnCardId : Cache.formation.entrySet()) {
                 final int pos = posAndOwnCardId.getKey();
                 final Cache.OwnCard ownCard = Cache.ownCards.get(posAndOwnCardId.getValue());
-                stage.addUnit(new Knowledge(ownCard).respawn(100 + pos%5*100, 100 + pos/5*100));
+                stage.addUnit(new Knowledge(ownCard).respawn(displayW/2 - 650 + pos%5*100, displayH/2 - 250 + pos/5*100));
             }
         } catch (JSONException e) {
             e.printStackTrace();
