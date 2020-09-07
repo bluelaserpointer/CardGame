@@ -1,31 +1,19 @@
 package com.example.myapplicationtest1.game.contents.engine;
 
 import android.graphics.Color;
+import android.graphics.Paint;
 
-public enum Subject{
-	CHI, MAT, ENG;
-	public String toCHIString() {
-		switch(this) {
-		case CHI:
-			return "语文";
-		case MAT:
-			return "数学";
-		case ENG:
-			return "英语";
-		default:
-			return "";
-		}
-	}
-	public int color() {
-		switch(this) {
-		case CHI:
-			return Color.RED;
-		case MAT:
-			return Color.GREEN;
-		case ENG:
-			return Color.BLUE;
-		default:
-			return -1;
-		}
+public enum Subject {
+	CHI("语文", Color.RED),
+	MAT("数学", Color.GREEN),
+	ENG("英语", Color.BLUE);
+	public final String name;
+	public final int color;
+	public final Paint textPaint = new Paint();
+	Subject(String name, int color) {
+		this.name = name;
+		this.color = color;
+		textPaint.setColor(color);
+		textPaint.setTextSize(40);
 	}
 }
