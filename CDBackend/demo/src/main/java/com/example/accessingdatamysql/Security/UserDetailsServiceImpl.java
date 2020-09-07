@@ -15,19 +15,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private UserRepository applicationUserRepository;
 
-    // public UserDetailsServiceImpl(UserRepository applicationUserRepository) {
-    // this.applicationUserRepository = applicationUserRepository;
-    // }
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        //因为性能关系强制使用用户ID作为username存入
         final int userId = Integer.parseInt(username);
         final com.example.accessingdatamysql.entity.User applicationUser = applicationUserRepository.getOne(userId);
-//        if (applicationUser == null) {
-//            throw new UsernameNotFoundException(username);
-//        }
-
-        // Identity 要写成 "ROLE_ADMIN","ROLE_USER"
         return new User(String.valueOf(userId), applicationUser.getPassword(), AuthorityUtils.createAuthorityList(applicationUser.getIdentity()));
     }
 }

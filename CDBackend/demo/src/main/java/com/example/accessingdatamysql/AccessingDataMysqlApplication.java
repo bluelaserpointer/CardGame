@@ -31,8 +31,6 @@ public class AccessingDataMysqlApplication {
   // return new BCryptPasswordEncoder();
   // }
 
-  @Autowired
-  private UserRepository repository;
 
   // @PostConstruct
   // public void initUsers() {
@@ -52,12 +50,5 @@ public class AccessingDataMysqlApplication {
     // ApplicationContext context =
     // SpringApplication.run(AccessingDataMysqlApplication.class, args);
 
-  }
-  @GetMapping("/")
-  public String sayHello() throws UnknownHostException {
-    String hostname = "Unknown";
-//    InetAddress address = InetAddress.getLocalHost();
-//    hostname = address.getHostName();
-    return hostname;
   }
 }
