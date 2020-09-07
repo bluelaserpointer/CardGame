@@ -28,18 +28,14 @@ import org.json.JSONObject;
 import java.util.Map;
 
 public class GameCanvas extends MyCanvas {
-    final Context context;
     public GameCanvas(Context context) { //动态实例化view用到;
         super(context);
-        this.context = context;
     }
     public GameCanvas(Context context, @Nullable AttributeSet attrs) { //在xml 用到;
         super(context, attrs);
-        this.context = context;
     }
     public GameCanvas(Context context, @Nullable AttributeSet attrs, int defStyleAttr) { //不会被系统默认调用，需要自己去显示的调用;
         super(context, attrs, defStyleAttr);
-        this.context = context;
     }
     MyStage stage;
     @Override
@@ -53,27 +49,35 @@ public class GameCanvas extends MyCanvas {
     public void touched(int x, int y) {
         if(stage.isGameClear || stage.isGameOver) {
             HttpClient.doPostShort(
+                    super.getContext(),
                     Urls.phaseClear(ChapterListAdapter.selectedChapter + 1, ChapterListAdapter.selectedPhase + 1, stage.isGameClear ? GameState.WIN.ordinal() : GameState.LOSE.ordinal())
                     , MapStringUtil.mapToString(Cache.formation));
-            Page.jump(context, BattleFinishPage.class);
+            Page.jump(super.getContext(), BattleFinishPage.class);
         }
     }
     public void fetch() {
         try {
             //load enemy formation
-            final JSONArray arr = new JSONArray(HttpClient.doGetShort(Urls.getChapterPhaseDetails(ChapterListAdapter.selectedChapter + 1, ChapterListAdapter.selectedPhase + 1)));
+            final String enemyPositionsData = HttpClient.doGetShort(super.getContext(), Urls.getChapterPhaseDetails(ChapterListAdapter.selectedChapter + 1, ChapterListAdapter.selectedPhase + 1));
+            if(enemyPositionsData == null || enemyPositionsData.isEmpty()) {
+                return;
+            }
+            final JSONArray arr = new JSONArray(enemyPositionsData);
+            final int displayW = getResources().getDisplayMetrics().widthPixels;
+            final int displayH = getResources().getDisplayMetrics().heightPixels;
             for(int i = 0; i < arr.length(); ++i) {
                 final JSONObject posInfo = arr.getJSONObject(i);
                 final int pos = posInfo.getInt("positionId");
-                final int x = 500 + pos%5*100;
-                final int y = 100 + pos/5*100;
-                stage.addUnit(new Enemy(MyUnit.loadAsEnemy(Urls.getCard(posInfo.getInt("cardId")))).respawn(x, y));
+                final int x = displayW/2 + 150 + pos%5*100;
+                final int y = displayH/2 - 250 + pos/5*100;
+                System.out.println(pos + ": " + x + ", " + y);
+                stage.addUnit(new Enemy(MyUnit.loadAsEnemy(super.getContext(), Urls.getCard(posInfo.getInt("cardId")))).respawn(x, y));
             }
             //load friend formation
             for(Map.Entry<Integer, Integer> posAndOwnCardId : Cache.formation.entrySet()) {
                 final int pos = posAndOwnCardId.getKey();
                 final Cache.OwnCard ownCard = Cache.ownCards.get(posAndOwnCardId.getValue());
-                stage.addUnit(new Knowledge(ownCard).respawn(100 + pos%5*100, 100 + pos/5*100));
+                stage.addUnit(new Knowledge(ownCard).respawn(displayW/2 - 650 + pos%5*100, displayH/2 - 250 + pos/5*100));
             }
         } catch (JSONException e) {
             e.printStackTrace();

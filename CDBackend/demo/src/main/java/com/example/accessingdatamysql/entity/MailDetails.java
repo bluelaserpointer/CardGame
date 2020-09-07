@@ -13,6 +13,9 @@ public class MailDetails {
     // 邮件描述
     private String mailDescription;
 
+    @Id
+    private ObjectId id;
+
     public MailDetails() {
     }
 
@@ -29,9 +32,6 @@ public class MailDetails {
     public void setMailId(Integer mailId) {
         this.mailId = mailId;
     }
-
-    @Id
-    private ObjectId id;
 
     public String getMailImg() {
         return this.mailImg;

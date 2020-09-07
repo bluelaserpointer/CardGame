@@ -1,6 +1,7 @@
 package com.example.accessingdatamysql.daoimpl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.accessingdatamysql.GlobalConstants;
 import com.example.accessingdatamysql.dao.MailDao;
 import com.example.accessingdatamysql.repository.*;
 import com.example.accessingdatamysql.entity.*;
@@ -36,7 +37,7 @@ public class MailDaoImpl implements MailDao {
 
     public Mail addNewMail(Mail newMail) {
         Mail Mail = new Mail(newMail.getMailName());
-        // System.out.println("new Mail has an Id of : " + n.getMailId());
+        // GlobalConstants.printIfDoDebug("new Mail has an Id of : " + n.getMailId());
         mailRepository.save(Mail);
         MailDetails MailDetails = new MailDetails(Mail.getMailId(), newMail.getMailDetails().getMailImg(),
                 newMail.getMailDetails().getMailDescription());
@@ -49,7 +50,7 @@ public class MailDaoImpl implements MailDao {
     public Mail updateMail(Mail updateMail) {
 
         Mail Mail = mailRepository.getOne(updateMail.getMailId());
-        // System.out.println("old Mail has an Id of : " + n.getMailId());
+        // GlobalConstants.printIfDoDebug("old Mail has an Id of : " + n.getMailId());
         Mail.setMailName(updateMail.getMailName());
 
         mailRepository.updateMailStatus(Mail, updateMail.getMailId());
@@ -58,10 +59,10 @@ public class MailDaoImpl implements MailDao {
                 .findMailDetailsByMailIdEquals(updateMail.getMailId());
         MailDetails mailDetails = new MailDetails(updateMail.getMailId(), "", "");
         if (optMailDetails.isPresent()) {
-            System.out.println("Mail Exists");
+            GlobalConstants.printIfDoDebug("Mail Exists");
             mailDetails = optMailDetails.get();
         } else {
-            System.out.println("Mail doesn't exist");
+            GlobalConstants.printIfDoDebug("Mail doesn't exist");
         }
 
         mailDetails.setMailDescription(updateMail.getMailDetails().getMailDescription());

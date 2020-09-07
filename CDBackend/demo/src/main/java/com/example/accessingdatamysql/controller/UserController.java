@@ -2,6 +2,7 @@ package com.example.accessingdatamysql.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.example.accessingdatamysql.GlobalConstants;
 import com.example.accessingdatamysql.Security.JwtUtil;
 import com.example.accessingdatamysql.entity.*;
 import com.example.accessingdatamysql.service.UserLoginRecordService;
@@ -44,7 +45,7 @@ public class UserController {
   // 获取一个用户信息
   @GetMapping(value = "/getUser")
   public @ResponseBody User findUserByUserId(@RequestParam("userId") Integer userId) {
-    System.out.println("Class: UserController Method:finduserByUserId Param:" + userId);
+    GlobalConstants.printIfDoDebug("Class: UserController Method:finduserByUserId Param:" + userId);
     return userService.getOneUser(userId);
   }
 
@@ -63,7 +64,9 @@ public class UserController {
       response.put("failReason", "用户名已存在");
     } else {
       registerUser.setIdentity(User.ROLE_USER);
-      response.put("user", userService.addNewUser(registerUser));
+      final User createdUser = userService.addNewUser(registerUser);
+      response.put("user", createdUser);
+      mailBoxService.addNewMailBox(createdUser.getUserId());
     }
     return response.toString();
   }
@@ -137,16 +140,16 @@ public class UserController {
     final User user = userService.getOneUserByUserName(userName);
     final JSONObject response = new JSONObject();
     if (user == null) {
-      System.out.println(LOG_HEAD + "refused(wrong username)");
+      GlobalConstants.printIfDoDebug(LOG_HEAD + "refused(wrong username)");
       response.put("failReason", "用户名或密码错误");
     } else if (!user.getPassword().equals(password)) {
-      System.out.println(LOG_HEAD + "refused(wrong password)");
+      GlobalConstants.printIfDoDebug(LOG_HEAD + "refused(wrong password)");
       response.put("failReason", "用户名或密码错误");
     } else if (!user.getAccess()) {
-      System.out.println(LOG_HEAD + "refused(banned user)");
+      GlobalConstants.printIfDoDebug(LOG_HEAD + "refused(banned user)");
       response.put("failReason", "用户已被禁止登录，详见游戏官网");
     } else {
-      System.out.println(LOG_HEAD + "accepted");
+      GlobalConstants.printIfDoDebug(LOG_HEAD + "accepted");
       authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUserId(), password));
       userLoginRecordService.userLogin(user.getUserId());
       response.put("token", jwtUtil.generateToken(String.valueOf(user.getUserId())));
@@ -172,7 +175,7 @@ public class UserController {
   @RequestMapping(value = "/addExp")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public @ResponseBody User addExp(@RequestParam("userId") Integer userId, @RequestParam("exp") Integer exp) {
-    System.out.println("Class: UserController Method: addExp Param: userId = " + userId + " exp = " + exp);
+    GlobalConstants.printIfDoDebug("Class: UserController Method: addExp Param: userId = " + userId + " exp = " + exp);
     return userService.addExp(userId, exp);
   }
 

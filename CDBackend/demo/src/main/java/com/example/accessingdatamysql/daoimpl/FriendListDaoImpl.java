@@ -35,7 +35,7 @@ public class FriendListDaoImpl implements FriendListDao {
     public String addNewFriendList(Integer userId) {
 
         FriendList FriendList = new FriendList(userId);
-        // System.out.println("new FriendList has an Id of : " + n.getFriendListId());
+        // GlobalConstants.printIfDoDebug("new FriendList has an Id of : " + n.getFriendListId());
         friendListRepository.save(FriendList);
         return "Saved FriendList";
 
@@ -44,7 +44,7 @@ public class FriendListDaoImpl implements FriendListDao {
     public String updateFriendList(Integer FriendListId, List<Integer> friendIds) {
 
         FriendList FriendList = friendListRepository.getOne(FriendListId);
-        // System.out.println("old FriendList has an Id of : " + n.getFriendListId());
+        // GlobalConstants.printIfDoDebug("old FriendList has an Id of : " + n.getFriendListId());
         FriendList.setFriendIds(friendIds);
         friendListRepository.updateFriendListStatus(FriendList, FriendListId);
         // return "Modified FriendList";

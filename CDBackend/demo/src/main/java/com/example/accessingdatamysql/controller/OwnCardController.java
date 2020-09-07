@@ -51,12 +51,12 @@ public class OwnCardController {
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public @ResponseBody OwnCard addExp(@RequestParam("userId") Integer userId, @RequestParam("cardId") Integer cardId,
       @RequestParam("exp") Integer exp) {
-    // System.out.println("Class: UserController Method: addExp Param: userId = " +
+    // GlobalConstants.printIfDoDebug("Class: UserController Method: addExp Param: userId = " +
     // userId + " exp = " + exp);
     // JSONObject response = new JSONObject();
     // response.put("userName", UserService.getOneUser(userId).getUserName());
     // response.put("ownCard", OwnCardService.addExp(userId, cardId, exp));
-    // System.out.println(authentication.name);
+    // GlobalConstants.printIfDoDebug(authentication.name);
 
     return OwnCardService.addExp(userId, cardId, exp);
   }

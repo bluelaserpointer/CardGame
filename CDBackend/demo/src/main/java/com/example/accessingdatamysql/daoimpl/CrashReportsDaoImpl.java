@@ -1,6 +1,7 @@
 package com.example.accessingdatamysql.daoimpl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.accessingdatamysql.GlobalConstants;
 import com.example.accessingdatamysql.dao.CrashReportsDao;
 import com.example.accessingdatamysql.entity.CrashReports;
 import com.example.accessingdatamysql.entity.CrashReportsDetail;
@@ -33,8 +34,8 @@ public class CrashReportsDaoImpl implements CrashReportsDao {
         reports.setClientVersion(clientVersion);
         reports.setUserId(userId);
         crashReportsRepository.save(reports);
-        System.out.println("(Hey don't worry, this is client-side bug reports!)");
-        System.out.println("CrashReportsDaoImpl: saving: " + stackTrace + " at id " + reports.getReportId());
+        GlobalConstants.printIfDoDebug("(Hey don't worry, this is client-side bug reports!)");
+        GlobalConstants.printIfDoDebug("CrashReportsDaoImpl: saving: " + stackTrace + " at id " + reports.getReportId());
         crashReportsDetailRepository.save(new CrashReportsDetail(reports.getReportId(), stackTrace, deviceInfo));
     }
 

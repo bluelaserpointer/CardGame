@@ -1,6 +1,7 @@
 package com.example.accessingdatamysql.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.accessingdatamysql.GlobalConstants;
 import com.example.accessingdatamysql.service.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,9 +41,9 @@ public class ChapterController {
     public @ResponseBody List<ChapterDetails> updateChapterPhaseStrategy(@RequestParam("chapterId") Integer chapterId,
             @RequestParam("phaseId") Integer phaseId, @RequestParam("phaseData") String phaseData)
             throws JsonProcessingException {
-        System.out.println("ChapterId: " + chapterId);
-        System.out.println("PhaseId: " + phaseId);
-        System.out.println("PhaseData: " + phaseData);
+        GlobalConstants.printIfDoDebug("ChapterId: " + chapterId);
+        GlobalConstants.printIfDoDebug("PhaseId: " + phaseId);
+        GlobalConstants.printIfDoDebug("PhaseData: " + phaseData);
 
         return chapterService.updateChapterPhaseStrategy(chapterId, phaseId, phaseData);
     }
@@ -88,8 +89,8 @@ public class ChapterController {
     @RequestMapping(value = "/getChapterPhasesByChapter")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<ChapterPhase> getChapterPhasesByChapter(@RequestParam("chapterId") Integer chapterId) {
-        System.out.println("Getting ChapterPhases by Chapter");
-        System.out.println(chapterId);
+        GlobalConstants.printIfDoDebug("Getting ChapterPhases by Chapter");
+        GlobalConstants.printIfDoDebug(chapterId);
         return chapterService.getChapterPhasesByChapter(chapterId);
     }
 
@@ -127,7 +128,7 @@ public class ChapterController {
     @RequestMapping(value = "/phaseClear")
     @PreAuthorize("hasRole('ROLE_ADMIN') OR #userId.toString() == authentication.name")
     public @ResponseBody String phaseClear(Integer userId, Integer chapterId, Integer phaseId, Integer result, @RequestBody JSONObject usedCardsIdAndPosJSON) {
-        System.out.println("phaseClear: " + userId + ", chapterId: " + chapterId + ", phaseId: " + phaseId + ", posAndOwnCardId: " + usedCardsIdAndPosJSON);
+        GlobalConstants.printIfDoDebug("phaseClear: " + userId + ", chapterId: " + chapterId + ", phaseId: " + phaseId + ", posAndOwnCardId: " + usedCardsIdAndPosJSON);
         return chapterService.phaseClear(userId, chapterId, phaseId, result, usedCardsIdAndPosJSON.toString());
     }
 }

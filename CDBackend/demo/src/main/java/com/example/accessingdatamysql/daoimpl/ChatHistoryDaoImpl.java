@@ -42,7 +42,7 @@ public class ChatHistoryDaoImpl implements ChatHistoryDao {
     public String addNewChatHistory(Integer fromId, Integer toId) {
 
         ChatHistory ChatHistory = new ChatHistory(fromId, toId);
-        // System.out.println("new ChatHistory has an Id of : " + n.getChatHistoryId());
+        // GlobalConstants.printIfDoDebug("new ChatHistory has an Id of : " + n.getChatHistoryId());
         chatHistoryRepository.save(ChatHistory);
         return "Saved ChatHistory";
 
@@ -51,7 +51,7 @@ public class ChatHistoryDaoImpl implements ChatHistoryDao {
     public String updateChatHistory(Integer fromId, Integer toId, List<String> messages) {
 
         Optional<ChatHistory> ChatHistory = getOneChatHistory(fromId, toId);
-        // System.out.println("old ChatHistory has an Id of : " + n.getChatHistoryId());
+        // GlobalConstants.printIfDoDebug("old ChatHistory has an Id of : " + n.getChatHistoryId());
         if (ChatHistory.isPresent()) {
             ChatHistory.get().setMessages(messages);
             chatHistoryRepository.save(ChatHistory.get());

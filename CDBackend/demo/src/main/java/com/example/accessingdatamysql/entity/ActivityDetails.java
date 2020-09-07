@@ -1,5 +1,7 @@
 package com.example.accessingdatamysql.entity;
 
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "ActivityDetails")
@@ -10,6 +12,9 @@ public class ActivityDetails {
     private String activityImg;
     // 活动描述
     private String activityDescription;
+
+    @Id
+    private ObjectId id;
 
     public ActivityDetails() {
     }

@@ -68,11 +68,11 @@ public class Cache {
     //general
     /////////////
     public static void reloadAll(Context context) {
-        Cache.loadCardsFromNet();
-        Cache.loadOwnCardsFromNet();
+        Cache.loadCardsFromNet(context);
+        Cache.loadOwnCardsFromNet(context);
         Cache.loadFormation(context);
-        Cache.loadActivitiesFromNet();
-        Cache.loadMailsFromNet();
+        Cache.loadActivitiesFromNet(context);
+        Cache.loadMailsFromNet(context);
     }
     /////////////
     //card
@@ -129,10 +129,10 @@ public class Cache {
      *
      * @return success: total amount of cards | fail: failed index of the card * -1
      */
-    public static int loadCardsFromNet() {
+    public static int loadCardsFromNet(Context context) {
         int index = 0;
         try {
-            final JSONArray cardsJson = new JSONArray(HttpClient.doGetShort(Urls.getAllCards()));
+            final JSONArray cardsJson = new JSONArray(HttpClient.doGetShort(context, Urls.getAllCards()));
             for(index = 0; index < cardsJson.length(); ++index) {
                 final JSONObject cardJson = cardsJson.getJSONObject(index);
                 final Card card = new Card();
@@ -235,10 +235,10 @@ public class Cache {
         }
     }
     public static final HashMap<Integer, OwnCard> ownCards = new HashMap<>();
-    public static int loadOwnCardsFromNet() {
+    public static int loadOwnCardsFromNet(Context context) {
         int index = 0;
         try {
-            final JSONArray ownCardsJson = new JSONArray(HttpClient.doGetShort(Urls.getAllOwnCard()));
+            final JSONArray ownCardsJson = new JSONArray(HttpClient.doGetShort(context, Urls.getAllOwnCard()));
             for(index = 0; index < ownCardsJson.length(); ++index) {
                 System.out.println("CachedOwnCard: " + index);
                 final JSONObject ownCardJson = ownCardsJson.getJSONObject(index);
@@ -293,9 +293,9 @@ public class Cache {
         public String imgBase64;
     }
     public static HashMap<Integer, Activity> activities = new HashMap<>();
-    public static void loadActivitiesFromNet() {
+    public static void loadActivitiesFromNet(Context context) {
         try {
-            final JSONArray activitiesJson = new JSONArray(HttpClient.doGetShort(Urls.getAllActivities()));
+            final JSONArray activitiesJson = new JSONArray(HttpClient.doGetShort(context, Urls.getAllActivities()));
             for(int i = 0; i < activitiesJson.length(); ++i) {
                 final JSONObject activityJson = activitiesJson.getJSONObject(i);
                 final Activity activity = new Activity();
@@ -304,7 +304,7 @@ public class Cache {
                 activity.time = activityJson.getString("start");
                 final JSONObject detailJson = activityJson.getJSONObject("activityDetails");
                 activity.description = detailJson.getString("activityDescription");
-                activity.imgBase64 = detailJson.getString("activityImg");
+                activity.imgBase64 = formatBase64(detailJson.getString("activityImg"));
                 final int activityId = activityJson.getInt("activityId");
                 System.out.println("CachedActivity: " + activityId);
                 activities.put(activityId, activity);
@@ -323,9 +323,9 @@ public class Cache {
         public String imgBase64;
     }
     public static final HashMap<Integer, Mail> mails = new HashMap<>();
-    public static void loadMailsFromNet() {
+    public static void loadMailsFromNet(Context context) {
         try {
-            final JSONArray mailsJson = new JSONArray(HttpClient.doGetShort(Urls.getMailBox()));
+            final JSONArray mailsJson = new JSONArray(HttpClient.doGetShort(context, Urls.getMailBox()));
             for(int i = 0; i < mailsJson.length(); ++i) {
                 final JSONObject mailJson = mailsJson.getJSONObject(i);
                 final Mail mail = new Mail();
@@ -333,7 +333,7 @@ public class Cache {
                 mail.time = mailJson.getString("mailTime");
                 final JSONObject mailDetailJson = mailJson.getJSONObject("mailDetails");
                 mail.content = mailDetailJson.getString("mailDescription");
-                mail.imgBase64 = mailDetailJson.getString("mailImg");
+                mail.imgBase64 = formatBase64(mailDetailJson.getString("mailImg"));
                 final int mailId = mailJson.getInt("mailId");
                 System.out.println("CachedMail: " + mailId);
                 mails.put(mailId, mail);
@@ -341,5 +341,8 @@ public class Cache {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+    private static String formatBase64(String base64) {
+        return base64.substring(base64.indexOf(",")); //don't include "data:image/png;base64,"
     }
 }
