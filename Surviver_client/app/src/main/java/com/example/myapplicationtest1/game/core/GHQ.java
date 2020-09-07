@@ -614,8 +614,8 @@ public final class GHQ implements Runnable{
 			return;
 		drawImageGHQ_center(bm, cPoint.intX(), cPoint.intY(), angle);
 	}
-	public static void drawStringGHQ(String string, int x, int y, Paint paint) {
-		targetCanvas.drawText(string, x, y, paint);
+	public static void drawStringGHQ(Object object, int x, int y, Paint paint) {
+		targetCanvas.drawText(object.toString(), x, y, paint);
 	}
 	public static void setFlip(boolean doXFlip, boolean doYFlip) {
 		GHQ.doXFlip = doXFlip ^ GHQ.doXFlip;
