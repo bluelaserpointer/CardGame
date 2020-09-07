@@ -127,7 +127,7 @@ public class OwnCardControllerTest {
 
                 MvcResult result = mockMvc
                                 .perform(MockMvcRequestBuilders
-                                                .post("/ownCard/addOwnCard?userName=" + addedUser.getUserName()
+                                                .post("/ownCard/addOwnCard?userId=" + addedUser.getUserId()
                                                                 + "&cardId=" + addedCard.getCardId())
                                                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                                                 .header("Authorization", token))
@@ -227,7 +227,7 @@ public class OwnCardControllerTest {
 
                 MvcResult result = mockMvc
                                 .perform(MockMvcRequestBuilders
-                                                .post("/ownCard/addOwnCard?userName=" + addedUser.getUserName()
+                                                .post("/ownCard/addOwnCard?userId=" + addedUser.getUserId()
                                                                 + "&cardId=" + addedCard.getCardId())
                                                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                                                 .header("Authorization", token))
@@ -267,9 +267,8 @@ public class OwnCardControllerTest {
         public void addExp() throws Exception {
                 String token = getTOKEN();
                 OwnCard OwnCard = addOwnCardBeforeTest(token);
-                String userName = userService.getOneUser(OwnCard.getUserId()).getUserName();
                 MvcResult result = mockMvc
-                                .perform(get("/ownCard/addExp?userName=" + userName + "&cardId=" + OwnCard.getCardId()
+                                .perform(get("/ownCard/addExp?userId=" + OwnCard.getUserId() + "&cardId=" + OwnCard.getCardId()
                                                 + "&exp=1").contentType(MediaType.APPLICATION_JSON_VALUE)
                                                                 .header("Authorization", token))
                                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
@@ -329,8 +328,8 @@ public class OwnCardControllerTest {
                 String token = getTOKEN();
                 OwnCard addedOwnCard = addOwnCardBeforeTest(token);
                 MvcResult result = mockMvc
-                                .perform(get("/ownCard/getAllOwnCardsByUserName?userName="
-                                                + userService.getOneUser(addedOwnCard.getUserId()).getUserName())
+                                .perform(get("/ownCard/getAllOwnCardsByUserId?userId="
+                                                + addedOwnCard.getUserId())
                                                                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                                                                 .header("Authorization", token))
                                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())

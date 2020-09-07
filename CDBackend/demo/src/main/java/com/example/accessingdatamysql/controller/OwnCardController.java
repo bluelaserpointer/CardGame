@@ -88,7 +88,7 @@ public class OwnCardController {
   // 获取某一用户的所有拥有卡牌关系
   @RequestMapping(value = "/getAllOwnCardsByUserId")
   @PreAuthorize("hasRole('ROLE_ADMIN') OR #userId.toString() == authentication.name")
-  public List<OwnCard> getAllOwnCardsByUserName(@RequestParam("userId") Integer userId) {
+  public List<OwnCard> getAllOwnCardsByUserId(@RequestParam("userId") Integer userId) {
     return OwnCardService.getAllOwnCardsByUserId(userId);
   }
 
