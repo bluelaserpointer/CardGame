@@ -50,7 +50,6 @@ public class ActivityDaoImpl implements ActivityDao {
         Optional<ActivityDetails> optActivityDetails = activityDetailsRepository
                 .findActivityDetailsByActivityIdEquals(updateActivity.getActivityId());
         ActivityDetails activityDetails = new ActivityDetails(updateActivity.getActivityId(), "", "");
-
         if (optActivityDetails.isPresent()) {
             GlobalConstants.printIfDoDebug("Activity Exists");
             activityDetails = optActivityDetails.get();
@@ -63,7 +62,6 @@ public class ActivityDaoImpl implements ActivityDao {
         activityDetailsRepository.save(activityDetails);
         Activity.setActivityDetails(activityDetails);
         return Activity;
-
     }
 
     public List<Activity> getAllActivities() {
