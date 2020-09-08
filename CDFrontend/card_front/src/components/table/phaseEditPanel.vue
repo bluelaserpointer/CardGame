@@ -7,9 +7,9 @@
             <el-select v-model="currChapter" class="chapterSelect" placeholder="请选择" @change="handleChangeChapter">
               <el-option-group class="chapterOption">
                 <el-option
+                  class="chapterSelectOption"
                   v-for="chapter in chapterList"
                   :key="chapter.chapterId"
-                  class="chapterSelectOption"
                   :label="chapter.chapterId"
                   :value="chapter.chapterId"
                 />
@@ -20,9 +20,9 @@
             <el-select v-model="currPhase" class="phaseSelect" placeholder="请选择" @change="handleChangePhase">
               <el-option-group class="phaseOption">
                 <el-option
+                  class="phaseSelectOption"
                   v-for="phaseNo in currPhaseNo"
                   :key="phaseNo"
-                  class="phaseSelectOption"
                   :label="phaseNo"
                   :value="phaseNo"
                 />
@@ -30,12 +30,12 @@
             </el-select>
           </span>
           <span v-else style="margin-right: auto;">Phase:
-            <el-select v-model="currPhase" class="phaseSelect" placeholder="请选择" disabled @change="handleChangePhase">
+            <el-select v-model="currPhase" class="phaseSelect" placeholder="请选择" @change="handleChangePhase" disabled>
               <el-option-group class="phaseOption">
                 <el-option
+                  class="phaseSelectOption"
                   v-for="phaseNo in currPhaseNo"
                   :key="phaseNo"
-                  class="phaseSelectOption"
                   :label="phaseNo"
                   :value="phaseNo"
                 />
@@ -60,112 +60,104 @@
         <div style="display: grid; grid-row: 1 / span 1; width: 100%; grid-template-columns: 50% 50%">
           <div>
             <el-table
-              :key="tableKey"
-              v-loading="listLoading"
-              style="grid-column: 1 / span 1"
-              :data="itemAwardList"
-              class="itemAwardTable"
-              border
-              fit
-              highlight-current-row
-              height="350"
-              max-height="350"
-              @sort-change="sortChange"
-            >
-              <el-table-column label="ID" prop="itemId" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
-                <template slot-scope="{row}">
-                  <span>{{ row.itemId }}</span>
-                </template>
-              </el-table-column>
-              <el-table-column label="ItemName" width="80" align="center">
-                <template slot-scope="{row}">
-                  <span class="link-type">{{ row.itemName }}</span>
-                </template>
-              </el-table-column>
-              <el-table-column label="Phase" align="center">
-                <template slot-scope="scope">
-                  <el-button
-                    size="mini"
-                    class="phaseAddItemButton"
-                    @click="phaseAddItem(scope.$index, scope.row)"
-                  >+</el-button>
-                  <el-button
-                    size="mini"
-                    class="phaseMinusItemButton"
-                    @click="phaseMinusItem(scope.$index, scope.row)"
-                  >-</el-button>
-                </template>
-              </el-table-column>
-              <el-table-column label="Chapter" align="center">
-                <template slot-scope="scope">
-                  <el-button
-                    size="mini"
-                    class="chapterAddItemButton"
-                    @click="chapterAddItem(scope.$index, scope.row)"
-                  >+</el-button>
-                  <el-button
-                    size="mini"
-                    class="chapterMinusItemButton"
-                    @click="chapterMinusItem(scope.$index, scope.row)"
-                  >-</el-button>
-                </template>
-              </el-table-column>
-            </el-table>
+            style="grid-column: 1 / span 1"
+            :key="tableKey"
+            v-loading="listLoading"
+            :data="itemAwardList"
+            class="itemAwardTable"
+            border
+            fit
+            highlight-current-row
+            height="350"
+            max-height="350"
+            @sort-change="sortChange"
+          >
+            <el-table-column label="ID" prop="itemId" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
+              <template slot-scope="{row}">
+                <span>{{ row.itemId }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="ItemName" width="80" align="center">
+              <template slot-scope="{row}">
+                <span class="link-type">{{ row.itemName }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="Phase" align="center">
+              <template slot-scope="scope">
+                <el-button
+                  size="mini"
+                  class="phaseAddItemButton"
+                  @click="phaseAddItem(scope.$index, scope.row)">+</el-button>
+                <el-button
+                  size="mini"
+                  class="phaseMinusItemButton"
+                  @click="phaseMinusItem(scope.$index, scope.row)">-</el-button>
+              </template>
+            </el-table-column>
+            <el-table-column label="Chapter" align="center">
+              <template slot-scope="scope">
+                <el-button
+                  size="mini"
+                  class="chapterAddItemButton"
+                  @click="chapterAddItem(scope.$index, scope.row)">+</el-button>
+                <el-button
+                  size="mini"
+                  class="chapterMinusItemButton"
+                  @click="chapterMinusItem(scope.$index, scope.row)">-</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
             <pagination v-show="itemAwardListQuery.total > 0" :total.sync="itemAwardListQuery.total * itemAwardListQuery.limit" :page.sync="itemAwardListQuery.page" :limit.sync="itemAwardListQuery.limit" @pagination="getItemAwardList(itemAwardListQuery.page, itemAwardListQuery.limit)" />
           </div>
           <div>
             <el-table
-              :key="tableKey"
-              v-loading="listLoading"
-              style="grid-column: 2 / span 1"
-              :data="cardAwardList"
-              class="cardAwardTable"
-              border
-              fit
-              highlight-current-row
-              height="350"
-              max-height="350"
-              @sort-change="sortChange"
-            >
-              <el-table-column label="ID" prop="cardId" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
-                <template slot-scope="{row}">
-                  <span>{{ row.cardId }}</span>
-                </template>
-              </el-table-column>
-              <el-table-column label="CardName" width="80" align="center">
-                <template slot-scope="{row}">
-                  <span>{{ row.cardName }}</span>
-                </template>
-              </el-table-column>
-              <el-table-column label="Phase" align="center">
-                <template slot-scope="scope">
-                  <el-button
-                    size="mini"
-                    class="phaseAddCardButton"
-                    @click="phaseAddCard(scope.$index, scope.row)"
-                  >+</el-button>
-                  <el-button
-                    size="mini"
-                    class="phaseMinusCardButton"
-                    @click="phaseMinusCard(scope.$index, scope.row)"
-                  >-</el-button>
-                </template>
-              </el-table-column>
-              <el-table-column label="Chapter" align="center">
-                <template slot-scope="scope">
-                  <el-button
-                    size="mini"
-                    class="chapterAddCardButton"
-                    @click="chapterAddCard(scope.$index, scope.row)"
-                  >+</el-button>
-                  <el-button
-                    size="mini"
-                    class="chapterMinusCardButton"
-                    @click="chapterMinusCard(scope.$index, scope.row)"
-                  >-</el-button>
-                </template>
-              </el-table-column>
-            </el-table>
+            style="grid-column: 2 / span 1"
+            :key="tableKey"
+          v-loading="listLoading"
+          :data="cardAwardList"
+            class="cardAwardTable"
+            border
+          fit
+          highlight-current-row
+            height="350"
+            max-height="350"
+          @sort-change="sortChange"
+        >
+          <el-table-column label="ID" prop="cardId" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
+            <template slot-scope="{row}">
+              <span>{{ row.cardId }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="CardName" width="80" align="center">
+            <template slot-scope="{row}">
+              <span>{{ row.cardName }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="Phase" align="center">
+            <template slot-scope="scope">
+              <el-button
+                size="mini"
+                class="phaseAddCardButton"
+                @click="phaseAddCard(scope.$index, scope.row)">+</el-button>
+              <el-button
+                size="mini"
+                class="phaseMinusCardButton"
+                @click="phaseMinusCard(scope.$index, scope.row)">-</el-button>
+            </template>
+          </el-table-column>
+          <el-table-column label="Chapter" align="center">
+            <template slot-scope="scope">
+              <el-button
+                size="mini"
+                class="chapterAddCardButton"
+                @click="chapterAddCard(scope.$index, scope.row)">+</el-button>
+              <el-button
+                size="mini"
+                class="chapterMinusCardButton"
+                @click="chapterMinusCard(scope.$index, scope.row)">-</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
             <pagination v-show="cardAwardListQuery.total > 0" :total.sync="cardAwardListQuery.total * cardAwardListQuery.limit" :page.sync="cardAwardListQuery.page" :limit.sync="cardAwardListQuery.limit" @pagination="getCardAwardList(cardAwardListQuery.page, cardAwardListQuery.limit)" />
           </div>
         </div>
@@ -174,99 +166,99 @@
           <div style="display: grid; height: 100%; grid-template-columns: 50% 50%">
             <div>
               <el-table
-                :key="tableKey"
-                v-loading="listLoading"
-                :data="phaseAwardItems"
-                class="phaseAwardItemsTable"
-                border
-                fit
-                highlight-current-row
-                style="width: 100%; grid-column: 1 / span 1"
-                height="350"
-                max-height="350"
-                @sort-change="sortChange"
-              >
-                <el-table-column label="ItemId" prop="itemId" sortable="custom" align="center" width="130" :class-name="getSortClass('id')">
-                  <template slot-scope="{row}">
-                    <span>{{ row.itemId }}</span>
-                  </template>
-                </el-table-column>
-                <el-table-column label="Qty" align="center">
-                  <template slot-scope="{row}">
-                    <span class="link-type">{{ row.quantity }}</span>
-                  </template>
-                </el-table-column>
-              </el-table>
+              :key="tableKey"
+              v-loading="listLoading"
+              :data="phaseAwardItems"
+              class="phaseAwardItemsTable"
+              border
+              fit
+              highlight-current-row
+              style="width: 100%; grid-column: 1 / span 1"
+              height="350"
+              max-height="350"
+              @sort-change="sortChange"
+            >
+              <el-table-column label="ItemId" prop="itemId" sortable="custom" align="center" width="130" :class-name="getSortClass('id')">
+                <template slot-scope="{row}">
+                  <span>{{ row.itemId }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="Qty" align="center">
+                <template slot-scope="{row}">
+                  <span class="link-type">{{ row.quantity }}</span>
+                </template>
+              </el-table-column>
+            </el-table>
             </div>
             <div>
               <el-table
-                :key="tableKey"
-                v-loading="listLoading"
-                :data="phaseAwardCards"
-                class="phaseAwardCardsTable"
-                border
-                fit
-                highlight-current-row
-                style="width: 100%; grid-column: 2 / span 1"
-                height="350"
-                max-height="350"
-                @sort-change="sortChange"
-              >
-                <el-table-column label="CardId" prop="itemId" sortable="custom" align="center" :class-name="getSortClass('id')">
-                  <template slot-scope="{row}">
-                    <span>{{ row }}</span>
-                  </template>
-                </el-table-column>
-              </el-table>
+              :key="tableKey"
+              v-loading="listLoading"
+              :data="phaseAwardCards"
+              class="phaseAwardCardsTable"
+              border
+              fit
+              highlight-current-row
+              style="width: 100%; grid-column: 2 / span 1"
+              height="350"
+              max-height="350"
+              @sort-change="sortChange"
+            >
+              <el-table-column label="CardId" prop="itemId" sortable="custom" align="center" :class-name="getSortClass('id')">
+                <template slot-scope="{row}">
+                  <span>{{ row }}</span>
+                </template>
+              </el-table-column>
+            </el-table>
             </div>
           </div>
           <div style="display: grid; height: 100%; grid-template-columns: 50% 50%">
             <div>
               <el-table
-                :key="tableKey"
-                v-loading="listLoading"
-                :data="chapterAwardItems"
-                class="chapterAwardItemsTable"
-                border
-                fit
-                highlight-current-row
-                style="width: 100%; grid-column: 1 / span 1"
-                height="350"
-                max-height="350"
-                @sort-change="sortChange"
-              >
-                <el-table-column label="ItemId" prop="itemId" sortable="custom" align="center" width="130" :class-name="getSortClass('id')">
-                  <template slot-scope="{row}">
-                    <span>{{ row.itemId }}</span>
-                  </template>
-                </el-table-column>
-                <el-table-column label="Qty" align="center">
-                  <template slot-scope="{row}">
-                    <span class="link-type">{{ row.quantity }}</span>
-                  </template>
-                </el-table-column>
-              </el-table>
+              :key="tableKey"
+              v-loading="listLoading"
+              :data="chapterAwardItems"
+              class="chapterAwardItemsTable"
+              border
+              fit
+              highlight-current-row
+              style="width: 100%; grid-column: 1 / span 1"
+              height="350"
+              max-height="350"
+              @sort-change="sortChange"
+            >
+              <el-table-column label="ItemId" prop="itemId" sortable="custom" align="center" width="130" :class-name="getSortClass('id')">
+                <template slot-scope="{row}">
+                  <span>{{ row.itemId }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="Qty" align="center">
+                <template slot-scope="{row}">
+                  <span class="link-type">{{ row.quantity }}</span>
+                </template>
+              </el-table-column>
+            </el-table>
             </div>
             <div>
               <el-table
-                :key="tableKey"
-                v-loading="listLoading"
-                :data="chapterAwardCards"
-                class="chapterAwardCardsTable"
-                border
-                fit
-                highlight-current-row
-                style="width: 100%; grid-column: 2 / span 1"
-                height="350"
-                max-height="350"
-                @sort-change="sortChange"
-              >
-                <el-table-column label="CardId" prop="itemId" sortable="custom" align="center" :class-name="getSortClass('id')">
-                  <template slot-scope="{row}">
-                    <span>{{ row }}</span>
-                  </template>
-                </el-table-column>
-              </el-table>
+          :key="tableKey"
+          v-loading="listLoading"
+          :data="chapterAwardCards"
+          class="chapterAwardCardsTable"
+          border
+          fit
+          highlight-current-row
+          style="width: 100%; grid-column: 2 / span 1"
+          height="350"
+          max-height="350"
+          @sort-change="sortChange"
+        >
+          <el-table-column label="CardId" prop="itemId" sortable="custom" align="center" :class-name="getSortClass('id')">
+            <template slot-scope="{row}">
+              <span>{{ row }}</span>
+            </template>
+          </el-table-column>
+        </el-table>
             </div>
           </div>
         </div>
@@ -284,72 +276,72 @@
         </div>
         <div>
           <el-table
-            :key="tableKey"
-            v-loading="listLoading"
-            :data="cardList"
-            border
-            fit
-            highlight-current-row
-            style="margin-right:auto; width: 100%; grid-row: 2 / span 1"
-            height="350"
-            max-height="350"
-            @current-change="handleCardChoose"
-            @sort-change="sortChange"
-          >
-            <el-table-column label="ID" prop="cardId" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
-              <template slot-scope="{row}">
-                <span>{{ row.cardId }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column label="CardName" width="150" align="center">
-              <template slot-scope="{row}">
-                <span>{{ row.cardName }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column label="HP" width="80" align="center">
-              <template slot-scope="{row}">
-                <span>{{ row.healthPoint }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column label="ATK" width="80" align="center">
-              <template slot-scope="{row}">
-                <span>{{ row.attack }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column label="DEF" align="center" width="80">
-              <template slot-scope="{row}">
-                <span>{{ row.defense }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column label="RANGE" class-name="status-col" width="80" align="center">
-              <template slot-scope="{row}">
-                <span>{{ row.attackRange }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column label="CD" class-name="status-col" width="80" align="center">
-              <template slot-scope="{row}">
-                <span>{{ row.cd }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column label="SPD" class-name="status-col" width="80" align="center">
-              <template slot-scope="{row}">
-                <span>{{ row.speed }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column label="Type" class-name="status-col" width="100">
-              <template slot-scope="{row}">
-                <span>{{ row.type }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column label="Cover" min-width="100px">
-              <template slot-scope="{row}">
-                <el-image
-                  style="width: auto; height: auto"
-                  :src="row.cardImg"
-                />
-              </template>
-            </el-table-column>
-          </el-table>
+          :key="tableKey"
+          v-loading="listLoading"
+          :data="cardList"
+          border
+          fit
+          highlight-current-row
+          style="margin-right:auto; width: 100%; grid-row: 2 / span 1"
+          height="350"
+          max-height="350"
+          @current-change="handleCardChoose"
+          @sort-change="sortChange"
+        >
+          <el-table-column label="ID" prop="cardId" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
+            <template slot-scope="{row}">
+              <span>{{ row.cardId }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="CardName" width="150" align="center">
+            <template slot-scope="{row}">
+              <span>{{ row.cardName }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="HP" width="80" align="center">
+            <template slot-scope="{row}">
+              <span>{{ row.healthPoint }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="ATK" width="80" align="center">
+            <template slot-scope="{row}">
+              <span>{{ row.attack }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="DEF" align="center" width="80">
+            <template slot-scope="{row}">
+              <span>{{ row.defense }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="RANGE" class-name="status-col" width="80" align="center">
+            <template slot-scope="{row}">
+              <span>{{ row.attackRange }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="CD" class-name="status-col" width="80" align="center">
+            <template slot-scope="{row}">
+              <span>{{ row.cd }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="SPD" class-name="status-col" width="80" align="center">
+            <template slot-scope="{row}">
+              <span>{{ row.speed }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="Type" class-name="status-col" width="100">
+            <template slot-scope="{row}">
+              <span>{{ row.type }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="Cover" min-width="100px">
+            <template slot-scope="{row}">
+              <el-image
+                style="width: auto; height: auto"
+                :src="row.cardImg"
+              />
+            </template>
+          </el-table-column>
+        </el-table>
           <pagination v-show="cardListQuery.total > 0" :total.sync="cardListQuery.total * cardListQuery.limit" :page.sync="cardListQuery.page" :limit.sync="cardListQuery.limit" @pagination="getCardList(cardListQuery.page, cardListQuery.limit)" />
         </div>
       </div>
@@ -407,13 +399,13 @@ export default {
         total: 0,
         sort: '+id'
       },
-      itemAwardListQuery: {
+      itemAwardListQuery:{
         page: 1,
         limit: 20,
         total: 0,
         sort: '+id'
       },
-      cardAwardListQuery: {
+      cardAwardListQuery:{
         page: 1,
         limit: 20,
         total: 0,
@@ -427,12 +419,12 @@ export default {
       textMap: {
         update: 'Edit',
         create: 'Create'
-      }
+      },
     }
   },
   watch: {
     currPhase(val) {
-      this.prevPhase = val
+      this.prevPhase = val;
       this.handleRefreshPhase(val)
     },
     currChapter(val) {
@@ -441,152 +433,180 @@ export default {
 
   },
   created() {
-    this.getList()
+    this.getList();
   },
   methods: {
-    phaseAddItem(index, row) {
-      for (const i in this.phaseAwardItems) {
-        if (this.phaseAwardItems[i].itemId === row.itemId) {
-          this.phaseAwardItems[i].quantity++
-          return
+    phaseAddItem(index, row){
+      for(let i in this.phaseAwardItems)
+      {
+        if(this.phaseAwardItems[i].itemId === row.itemId)
+        {
+          this.phaseAwardItems[i].quantity++;
+          return;
         }
       }
-      const tmp = {
-        'itemId': parseInt(row.itemId),
-        'quantity': 1
-      }
-      this.phaseAwardItems.push(tmp)
+      let tmp = {
+        "itemId": parseInt(row.itemId),
+        "quantity": 1
+      };
+      this.phaseAwardItems.push(tmp);
     },
-    phaseMinusItem(index, row) {
-      for (const i in this.phaseAwardItems) {
-        if (this.phaseAwardItems[i].itemId === row.itemId) {
-          if (this.phaseAwardItems[i].quantity === 1) { this.phaseAwardItems.splice(i, 1) } else { this.phaseAwardItems[i].quantity-- }
-          return
-        }
-      }
-    },
-
-    phaseAddCard(index, row) {
-      this.phaseAwardCards.push(row.cardId)
-    },
-    phaseMinusCard(index, row) {
-      for (const i in this.phaseAwardCards) {
-        if (this.phaseAwardCards[i] === row.cardId) {
-          this.phaseAwardCards.splice(i, 1)
-          console.log('Splice')
-          break
+    phaseMinusItem(index, row){
+      for(let i in this.phaseAwardItems)
+      {
+        if(this.phaseAwardItems[i].itemId === row.itemId)
+        {
+          if(this.phaseAwardItems[i].quantity === 1)
+            this.phaseAwardItems.splice(i, 1);
+          else
+            this.phaseAwardItems[i].quantity--;
+          return;
         }
       }
     },
 
-    chapterAddItem(index, row) {
-      for (const i in this.chapterAwardItems) {
-        if (this.chapterAwardItems[i].itemId === row.itemId) {
-          this.chapterAwardItems[i].quantity++
-          return
-        }
-      }
-      const tmp = {
-        'itemId': parseInt(row.itemId),
-        'quantity': 1
-      }
-      this.chapterAwardItems.push(tmp)
+    phaseAddCard(index, row){
+      this.phaseAwardCards.push(row.cardId);
     },
-    chapterMinusItem(index, row) {
-      for (const i in this.chapterAwardItems) {
-        if (this.chapterAwardItems[i].itemId === row.itemId) {
-          if (this.chapterAwardItems[i].quantity === 1) { this.chapterAwardItems.splice(i, 1) } else { this.chapterAwardItems[i].quantity-- }
-          return
+    phaseMinusCard(index, row){
+      for(let i in this.phaseAwardCards)
+      {
+        if(this.phaseAwardCards[i] === row.cardId)
+        {
+          this.phaseAwardCards.splice(i, 1);
+          console.log("Splice");
+          break;
         }
       }
     },
 
-    chapterAddCard(index, row) {
-      this.chapterAwardCards.push(row.cardId)
+    chapterAddItem(index, row){
+      for(let i in this.chapterAwardItems)
+      {
+        if(this.chapterAwardItems[i].itemId === row.itemId)
+        {
+          this.chapterAwardItems[i].quantity++;
+          return;
+        }
+      }
+      let tmp = {
+        "itemId": parseInt(row.itemId),
+        "quantity": 1
+      };
+      this.chapterAwardItems.push(tmp);
     },
-    chapterMinusCard(index, row) {
-      for (const i in this.chapterAwardCards) {
-        if (this.chapterAwardCards[i] === row.cardId) {
-          this.chapterAwardCards.splice(i, 1)
-          break
+    chapterMinusItem(index, row){
+      for(let i in this.chapterAwardItems)
+      {
+        if(this.chapterAwardItems[i].itemId === row.itemId)
+        {
+          if(this.chapterAwardItems[i].quantity === 1)
+            this.chapterAwardItems.splice(i, 1);
+          else
+            this.chapterAwardItems[i].quantity--;
+          return;
         }
       }
     },
 
-    transObjToArr(obj) {
-      const arr = []
-      for (const key in obj) {
-        const tmp = {
-          'itemId': parseInt(key),
-          'quantity': obj[key]
+    chapterAddCard(index, row){
+      this.chapterAwardCards.push(row.cardId);
+    },
+    chapterMinusCard(index, row){
+      for(let i in this.chapterAwardCards)
+      {
+        if(this.chapterAwardCards[i] === row.cardId)
+        {
+          this.chapterAwardCards.splice(i, 1);
+          break;
         }
-        arr.push(tmp)
       }
-      return arr
+    },
+
+
+    transObjToArr(obj)
+    {
+      let arr = [];
+      for(let key in obj) {
+        let tmp = {
+          "itemId": parseInt(key),
+          "quantity": obj[key]
+        };
+        arr.push(tmp);
+      }
+      return arr;
     },
 
     handleRefreshPhase(val) {
-      this.confirmed = true
-      this.placedCard = false
-      this.posList = []
-      const chapterData = this.chapterData
-      for (const i in chapterData) {
+      this.confirmed = true;
+      this.placedCard = false;
+      this.posList = [];
+      let chapterData = this.chapterData;
+      for (let i in chapterData) {
         if (chapterData[i].phaseId === val) {
-          this.posList.push(chapterData[i].positionId)
+          this.posList.push(chapterData[i].positionId);
           this.posMap.set(chapterData[i].positionId, chapterData[i].cardId)
         }
       }
 
-      const chapterPhaseData = this.chapterPhaseData
-      let foundFlag = false
-      for (const i in chapterPhaseData) {
-        if (chapterPhaseData[i].phaseId === val) {
-          foundFlag = true
-          console.log('flag')
-          console.log(chapterPhaseData[i].awardCards)
-          this.phaseAwardItems = this.transObjToArr(chapterPhaseData[i].awardItems)
-          this.phaseAwardCards = Array.from(chapterPhaseData[i].awardCards)
-          break
+      let chapterPhaseData = this.chapterPhaseData;
+      let foundFlag = false;
+      for(let i in chapterPhaseData)
+      {
+        if(chapterPhaseData[i].phaseId === val){
+          foundFlag = true;
+          console.log("flag");
+          console.log(chapterPhaseData[i].awardCards);
+          this.phaseAwardItems = this.transObjToArr(chapterPhaseData[i].awardItems);
+          this.phaseAwardCards = Array.from(chapterPhaseData[i].awardCards);
+          break;
         }
       }
 
-      if (!foundFlag) {
-        this.phaseAwardCards = []
-        this.phaseAwardItems = []
+      if(!foundFlag)
+      {
+        this.phaseAwardCards = [];
+        this.phaseAwardItems = [];
       }
+
     },
 
     handleChangeChapter() {
-      this.handleChange()
-      const postData = new FormData()
-      const _this = this
-      postData.append('chapterId', this.currChapter)
+      this.handleChange();
+      let postData = new FormData();
+      let _this = this;
+      postData.append('chapterId', this.currChapter);
 
-      console.log('Inside handleChangeChapter')
-      console.log(this.chapterList)
-      for (const i in this.chapterList) {
-        if (this.chapterList[i].chapterId === this.currChapter) {
-          this.currPhaseNo = this.chapterList[i].phaseNo
-          this.chapterAwardItems = this.transObjToArr(this.chapterList[i].awardItems)
-          this.chapterAwardCards = Array.from(this.chapterList[i].awardCards)
+      console.log("Inside handleChangeChapter");
+      console.log(this.chapterList);
+      for(let i in this.chapterList)
+      {
+        if(this.chapterList[i].chapterId === this.currChapter)
+        {
+          this.currPhaseNo = this.chapterList[i].phaseNo;
+          this.chapterAwardItems = this.transObjToArr(this.chapterList[i].awardItems);
+          this.chapterAwardCards = Array.from(this.chapterList[i].awardCards);
         }
       }
 
-      request.post('chapter/getChapterDetailsByChapter', postData).then(response => {
+      request.post( 'chapter/getChapterDetailsByChapter', postData).then(response => {
         if (response.data) {
-          _this.chapterData = response.data
 
-          request.post('chapter/getChapterPhasesByChapter', postData).then(res => {
-            console.log(res.data)
-            _this.chapterPhaseData = res.data
-            _this.handleRefreshPhase(1)
+          _this.chapterData = response.data;
+
+          request.post( 'chapter/getChapterPhasesByChapter', postData).then(res => {
+            console.log(res.data);
+            _this.chapterPhaseData = res.data;
+            _this.handleRefreshPhase(1);
           })
+
         } else {
           // this.$message.error('Fetching Data Failed!');
         }
       }).catch(error => {
-        this.$message.error('Fetching ChapterDetails Failed!')
-      })
+        this.$message.error('Fetching ChapterDetails Failed!');
+      });
+
     },
 
     handleChangePhase() {
@@ -603,171 +623,183 @@ export default {
           type: 'success'
         })
       } else {
-        this.currPhase = this.prevPhase
-        this.currChapter = this.prevChapter
-        this.$message.error('Choices not yet confirmed!')
+        this.currPhase = this.prevPhase;
+        this.currChapter = this.prevChapter;
+        this.$message.error('Choices not yet confirmed!');
         return
       }
       if (this.currPhase !== undefined && this.posList.length > 0) { this.confirmed = false }
     },
 
+
     placeCard(pos) {
       if (this.currChapter === undefined || this.currPhase === undefined || this.currCard === undefined) {
-        this.$message.error('Choices unspecified!')
+        this.$message.error('Choices unspecified!');
         return
       }
-      this.confirmed = false
-      this.placedCard = true
-      const currCard = parseInt(this.currCard)
-      const index = this.posList.indexOf(pos)
+      this.confirmed = false;
+      this.placedCard = true;
+      const currCard = parseInt(this.currCard);
+      const index = this.posList.indexOf(pos);
       if (this.posList.indexOf(pos) >= 0) {
-        this.posMap.delete(pos)
+        this.posMap.delete(pos);
         this.posList.splice(index, 1)
       } else {
-        this.posMap.set(pos, currCard)
-        this.posList.push(pos)
+        this.posMap.set(pos, currCard);
+        this.posList.push(pos);
       }
     },
     handleCardChoose(val) {
       this.currCard = val.cardId
     },
 
-    handleConfirm() {
-      console.log(this.posMap)
-      const chapterPhaseData = Array.from(this.posMap)
-      const postData = new FormData()
-      const _this = this
-      postData.append('chapterId', this.currChapter)
-      postData.append('phaseId', this.currPhase)
-      postData.append('phaseData', JSON.stringify(chapterPhaseData))
 
-      request.post('chapter/updateChapterPhaseStrategy', postData).then(response => {
+
+    handleConfirm() {
+      console.log(this.posMap);
+      let chapterPhaseData = Array.from(this.posMap);
+      let postData = new FormData();
+      let _this = this;
+      postData.append('chapterId', this.currChapter);
+      postData.append('phaseId', this.currPhase);
+      postData.append('phaseData', JSON.stringify(chapterPhaseData));
+
+      request.post( 'chapter/updateChapterPhaseStrategy', postData).then(response => {
         if (response.data) {
           _this.chapterData = response.data
-        } else {
-          this.$message.error('Updating Data Failed!')
+        }else{
+          this.$message.error('Updating Data Failed!');
         }
         this.handleRefreshPhase(this.currPhase)
       })
         .catch(error => {
-          this.$message.error('Updating Data Failed!')
+          this.$message.error('Updating Data Failed!');
         })
+
     },
 
-    transObjToMap(arr) {
-      const map = new Map()
-      for (const i in arr) { map.set(arr[i].itemId, arr[i].quantity) }
-      return Array.from(map)
+    transObjToMap(arr)
+    {
+      let map = new Map();
+      for(let i in arr)
+        map.set(arr[i].itemId, arr[i].quantity);
+      return Array.from(map);
     },
 
-    handleChapterAwardConfirm() {
-      if (this.currChapter === undefined) {
-        this.$message.error('Chapter is undefined!')
-        return
+    handleChapterAwardConfirm(){
+      if(this.currChapter === undefined) {
+        this.$message.error('Chapter is undefined!');
+        return;
       }
 
-      const postData = new FormData()
+      let postData = new FormData();
 
-      postData.append('chapterId', this.currChapter)
-      postData.append('awardItems', JSON.stringify(this.transObjToMap(this.chapterAwardItems)))
-      postData.append('awardCards', JSON.stringify(this.chapterAwardCards))
+      postData.append('chapterId', this.currChapter);
+      postData.append('awardItems', JSON.stringify(this.transObjToMap(this.chapterAwardItems)));
+      postData.append('awardCards', JSON.stringify(this.chapterAwardCards));
 
-      request.post('chapter/updateChapterAwards', postData).then(response => {
+      request.post( 'chapter/updateChapterAwards', postData).then(response => {
         if (response.data) {
-          this.chapterList = response.data
-        } else {
-          this.$message.error('Updating Data Failed!')
+          this.chapterList = response.data;
+        }else{
+          this.$message.error('Updating Data Failed!');
         }
         this.handleRefreshPhase(this.currPhase)
       })
         .catch(error => {
-          this.$message.error('Updating Data Failed!')
-        })
+          this.$message.error('Updating Data Failed!');
+        });
     },
 
-    handlePhaseAwardConfirm() {
-      if (this.currChapter === undefined || this.currPhase === undefined) {
-        this.$message.error('Chapter or phase is undefined!')
-        return
+    handlePhaseAwardConfirm(){
+      if(this.currChapter === undefined || this.currPhase === undefined) {
+        this.$message.error('Chapter or phase is undefined!');
+        return;
       }
 
-      const postData = new FormData()
+      let postData = new FormData();
 
-      postData.append('chapterId', this.currChapter)
-      postData.append('phaseId', this.currPhase)
-      postData.append('awardItems', JSON.stringify(this.transObjToMap(this.phaseAwardItems)))
-      postData.append('awardCards', JSON.stringify(this.phaseAwardCards))
+      postData.append('chapterId', this.currChapter);
+      postData.append('phaseId', this.currPhase);
+      postData.append('awardItems', JSON.stringify(this.transObjToMap(this.phaseAwardItems)));
+      postData.append('awardCards', JSON.stringify(this.phaseAwardCards));
 
-      request.post('chapter/updateChapterPhaseAwards', postData).then(response => {
+
+      request.post( 'chapter/updateChapterPhaseAwards', postData).then(response => {
         if (response.data) {
-          this.chapterPhaseData = response.data
-        } else {
-          this.$message.error('Updating Data Failed!')
+          this.chapterPhaseData = response.data;
+        }else{
+          this.$message.error('Updating Data Failed!');
         }
         this.handleRefreshPhase(this.currPhase)
       })
         .catch(error => {
-          this.$message.error('Updating Data Failed!')
+          this.$message.error('Updating Data Failed!');
         })
     },
 
     getItemAwardList(page, limit) {
-      const postData = {
+      let postData = {
         pageToken: page,
         pageSize: limit
-      }
-      request.post('item/List', postData).then(res => {
-        if (res.data) {
-          this.itemAwardList = res.data.result
-          this.itemAwardListQuery.total = res.data.totalPages
+      };
+      request.post( 'item/List', postData).then(res => {
+        if(res.data) {
+          this.itemAwardList = res.data.result;
+          this.itemAwardListQuery.total = res.data.totalPages;
           this.watchList()
-        } else {
-          this.$message.error('Fetching Data Failed!')
+        }else
+        {
+          this.$message.error('Fetching Data Failed!');
         }
       })
     },
 
+
     getCardAwardList(page, limit) {
-      const postData = {
+      let postData = {
         pageToken: page,
         pageSize: limit
-      }
-      request.post('card/List', postData).then(res => {
-        if (res.data) {
-          this.cardAwardList = res.data.result
-          this.cardAwardListQuery.total = res.data.totalPages
+      };
+      request.post( 'card/List', postData).then(res => {
+        if(res.data) {
+          this.cardAwardList = res.data.result;
+          this.cardAwardListQuery.total = res.data.totalPages;
           this.watchList()
-        } else {
-          this.$message.error('Fetching Data Failed!')
+        }else
+        {
+          this.$message.error('Fetching Data Failed!');
         }
       })
     },
 
     getCardList(page, limit) {
-      const postData = {
+      let postData = {
         pageToken: page,
         pageSize: limit
-      }
-      request.post('card/List', postData).then(res => {
-        if (res.data) {
-          this.cardList = res.data.result
-          this.cardListQuery.total = res.data.totalPages
+      };
+      request.post( 'card/List', postData).then(res => {
+        if(res.data) {
+          this.cardList = res.data.result;
+          this.cardListQuery.total = res.data.totalPages;
           this.watchList()
-        } else {
-          this.$message.error('Fetching Data Failed!')
+        }else
+        {
+          this.$message.error('Fetching Data Failed!');
         }
       })
     },
 
     getList() {
-      request.get('chapter/getAllChapters').then(response => {
-        if (response.data) {
-          this.chapterList = response.data
-          this.getItemAwardList(this.itemAwardListQuery.page, this.itemAwardListQuery.limit)
-          this.getCardAwardList(this.cardAwardListQuery.page, this.cardAwardListQuery.limit)
-          this.getCardList(this.cardListQuery.page, this.cardListQuery.limit)
-        } else {
-          this.$message.error('Fetching Data Failed!')
+      request.get( 'chapter/getAllChapters').then(response => {
+        if(response.data)
+        {
+          this.chapterList = response.data;
+          this.getItemAwardList(this.itemAwardListQuery.page, this.itemAwardListQuery.limit);
+          this.getCardAwardList(this.cardAwardListQuery.page, this.cardAwardListQuery.limit);
+          this.getCardList(this.cardListQuery.page, this.cardListQuery.limit);
+        }else{
+          this.$message.error('Fetching Data Failed!');
         }
       })
     },
@@ -793,7 +825,7 @@ export default {
     getSortClass: function(key) {
       // const sort = this.listQuery.sort;
       // return sort === `+${key}` ? 'ascending' : 'descending'
-    }
+    },
   }
 }
 </script>

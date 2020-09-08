@@ -10,7 +10,7 @@ const componentsRouter = {
   meta: {
     title: 'Components',
     icon: 'component'
-  }
+  },
   // children: [
   //   {
   //     path: 'tinymce',
@@ -97,6 +97,6 @@ const componentsRouter = {
   //     meta: { title: 'Drag Kanban' }
   //   }
   // ]
-}
+};
 
 export default componentsRouter

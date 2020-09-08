@@ -20,9 +20,9 @@ export default {
   },
   methods: {
     handleClick(tab, event) {
-      console.log(tab, event)
+      console.log(tab, event);
       if (tab.$el.id === 'pane-second') {
-        this.$refs.entity.getList(this.$refs.entity.listQuery.page, this.$refs.entity.listQuery.limit)
+        this.$refs.entity.getList(this.$refs.entity.listQuery.page, this.$refs.entity.listQuery.limit);
       }
     }
   }
