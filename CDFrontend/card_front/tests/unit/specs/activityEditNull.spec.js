@@ -3,57 +3,59 @@ const validateStub = {
   methods: {
     setContent: () => {}
   }
-}
+};
 
-jest.unmock('axios')
-import axios from 'axios'
-import MockAdapter from 'axios-mock-adapter'
+jest.unmock('axios');
+import axios from 'axios';
+import MockAdapter from "axios-mock-adapter";
 
-import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
+
+import {createLocalVue, mount, shallowMount} from '@vue/test-utils'
 import ActivityEditPanel from '@/components/article/ActivityEditPanel'
-import Element from 'element-ui'
-import moment from 'moment'
+import Element from 'element-ui';
+import moment from 'moment';
 
-const localVue = createLocalVue()
-localVue.use(Element)
+const localVue = createLocalVue();
+localVue.use(Element);
+
 
 describe('ActivityEditPanel.vue', () => {
   const wrapper = shallowMount(ActivityEditPanel, {
     localVue,
-    stubs: {
+    stubs:{
       'Tinymce': validateStub
     }
-  })
+  });
 
   beforeEach(() => {
-    wrapper.vm.$nextTick(() => {})
-  })
+    wrapper.vm.$nextTick(() => {});
+  });
 
-  const mockAdapter = new MockAdapter(axios)
-  const spyPost = jest.spyOn(axios, 'post')
+  let mockAdapter = new MockAdapter(axios);
+  let spyPost = jest.spyOn(axios, "post");
 
-  it('Activity Edit Panel Nulls created', async() => {
-    expect(wrapper.vm.postForm.image_uri).toBe('')
-    expect(wrapper.vm.postForm.title).toBe('')
-    expect(wrapper.vm.limit).toBeFalsy()
-    expect(wrapper.vm.displayTime).toBe(undefined)
+  it('Activity Edit Panel Nulls created', async () => {
+    expect(wrapper.vm.postForm.image_uri).toBe('');
+    expect(wrapper.vm.postForm.title).toBe('');
+    expect(wrapper.vm.limit).toBeFalsy();
+    expect(wrapper.vm.displayTime).toBe(undefined);
     wrapper.vm.$nextTick(() => {
-      expect(wrapper.vm.postForm.content).toBe('')
+      expect(wrapper.vm.postForm.content).toBe('');
     })
-  })
+  });
 
-  it('Activity Edit Panel Nulls submitForm branch1', async() => {
-    wrapper.vm.postForm.title = 'TestTitle'
-    wrapper.vm.postForm.content = 'TestContent'
-    wrapper.vm.postForm.image_uri = undefined
+  it('Activity Edit Panel Nulls submitForm branch1', async () => {
+    wrapper.vm.postForm.title = "TestTitle";
+    wrapper.vm.postForm.content = "TestContent";
+    wrapper.vm.postForm.image_uri = undefined;
 
-    wrapper.vm.limit = false
+    wrapper.vm.limit = false;
 
-    mockAdapter.onAny().reply(200, false)
+    mockAdapter.onAny().reply(200, false);
 
-    await wrapper.vm.submitForm()
+    await wrapper.vm.submitForm();
     wrapper.vm.$nextTick(() => {
-      expect(spyPost).toHaveBeenCalledTimes(1)
+      expect(spyPost).toHaveBeenCalledTimes(1);
     })
-  })
-})
+  });
+});

@@ -36,18 +36,18 @@ import * as filters from './filters' // global filters
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium', // set element-ui default size
   locale: enLang // 如果使用中文，无需设置，请删除
-})
+});
 
 // register global utility filters
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
-})
+});
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 new Vue({
   el: '#app',
   router,
   store,
   render: h => h(App)
-})
+});

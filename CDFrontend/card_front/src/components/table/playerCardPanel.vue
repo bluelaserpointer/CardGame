@@ -17,12 +17,12 @@
       style="width: 100%;"
       @sort-change="sortChange"
     >
-      <el-table-column label="ID" prop="ownCardId" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
+      <el-table-column label="ID" prop="ownCardId" sortable="custom" align="center" width="80" :class-name="getSortClass('id')" >
         <template slot-scope="{row}">
           <span class="link-type" @click="handleUpdate(row)">{{ row.ownCardId }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="UserId" prop="cardId" sortable="custom" align="center" width="80">
+      <el-table-column label="UserId" prop="cardId" sortable="custom" align="center" width="80" >
         <template slot-scope="{row}">
           <span>{{ row.userId }}</span>
         </template>
@@ -32,22 +32,22 @@
           <span>{{ row.cardId }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="CardLevel" prop="cardLevel" sortable="custom" align="center" width="80">
+      <el-table-column label="CardLevel" prop="cardLevel" sortable="custom" align="center" width="80" >
         <template slot-scope="{row}">
           <span>{{ row.cardLevel }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="CardCurExp" prop="cardCurExp" sortable="custom" align="center" width="80">
+      <el-table-column label="CardCurExp" prop="cardCurExp" sortable="custom" align="center" width="80" >
         <template slot-scope="{row}">
           <span>{{ row.cardCurExp }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="CardLevelLimit" prop="cardLevelLimit" sortable="custom" align="center" width="80">
+      <el-table-column label="CardLevelLimit" prop="cardLevelLimit" sortable="custom" align="center" width="80" >
         <template slot-scope="{row}">
           <span>{{ row.cardLevelLimit }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="RepetitiveOwns" prop="repetitiveOwns" sortable="custom" align="center" width="80">
+      <el-table-column label="RepetitiveOwns" prop="repetitiveOwns" sortable="custom" align="center" width="80" >
         <template slot-scope="{row}">
           <span>{{ row.repetitiveOwns }}</span>
         </template>
@@ -58,12 +58,12 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="EnhancePoint" prop="enhancePoint" sortable="custom" align="center">
+      <el-table-column label="EnhancePoint" prop="enhancePoint" sortable="custom" align="center" >
         <template slot-scope="{row}">
           <span>{{ row.enhancePoint }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="LeftPoints" prop="leftPoints" sortable="custom" align="center">
+      <el-table-column label="LeftPoints" prop="leftPoints" sortable="custom" align="center" >
         <template slot-scope="{row}">
           <span>{{ row.leftPoints }}</span>
         </template>
@@ -78,7 +78,7 @@
           <span>{{ row.enhanceAttack }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="EnhanceDefense" prop="enhanceDefense" sortable="custom" align="center">
+      <el-table-column label="EnhanceDefense" prop="enhanceDefense" sortable="custom" align="center" >
         <template slot-scope="{row}">
           <span>{{ row.enhanceDefense }}</span>
         </template>
@@ -88,7 +88,7 @@
           <span>{{ row.enhanceAttackRange }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="EnhanceCD" prop="enhanceCD" sortable="custom" align="center">
+      <el-table-column label="EnhanceCD" prop="enhanceCD" sortable="custom" align="center" >
         <template slot-scope="{row}">
           <span>{{ row.enhanceCD }}</span>
         </template>
@@ -105,59 +105,59 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="panelVisible" top="5vh" class="editDialog">
       <el-form ref="temp" :rules="rules" :model="temp" style="margin: auto 50px auto 50px; display:grid; grid-template-columns: 50% 50%; grid-column-gap: 10px" class="demo-form-inline">
-        <el-form-item v-if="dialogStatus==='update'" label="ID" prop="ownCardId">
-          <el-input v-model="temp.ownCardId" class="ownCardIdOwnCardInput" disabled />
+        <el-form-item label="ID" prop="ownCardId" v-if="dialogStatus==='update'">
+          <el-input class="ownCardIdOwnCardInput" v-model="temp.ownCardId" disabled/>
         </el-form-item>
-        <el-form-item v-if="dialogStatus==='create'" label="UserId" prop="userId">
-          <el-input v-model="temp.userId" class="userIdOwnCardInput" />
+        <el-form-item label="UserId" prop="userId" v-if="dialogStatus==='create'">
+          <el-input class="userIdOwnCardInput" v-model="temp.userId"/>
         </el-form-item>
-        <el-form-item v-if="dialogStatus==='create'" label="CardId" prop="cardId">
-          <el-input v-model="temp.cardId" class="cardIdOwnCardInput" />
+        <el-form-item label="CardId" prop="cardId" v-if="dialogStatus==='create'">
+          <el-input class="cardIdOwnCardInput" v-model="temp.cardId"/>
         </el-form-item>
-        <el-form-item v-else label="UserId" prop="userId">
-          <el-input v-model="temp.userId" class="userIdOwnCardInput" disabled />
+        <el-form-item label="UserId" prop="userId" v-else>
+          <el-input class="userIdOwnCardInput" v-model="temp.userId" disabled/>
         </el-form-item>
-        <el-form-item v-else label="CardId" prop="cardId">
-          <el-input v-model="temp.cardId" class="cardIdOwnCardInput" disabled />
+        <el-form-item label="CardId" prop="cardId" v-else>
+          <el-input class="cardIdOwnCardInput" v-model="temp.cardId" disabled/>
         </el-form-item>
-        <el-form-item v-if="dialogStatus==='update'" label="CardLevel" prop="cardLevel">
-          <el-input v-model="temp.cardLevel" class="cardLevelOwnCardInput" />
+        <el-form-item label="CardLevel" prop="cardLevel" v-if="dialogStatus==='update'">
+          <el-input class="cardLevelOwnCardInput" v-model="temp.cardLevel" />
         </el-form-item>
-        <el-form-item v-if="dialogStatus==='update'" label="CardCurExp" prop="cardCurExp">
-          <el-input v-model="temp.cardCurExp" class="cardCurExpOwnCardInput" />
+        <el-form-item label="CardCurExp" prop="cardCurExp" v-if="dialogStatus==='update'">
+          <el-input class="cardCurExpOwnCardInput" v-model="temp.cardCurExp" />
         </el-form-item>
-        <el-form-item v-if="dialogStatus==='update'" label="CardLevelLimit" prop="cardLevelLimit">
-          <el-input v-model="temp.cardLevelLimit" class="cardLevelLimitOwnCardInput" />
+        <el-form-item label="CardLevelLimit" prop="cardLevelLimit" v-if="dialogStatus==='update'">
+          <el-input class="cardLevelLimitOwnCardInput" v-model="temp.cardLevelLimit" />
         </el-form-item>
-        <el-form-item v-if="dialogStatus==='update'" label="RepetitiveOwns" prop="repetitiveOwns">
-          <el-input v-model="temp.repetitiveOwns" class="repetitiveOwnsOwnCardInput" />
+        <el-form-item label="RepetitiveOwns" prop="repetitiveOwns" v-if="dialogStatus==='update'">
+          <el-input class="repetitiveOwnsOwnCardInput" v-model="temp.repetitiveOwns" />
         </el-form-item>
-        <el-form-item v-if="dialogStatus==='update'" label-width="120px" label="AccquireDate" class="postInfo-container-item">
+        <el-form-item label-width="120px" label="AccquireDate" class="postInfo-container-item" v-if="dialogStatus==='update'">
           <el-date-picker v-model="temp.accquireDate" type="datetime" value-format="yyyy-MM-dd hh:mm:ss" placeholder="Select date and time" />
         </el-form-item>
-        <el-form-item v-if="dialogStatus==='update'" label="EnhancePoint" prop="enhancePoint">
-          <el-input v-model="temp.enhancePoint" class="enhancePointInput" />
+        <el-form-item label="EnhancePoint" prop="enhancePoint" v-if="dialogStatus==='update'">
+          <el-input class="enhancePointInput" v-model="temp.enhancePoint" />
         </el-form-item>
-        <el-form-item v-if="dialogStatus==='update'" label="LeftPoints" prop="leftPoints">
-          <el-input v-model="temp.leftPoints" class="leftPointsInput" />
+        <el-form-item label="LeftPoints" prop="leftPoints" v-if="dialogStatus==='update'">
+          <el-input class="leftPointsInput" v-model="temp.leftPoints" />
         </el-form-item>
-        <el-form-item v-if="dialogStatus==='update'" label="EnhanceHP" prop="enhanceHP">
-          <el-input v-model="temp.enhanceHP" class="enhanceHPInput" />
+        <el-form-item label="EnhanceHP" prop="enhanceHP" v-if="dialogStatus==='update'">
+          <el-input class="enhanceHPInput" v-model="temp.enhanceHP" />
         </el-form-item>
-        <el-form-item v-if="dialogStatus==='update'" label="EnhanceAttack" prop="enhanceAttack">
-          <el-input v-model="temp.enhanceAttack" class="enhanceAttackInput" />
+        <el-form-item label="EnhanceAttack" prop="enhanceAttack" v-if="dialogStatus==='update'">
+          <el-input class="enhanceAttackInput" v-model="temp.enhanceAttack" />
         </el-form-item>
-        <el-form-item v-if="dialogStatus==='update'" label="EnhanceDefense" prop="enhanceDefense">
-          <el-input v-model="temp.enhanceDefense" class="enhanceDefenseInput" />
+        <el-form-item label="EnhanceDefense" prop="enhanceDefense" v-if="dialogStatus==='update'">
+          <el-input class="enhanceDefenseInput" v-model="temp.enhanceDefense" />
         </el-form-item>
-        <el-form-item v-if="dialogStatus==='update'" label="EnhanceAttackRange" prop="enhanceAttackRange">
-          <el-input v-model="temp.enhanceAttackRange" class="enhanceAttackRangeInput" />
+        <el-form-item label="EnhanceAttackRange" prop="enhanceAttackRange" v-if="dialogStatus==='update'">
+          <el-input class="enhanceAttackRangeInput" v-model="temp.enhanceAttackRange" />
         </el-form-item>
-        <el-form-item v-if="dialogStatus==='update'" label="EnhanceCD" prop="enhanceCD">
-          <el-input v-model="temp.enhanceCD" class="enhanceCDInput" />
+        <el-form-item label="EnhanceCD" prop="enhanceCD" v-if="dialogStatus==='update'">
+          <el-input class="enhanceCDInput" v-model="temp.enhanceCD" />
         </el-form-item>
-        <el-form-item v-if="dialogStatus==='update'" label="EnhanceSpeed" prop="enhanceSpeed">
-          <el-input v-model="temp.enhanceSpeed" class="enhanceSpeedInput" />
+        <el-form-item label="EnhanceSpeed" prop="enhanceSpeed" v-if="dialogStatus==='update'">
+          <el-input class="enhanceSpeedInput" v-model="temp.enhanceSpeed" />
         </el-form-item>
       </el-form>
 
@@ -169,13 +169,13 @@
           append-to-body
           class="innerDialog"
         >
-          <el-input v-model="confirmPassword" class="confirmOwnCardInput" placeholder="Identification" show-password width="60%" />
+          <el-input class="confirmOwnCardInput" v-model="confirmPassword" placeholder="Identification" show-password width="60%" />
           <el-button class="confirmOwnCardInnerButton" @click="confirmIdentity">Confirm Identity</el-button>
 
           <span slot="footer" class="dialog-footer">
             <el-button class="cancelOwnCardInnerButton" @click="deleteVisible = false">Cancel</el-button>
-            <el-button v-if="confirmDelete === false" class="deleteOwnCardInnerButton" type="danger" disabled>Delete</el-button>
-            <el-button v-else class="deleteOwnCardInnerButton" type="danger" @click="deleteData">Delete</el-button>
+            <el-button class="deleteOwnCardInnerButton" v-if="confirmDelete === false" type="danger" disabled>Delete</el-button>
+            <el-button class="deleteOwnCardInnerButton" v-else type="danger" @click="deleteData">Delete</el-button>
           </span>
         </el-dialog>
 
@@ -198,8 +198,8 @@
 import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination/index'
 import axios from 'axios' // secondary package based on el-pagination
-import moment from 'moment'
-import request from '@/utils/request'
+import moment from "moment"
+import request from "@/utils/request";
 
 export default {
   name: 'PlayerCardPanel',
@@ -224,7 +224,7 @@ export default {
         enhanceDefense: undefined,
         enhanceAttackRange: undefined,
         enhanceCD: undefined,
-        enhanceSpeed: undefined
+        enhanceSpeed: undefined,
       },
       confirmPassword: '',
       confirmDelete: false,
@@ -248,8 +248,9 @@ export default {
         enhanceDefense: [{ required: true, message: 'EnhanceDefense is required.', trigger: 'change' }],
         enhanceAttackRange: [{ required: true, message: 'EnhanceAttackRange is required.', trigger: 'change' }],
         enhanceCD: [{ required: true, message: 'EnhanceCD is required.', trigger: 'change' }],
-        enhanceSpeed: [{ required: true, message: 'EnhanceSpeed is required.', trigger: 'change' }]
+        enhanceSpeed: [{ required: true, message: 'EnhanceSpeed is required.', trigger: 'change' }],
       },
+
 
       tableKey: 0,
       listLoading: false,
@@ -271,12 +272,12 @@ export default {
   },
   watch: {
     deleteVisible() {
-      this.confirmDelete = false
+      this.confirmDelete = false;
       this.confirmPassword = ''
     }
   },
   created() {
-    this.getList(this.listQuery.page, this.listQuery.limit)
+    this.getList(this.listQuery.page, this.listQuery.limit);
   },
   methods: {
     // watchList() {
@@ -289,20 +290,21 @@ export default {
     //   }
     //   this.list = list
     // },
-    formatDate(date) {
-      return moment(new Date(date)).format('YYYY-MM-DD HH:mm:ss')
+    formatDate(date){
+      return moment(new Date(date)).format('YYYY-MM-DD HH:mm:ss');
     },
     getList(page, limit) {
-      const postData = {
+      let postData = {
         pageToken: page,
         pageSize: limit
-      }
+      };
       request.post('ownCard/List', postData).then(response => {
-        if (response.data) {
-          this.list = response.data.result
-          this.listQuery.total = response.data.totalPages
-        } else {
-          this.$message.error('Fetching Data Failed!')
+        if(response.data) {
+          this.list = response.data.result;
+          this.listQuery.total = response.data.totalPages;
+        }else
+        {
+          this.$message.error('Fetching Data Failed!');
         }
       })
     },
@@ -323,55 +325,56 @@ export default {
         enhanceDefense: undefined,
         enhanceAttackRange: undefined,
         enhanceCD: undefined,
-        enhanceSpeed: undefined
+        enhanceSpeed: undefined,
       }
     },
     handleCreate() {
-      this.resetTemp()
-      this.dialogStatus = 'create'
-      this.panelVisible = true
+      this.resetTemp();
+      this.dialogStatus = 'create';
+      this.panelVisible = true;
       this.$nextTick(() => {
         this.$refs['temp'].clearValidate()
       })
     },
-    submitCreate() {
-      const postData = new FormData()
-      postData.append('cardId', this.temp.cardId)
-      postData.append('userId', this.temp.userId)
+    submitCreate(){
+      let postData = new FormData();
+      postData.append('cardId', this.temp.cardId);
+      postData.append('userId', this.temp.userId);
 
       request.post('ownCard/addOwnCard', postData).then(response => {
         if (response.data) {
-          this.getList(this.listQuery.page, this.listQuery.limit)
-          this.panelVisible = false
+          this.getList(this.listQuery.page, this.listQuery.limit);
+          this.panelVisible = false;
         } else {
-          this.$message.error('Creating Data failed!')
+          this.$message.error('Creating Data failed!');
         }
       })
-        .catch(error => {
-          this.$message.error('Creating Data failed!')
-        }
-        )
+        .catch(error =>
+          {
+            this.$message.error('Creating Data failed!');
+          }
+        );
     },
     createData(formName) {
       this.$refs['temp'].validate((valid) => {
         if (valid) {
-          this.submitCreate()
+          this.submitCreate();
         } else {
-          this.$message.error('Form Invalid!')
-          return false
+          this.$message.error('Form Invalid!');
+          return false;
         }
-      })
+      });
     },
     handleUpdate(row) {
-      this.temp = Object.assign({}, row) // copy obj
-      this.dialogStatus = 'update'
-      this.panelVisible = true
+      this.temp = Object.assign({}, row); // copy obj
+      this.dialogStatus = 'update';
+      this.panelVisible = true;
       this.$nextTick(() => {
         this.$refs['temp'].clearValidate()
       })
     },
-    submitUpdate() {
-      const postData = {
+    submitUpdate(){
+      let postData = {
         ownCardId: this.temp.ownCardId,
         cardId: this.temp.cardId,
         userId: this.temp.userId,
@@ -388,78 +391,83 @@ export default {
         enhanceDefense: this.temp.enhanceDefense,
         enhanceAttackRange: this.temp.enhanceAttackRange,
         enhanceCD: this.temp.enhanceCD,
-        enhanceSpeed: this.temp.enhanceSpeed
-      }
+        enhanceSpeed: this.temp.enhanceSpeed,
+      };
 
       request.post('ownCard/updateOwnCard', postData).then(response => {
         if (response.data) {
-          this.getList(this.listQuery.page, this.listQuery.limit)
-          this.panelVisible = false
-          this.resetTemp()
+          this.getList(this.listQuery.page, this.listQuery.limit);
+          this.panelVisible = false;
+          this.resetTemp();
         } else {
-          this.$message.error('Updating Data failed!')
+          this.$message.error('Updating Data failed!');
         }
       })
-        .catch(error => {
-          this.$message.error('Updating Data failed!')
-        }
-        )
+        .catch(error =>
+          {
+            this.$message.error('Updating Data failed!');
+          }
+        );
     },
     updateData(formName) {
       this.$refs['temp'].validate((valid) => {
         if (valid) {
-          this.submitUpdate()
+          this.submitUpdate();
         } else {
-          this.$message.error('Form Invalid!')
-          return false
+          this.$message.error('Form Invalid!');
+          return false;
         }
-      })
+      });
+
     },
     confirmIdentity() {
-      const postData = new FormData()
-      const _this = this
-      postData.append('userName', localStorage.getItem('AdminName'))
-      postData.append('password', this.confirmPassword)
+      let postData = new FormData();
+      let _this = this;
+      postData.append('userName', localStorage.getItem('AdminName'));
+      postData.append('password', this.confirmPassword);
 
       request.post('user/confirmDelete', postData).then(response => {
         if (response.data) {
           _this.confirmDelete = true
         } else {
-          this.$message.error('Identification failed!')
+          this.$message.error('Identification failed!');
         }
       })
-        .catch(error => {
-          this.$message.error('Identification failed!')
-        }
-        )
+        .catch(error =>
+          {
+            this.$message.error('Identification failed!');
+          }
+        );
     },
     deleteData() {
-      const postData = new FormData()
-      const _this = this
-      postData.append('userId', this.temp.userId)
-      postData.append('cardId', this.temp.cardId)
+      let postData = new FormData();
+      let _this = this;
+      postData.append('userId', this.temp.userId);
+      postData.append('cardId', this.temp.cardId);
+
 
       request.post('ownCard/deleteOwnCard', postData).then(response => {
         if (response.data) {
-          _this.panelVisible = false
-          _this.deleteVisible = false
-          _this.getList(this.listQuery.page, this.listQuery.limit)
+          _this.panelVisible = false;
+          _this.deleteVisible = false;
+          _this.getList(this.listQuery.page, this.listQuery.limit);
         } else {
-          this.$message.error('Deleting Data failed!')
+          this.$message.error('Deleting Data failed!');
         }
       })
-        .catch(error => {
-          this.$message.error('Deleting Data failed!')
-        }
-        )
+        .catch(error =>
+          {
+            this.$message.error('Deleting Data failed!');
+          }
+        );
     },
 
     handleFilter() {
-      this.listQuery.page = 1
-      this.getList(this.listQuery.page, this.listQuery.limit)
+      this.listQuery.page = 1;
+      this.getList(this.listQuery.page, this.listQuery.limit);
     },
     sortChange(data) {
-      const { prop, order } = data
+      const { prop, order } = data;
       if (prop === 'id') {
         this.sortByID(order)
       }
@@ -473,9 +481,9 @@ export default {
       this.handleFilter()
     },
     getSortClass: function(key) {
-      const sort = this.listQuery.sort
+      const sort = this.listQuery.sort;
       return sort === `+${key}` ? 'ascending' : 'descending'
-    }
+    },
   }
 }
 </script>

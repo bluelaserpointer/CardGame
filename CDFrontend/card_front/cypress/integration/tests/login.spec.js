@@ -1,47 +1,54 @@
-// / <reference types="cypress" />
+/// <reference types="cypress" />
 
-describe('Login', () => {
+context('Login', () => {
+
   it('.type() - type into login form', () => {
-    cy.clearCookie('Admin-Token')
+    cy.clearCookie('Admin-Token');
 
-    cy.visit('http://localhost:8081/')
+    cy.visit('http://localhost:8081/');
+
 
     cy.get('.username-input')
-      .type('SuperAdmin')
+      .type('admin1');
 
     cy.get('.password-input')
-      .type('222222')
+      .type('222222');
 
-    cy.get('.login-button').click()
+    cy.get('.login-button').click();
 
     cy.get('.username-input > .el-input__inner')
-      .clear()
+      .clear();
 
     cy.get('.password-input > .el-input__inner')
-      .clear()
+      .clear();
 
     cy.get('.username-input')
-      .type('admin999')
+      .type('admin999');
 
     cy.get('.password-input')
-      .type('111111')
+      .type('111111');
 
-    cy.get('.login-button').click()
+    cy.get('.login-button').click();
 
     cy.get('.username-input > .el-input__inner')
-      .clear()
+      .clear();
 
     cy.get('.password-input > .el-input__inner')
-      .clear()
+      .clear();
 
     cy.get('.username-input')
-      .type('SuperAdmin')
+      .type('admin1');
 
     cy.get('.password-input')
-      .type('111111')
+      .type('111111');
 
-    cy.get('.login-button').click()
+    cy.get('.login-button').click();
+
+
+
   })
+
+
 
   // it('.focus() - focus on a DOM element', () => {
   //   // https://on.cypress.io/focus
@@ -306,4 +313,4 @@ describe('Login', () => {
   //   // control the duration of the scroll (in ms)
   //   cy.get('#scrollable-both').scrollTo('center', { duration: 2000 })
   // })
-})
+});

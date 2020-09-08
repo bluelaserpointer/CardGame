@@ -7,7 +7,7 @@
       </el-button>
     </div>
 
-    <!--    :data="list.filter(data => !search || data.userName.toLowerCase().includes(search.toLowerCase()))"-->
+<!--    :data="list.filter(data => !search || data.userName.toLowerCase().includes(search.toLowerCase()))"-->
     <el-table
       :key="tableKey"
       border
@@ -105,7 +105,7 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="panelVisible">
       <el-form ref="temp" :rules="rules" :model="temp" label-position="left" label-width="70px" style="margin: auto 20px auto 20px; display:grid; grid-template-columns: 50% 50%; grid-column-gap: 10px">
-        <el-form-item v-if="dialogStatus==='update'" label="ID" prop="userId">
+        <el-form-item label="ID" prop="userId" v-if="dialogStatus==='update'">
           <el-input v-model="temp.userId" disabled />
         </el-form-item>
         <el-form-item label="Username" prop="userName">
@@ -134,25 +134,25 @@
           />
         </el-form-item>
 
-        <el-form-item v-if="dialogStatus==='update'" label="CurExpPoint" prop="curExpPoint">
+        <el-form-item label="CurExpPoint" prop="curExpPoint" v-if="dialogStatus==='update'">
           <el-input v-model="temp.curExpPoint" />
         </el-form-item>
-        <el-form-item v-if="dialogStatus==='update'" label="Stamina" prop="stamina">
+        <el-form-item label="Stamina" prop="stamina" v-if="dialogStatus==='update'">
           <el-input v-model="temp.stamina" />
         </el-form-item>
-        <el-form-item v-if="dialogStatus==='update'" label="Money" prop="money">
+        <el-form-item label="Money" prop="money" v-if="dialogStatus==='update'">
           <el-input v-model="temp.money" />
         </el-form-item>
-        <el-form-item v-if="dialogStatus==='update'" label="Grade" prop="grade">
+        <el-form-item label="Grade" prop="grade" v-if="dialogStatus==='update'">
           <el-input v-model="temp.grade" />
         </el-form-item>
-        <el-form-item v-if="dialogStatus==='update'" label="EngKnowledge" prop="engKnowledge">
+        <el-form-item label="EngKnowledge" prop="engKnowledge" v-if="dialogStatus==='update'">
           <el-input v-model="temp.engKnowledge" />
         </el-form-item>
-        <el-form-item v-if="dialogStatus==='update'" label="MathKnowledge" prop="mathKnowledge">
+        <el-form-item label="MathKnowledge" prop="mathKnowledge" v-if="dialogStatus==='update'">
           <el-input v-model="temp.mathKnowledge" />
         </el-form-item>
-        <el-form-item v-if="dialogStatus==='update'" label="ChiKnowledge" prop="chiKnowledge">
+        <el-form-item label="ChiKnowledge" prop="chiKnowledge" v-if="dialogStatus==='update'">
           <el-input v-model="temp.chiKnowledge" />
         </el-form-item>
         <el-form-item label="Role" prop="identity">
@@ -174,8 +174,8 @@
 
           <span slot="footer" class="dialog-footer">
             <el-button class="cancelInnerButton" @click="deleteVisible = false">Cancel</el-button>
-            <el-button v-if="confirmDelete === false" class="deleteInnerButton" type="danger" disabled>Delete</el-button>
-            <el-button v-else class="deleteInnerButton" type="danger" @click="deleteData">Delete</el-button>
+            <el-button class="deleteInnerButton" v-if="confirmDelete === false" type="danger" disabled>Delete</el-button>
+            <el-button class="deleteInnerButton" v-else type="danger" @click="deleteData">Delete</el-button>
           </span>
         </el-dialog>
 
@@ -196,7 +196,7 @@
 
 <script>
 import waves from '@/directive/waves' // waves directive
-import request from '@/utils/request' // secondary package based on el-pagination
+import request from "@/utils/request"; // secondary package based on el-pagination
 import Pagination from '@/components/Pagination/index'
 
 export default {
@@ -269,27 +269,30 @@ export default {
   },
   watch: {
     deleteVisible() {
-      this.confirmDelete = false
-      this.confirmPassword = ''
+      this.confirmDelete = false;
+      this.confirmPassword = '';
     } // untested
   },
   created() {
-    this.getList(1, this.listQuery.limit)
+    this.getList(1, this.listQuery.limit);
   },
   methods: {
     getList(page, limit) {
-      const postData = {
+      let postData = {
         pageToken: page,
         pageSize: limit
-      }
-      request.post('user/List', postData).then(response => {
-        if (response.data) {
-          this.list = response.data.result
-          this.listQuery.total = response.data.totalPages
-        } else {
-          this.$message.error('Fetching Data failed!')
+      };
+      request.post('user/List', postData).then(response =>
+      {
+        if(response.data)
+        {
+          this.list = response.data.result;
+          this.listQuery.total = response.data.totalPages;
+        }else{
+          this.$message.error('Fetching Data failed!');
         }
       })
+
     },
 
     resetTemp() {
@@ -313,17 +316,17 @@ export default {
       }
     },
     handleCreate() {
-      this.resetTemp()
-      this.dialogStatus = 'create'
-      this.panelVisible = true
+      this.resetTemp();
+      this.dialogStatus = 'create';
+      this.panelVisible = true;
       this.$nextTick(() => {
         this.$refs['temp'].clearValidate()
       })
     },
-    submitCreate() {
-      const _this = this
+    submitCreate(){
+      const _this = this;
 
-      const postData = {
+      let postData = {
         userName: this.temp.userName,
         password: this.temp.password,
         phoneNumber: this.temp.phoneNumber,
@@ -332,45 +335,47 @@ export default {
         level: this.temp.level,
         email: this.temp.email,
         identity: this.temp.identity
-      }
+      };
 
       request.post('user/register', JSON.stringify(postData)).then(response => {
         if (response.data) {
-          _this.getList(this.listQuery.page, this.listQuery.limit)
-          _this.panelVisible = false
-          _this.resetTemp()
-        } else {
-          this.$message.error('Adding Data failed!')
+          _this.getList(this.listQuery.page, this.listQuery.limit);
+          _this.panelVisible = false;
+          _this.resetTemp();
+        }else {
+          this.$message.error('Adding Data failed!');
         }
       })
-        .catch(error => {
-          this.$message.error('Adding Data failed!')
-        }
-        )
+        .catch(error =>
+          {
+            this.$message.error('Adding Data failed!');
+          }
+        );
     },
     createData(formName) {
       this.$refs['temp'].validate((valid) => {
         if (valid) {
-          this.submitCreate()
+          this.submitCreate();
         } else {
-          this.$message.error('Form Invalid!')
-          return false
+          this.$message.error('Form Invalid!');
+          return false;
         }
-      })
+      });
+
     },
     handleUpdate(row) {
-      this.temp = Object.assign({}, row) // copy obj
-      this.temp.timestamp = new Date(this.temp.timestamp)
-      this.dialogStatus = 'update'
-      this.panelVisible = true
+      this.temp = Object.assign({}, row); // copy obj
+      this.temp.timestamp = new Date(this.temp.timestamp);
+      this.dialogStatus = 'update';
+      this.panelVisible = true;
       this.$nextTick(() => {
         this.$refs['temp'].clearValidate()
       })
     },
-    submitUpdate() {
-      const _this = this
+    submitUpdate(){
+      const _this = this;
 
-      const postData = {
+      let postData = {
         userId: this.temp.userId,
         userName: this.temp.userName,
         password: this.temp.password,
@@ -387,84 +392,83 @@ export default {
         mathKnowledge: this.temp.mathKnowledge,
         chiKnowledge: this.temp.chiKnowledge,
         identity: this.temp.identity
-      }
-
-      for (const i in postData) {
-        if (i === undefined || i === '' || i === null) {
-          this.$message.error('Form Invalid!')
-          return false
-        }
-      }
+      };
 
       request.post('user/updateUser', JSON.stringify(postData)).then(response => {
         if (response.data) {
-          _this.getList(this.listQuery.page, this.listQuery.limit)
+          _this.getList(this.listQuery.page, this.listQuery.limit);
           _this.panelVisible = false
         } else {
-          this.$message.error('Updating Data failed!')
+          this.$message.error('Updating Data failed!');
         }
       })
-        .catch(error => {
-          this.$message.error('Updating Data failed!')
-        }
-        )
+        .catch(error =>
+          {
+            this.$message.error('Updating Data failed!');
+          }
+        );
     },
     updateData(formName) {
       this.$refs['temp'].validate((valid) => {
         if (valid) {
-          this.submitUpdate()
+          this.submitUpdate();
         } else {
-          this.$message.error('Form Invalid!')
-          return false
+          this.$message.error('Form Invalid!');
+          return false;
         }
-      })
+      });
     },
 
     confirmIdentity() {
-      const postData = new FormData()
-      const _this = this
-      postData.append('userName', localStorage.getItem('AdminName'))
-      postData.append('password', this.confirmPassword)
+      const postData = new FormData();
+      const _this = this;
+      postData.append('userName', localStorage.getItem('AdminName'));
+      postData.append('password', this.confirmPassword);
 
       request.post('user/confirmDelete', postData).then(response => {
-        console.log(response)
+        console.log(response);
         if (response.data) {
           _this.confirmDelete = true
         } else {
-          this.$message.error('Identification failed!')
+          this.$message.error('Identification failed!');
         }
       })
-        .catch(error => {
-          this.$message.error('Identification failed!')
-        }
-        )
+        .catch(error =>
+          {
+            this.$message.error('Identification failed!');
+          }
+        );
+
     },
     deleteData() {
-      const postData = new FormData()
-      const _this = this
-      postData.append('userId', this.temp.userId)
+      const postData = new FormData();
+      const _this = this;
+      postData.append('userId', this.temp.userId);
 
       request.post('user/deleteUser', postData).then(response => {
         if (response.data) {
-          _this.panelVisible = false
-          _this.deleteVisible = false
-          _this.getList(this.listQuery.page, this.listQuery.limit)
+          _this.panelVisible = false;
+          _this.deleteVisible = false;
+          _this.getList(this.listQuery.page, this.listQuery.limit);
         } else {
-          this.$message.error('Deleting Data failed!')
+          this.$message.error('Deleting Data failed!');
         }
       })
-        .catch(error => {
-          this.$message.error('Deleting Data failed!')
-        }
-        )
+        .catch(error =>
+          {
+            this.$message.error('Deleting Data failed!');
+          }
+        );
     },
 
+
+
     handleFilter() {
-      this.listQuery.page = 1
-      this.getList(this.listQuery.page, this.listQuery.limit)
+      this.listQuery.page = 1;
+      this.getList(this.listQuery.page, this.listQuery.limit);
     },
     sortChange(data) {
-      const { prop, order } = data
+      const { prop, order } = data;
       if (prop === 'id') {
         this.sortByID(order)
       }
@@ -478,9 +482,9 @@ export default {
       this.handleFilter()
     },
     getSortClass: function(key) {
-      const sort = this.listQuery.sort
+      const sort = this.listQuery.sort;
       return sort === `+${key}` ? 'ascending' : 'descending'
-    }
+    },
   }
 }
 </script>

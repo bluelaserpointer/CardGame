@@ -11,26 +11,26 @@ import axios from 'axios'
 //   // headers: {'Content-Type': 'multipart/form-data'}
 // });
 
-axios.defaults.timeout = 5000
-axios.defaults.baseURL = process.env.VUE_APP_BASE_API
+axios.defaults.timeout = 5000;
+axios.defaults.baseURL = process.env.VUE_APP_BASE_API;
 
 // request interceptor
 axios.interceptors.request.use(
   config => {
     // do something before request is sent
-    // console.log(process.env.port);
-    // console.log(process.env.npm_config_port);
+      // console.log(process.env.port);
+      // console.log(process.env.npm_config_port);
     if (store.getters.token) {
       // let each request carry token
       // ['X-Token'] is a custom headers key
       // please modify it according to the actual situation
-      config.headers['Authorization'] = getToken()
+      config.headers['Authorization'] = getToken();
       // console.log("Within token-if");
     }
     // config.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
-    config.headers['Content-Type'] = 'application/json'
-    // console.log("Before sending request");
-    // console.log(config);
+    config.headers['Content-Type'] = 'application/json';
+      // console.log("Before sending request");
+      // console.log(config);
     return config
   },
   error => {
@@ -38,7 +38,7 @@ axios.interceptors.request.use(
     // console.log(error); // for debug
     return Promise.reject(error)
   }
-)
+);
 
 // response interceptor
 axios.interceptors.response.use(
@@ -53,7 +53,7 @@ axios.interceptors.response.use(
    * You can also judge the status by HTTP Status Code
    */
   response => {
-    const res = response.data
+    const res = response.data;
     // console.log("Within response");
     // console.log(response);
 
@@ -63,7 +63,7 @@ axios.interceptors.response.use(
         message: res.message || 'Error',
         type: 'error',
         duration: 5 * 1000
-      })
+      });
 
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
       if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
@@ -80,7 +80,7 @@ axios.interceptors.response.use(
       }
       return Promise.reject(new Error(res.message || 'Error'))
     } else {
-      console.log('Returning response')
+      console.log("Returning response");
       return response
     }
   },
@@ -90,10 +90,10 @@ axios.interceptors.response.use(
       message: error.message,
       type: 'error',
       duration: 5 * 1000
-    })
+    });
     return Promise.reject(error)
   }
-)
+);
 
 export default axios
 // module.exports = service;
