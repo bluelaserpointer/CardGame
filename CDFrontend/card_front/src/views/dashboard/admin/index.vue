@@ -28,18 +28,16 @@
       <el-col :xs="24" :sm="24" :lg="8" style="background:#fff">
         <line-chart :chart-data="crashReports" />
       </el-col>
-
-
-      <el-col :xs="24" :sm="24" :lg="8">
-        <div class="chart-wrapper">
-          <pie-chart />
-        </div>
-      </el-col>
-      <el-col :xs="24" :sm="24" :lg="8">
-        <div class="chart-wrapper">
-          <bar-chart />
-        </div>
-      </el-col>
+<!--      <el-col :xs="24" :sm="24" :lg="8">-->
+<!--        <div class="chart-wrapper">-->
+<!--          <pie-chart />-->
+<!--        </div>-->
+<!--      </el-col>-->
+<!--      <el-col :xs="24" :sm="24" :lg="8">-->
+<!--        <div class="chart-wrapper">-->
+<!--          <bar-chart />-->
+<!--        </div>-->
+<!--      </el-col>-->
     </el-row>
 
     <!--    <el-row :gutter="8">-->
