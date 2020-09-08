@@ -95,6 +95,10 @@ Finished basic unit testing based on Junit4.
 
     We use jacoco to generate code coverage reports.
 
+    We've covered all the code aside from the unimplemented entities and the entities tested from the maintainence side.
+
+![Jacoco](./backend-6.jpeg)
+
 ---
 
 ## Security
@@ -105,17 +109,17 @@ Finished basic unit testing based on Junit4.
 
 **Basic Login**
 
-    We use JWT's authentication token as the basis of our project's security mechanism.
+    We use JWT's authorization token as the basis of our project's security mechanism.
 
     The general idea would be that we only allow requests to the login end and the register end for our project.
 
 ![allowedRequests](./backend-1.jpeg)
 
-    And then after we receive a login request and confirm with the user data in the database that the user is qualified for access, we send a response with the user's data and a token for further authentication.
+    And then after we receive a login request and confirm with the user data in the database that the user is qualified for access, we send a response with the user's data and a token for further authorization.
 
-![Authentication](./backend-2.jpeg)
+![Authorization](./backend-2.jpeg)
 
-    For further requests, the user/client-end has to add a Authentication header with the token it accquired from successfully logging in.
+    For further requests, the user/client-end has to add an Authorization header with the token it accquired from successfully logging in.
 
     The backend server detects such a token and will not grant access if token doesn't exist.
 
