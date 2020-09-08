@@ -214,7 +214,7 @@
             border
             fit
             highlight-current-row
-            style="width: 100%; grid-column: 1 / span 1"
+            style="width: 100%; grid-column: 3 / span 1"
             height="350"
             max-height="350"
             @sort-change="sortChange"
@@ -238,7 +238,7 @@
             border
             fit
             highlight-current-row
-            style="width: 100%; grid-column: 2 / span 1"
+            style="width: 100%; grid-column: 4 / span 1"
             height="350"
             max-height="350"
             @sort-change="sortChange"
