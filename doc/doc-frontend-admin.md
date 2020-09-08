@@ -22,9 +22,11 @@
 
 ## 技术栈
 
-+ VueJs -> 框架
-+ IDEA -> IDE
-+ Cypress + Jest -> 测试
++ 框架
+  + VueJs
++ 测试
+  + Cypress
+  + Jest
 
 ## 测试
 
