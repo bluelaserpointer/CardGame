@@ -10,25 +10,33 @@
   + 游戏性数据的增删改查
   + 关卡布局设计、关卡报酬设计
   + 游戏玩家持有道具、卡片具体数据修改
+  
+  
+  
 + 拓展性高的 DashBoard，定时生成并绘制日志图表以进行运维管理（崩溃日志数量、登录人数等）
 
-## 非功能需求
+  ![frontend-1](B:\Edward\Study\GitHub\CardGame\doc\frontend-1.png)
 
-考虑到手游类产品的特殊性，其在特定活动以及日常运营中，都将面临不同时段不可预测的访问量，因此我们选择将后端部署在 Kubernetes 集群上，由此来应对该需求。
-
-## 项目架构
-
-![Structure](/doc_client_img1.png)
+![frontend-3](B:\Edward\Study\GitHub\CardGame\doc\frontend-3.png)
 
 ## 技术栈
 
-+ VueJs -> 框架
-+ IDEA -> IDE
-+ Cypress + Jest -> 测试
++ VueJs
++ 测试
+  + Cypress
+  + Jest
 
 ## 测试
 
-请参考另一个运维端文档
++ 单元测试：出于运维端平台特性的考虑，其单元测试主要针对以下三个方面进行测试
+
+1. 为包装后的 axios 进行请求结果测试作为主要目的
+2. Mock数据作为请求返回的评判标准
+3. 以模块为单位判定其发送请求次数（请求之间进行嵌套的场景）
+
++ E2E测试：作为网页端的运维前端，其主要操作仅限于键盘输入与鼠标点击等基本操作，因此主要通过其运维的业务逻辑作为流程，来判断每个流程分支中，画面渲染是否正确。
+
+  ![frontend-2](B:\Edward\Study\GitHub\CardGame\doc\frontend-2.png)
 
 ## 访问权限
 
@@ -37,10 +45,16 @@
 基本API：
 
 + /List：通过Pagination控制数据获取，并返回相应分表操作
+
 + /addName：添加 *Name*实体类 的实例
+
 + /updateName：更新 *Name*实体类 的实例
+
 + /deleteName：删除 *Name*实体类 的实例
+
 + /confirmDelete：当前运维端使用用户的确认请求操作
+
+  ![frontend-6](B:\Edward\Study\GitHub\CardGame\doc\frontend-6.png)
 
 游戏关卡设计API：
 
@@ -48,3 +62,4 @@
 
 管理类别：运维端目前设置了 "Admin" 一种管理类别，该运维前端框架可后续添加其他身份的管理员，通过动态增添路由的方式设置权限，**并在后端相应设置权限后将能实现多身份运维**，例如：关卡编辑员、数据编辑员、高层管理员等
 
+![frontend-5](B:\Edward\Study\GitHub\CardGame\doc\frontend-5.png)
