@@ -1,22 +1,22 @@
-let mockData = false;
+const mockData = false
 
 const validateStub = {
   render: () => {},
   methods: {
     validate: () => {}
   }
-};
+}
 
-jest.unmock('axios');
-import axios from 'axios';
-import MockAdapter from "axios-mock-adapter";
+jest.unmock('axios')
+import axios from 'axios'
+import MockAdapter from 'axios-mock-adapter'
 
-import {createLocalVue, mount, shallowMount} from '@vue/test-utils'
+import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
 import ActivityEntityPanel from '@/components/article/ActivityEntityPanel'
-import Element from 'element-ui';
+import Element from 'element-ui'
 
-const localVue = createLocalVue();
-localVue.use(Element);
+const localVue = createLocalVue()
+localVue.use(Element)
 
 describe('ActivityEntityPanel.vue', () => {
   const wrapper = shallowMount(ActivityEntityPanel,
@@ -25,20 +25,20 @@ describe('ActivityEntityPanel.vue', () => {
       stubs: {
         'el-form': validateStub
       }
-    });
+    })
 
-  let mockAdapter = new MockAdapter(axios);
-  let spyPost = jest.spyOn(axios, "post");
+  const mockAdapter = new MockAdapter(axios)
+  const spyPost = jest.spyOn(axios, 'post')
 
-  mockAdapter.onPost('activity/List').reply(200, mockData);
+  mockAdapter.onPost('activity/List').reply(200, mockData)
 
-  it('Startup', async () => {
-    await wrapper.vm.getList();
-  });
+  it('Startup', async() => {
+    await wrapper.vm.getList()
+  })
 
-  it('Activity Entity Panel Nulls created getList watchList', async () => {
-    expect(wrapper.vm.panelVisible).toBeFalsy();
-    expect(wrapper.vm.list).toStrictEqual(null);
-    expect(spyPost).toHaveBeenCalledTimes(1);
-  });
-});
+  it('Activity Entity Panel Nulls created getList watchList', async() => {
+    expect(wrapper.vm.panelVisible).toBeFalsy()
+    expect(wrapper.vm.list).toStrictEqual(null)
+    expect(spyPost).toHaveBeenCalledTimes(1)
+  })
+})

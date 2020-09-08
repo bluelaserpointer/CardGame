@@ -38,12 +38,12 @@ export default {
     if (!this.chart) {
       return
     }
-    this.chart.dispose();
+    this.chart.dispose()
     this.chart = null
   },
   methods: {
     initChart() {
-      this.chart = echarts.init(document.getElementById(this.id));
+      this.chart = echarts.init(document.getElementById(this.id))
 
       this.chart.setOption({
         backgroundColor: '#394056',

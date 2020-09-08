@@ -7,24 +7,24 @@ const validateStub = {
         limit: 20,
         total: 0,
         sort: '+id'
-      },
+      }
     }
   },
   methods: {
     getList: () => {}
   }
-};
+}
 
-jest.unmock('axios');
-import axios from 'axios';
-import MockAdapter from "axios-mock-adapter";
+jest.unmock('axios')
+import axios from 'axios'
+import MockAdapter from 'axios-mock-adapter'
 
-import {createLocalVue, mount, shallowMount} from '@vue/test-utils'
+import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
 import ActivityPanel from '@/components/article/ActivityPanel'
-import Element from 'element-ui';
+import Element from 'element-ui'
 
-const localVue = createLocalVue();
-localVue.use(Element);
+const localVue = createLocalVue()
+localVue.use(Element)
 
 describe('ActivityPanel.vue', () => {
   const wrapper = shallowMount(ActivityPanel,
@@ -33,9 +33,9 @@ describe('ActivityPanel.vue', () => {
       stubs: {
         'ActivityEntityPanel': validateStub
       }
-    });
+    })
 
   it('Activity Panel Resolves Rest', () => {
-    wrapper.vm.handleClick({$el: {id: 'pane-second'}},{});
-  });
-});
+    wrapper.vm.handleClick({ $el: { id: 'pane-second' }}, {})
+  })
+})

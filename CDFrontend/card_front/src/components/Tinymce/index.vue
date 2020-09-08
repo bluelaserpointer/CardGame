@@ -18,7 +18,7 @@ import toolbar from './toolbar'
 import load from './dynamicLoadScript'
 
 // why use this cdn, detail see https://github.com/PanJiaChen/tinymce-all-in-one
-const tinymceCDN = 'https://cdn.jsdelivr.net/npm/tinymce-all-in-one@4.9.3/tinymce.min.js';
+const tinymceCDN = 'https://cdn.jsdelivr.net/npm/tinymce-all-in-one@4.9.3/tinymce.min.js'
 
 export default {
   name: 'Tinymce',
@@ -72,7 +72,7 @@ export default {
   },
   computed: {
     containerWidth() {
-      const width = this.width;
+      const width = this.width
       if (/^[\d]+(\.[\d]+)?$/.test(width)) { // matches `100`, `'100'`
         return `${width}px`
       }
@@ -106,14 +106,14 @@ export default {
       // dynamic load tinymce from cdn
       load(tinymceCDN, (err) => {
         if (err) {
-          this.$message.error(err.message);
+          this.$message.error(err.message)
           return
         }
         this.initTinymce()
       })
     },
     initTinymce() {
-      const _this = this;
+      const _this = this
       window.tinymce.init({
         selector: `#${this.tinymceId}`,
         language: this.languageTypeList['en'],
@@ -137,9 +137,9 @@ export default {
           if (_this.value) {
             editor.setContent(_this.value)
           }
-          _this.hasInit = true;
+          _this.hasInit = true
           editor.on('NodeChange Change KeyUp SetContent', () => {
-            this.hasChange = true;
+            this.hasChange = true
             this.$emit('input', editor.getContent())
           })
         },
@@ -188,7 +188,7 @@ export default {
       })
     },
     destroyTinymce() {
-      const tinymce = window.tinymce.get(this.tinymceId);
+      const tinymce = window.tinymce.get(this.tinymceId)
       if (this.fullscreen) {
         tinymce.execCommand('mceFullScreen')
       }

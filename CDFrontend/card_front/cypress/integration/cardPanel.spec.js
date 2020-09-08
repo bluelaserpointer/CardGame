@@ -3,7 +3,7 @@ Cypress.Cookies.defaults({
   whitelist: 'Admin-Token'
 });
 
-context('CardPanel', () => {
+describe('CardPanel', () => {
   let LOCAL_STORAGE_MEMORY = {};
 
   Cypress.Commands.add("saveLocalStorage", () => {
@@ -129,8 +129,7 @@ context('CardPanel', () => {
   });
 
   it('Card Panel Update Data', () => {
-
-    cy.get(':nth-child(3) > .el-table_1_column_2 > .cell > .link-type').click({force: true});
+    cy.get(':nth-child(2) > .el-table_1_column_2 > .cell > .link-type').click({force: true});
 
     cy.get(':nth-child(2) > .el-form-item__content > .el-input > .el-input__inner')
       .clear();

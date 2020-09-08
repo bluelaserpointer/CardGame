@@ -4,7 +4,7 @@
       <!--        <CommentDropdown v-model = "postForm.comment_disabled" />-->
       <PlatformDropdown v-model="postForm.platforms" />
       <!--        <SourceUrlDropdown v-model = "postForm.source_uri" />-->
-      <el-button class="mailEditPublishButton" v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">
+      <el-button v-loading="loading" class="mailEditPublishButton" style="margin-left: 10px;" type="success" @click="submitForm">
         Publish
       </el-button>
     </sticky>
@@ -46,14 +46,14 @@
           style="margin-left: 20px; margin-top: 5px"
         />
 
-<!--        <div style="grid-row: 1 / span 1">-->
-<!--          <el-button @click="handleSelectAll">Select All</el-button>-->
-<!--          <el-button @click="handleClearAll">Clear All</el-button>-->
-<!--        </div>-->
-<!--        <div style="display: grid; grid-template-columns: 50% 50%; grid-row: 2 / span 1">-->
-<!--          <div>-->
+        <!--        <div style="grid-row: 1 / span 1">-->
+        <!--          <el-button @click="handleSelectAll">Select All</el-button>-->
+        <!--          <el-button @click="handleClearAll">Clear All</el-button>-->
+        <!--        </div>-->
+        <!--        <div style="display: grid; grid-template-columns: 50% 50%; grid-row: 2 / span 1">-->
+        <!--          <div>-->
         <div v-if="type">
-            <el-table
+          <el-table
             :key="tableKey"
             :data="userList"
             class="phaseAwardItemsTable"
@@ -73,248 +73,240 @@
           </el-table>
           <pagination v-show="listQuery.total > 0" :total.sync="listQuery.total * listQuery.limit" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList(listQuery.page, listQuery.limit)" />
         </div>
-<!--          </div>-->
-<!--          <el-table-->
-<!--          v-loading="listLoading"-->
-<!--          :data="sendList"-->
-<!--          class="phaseAwardCardsTable"-->
-<!--          border-->
-<!--          fit-->
-<!--          highlight-current-row-->
-<!--          style="width: 100%; grid-column: 2 / span 1"-->
-<!--          height="350"-->
-<!--          max-height="350"-->
-<!--          @row-click="handleSendDes"-->
-<!--          @sort-change="sortChange"-->
-<!--        >-->
-<!--          <el-table-column label="CardId" prop="itemId" sortable="custom" align="center">-->
-<!--            <template slot-scope="{row}">-->
-<!--              <span>{{ row }}</span>-->
-<!--            </template>-->
-<!--          </el-table-column>-->
-<!--        </el-table>-->
-<!--        </div>-->
+        <!--          </div>-->
+        <!--          <el-table-->
+        <!--          v-loading="listLoading"-->
+        <!--          :data="sendList"-->
+        <!--          class="phaseAwardCardsTable"-->
+        <!--          border-->
+        <!--          fit-->
+        <!--          highlight-current-row-->
+        <!--          style="width: 100%; grid-column: 2 / span 1"-->
+        <!--          height="350"-->
+        <!--          max-height="350"-->
+        <!--          @row-click="handleSendDes"-->
+        <!--          @sort-change="sortChange"-->
+        <!--        >-->
+        <!--          <el-table-column label="CardId" prop="itemId" sortable="custom" align="center">-->
+        <!--            <template slot-scope="{row}">-->
+        <!--              <span>{{ row }}</span>-->
+        <!--            </template>-->
+        <!--          </el-table-column>-->
+        <!--        </el-table>-->
+        <!--        </div>-->
       </div>
     </div>
   </el-form>
 </template>
 
 <script>
-  import Tinymce from '@/components/Tinymce/index'
-  import MDinput from '@/components/MDinput/index'
-  import Sticky from '@/components/Sticky/index'
-  import { validURL } from '@/utils/validate'
-  import Warning from './Warning'
-  import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from '../../views/example/components/Dropdown'
-  import axios from 'axios'
-  import moment from "moment";
-  import request from "@/utils/request";
-  import Pagination from '@/components/Pagination/index'
+import Tinymce from '@/components/Tinymce/index'
+import MDinput from '@/components/MDinput/index'
+import Sticky from '@/components/Sticky/index'
+import { validURL } from '@/utils/validate'
+import Warning from './Warning'
+import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from '../../views/example/components/Dropdown'
+import axios from 'axios'
+import moment from 'moment'
+import request from '@/utils/request'
+import Pagination from '@/components/Pagination/index'
 
+const defaultForm = {
+  status: 'draft',
+  title: '', // 文章题目
+  content: '', // 文章内容
+  image_uri: '', // 文章图片
+  id: undefined,
+  platforms: ['a-platform'],
+  comment_disabled: false
+  // importance: 0,
+  // content_short: '', // 文章摘要
+  // source_uri: '', // 文章外链
+}
 
-  const defaultForm = {
-    status: 'draft',
-    title: '', // 文章题目
-    content: '', // 文章内容
-    image_uri: '', // 文章图片
-    id: undefined,
-    platforms: ['a-platform'],
-    comment_disabled: false,
-    // importance: 0,
-    // content_short: '', // 文章摘要
-    // source_uri: '', // 文章外链
-  };
-
-  export default {
-    name: 'MailEditPanel',
-    components: { Tinymce, MDinput, Sticky, Warning, CommentDropdown, PlatformDropdown, SourceUrlDropdown, Pagination },
-    props: {
-      isEdit: {
-        type: Boolean,
-        default: false
+export default {
+  name: 'MailEditPanel',
+  components: { Tinymce, MDinput, Sticky, Warning, CommentDropdown, PlatformDropdown, SourceUrlDropdown, Pagination },
+  props: {
+    isEdit: {
+      type: Boolean,
+      default: false
+    }
+  },
+  data() {
+    const validateRequire = (rule, value, callback) => {
+      if (value === '') {
+        this.$message({
+          message: rule.field + '为必传项',
+          type: 'error'
+        })
+        callback(new Error(rule.field + '为必传项'))
+      } else {
+        callback()
       }
-    },
-    data() {
-      const validateRequire = (rule, value, callback) => {
-        if (value === '') {
-          this.$message({
-            message: rule.field + '为必传项',
-            type: 'error'
-          });
-          callback(new Error(rule.field + '为必传项'))
+    }
+    return {
+      postForm: Object.assign({}, defaultForm),
+      loading: false,
+      userListOptions: [],
+      rules: {
+        // image_uri: [{ validator: validateRequire }],
+        title: [{ validator: validateRequire }],
+        content: [{ validator: validateRequire }]
+      },
+      tempRoute: {},
+      userList: [],
+      sendList: [],
+      sendUser: 0,
+      targetChosen: false,
+      listQuery: {
+        page: 1,
+        limit: 20,
+        total: 0,
+        sort: '+id'
+      },
+      type: false,
+      tableKey: 0
+    }
+  },
+  watch: {
+    sendList(newVal) {
+      this.targetChosen = newVal.length > 0
+    }
+  },
+  created() {
+    // Why need to make a copy of this.$route here?
+    // Because if you enter this page and quickly switch tag, may be in the execution of the setTagsViewTitle function, this.$route is no longer pointing to the current page
+    // https://github.com/PanJiaChen/vue-element-admin/issues/1221
+    this.getList(1, this.listQuery.limit)
+
+    this.tempRoute = Object.assign({}, this.$route)
+  },
+  methods: {
+    getList(page, limit) {
+      const postData = {
+        pageToken: page,
+        pageSize: limit
+      }
+      request.post('user/List', postData).then(response => {
+        if (response.data) {
+          this.userList = response.data.result
+          this.listQuery.total = response.data.totalPages
         } else {
-          callback()
+          this.$message.error('Fetching Data failed!')
         }
-      };
-      return {
-        postForm: Object.assign({}, defaultForm),
-        loading: false,
-        userListOptions: [],
-        rules: {
-          // image_uri: [{ validator: validateRequire }],
-          title: [{ validator: validateRequire }],
-          content: [{ validator: validateRequire }],
-        },
-        tempRoute: {},
-        userList: [],
-        sendList: [],
-        sendUser: 0,
-        targetChosen: false,
-        listQuery: {
-          page: 1,
-          limit: 20,
-          total: 0,
-          sort: '+id'
-        },
-        type: false,
-        tableKey: 0
+      })
+    },
+
+    // handleSelectAll(){
+    //   this.handleClearAll();
+    //   for(let i in this.userList)
+    //   {
+    //     this.sendList.push(this.userList[i]);
+    //   }
+    // },
+    // handleClearAll(){
+    //   this.sendList = [];
+    // },
+
+    handleSendUser(row) {
+      this.sendUser = row.userId
+    },
+
+    // handleSendSrc(row)
+    // {
+    //   let index = this.sendList.indexOf(row.userId);
+    //   if(index >= 0){
+    //     this.sendList.splice(index, 1);
+    //   }else{
+    //     this.sendList.push(row.userId);
+    //   }
+    // },
+    // handleSendDes(row)
+    // {
+    //   this.sendList.splice(this.sendList.indexOf(row), 1);
+    // },
+
+    uploadCover() {
+      const _this = this
+      // 根据ref得到图片文件
+      var file = this.$refs.img
+      // 使用h5的读取文件api
+      var reader = new FileReader()
+      reader.readAsDataURL(file.files[0])
+      // 读取完成后触发
+      reader.onload = function() {
+        // 改变img的路径
+        _this.postForm.image_uri = this.result
       }
     },
-    watch:{
-      sendList(newVal){
-        this.targetChosen = newVal.length > 0;
+    resetArticle() {
+      this.postForm = Object.assign({}, defaultForm)
+      this.$refs.editor.setContent('')
+      this.sendList = []
+    },
+    submitForm() {
+      // if(!this.targetChosen)
+      // {
+      //   this.$message.error('Target not chosen!');
+      //   return false;
+      // }
+
+      if (this.postForm.title === undefined || this.postForm.content === undefined || this.postForm.title === '' || this.postForm.content === '') {
+        this.$message.error('Data Form Invalid!')
+        return false
+      }
+
+      const postData = {
+        mailName: this.postForm.title,
+        mailDetails: {
+          mailDescription: this.postForm.content,
+          mailImg: this.postForm.image_uri === undefined ? '' : this.postForm.image_uri
+        }
+      }
+
+      request.post('mail/addMail', JSON.stringify(postData)).then(response => {
+        if (response.data) {
+          this.resetArticle()
+          this.sendMail(response.data.mailId)
+        } else {
+          this.$message.error('Publishing Mail failed!')
+        }
+      })
+        .catch(error => {
+          this.$message.error('Publishing Mail failed!')
+        }
+        )
+    },
+    sendMail(mailId) {
+      const postData = new FormData()
+      postData.append('mailId', mailId)
+      if (!this.type) {
+        request.post('mail/sendMailToAllUsers', postData).then(response => {
+
+        }).catch(response => {
+
+        })
+      } else {
+        postData.append('userId', this.sendUser)
+        request.post('mail/sendMail', postData).then(response => {
+
+        }).catch(response => {
+
+        })
       }
     },
-    created() {
-      // Why need to make a copy of this.$route here?
-      // Because if you enter this page and quickly switch tag, may be in the execution of the setTagsViewTitle function, this.$route is no longer pointing to the current page
-      // https://github.com/PanJiaChen/vue-element-admin/issues/1221
-      this.getList(1, this.listQuery.limit);
-
-      this.tempRoute = Object.assign({}, this.$route);
+    setTagsViewTitle() {
+      const title = 'Edit Mail'
+      const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` })
+      this.$store.dispatch('tagsView/updateVisitedView', route)
     },
-    methods: {
-      getList(page, limit){
-        let postData = {
-          pageToken: page,
-          pageSize: limit
-        };
-        request.post('user/List', postData).then(response =>
-        {
-          if(response.data)
-          {
-            this.userList = response.data.result;
-            this.listQuery.total = response.data.totalPages;
-          }else{
-            this.$message.error('Fetching Data failed!');
-          }
-        })
-      },
-
-      // handleSelectAll(){
-      //   this.handleClearAll();
-      //   for(let i in this.userList)
-      //   {
-      //     this.sendList.push(this.userList[i]);
-      //   }
-      // },
-      // handleClearAll(){
-      //   this.sendList = [];
-      // },
-
-      handleSendUser(row)
-      {
-        this.sendUser = row.userId;
-      },
-
-      // handleSendSrc(row)
-      // {
-      //   let index = this.sendList.indexOf(row.userId);
-      //   if(index >= 0){
-      //     this.sendList.splice(index, 1);
-      //   }else{
-      //     this.sendList.push(row.userId);
-      //   }
-      // },
-      // handleSendDes(row)
-      // {
-      //   this.sendList.splice(this.sendList.indexOf(row), 1);
-      // },
-
-      uploadCover() {
-        const _this = this;
-        // 根据ref得到图片文件
-        var file = this.$refs.img;
-        // 使用h5的读取文件api
-        var reader = new FileReader();
-        reader.readAsDataURL(file.files[0]);
-        // 读取完成后触发
-        reader.onload = function() {
-          // 改变img的路径
-          _this.postForm.image_uri = this.result;
-        }
-      },
-      resetArticle(){
-        this.postForm = Object.assign({}, defaultForm);
-        this.$refs.editor.setContent('');
-        this.sendList = [];
-      },
-      submitForm() {
-
-        // if(!this.targetChosen)
-        // {
-        //   this.$message.error('Target not chosen!');
-        //   return false;
-        // }
-
-        if(this.postForm.title === undefined || this.postForm.content === undefined || this.postForm.title === '' || this.postForm.content === '')
-        {
-          this.$message.error('Data From Invalid!');
-          return false;
-        }
-
-        let postData = {
-          mailName: this.postForm.title,
-          mailDetails: {
-            mailDescription: this.postForm.content,
-            mailImg: this.postForm.image_uri === undefined ? '' : this.postForm.image_uri,
-          }
-        };
-
-        request.post('mail/addMail', JSON.stringify(postData)).then(response => {
-          if (response.data) {
-            this.resetArticle();
-            this.sendMail(response.data.mailId);
-          } else {
-            this.$message.error('Publishing Mail failed!');
-          }
-        })
-          .catch(error =>
-            {
-              this.$message.error('Publishing Mail failed!');
-            }
-          );
-      },
-      sendMail(mailId){
-        let postData = new FormData();
-        postData.append('mailId', mailId);
-        if(!this.type)
-        {
-          request.post('mail/sendMailToAllUsers', postData).then(response => {
-
-          }).catch(response => {
-
-          })
-        }else{
-          postData.append('userId', this.sendUser);
-          request.post('mail/sendMail', postData).then(response => {
-
-          }).catch(response => {
-
-          })
-        }
-      },
-      setTagsViewTitle() {
-        const title = 'Edit Mail';
-        const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` });
-        this.$store.dispatch('tagsView/updateVisitedView', route)
-      },
-      setPageTitle() {
-        const title = 'Edit Mail';
-        document.title = `${title} - ${this.postForm.id}`
-      },
+    setPageTitle() {
+      const title = 'Edit Mail'
+      document.title = `${title} - ${this.postForm.id}`
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>

@@ -30,7 +30,7 @@ context('ActivityEdit', () => {
     cy.visit('http://localhost:8081/');
 
     cy.get('.username-input')
-      .type('admin1');
+      .type('SuperAdmin');
 
     cy.get('.password-input')
       .type('111111');
@@ -91,7 +91,7 @@ context('ActivityEdit', () => {
   it('Activity Update Normal', () => {
     // cy.get('iframe').its('0.contentDocument.body')
     //   .type('Test Content');
-    cy.get('.activityUpdatePublishButton').click();
+    cy.get('.activityUpdatePublishButton').click({force: true});
   });
 
   it('Activity Update Limited->Unlimited', () => {

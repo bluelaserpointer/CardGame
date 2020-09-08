@@ -1,8 +1,8 @@
 {
-  "presets": ["@babel/preset-env"],
+  "presets": ["@babel/preset-react"],
   "plugins": [
     "istanbul",
-    "@babel/transform-runtime"
+    "@babel/transform-runtime",
   ],
   "env": {
     "test": {
@@ -17,3 +17,4 @@
     }
   }
 }
+

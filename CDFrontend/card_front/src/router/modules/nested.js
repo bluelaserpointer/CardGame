@@ -10,7 +10,7 @@ const nestedRouter = {
   meta: {
     title: 'Nested Routes',
     icon: 'nested'
-  },
+  }
   // children: [
   //   {
   //     path: 'menu1',
@@ -61,6 +61,6 @@ const nestedRouter = {
   //     meta: { title: 'Menu 2' }
   //   }
   // ]
-};
+}
 
 export default nestedRouter

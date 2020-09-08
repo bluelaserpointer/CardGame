@@ -101,7 +101,7 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="panelVisible" top="5vh" class="editDialog">
       <el-form ref="temp" :rules="rules" :model="temp" style="margin: auto 50px auto 50px; display:grid; grid-template-columns: 50% 50%; grid-column-gap: 10px" class="demo-form-inline">
-        <el-form-item label="ID" prop="cardId" v-if="dialogStatus==='update'">
+        <el-form-item v-if="dialogStatus==='update'" label="ID" prop="cardId">
           <el-input v-model="temp.cardId" disabled />
         </el-form-item>
         <el-form-item label="CardName" prop="cardName">
@@ -159,8 +159,8 @@
 
           <span slot="footer" class="dialog-footer">
             <el-button class="cancelInnerButton" @click="deleteVisible = false">Cancel</el-button>
-            <el-button class="deleteInnerButton" v-if="confirmDelete === false" type="danger" disabled>Delete</el-button>
-            <el-button class="deleteInnerButton" v-else type="danger" @click="deleteData">Delete</el-button>
+            <el-button v-if="confirmDelete === false" class="deleteInnerButton" type="danger" disabled>Delete</el-button>
+            <el-button v-else class="deleteInnerButton" type="danger" @click="deleteData">Delete</el-button>
           </span>
         </el-dialog>
 
@@ -183,7 +183,6 @@
 import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination/index'
 import request from '@/utils/request'
-
 
 export default {
   name: 'CardEntityPanel',
@@ -243,87 +242,84 @@ export default {
   },
   watch: {
     deleteVisible() {
-      this.confirmDelete = false;
-      this.confirmPassword = '';
+      this.confirmDelete = false
+      this.confirmPassword = ''
     }
   },
   created() {
-    this.getList(1, this.listQuery.limit);
+    this.getList(1, this.listQuery.limit)
   },
   methods: {
     getList(page, limit) {
-      console.log("In getList");
-      console.log(this.listQuery.page);
-      let _this = this;
-      let postData = {
+      console.log('In getList')
+      console.log(this.listQuery.page)
+      const _this = this
+      const postData = {
         pageToken: page,
         pageSize: limit
-      };
-      request.post('card/List', postData).then( response => {
-        console.log("In response");
-        if(response.data) {
-          _this.list = response.data.result;
-          console.log("In if1");
-          console.log(_this.list);
-          _this.listQuery.total = response.data.totalPages;
+      }
+      request.post('card/List', postData).then(response => {
+        console.log('In response')
+        if (response.data) {
+          _this.list = response.data.result
+          console.log('In if1')
+          console.log(_this.list)
+          _this.listQuery.total = response.data.totalPages
           // _this.listQuery.total = 3;
-          _this.watchList();
-        }else
-        {
-          console.log("In if2");
-          this.$message.error('Fetching Data Failed!');
+          _this.watchList()
+        } else {
+          console.log('In if2')
+          this.$message.error('Fetching Data Failed!')
         }
       })
     },
     watchList() {
-      const list = this.list;
+      const list = this.list
       for (const i in list) {
-        const details = list[i].cardDetails;
-        list[i].cardImg = details.cardImg;
-        list[i].cardDescription = details.cardDescription;
+        const details = list[i].cardDetails
+        list[i].cardImg = details.cardImg
+        list[i].cardDescription = details.cardDescription
         list[i].shortDescription = details.shortDescription
       }
-      this.list = list;
+      this.list = list
     },
 
     confirmIdentity() {
-      const postData = new FormData();
-      const _this = this;
-      postData.append('userName', localStorage.getItem('AdminName'));
-      postData.append('password', this.confirmPassword);
+      const postData = new FormData()
+      const _this = this
+      postData.append('userName', localStorage.getItem('AdminName'))
+      postData.append('password', this.confirmPassword)
 
       request.post('user/confirmDelete', postData).then(response => {
         if (response.data) {
           _this.confirmDelete = true
         } else {
-          this.$message.error('Identification failed!');
+          this.$message.error('Identification failed!')
         }
       })
-        .catch(error =>
-          {
-            this.$message.error('Identification failed!');
-          }
-        );
+        .catch(error => {
+          this.$message.error('Identification failed!')
+        }
+        )
     },
     deleteData() {
-      const postData = new FormData();
-      const _this = this;
-      postData.append('cardId', this.temp.cardId);
+      const postData = new FormData()
+      const _this = this
+      postData.append('cardId', this.temp.cardId)
 
-      request.post('card/deleteCard',postData).then(response => {
+      request.post('card/deleteCard', postData).then(response => {
         if (response.data) {
-          _this.panelVisible = false;
-          _this.deleteVisible = false;
-          this.getList(this.listQuery.page, this.listQuery.limit);
+          _this.panelVisible = false
+          _this.deleteVisible = false
+          this.getList(this.listQuery.page, this.listQuery.limit)
         } else {
-          this.$message.error('Deleting Data failed!');
+          this.$message.error('Deleting Data failed!')
         }
       })
-        .catch(error =>
-          {
-            this.$message.error('Deleting Data failed!');
-          }
-        );
+        .catch(error => {
+          this.$message.error('Deleting Data failed!')
+        }
+        )
     },
 
     resetTemp() {
@@ -344,28 +340,28 @@ export default {
       }
     },
     handleCreate() {
-      let _this = this;
-      this.resetTemp();
-      this.dialogStatus = 'create';
-      this.panelVisible = true;
+      const _this = this
+      this.resetTemp()
+      this.dialogStatus = 'create'
+      this.panelVisible = true
       this.$nextTick(() => {
         _this.$refs['temp'].clearValidate()
       })
     },
     createData(formName) {
-      const _this = this;
+      const _this = this
       this.$refs['temp'].validate((valid) => {
         if (valid) {
-          this.submitCreate();
+          this.submitCreate()
         } else {
-          this.$message.error('Form Invalid!');
-          return false;
+          this.$message.error('Form Invalid!')
+          return false
         }
-      });
+      })
     },
-    submitCreate(){
-      let _this = this;
-      let postData = {
+    submitCreate() {
+      const _this = this
+      const postData = {
         cardName: this.temp.cardName,
         rarity: this.temp.rarity,
         healthPoint: this.temp.healthPoint,
@@ -378,31 +374,30 @@ export default {
         cardDetails: {
           cardImg: this.temp.cardImg,
           cardDescription: this.temp.cardDescription,
-          shortDescription: this.temp.shortDescription,
+          shortDescription: this.temp.shortDescription
         }
-      };
+      }
 
       request.post('card/addCard', JSON.stringify(postData)).then(response => {
-        console.log("In response addCard");
+        console.log('In response addCard')
         if (response.data) {
           // TODO: SHORTEN THE REQUESTS
-          console.log("In addCard");
-          _this.panelVisible = false;
-          _this.getList(this.listQuery.page, this.listQuery.limit);
-          _this.resetTemp();
-        }else {
-          this.$message.error('Creating Data failed!');
+          console.log('In addCard')
+          _this.panelVisible = false
+          _this.getList(this.listQuery.page, this.listQuery.limit)
+          _this.resetTemp()
+        } else {
+          this.$message.error('Creating Data failed!')
         }
       })
-        .catch(error =>
-          {
-            this.$message.error('Creating Data failed!');
-          }
-        );
+        .catch(error => {
+          this.$message.error('Creating Data failed!')
+        }
+        )
     },
-    submitUpdate(){
-      const _this = this;
-      let postData = {
+    submitUpdate() {
+      const _this = this
+      const postData = {
         cardId: this.temp.cardId,
         cardName: this.temp.cardName,
         rarity: this.temp.rarity,
@@ -417,30 +412,29 @@ export default {
           cardId: this.temp.cardId,
           cardImg: this.temp.cardImg,
           cardDescription: this.temp.cardDescription,
-          shortDescription: this.temp.shortDescription,
+          shortDescription: this.temp.shortDescription
         }
-      };
+      }
 
-      request.post('card/updateCard',JSON.stringify(postData)).then(response => {
-        if(response.data) {
-          _this.getList(this.listQuery.page, this.listQuery.limit);
-          _this.panelVisible = false;
-          _this.resetTemp();
-        }else {
-          this.$message.error('Updating Data failed!');
+      request.post('card/updateCard', JSON.stringify(postData)).then(response => {
+        if (response.data) {
+          _this.getList(this.listQuery.page, this.listQuery.limit)
+          _this.panelVisible = false
+          _this.resetTemp()
+        } else {
+          this.$message.error('Updating Data failed!')
         }
       })
-        .catch(error =>
-          {
-            this.$message.error('Updating Data failed!');
-          }
-        );
+        .catch(error => {
+          this.$message.error('Updating Data failed!')
+        }
+        )
     },
     handleUpdate(row) {
-      let _this = this;
-      this.temp = Object.assign({}, row); // copy obj
-      this.dialogStatus = 'update';
-      this.panelVisible = true;
+      const _this = this
+      this.temp = Object.assign({}, row) // copy obj
+      this.dialogStatus = 'update'
+      this.panelVisible = true
       this.$nextTick(() => {
         _this.$refs['temp'].clearValidate()
       })
@@ -448,27 +442,27 @@ export default {
     updateData(formName) {
       this.$refs['temp'].validate((valid) => {
         if (valid) {
-          this.submitUpdate();
+          this.submitUpdate()
         } else {
-          this.$message.error('Form Invalid!');
-          return false;
+          this.$message.error('Form Invalid!')
+          return false
         }
-      });
+      })
     },
 
     uploadCover() {
-      const _this = this;
-      var file = this.$refs.img;
-      var reader = new FileReader();
-      reader.readAsDataURL(file.files[0]);
+      const _this = this
+      var file = this.$refs.img
+      var reader = new FileReader()
+      reader.readAsDataURL(file.files[0])
       reader.onload = function() {
-        _this.temp.cardImg = this.result;
-        console.log("result");
-        console.log(this.result);
+        _this.temp.cardImg = this.result
+        console.log('result')
+        console.log(this.result)
       }
     },
     sortChange(data) {
-      const { prop, order } = data;
+      const { prop, order } = data
       if (prop === 'id') {
         this.sortByID(order)
       }
@@ -482,14 +476,14 @@ export default {
       this.handleFilter()
     },
     getSortClass: function(key) {
-      const sort = this.listQuery.sort;
+      const sort = this.listQuery.sort
       return sort === `+${key}` ? 'ascending' : 'descending'
     },
 
     handleFilter() {
-      this.listQuery.page = 1;
-      this.getList(this.listQuery.page, this.listQuery.limit);
-    },
+      this.listQuery.page = 1
+      this.getList(this.listQuery.page, this.listQuery.limit)
+    }
   }
 }
 </script>

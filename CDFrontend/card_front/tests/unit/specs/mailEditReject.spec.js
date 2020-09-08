@@ -3,70 +3,68 @@ const validateStub = {
   methods: {
     setContent: () => {}
   }
-};
+}
 
-let userData = [
+const userData = [
   {
     userId: 1
   },
   {
     userId: 2
   }
-];
+]
 
-jest.unmock('axios');
-import axios from 'axios';
-import MockAdapter from "axios-mock-adapter";
+jest.unmock('axios')
+import axios from 'axios'
+import MockAdapter from 'axios-mock-adapter'
 
-
-import {createLocalVue, mount, shallowMount} from '@vue/test-utils'
+import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
 import MailEditPanel from '@/components/article/MailEditPanel'
-import Element from 'element-ui';
+import Element from 'element-ui'
 
-const localVue = createLocalVue();
-localVue.use(Element);
-
+const localVue = createLocalVue()
+localVue.use(Element)
 
 describe('MailEditPanel.vue', () => {
   const wrapper = shallowMount(MailEditPanel, {
     localVue,
-    stubs:{
+    stubs: {
       'Tinymce': validateStub
     }
-  });
+  })
 
   beforeEach(() => {
-    wrapper.vm.$nextTick(() => {});
-  });
+    wrapper.vm.$nextTick(() => {})
+  })
 
-  let mockAdapter = new MockAdapter(axios);
-  let spyPost = jest.spyOn(axios, "post");
+  const mockAdapter = new MockAdapter(axios)
+  const spyPost = jest.spyOn(axios, 'post')
 
-  it('Mail Edit Panel Resolves created', async () => {
-    expect(wrapper.vm.postForm.image_uri).toBe('');
-    expect(wrapper.vm.postForm.title).toBe('');
+  it('Mail Edit Panel Resolves created', async() => {
+    expect(wrapper.vm.postForm.image_uri).toBe('')
+    expect(wrapper.vm.postForm.title).toBe('')
 
     wrapper.vm.$nextTick(() => {
-      expect(wrapper.vm.postForm.content).toBe('');
+      expect(wrapper.vm.postForm.content).toBe('')
     })
-  });
+  })
 
-  it('Mail Edit Panel Resolves submitForm', async () => {
-    wrapper.vm.postForm.title = "TestTitle";
-    wrapper.vm.postForm.content = "TestContent";
-    wrapper.vm.postForm.image_uri = undefined;
+  it('Mail Edit Panel Resolves submitForm', async() => {
+    wrapper.vm.postForm.title = 'TestTitle'
+    wrapper.vm.postForm.content = 'TestContent'
+    wrapper.vm.postForm.image_uri = undefined
 
-    expect(spyPost).toHaveBeenCalledTimes(0);
+    expect(spyPost).toHaveBeenCalledTimes(0)
 
-    wrapper.vm.type = true;
-    mockAdapter.onAny().reply(400, false).onAny();
+    wrapper.vm.type = true
+    mockAdapter.onAny().reply(400, false).onAny()
 
-    await wrapper.vm.submitForm();
-  });
+    await wrapper.vm.submitForm()
+  })
 
   it('Mail Edit Panel Resolves submitForm Result', () => {
     wrapper.vm.$nextTick(() => {
-      expect(spyPost).toHaveBeenCalledTimes(1);
+      expect(spyPost).toHaveBeenCalledTimes(1)
     })
-  });
-});
+  })
+})

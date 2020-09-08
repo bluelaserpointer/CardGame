@@ -5,7 +5,7 @@
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" />
     </div>
 
-<!--    :data="list.filter(data => !search || data.activityName.toLowerCase().includes(search.toLowerCase()))"-->
+    <!--    :data="list.filter(data => !search || data.activityName.toLowerCase().includes(search.toLowerCase()))"-->
     <el-table
       :key="tableKey"
       v-loading="listLoading"
@@ -54,12 +54,10 @@
     <pagination v-show="listQuery.total > 0" :total.sync="listQuery.total * listQuery.limit" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList(listQuery.page, listQuery.limit)" />
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="panelVisible" top="5vh" class="editDialog">
-      <ActivityUpdatePanel v-bind:update-content="temp" @getList="getList" v-bind:list-query="listQuery"/>
+      <ActivityUpdatePanel :update-content="temp" :list-query="listQuery" @getList="getList" />
     </el-dialog>
 
   </div>
-
-
 
 </template>
 
@@ -67,13 +65,13 @@
 import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination/index'
 import axios from 'axios'
-import moment from "moment"; // secondary package based on el-pagination
-import ActivityUpdatePanel from "@/components/article/ActivityUpdatePanel";
-import request from "@/utils/request"; // secondary package based on el-pagination
+import moment from 'moment' // secondary package based on el-pagination
+import ActivityUpdatePanel from '@/components/article/ActivityUpdatePanel'
+import request from '@/utils/request' // secondary package based on el-pagination
 
 export default {
   name: 'ActivityEntityPanel',
-  components: {ActivityUpdatePanel, Pagination },
+  components: { ActivityUpdatePanel, Pagination },
   directives: { waves },
   data() {
     return {
@@ -84,7 +82,7 @@ export default {
         activityImg: '',
         activityDescription: '',
         start: this.delayDate(7),
-        type: false,
+        type: false
       },
       tableKey: 0,
       list: null,
@@ -108,62 +106,61 @@ export default {
     }
   },
   created() {
-    this.getList(1, this.listQuery.limit);
+    this.getList(1, this.listQuery.limit)
   },
   methods: {
-    delayDate(days){
-      let newDate = new Date();
-      let showDate;
-      for (let i = 1; i <= days; i++) { //后7天
-        let date = newDate.getDate() < 10 ? '0' + newDate.getDate() : newDate.getDate();
-        let yue = (newDate.getMonth() + 1) < 10 ? '0' + (newDate.getMonth() + 1) : (newDate.getMonth() + 1);
-        showDate = newDate.getFullYear() + '-' + yue + '-' + date;
-        newDate.setDate(newDate.getDate() + 1);
+    delayDate(days) {
+      const newDate = new Date()
+      let showDate
+      for (let i = 1; i <= days; i++) { // 后7天
+        const date = newDate.getDate() < 10 ? '0' + newDate.getDate() : newDate.getDate()
+        const yue = (newDate.getMonth() + 1) < 10 ? '0' + (newDate.getMonth() + 1) : (newDate.getMonth() + 1)
+        showDate = newDate.getFullYear() + '-' + yue + '-' + date
+        newDate.setDate(newDate.getDate() + 1)
       }
-      return showDate + ' 00:00:00';
+      return showDate + ' 00:00:00'
     },
-    formatDate(date){
-      return moment(new Date(date)).format('YYYY-MM-DD HH:mm:ss');
+    formatDate(date) {
+      return moment(new Date(date)).format('YYYY-MM-DD HH:mm:ss')
     },
     watchList() {
-      const list = this.list;
+      const list = this.list
       for (const i in list) {
-        const details = list[i].activityDetails;
+        const details = list[i].activityDetails
         if (details === null) { continue }
-        list[i].activityImg = details.activityImg;
-        list[i].activityDescription = details.activityDescription;
+        list[i].activityImg = details.activityImg
+        list[i].activityDescription = details.activityDescription
       }
-      this.list = list;
+      this.list = list
     },
     getList(page, limit) {
-      let postData = {
+      const postData = {
         pageToken: page,
         pageSize: limit
-      };
+      }
       request.post('activity/List', postData).then(response => {
-        if(response.data) {
-          this.panelVisible = false;
-          this.list = response.data.result;
-          this.listQuery.total = response.data.totalPages;
-          this.watchList();
-        }else
-        {
-          this.$message.error('Fetching Data Failed!');
+        if (response.data) {
+          this.panelVisible = false
+          this.list = response.data.result
+          this.listQuery.total = response.data.totalPages
+          this.watchList()
+        } else {
+          this.$message.error('Fetching Data Failed!')
         }
       })
     },
     handleUpdate(row) {
-      this.temp = Object.assign({}, row); // copy obj
-      this.dialogStatus = 'update';
-      this.panelVisible = true;
+      this.temp = Object.assign({}, row) // copy obj
+      this.dialogStatus = 'update'
+      this.panelVisible = true
     },
 
     handleFilter() {
-      this.listQuery.page = 1;
-      this.getList(this.listQuery.page, this.listQuery.limit);
+      this.listQuery.page = 1
+      this.getList(this.listQuery.page, this.listQuery.limit)
     },
     sortChange(data) {
-      const { prop, order } = data;
+      const { prop, order } = data
       if (prop === 'id') {
         this.sortByID(order)
       }
@@ -177,9 +174,9 @@ export default {
       this.handleFilter()
     },
     getSortClass: function(key) {
-      const sort = this.listQuery.sort;
+      const sort = this.listQuery.sort
       return sort === `+${key}` ? 'ascending' : 'descending'
-    },
+    }
 
   }
 }

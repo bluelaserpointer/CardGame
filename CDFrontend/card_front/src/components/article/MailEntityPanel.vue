@@ -4,7 +4,7 @@
       <el-input v-model="search" placeholder="Title" style="width: 200px;" class="filter-card" />
     </div>
 
-<!--    :data="list.filter(data => !search || data.mailName.toLowerCase().includes(search.toLowerCase()))"-->
+    <!--    :data="list.filter(data => !search || data.mailName.toLowerCase().includes(search.toLowerCase()))"-->
     <el-table
       :key="tableKey"
       v-loading="listLoading"
@@ -43,7 +43,7 @@
     <pagination v-show="listQuery.total > 0" :total.sync="listQuery.total * listQuery.limit" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList(listQuery.page, listQuery.limit)" />
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="panelVisible" top="5vh" class="editDialog">
-      <MailUpdatePanel v-bind:update-content="temp" @getList="getList" />
+      <MailUpdatePanel :update-content="temp" :list-query="listQuery" @getList="getList" />
     </el-dialog>
 
   </div>
@@ -53,12 +53,12 @@
 import waves from '@/directive/waves' // waves directive
 import Pagination from '@/components/Pagination/index'
 import axios from 'axios' // secondary package based on el-pagination;
-import MailUpdatePanel from "@/components/article/MailUpdatePanel";
-import request from "@/utils/request"; // secondary package based on el-pagination
+import MailUpdatePanel from '@/components/article/MailUpdatePanel'
+import request from '@/utils/request' // secondary package based on el-pagination
 
 export default {
   name: 'MailEntityPanel',
-  components: {MailUpdatePanel, Pagination },
+  components: { MailUpdatePanel, Pagination },
   directives: { waves },
   data() {
     return {
@@ -92,50 +92,48 @@ export default {
     }
   },
   created() {
-    this.getList(1, this.listQuery.limit);
+    this.getList(1, this.listQuery.limit)
   },
   methods: {
     watchList() {
-      let list = this.list;
+      const list = this.list
       for (const i in list) {
-        const details = list[i].mailDetails;
+        const details = list[i].mailDetails
         if (details === null) { continue }
-        list[i].mailImg = details.mailImg;
+        list[i].mailImg = details.mailImg
         list[i].mailDescription = details.mailDescription
       }
-      this.list = list;
+      this.list = list
     },
     getList(page, limit) {
-      let postData = {
+      const postData = {
         pageToken: page,
         pageSize: limit
-      };
-      request.post( 'mail/List', postData).then(response => {
-        if(response.data) {
-          this.panelVisible = false;
-          this.list = response.data.result;
-          this.listQuery.total = response.data.totalPages;
+      }
+      request.post('mail/List', postData).then(response => {
+        if (response.data) {
+          console.log('In getList, closing panel.')
+          this.panelVisible = false
+          this.list = response.data.result
+          this.listQuery.total = response.data.totalPages
           this.watchList()
-        }else
-        {
-          this.$message.error('Fetching Data Failed!');
+        } else {
+          this.$message.error('Fetching Data Failed!')
         }
       })
     },
     handleUpdate(row) {
-      this.temp = Object.assign({}, row); // copy obj
-      this.dialogStatus = 'update';
-      this.panelVisible = true;
+      this.temp = Object.assign({}, row) // copy obj
+      this.dialogStatus = 'update'
+      this.panelVisible = true
     },
-
-
 
     handleFilter() {
-      this.listQuery.page = 1;
-      this.getList(this.listQuery.page, this.listQuery.limit);
+      this.listQuery.page = 1
+      this.getList(this.listQuery.page, this.listQuery.limit)
     },
     sortChange(data) {
-      const { prop, order } = data;
+      const { prop, order } = data
       if (prop === 'id') {
         this.sortByID(order)
       }
@@ -149,9 +147,9 @@ export default {
       this.handleFilter()
     },
     getSortClass: function(key) {
-      const sort = this.listQuery.sort;
+      const sort = this.listQuery.sort
       return sort === `+${key}` ? 'ascending' : 'descending'
-    },
+    }
   }
 }
 </script>
