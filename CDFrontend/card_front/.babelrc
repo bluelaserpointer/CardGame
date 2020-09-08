@@ -3,13 +3,11 @@
   "plugins": [
     "istanbul",
     "@babel/transform-runtime",
-    "transform-class-properties"
   ],
   "env": {
     "test": {
       "plugins": [
         "istanbul",
-        "transform-class-properties",
         "require-context-hook",
         "transform-require-context",
         "@babel/plugin-transform-modules-commonjs",

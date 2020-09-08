@@ -159,9 +159,22 @@
     }
   },
   "nyc": {
+    "check-coverage": true,
+    "per-file": true,
+    "include": [
+      "src/**/**/*.{js,vue}"
+    ],
+    "reporter": [
+      "lcov",
+      "text",
+      "text-summary"
+    ],
     "extension": [
       ".js",
       ".vue"
-    ]
+    ],
+    "verbose": true,
+    "cache": true,
+    "all": true
   }
 }
