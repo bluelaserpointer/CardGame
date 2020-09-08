@@ -25,5 +25,5 @@ const articleRouter = {
       meta: { title: 'Mail Panel', icon: 'edit' }
     }
   ]
-}
+};
 export default articleRouter

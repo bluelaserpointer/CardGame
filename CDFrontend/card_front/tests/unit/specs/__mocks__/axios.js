@@ -25,11 +25,11 @@
 // export default axios;
 
 const axios = {
-  get: jest.fn(() => Promise.resolve({ data: {}})),
+  get: jest.fn(() => Promise.resolve({ data: {} })),
   create: () => axios,
   defaults: {
-    adapter: {}
-  }
-}
+    adapter: {},
+  },
+};
 
-export default axios
+export default axios;

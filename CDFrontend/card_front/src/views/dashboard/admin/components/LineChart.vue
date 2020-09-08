@@ -4,7 +4,7 @@
 
 <script>
 import echarts from 'echarts'
-require('echarts/theme/macarons') // echarts theme
+require('echarts/theme/macarons'); // echarts theme
 import resize from './mixins/resize'
 
 export default {
@@ -53,14 +53,14 @@ export default {
     if (!this.chart) {
       return
     }
-    this.chart.dispose()
+    this.chart.dispose();
     this.chart = null
   },
   methods: {
     initChart() {
-      this.chart = echarts.init(this.$el, 'macarons')
-      console.log(this.chart)
-      console.log(this.chartData)
+      this.chart = echarts.init(this.$el, 'macarons');
+      console.log(this.chart);
+      console.log(this.chartData);
       this.setOptions(this.chartData)
     },
     setOptions({ expectedData, actualData, actualAxis } = {}) {
@@ -111,26 +111,26 @@ export default {
         //   animationDuration: 2800,
         //   animationEasing: 'cubicInOut'
         // },
-          {
-            name: 'actual',
-            smooth: true,
-            type: 'line',
-            itemStyle: {
-              normal: {
+        {
+          name: 'actual',
+          smooth: true,
+          type: 'line',
+          itemStyle: {
+            normal: {
+              color: '#3888fa',
+              lineStyle: {
                 color: '#3888fa',
-                lineStyle: {
-                  color: '#3888fa',
-                  width: 2
-                },
-                areaStyle: {
-                  color: '#f3f8ff'
-                }
+                width: 2
+              },
+              areaStyle: {
+                color: '#f3f8ff'
               }
-            },
-            data: actualData,
-            animationDuration: 2800,
-            animationEasing: 'quadraticOut'
-          }]
+            }
+          },
+          data: actualData,
+          animationDuration: 2800,
+          animationEasing: 'quadraticOut'
+        }]
       })
     }
   }

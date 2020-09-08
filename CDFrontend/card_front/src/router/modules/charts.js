@@ -31,6 +31,6 @@ const chartsRouter = {
       meta: { title: 'Mix Chart', noCache: true }
     }
   ]
-}
+};
 
 export default chartsRouter

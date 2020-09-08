@@ -16,7 +16,8 @@
       </el-button>
     </div>
 
-    <!--    :data="list.filter(data => !search || data.itemName.toLowerCase().includes(search.toLowerCase()))"-->
+
+<!--    :data="list.filter(data => !search || data.itemName.toLowerCase().includes(search.toLowerCase()))"-->
     <el-table
       :key="tableKey"
       v-loading="listLoading"
@@ -61,8 +62,8 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="panelVisible" top="5vh" class="editDialog">
       <el-form ref="temp" :rules="rules" :model="temp" style="margin: auto 50px auto 50px; display:grid; grid-template-columns: 50% 50%; grid-column-gap: 10px" class="demo-form-inline">
-        <el-form-item v-if="dialogStatus==='update'" label="ID"prop="itemId">
-          <el-input v-model="temp.itemId" disabled />
+        <el-form-item label="ID" prop="itemId"v-if="dialogStatus==='update'">
+          <el-input v-model="temp.itemId" disabled/>
         </el-form-item>
         <el-form-item label="ItemName" prop="itemName">
           <el-input v-model="temp.itemName" />
@@ -99,8 +100,8 @@
 
           <span slot="footer" class="dialog-footer">
             <el-button class="cancelInnerButton" @click="deleteVisible = false">Cancel</el-button>
-            <el-button v-if="confirmDelete === false" class="deleteInnerButton" type="danger" disabled>Delete</el-button>
-            <el-button v-else class="deleteInnerButton" type="danger" @click="deleteData">Delete</el-button>
+            <el-button class="deleteInnerButton" v-if="confirmDelete === false" type="danger" disabled>Delete</el-button>
+            <el-button class="deleteInnerButton" v-else type="danger" @click="deleteData">Delete</el-button>
           </span>
         </el-dialog>
 
@@ -148,7 +149,7 @@ export default {
       rules: {
         itemId: [{ required: true, message: 'ItemId is required', trigger: 'change' }],
         itemName: [{ required: true, message: 'ItemName is required', trigger: 'change' }],
-        price: [{ required: true, message: 'type is required', trigger: 'change' }]
+        price: [{ required: true, message: 'type is required', trigger: 'change' }],
       },
 
       tableKey: 0,
@@ -174,96 +175,99 @@ export default {
   },
   watch: {
     deleteVisible() {
-      this.confirmDelete = false
+      this.confirmDelete = false;
       this.confirmPassword = ''
     }
   },
   created() {
-    this.getList(1, this.listQuery.limit)
+    this.getList(1, this.listQuery.limit);
   },
   methods: {
     watchList() {
-      const list = this.list
+      const list = this.list;
       for (const i in list) {
-        const details = list[i].itemDetails
-        list[i].itemImg = details.itemImg
+        const details = list[i].itemDetails;
+        list[i].itemImg = details.itemImg;
         list[i].itemDescription = details.itemDescription
       }
       this.list = list
     },
     confirmIdentity() {
-      const postData = new FormData()
-      const _this = this
-      postData.append('userName', localStorage.getItem('AdminName'))
-      postData.append('password', this.confirmPassword)
+      const postData = new FormData();
+      const _this = this;
+      postData.append('userName', localStorage.getItem('AdminName'));
+      postData.append('password', this.confirmPassword);
 
       request.post('user/confirmDelete', postData).then(response => {
         if (response.data) {
           _this.confirmDelete = true
         } else {
-          this.$message.error('Identification failed!')
+          this.$message.error('Identification failed!');
         }
       })
-        .catch(error => {
-          this.$message.error('Identification failed!')
-        }
-        )
+        .catch(error =>
+          {
+            this.$message.error('Identification failed!');
+          }
+        );
     },
     deleteData() {
-      const postData = new FormData()
-      const _this = this
-      postData.append('itemId', this.temp.itemId)
+      const postData = new FormData();
+      const _this = this;
+      postData.append('itemId', this.temp.itemId);
 
       request.post('item/deleteItem', postData).then(response => {
         if (response.data) {
-          _this.panelVisible = false
-          _this.deleteVisible = false
-          _this.getList(this.listQuery.page, this.listQuery.limit)
+          _this.panelVisible = false;
+          _this.deleteVisible = false;
+          _this.getList(this.listQuery.page, this.listQuery.limit);
         } else {
-          this.$message.error('Deleting Data failed!')
+          this.$message.error('Deleting Data failed!');
         }
       })
-        .catch(error => {
-          this.$message.error('Deleting Data failed!')
-        }
-        )
+        .catch(error =>
+          {
+            this.$message.error('Deleting Data failed!');
+          }
+        );
     },
     uploadCover() {
-      const _this = this
+      const _this = this;
       // 根据ref得到图片文件
-      var file = this.$refs.img
+      var file = this.$refs.img;
       // 使用h5的读取文件api
-      var reader = new FileReader()
-      reader.readAsDataURL(file.files[0])
+      var reader = new FileReader();
+      reader.readAsDataURL(file.files[0]);
       // 读取完成后触发
       reader.onload = function() {
         // 改变img的路径
-        _this.temp.itemImg = this.result
+        _this.temp.itemImg = this.result;
       }
     },
     getList(page, limit) {
-      const _this = this
-      const postData = {
+      let _this = this;
+      let postData = {
         pageToken: page,
         pageSize: limit
-      }
-      request.post('item/List', postData).then(response => {
-        if (response.data) {
-          _this.list = response.data.result
-          _this.listQuery.total = response.data.totalPages
+      };
+      request.post('item/List', postData).then( response => {
+        if(response.data) {
+          _this.list = response.data.result;
+          _this.listQuery.total = response.data.totalPages;
           // _this.listQuery.total = 3;
-          _this.watchList()
-        } else {
-          this.$message.error('Fetching Data Failed!')
+          _this.watchList();
+        }else
+        {
+          this.$message.error('Fetching Data Failed!');
         }
       })
     },
     handleFilter() {
-      this.listQuery.page = 1
-      this.getList(this.listQuery.page, this.listQuery.limit)
+      this.listQuery.page = 1;
+      this.getList(this.listQuery.page, this.listQuery.limit);
     },
     sortChange(data) {
-      const { prop, order } = data
+      const { prop, order } = data;
       if (prop === 'id') {
         this.sortByID(order)
       }
@@ -286,96 +290,98 @@ export default {
       }
     },
     handleCreate() {
-      this.resetTemp()
-      this.dialogStatus = 'create'
-      this.panelVisible = true
+      this.resetTemp();
+      this.dialogStatus = 'create';
+      this.panelVisible = true;
       this.$nextTick(() => {
         this.$refs['temp'].clearValidate()
       })
     },
-    submitCreate() {
-      const postData = {
+    submitCreate(){
+      let postData = {
         itemName: this.temp.itemName,
         price: this.temp.price,
         itemDetails: {
           itemImg: this.temp.itemImg,
           itemDescription: this.temp.itemDescription
         }
-      }
+      };
 
       request.post('item/addItem', JSON.stringify(postData)).then(response => {
         if (response.data) {
           // TODO: SHORTEN THE REQUESTS
-          this.getList(this.listQuery.page, this.listQuery.limit)
-          this.panelVisible = false
+          this.getList(this.listQuery.page, this.listQuery.limit);
+          this.panelVisible = false;
         } else {
-          this.$message.error('Creating Data failed!')
+          this.$message.error('Creating Data failed!');
         }
       })
-        .catch(error => {
-          this.$message.error('Creating Data failed!')
-        }
-        )
+        .catch(error =>
+          {
+            this.$message.error('Creating Data failed!');
+          }
+        );
     },
     createData(formName) {
       this.$refs['temp'].validate((valid) => {
         if (valid) {
-          this.submitCreate()
+          this.submitCreate();
         } else {
-          this.$message.error('Form Invalid!')
-          return false
+          this.$message.error('Form Invalid!');
+          return false;
         }
-      })
+      });
     },
     handleUpdate(row) {
-      this.temp = Object.assign({}, row) // copy obj
-      this.dialogStatus = 'update'
-      this.panelVisible = true
+      this.temp = Object.assign({}, row); // copy obj
+      this.dialogStatus = 'update';
+      this.panelVisible = true;
       this.$nextTick(() => {
         this.$refs['temp'].clearValidate()
       })
     },
-    submitUpdate() {
-      const _this = this
+    submitUpdate(){
+      const _this = this;
 
-      const postData = {
+      let postData = {
         itemId: this.temp.itemId,
         itemName: this.temp.itemName,
         price: this.temp.price,
         itemDetails: {
           itemId: this.temp.itemId,
           itemImg: this.temp.itemImg,
-          itemDescription: this.temp.itemDescription
+          itemDescription: this.temp.itemDescription,
         }
-      }
+      };
 
       request.post('item/updateItem', JSON.stringify(postData)).then(response => {
         if (response.data) {
-          this.getList(this.listQuery.page, this.listQuery.limit)
+          this.getList(this.listQuery.page, this.listQuery.limit);
           _this.panelVisible = false
         } else {
-          this.$message.error('Updating Data failed!')
+          this.$message.error('Updating Data failed!');
         }
       })
-        .catch(error => {
-          this.$message.error('Updating Data failed!')
-        }
-        )
+        .catch(error =>
+          {
+            this.$message.error('Updating Data failed!');
+          }
+        );
     },
     updateData(formName) {
       this.$refs['temp'].validate((valid) => {
         if (valid) {
-          this.submitUpdate()
+          this.submitUpdate();
         } else {
-          this.$message.error('Form Invalid!')
-          return false
+          this.$message.error('Form Invalid!');
+          return false;
         }
-      })
+      });
     },
     getSortClass: function(key) {
-      const sort = this.listQuery.sort
+      const sort = this.listQuery.sort;
       return sort === `+${key}` ? 'ascending' : 'descending'
-    }
+    },
   }
 }
 </script>
