@@ -3,7 +3,7 @@ Cypress.Cookies.defaults({
   whitelist: 'Admin-Token'
 });
 
-context('CardPanel', () => {
+describe('CardPanel', () => {
   let LOCAL_STORAGE_MEMORY = {};
 
   Cypress.Commands.add("saveLocalStorage", () => {

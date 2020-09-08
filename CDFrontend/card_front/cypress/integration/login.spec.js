@@ -1,6 +1,6 @@
 // / <reference types="cypress" />
 
-context('Login', () => {
+describe('Login', () => {
   it('.type() - type into login form', () => {
     cy.clearCookie('Admin-Token')
 
