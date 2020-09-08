@@ -16,7 +16,7 @@ const tableRouter = {
       path: 'phase-table',
       component: () => import('@/components/table/phasePanel'),
       name: 'PhasePanel',
-      meta: { title: 'Phase Panel' , icon: 'table'}
+      meta: { title: 'Phase Panel', icon: 'table' }
     },
     {
       path: 'item-entity-table',
@@ -34,8 +34,8 @@ const tableRouter = {
       path: 'player-panel',
       component: () => import('@/components/table/playerPanel'),
       name: 'PlayerPanel',
-      meta: { title: 'Player Panel' , icon: 'table'}
+      meta: { title: 'Player Panel', icon: 'table' }
     }
   ]
-};
+}
 export default tableRouter

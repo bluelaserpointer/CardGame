@@ -3,111 +3,110 @@ const validateStub = {
   methods: {
     setContent: () => {}
   }
-};
+}
 
-jest.unmock('axios');
-import axios from 'axios';
-import MockAdapter from "axios-mock-adapter";
+jest.unmock('axios')
+import axios from 'axios'
+import MockAdapter from 'axios-mock-adapter'
 
-
-import {createLocalVue, mount, shallowMount} from '@vue/test-utils'
+import { createLocalVue, mount, shallowMount } from '@vue/test-utils'
 import ActivityEditPanel from '@/components/article/ActivityEditPanel'
-import Element from 'element-ui';
-import moment from 'moment';
+import Element from 'element-ui'
+import moment from 'moment'
 import Vuex from 'vuex'
 
-const localVue = createLocalVue();
-localVue.use(Element);
-localVue.use(Vuex);
+const localVue = createLocalVue()
+localVue.use(Element)
+localVue.use(Vuex)
 
-let store = new Vuex.Store();
+const store = new Vuex.Store()
 
 describe('ActivityEditPanel.vue', () => {
   const wrapper = shallowMount(ActivityEditPanel, {
     store,
     localVue,
-    stubs:{
+    stubs: {
       'Tinymce': validateStub
     }
-  });
+  })
 
   beforeEach(() => {
-    wrapper.vm.$nextTick(() => {});
-  });
+    wrapper.vm.$nextTick(() => {})
+  })
 
-  let mockAdapter = new MockAdapter(axios);
-  let spyPost = jest.spyOn(axios, "post");
+  const mockAdapter = new MockAdapter(axios)
+  const spyPost = jest.spyOn(axios, 'post')
 
-  it('Activity Edit Panel Resolves created', async () => {
-    expect(wrapper.vm.postForm.image_uri).toBe('');
-    expect(wrapper.vm.postForm.title).toBe('');
-    expect(wrapper.vm.limit).toBeFalsy();
-    expect(wrapper.vm.displayTime).toBe(undefined);
+  it('Activity Edit Panel Resolves created', async() => {
+    expect(wrapper.vm.postForm.image_uri).toBe('')
+    expect(wrapper.vm.postForm.title).toBe('')
+    expect(wrapper.vm.limit).toBeFalsy()
+    expect(wrapper.vm.displayTime).toBe(undefined)
     wrapper.vm.$nextTick(() => {
-      expect(wrapper.vm.postForm.content).toBe('');
+      expect(wrapper.vm.postForm.content).toBe('')
     })
-  });
+  })
 
-  it('Activity Edit Panel Resolves submitForm branch1', async () => {
-    wrapper.vm.postForm.title = "TestTitle";
-    wrapper.vm.postForm.content = "TestContent";
-    wrapper.vm.postForm.image_uri = undefined;
+  it('Activity Edit Panel Resolves submitForm branch1', async() => {
+    wrapper.vm.postForm.title = 'TestTitle'
+    wrapper.vm.postForm.content = 'TestContent'
+    wrapper.vm.postForm.image_uri = undefined
 
-    wrapper.vm.limit = false;
+    wrapper.vm.limit = false
 
-    mockAdapter.onAny().reply(200, true);
+    mockAdapter.onAny().reply(200, true)
 
-    await wrapper.vm.submitForm();
+    await wrapper.vm.submitForm()
     wrapper.vm.$nextTick(() => {
-      expect(spyPost).toHaveBeenCalledTimes(1);
+      expect(spyPost).toHaveBeenCalledTimes(1)
     })
-  });
+  })
 
   it('Activity Edit Panel Resolves submitForm branch2', async() => {
-    wrapper.vm.postForm.title = "TestTitle";
-    wrapper.vm.postForm.content = "TestContent";
-    wrapper.vm.postForm.image_uri = undefined;
-    wrapper.vm.limit = true;
-    wrapper.vm.displayTime = '2000-01-01 00:00:00';
+    wrapper.vm.postForm.title = 'TestTitle'
+    wrapper.vm.postForm.content = 'TestContent'
+    wrapper.vm.postForm.image_uri = undefined
+    wrapper.vm.limit = true
+    wrapper.vm.displayTime = '2000-01-01 00:00:00'
 
-    await wrapper.vm.submitForm();
+    await wrapper.vm.submitForm()
     wrapper.vm.$nextTick(() => {
-      expect(spyPost).toHaveBeenCalledTimes(2);
+      expect(spyPost).toHaveBeenCalledTimes(2)
     })
-  });
+  })
 
   it('Activity Edit Panel Resolves submitForm branch3', async() => {
-    wrapper.vm.postForm.title = "TestTitle";
-    wrapper.vm.postForm.content = "TestContent";
-    wrapper.vm.postForm.image_uri = undefined;
-    wrapper.vm.limit = true;
-    wrapper.vm.displayTime = undefined;
+    wrapper.vm.postForm.title = 'TestTitle'
+    wrapper.vm.postForm.content = 'TestContent'
+    wrapper.vm.postForm.image_uri = undefined
+    wrapper.vm.limit = true
+    wrapper.vm.displayTime = undefined
 
-    await wrapper.vm.submitForm();
+    await wrapper.vm.submitForm()
     wrapper.vm.$nextTick(() => {
-      expect(spyPost).toHaveBeenCalledTimes(3);
+      expect(spyPost).toHaveBeenCalledTimes(3)
     })
-  });
+  })
 
   it('Activity Edit Panel Resolves submitForm branch4', async() => {
-    wrapper.vm.postForm.image_uri = undefined;
-    wrapper.vm.postForm.title = undefined;
-    wrapper.vm.postForm.content = undefined;
+    wrapper.vm.postForm.image_uri = undefined
+    wrapper.vm.postForm.title = undefined
+    wrapper.vm.postForm.content = undefined
 
-    await wrapper.vm.submitForm();
+    await wrapper.vm.submitForm()
     wrapper.vm.$nextTick(() => {
-      expect(spyPost).toHaveBeenCalledTimes(4);
+      expect(spyPost).toHaveBeenCalledTimes(4)
     })
-  });
+  })
 
   it('Activity Edit Panel Resolves formatDate', () => {
-    let date = new Date();
-    let formatDateStr = moment(wrapper.vm.formatDate(date)).format('YYYY-MM-DD HH:mm:ss');
-    expect(wrapper.vm.formatDate(date)).toBe(formatDateStr);
-  });
+    const date = new Date()
+    const formatDateStr = moment(wrapper.vm.formatDate(date)).format('YYYY-MM-DD HH:mm:ss')
+    expect(wrapper.vm.formatDate(date)).toBe(formatDateStr)
+  })
 
   it('Activity Edit Resolves Rest', () => {
-    wrapper.vm.setTagsViewTitle();
-    wrapper.vm.setPageTitle();
+    wrapper.vm.setTagsViewTitle()
+    wrapper.vm.setPageTitle()
   })
-});
+})

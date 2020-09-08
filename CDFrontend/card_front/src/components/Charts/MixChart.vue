@@ -38,19 +38,19 @@ export default {
     if (!this.chart) {
       return
     }
-    this.chart.dispose();
+    this.chart.dispose()
     this.chart = null
   },
   methods: {
     initChart() {
-      this.chart = echarts.init(document.getElementById(this.id));
+      this.chart = echarts.init(document.getElementById(this.id))
       const xData = (function() {
-        const data = [];
+        const data = []
         for (let i = 1; i < 13; i++) {
           data.push(i + 'month')
         }
         return data
-      }());
+      }())
       this.chart.setOption({
         backgroundColor: '#344b58',
         title: {

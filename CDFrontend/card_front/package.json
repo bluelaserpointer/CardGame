@@ -3,20 +3,22 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "build": "babel src -d lib",
     "test:unit": "vue-cli-service test:unit",
-    "test:watch": "vue-cli-service test:unit --watch",
-    "test:cov": "vue-cli-service test:unit --coverage",
-    "test:all": "vue-cli-service test:unit --coverage --watch",
+    "test:e2e": "vue-cli-service test:e2e",
     "lint": "eslint --ext .js,.vue src",
     "build:prod": "vue-cli-service build",
     "build:stage": "vue-cli-service build --mode staging",
+    "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "dev": "vue-cli-service serve",
     "new": "plop",
     "preview": "node build/index.js --preview",
+    "report:coverage": "nyc report",
     "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.yml",
+    "test:all": "vue-cli-service test:unit --coverage --watch",
     "test:ci": "npm run lint && npm run test:unit",
-    "build": "babel src -d lib",
-    "coveralls": "nyc report --reporter=text-lcov | coveralls"
+    "test:cov": "vue-cli-service test:unit --coverage",
+    "test:watch": "vue-cli-service test:unit --watch"
   },
   "dependencies": {
     "@foreachbe/cypress-tinymce": "^1.0.0",
@@ -65,6 +67,7 @@
     "@babel/preset-env": "^7.10.4",
     "@cypress/code-coverage": "^3.8.1",
     "@vue/cli-plugin-babel": "4.4.4",
+    "@vue/cli-plugin-e2e-cypress": "^4.5.4",
     "@vue/cli-plugin-eslint": "4.4.4",
     "@vue/cli-plugin-unit-jest": "^4.4.6",
     "@vue/cli-service": "4.4.4",
@@ -78,16 +81,20 @@
     "chalk": "2.4.2",
     "chokidar": "2.1.5",
     "connect": "3.6.6",
-    "cypress": "^4.11.0",
+    "coveralls": "3.1.0",
+    "css-loader": "3.6.0",
+    "cypress": "3.8.3",
     "eslint": "6.7.2",
     "eslint-plugin-vue": "6.2.2",
     "html-webpack-plugin": "3.2.0",
     "husky": "1.3.1",
+    "istanbul-instrumenter-loader": "3.0.1",
     "jest": "^26.1.0",
     "jest-mock-axios": "^4.2.1",
     "lint-staged": "8.1.5",
     "mockjs": "1.0.1-beta3",
     "moxios": "^0.4.0",
+    "node-sass": "4.14.1",
     "nyc": "^15.1.0",
     "plop": "2.3.0",
     "runjs": "4.3.2",
@@ -130,16 +137,14 @@
     "last 2 versions",
     "not dead"
   ],
-  "nyc": {
-    "all": true
-  },
   "jest": {
     "moduleFileExtensions": [
-      "js", "jsx", "json"
+      "js",
+      "jsx",
+      "json"
     ],
     "transform": {
       "^.+\\.(ts|html)$": "<rootDir>/node_modules/axios/index.js",
-      "^.+\\.js$": "<rootDir>/src/utils/request.js",
       "^.+\\.js$": "babel-jest"
     },
     "transformIgnorePatterns": [
@@ -152,5 +157,11 @@
       },
       "__TRANSFORM_HTML__": true
     }
+  },
+  "nyc": {
+    "extension": [
+      ".js",
+      ".vue"
+    ]
   }
 }

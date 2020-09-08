@@ -36,7 +36,7 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="panelVisible" top="5vh" class="editDialog">
       <el-form ref="temp" :rules="rules" :model="temp" style="margin: auto 50px auto 50px; display:grid; grid-template-columns: 50% 50%; grid-column-gap: 10px" class="demo-form-inline">
-        <el-form-item label="ID" prop="chapterId" v-if="dialogStatus==='update'">
+        <el-form-item v-if="dialogStatus==='update'" label="ID" prop="chapterId">
           <el-input v-model="temp.chapterId" disabled />
         </el-form-item>
         <el-form-item label="PhaseCount" prop="phaseNo">
@@ -60,8 +60,8 @@
 
           <span slot="footer" class="dialog-footer">
             <el-button class="cancelInnerButton" @click="deleteVisible = false">Cancel</el-button>
-            <el-button class="deleteInnerButton" v-if="confirmDelete === false" type="danger" disabled>Delete</el-button>
-            <el-button class="deleteInnerButton" v-else type="danger" @click="deleteData">Delete</el-button>
+            <el-button v-if="confirmDelete === false" class="deleteInnerButton" type="danger" disabled>Delete</el-button>
+            <el-button v-else class="deleteInnerButton" type="danger" @click="deleteData">Delete</el-button>
           </span>
         </el-dialog>
 
@@ -81,202 +81,194 @@
 </template>
 
 <script>
-  import waves from '@/directive/waves' // waves directive
-  import Pagination from '@/components/Pagination/index'
-  import axios from 'axios' // secondary package based on el-pagination
-  import request from '@/utils/request'
+import waves from '@/directive/waves' // waves directive
+import Pagination from '@/components/Pagination/index'
+import axios from 'axios' // secondary package based on el-pagination
+import request from '@/utils/request'
 
-  export default {
-    name: 'PhaseEntityPanel',
-    components: { Pagination },
-    directives: { waves },
-    data() {
-      return {
-        search: '',
-        temp: {
-          chapterId: undefined,
-          phaseNo: undefined,
-          phaseType: undefined
-        },
-        confirmPassword: '',
-        confirmDelete: false,
-        deleteVisible: false,
-        rules: {
-          chapterId: [{ required: true, message: 'ChapterId is required', trigger: 'change' }],
-          phaseNo: [{ required: true, message: 'PhaseNo is required', trigger: 'change' }],
-          phaseType: [{ required: true, message: 'PhaseType is required', trigger: 'change' }],
-        },
-        list: null,
-        panelVisible: false,
-        dialogStatus: '',
-
-
-        tableKey: 0,
-        listLoading: false,
-        listQuery: {
-          page: 1,
-          limit: 20,
-          total: 0,
-          sort: '+id'
-        },
-        sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
-        textMap: {
-          update: 'Edit',
-          create: 'Create'
-        },
-        downloadLoading: false
-      }
-    },
-    watch: {
-      deleteVisible() {
-        this.confirmDelete = false;
-        this.confirmPassword = '';
-      }
-    },
-    created() {
-      this.getList()
-    },
-    methods: {
-      getList() {
-        let _this = this;
-        request.get('chapter/getAllChapters').then(response => {
-          if(response.data) {
-            _this.list = response.data;
-          }else
-          {
-            this.$message.error('Fetching Data Failed!');
-          }
-        })
+export default {
+  name: 'PhaseEntityPanel',
+  components: { Pagination },
+  directives: { waves },
+  data() {
+    return {
+      search: '',
+      temp: {
+        chapterId: undefined,
+        phaseNo: undefined,
+        phaseType: undefined
       },
-      confirmIdentity() {
-        const postData = new FormData();
-        const _this = this;
-        postData.append('userName', localStorage.getItem('AdminName'));
-        postData.append('password', this.confirmPassword);
-
-        request.post('user/confirmDelete', postData).then(response => {
-          if (response.data) {
-            _this.confirmDelete = true
-          } else {
-            this.$message.error('Identification failed!');
-          }
-        })
-          .catch(error =>
-            {
-              this.$message.error('Identification failed!');
-            }
-          );
+      confirmPassword: '',
+      confirmDelete: false,
+      deleteVisible: false,
+      rules: {
+        chapterId: [{ required: true, message: 'ChapterId is required', trigger: 'change' }],
+        phaseNo: [{ required: true, message: 'PhaseNo is required', trigger: 'change' }],
+        phaseType: [{ required: true, message: 'PhaseType is required', trigger: 'change' }]
       },
-      deleteData() {
-        const postData = new FormData();
-        const _this = this;
-        postData.append('chapterId', this.temp.chapterId);
+      list: null,
+      panelVisible: false,
+      dialogStatus: '',
 
-        request.post('chapter/deleteChapter', postData).then(response => {
-          if (response.data) {
-            _this.list = response.data;
-            _this.panelVisible = false;
-            _this.deleteVisible = false;
-          } else {
-            this.$message.error('Deleting Data failed!');
-          }
-        })
-          .catch(error =>
-            {
-              this.$message.error('Deleting Data failed!');
-            }
-          );
+      tableKey: 0,
+      listLoading: false,
+      listQuery: {
+        page: 1,
+        limit: 20,
+        total: 0,
+        sort: '+id'
       },
-
-      resetTemp() {
-        this.temp = {
-          chapterId: undefined,
-          phaseNo: undefined,
-          phaseType: undefined
+      sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
+      textMap: {
+        update: 'Edit',
+        create: 'Create'
+      },
+      downloadLoading: false
+    }
+  },
+  watch: {
+    deleteVisible() {
+      this.confirmDelete = false
+      this.confirmPassword = ''
+    }
+  },
+  created() {
+    this.getList()
+  },
+  methods: {
+    getList() {
+      const _this = this
+      request.get('chapter/getAllChapters').then(response => {
+        if (response.data) {
+          _this.list = response.data
+        } else {
+          this.$message.error('Fetching Data Failed!')
         }
-      },
-      handleCreate() {
-        this.resetTemp();
-        this.dialogStatus = 'create';
-        this.panelVisible = true;
-        this.$nextTick(() => {
-          this.$refs['temp'].clearValidate()
-        })
-      },
-      submitCreate(){
-        const postData = new FormData();
-        const _this = this;
+      })
+    },
+    confirmIdentity() {
+      const postData = new FormData()
+      const _this = this
+      postData.append('userName', localStorage.getItem('AdminName'))
+      postData.append('password', this.confirmPassword)
 
-        postData.append('phaseNo', this.temp.phaseNo);
-        postData.append('phaseType', this.temp.phaseType);
+      request.post('user/confirmDelete', postData).then(response => {
+        if (response.data) {
+          _this.confirmDelete = true
+        } else {
+          this.$message.error('Identification failed!')
+        }
+      })
+        .catch(error => {
+          this.$message.error('Identification failed!')
+        }
+        )
+    },
+    deleteData() {
+      const postData = new FormData()
+      const _this = this
+      postData.append('chapterId', this.temp.chapterId)
 
-        request.post('chapter/addChapter', postData).then(response => {
-          if (response.data) {
-            _this.list = response.data;
-            _this.panelVisible = false;
-            _this.resetTemp();
-          }else {
-            this.$message.error('Creating Data failed!');
-          }
-          }).catch(error =>
-            {
-              this.$message.error('Creating Data failed!');
-            }
-          );
-      },
-      createData(formName) {
-        this.$refs.temp.validate((valid) => {
-          if (valid) {
-            this.submitCreate();
-          } else {
-            this.$message.error('Form Invalid!');
-            return false;
-          }
-        });
+      request.post('chapter/deleteChapter', postData).then(response => {
+        if (response.data) {
+          _this.list = response.data
+          _this.panelVisible = false
+          _this.deleteVisible = false
+        } else {
+          this.$message.error('Deleting Data failed!')
+        }
+      })
+        .catch(error => {
+          this.$message.error('Deleting Data failed!')
+        }
+        )
+    },
 
-      },
-      handleUpdate(row) {
-        this.temp = Object.assign({}, row); // copy obj
-        this.dialogStatus = 'update';
-        this.panelVisible = true;
-        this.$nextTick(() => {
-          this.$refs['temp'].clearValidate()
-        })
-      },
-      submitUpdate(){
-        const postData = new FormData();
-        const _this = this;
+    resetTemp() {
+      this.temp = {
+        chapterId: undefined,
+        phaseNo: undefined,
+        phaseType: undefined
+      }
+    },
+    handleCreate() {
+      this.resetTemp()
+      this.dialogStatus = 'create'
+      this.panelVisible = true
+      this.$nextTick(() => {
+        this.$refs['temp'].clearValidate()
+      })
+    },
+    submitCreate() {
+      const postData = new FormData()
+      const _this = this
 
-        postData.append('chapterId', this.temp.chapterId);
-        postData.append('phaseNo', this.temp.phaseNo);
-        postData.append('phaseType', this.temp.phaseType);
+      postData.append('phaseNo', this.temp.phaseNo)
+      postData.append('phaseType', this.temp.phaseType)
 
-        request.post('chapter/updateChapter', postData).then(response => {
-          if (response.data) {
-            _this.list = response.data;
-            _this.panelVisible = false;
-            _this.resetTemp();
-          }else {
-            this.$message.error('Updating Data failed!');
-          }
-        })
-          .catch(error =>
-            {
-              this.$message.error('Updating Data failed!');
-            }
-          );
-      },
-      updateData(formName) {
-        this.$refs.temp.validate((valid) => {
-          if (valid) {
-            this.submitUpdate();
-          } else {
-            this.$message.error('Form Invalid!');
-            return false;
-          }
-        });
+      request.post('chapter/addChapter', postData).then(response => {
+        if (response.data) {
+          _this.list = response.data
+          _this.panelVisible = false
+          _this.resetTemp()
+        } else {
+          this.$message.error('Creating Data failed!')
+        }
+      }).catch(error => {
+        this.$message.error('Creating Data failed!')
+      }
+      )
+    },
+    createData(formName) {
+      this.$refs.temp.validate((valid) => {
+        if (valid) {
+          this.submitCreate()
+        } else {
+          this.$message.error('Form Invalid!')
+          return false
+        }
+      })
+    },
+    handleUpdate(row) {
+      this.temp = Object.assign({}, row) // copy obj
+      this.dialogStatus = 'update'
+      this.panelVisible = true
+      this.$nextTick(() => {
+        this.$refs['temp'].clearValidate()
+      })
+    },
+    submitUpdate() {
+      const postData = new FormData()
+      const _this = this
 
-      },
+      postData.append('chapterId', this.temp.chapterId)
+      postData.append('phaseNo', this.temp.phaseNo)
+      postData.append('phaseType', this.temp.phaseType)
+
+      request.post('chapter/updateChapter', postData).then(response => {
+        if (response.data) {
+          _this.list = response.data
+          _this.panelVisible = false
+          _this.resetTemp()
+        } else {
+          this.$message.error('Updating Data failed!')
+        }
+      })
+        .catch(error => {
+          this.$message.error('Updating Data failed!')
+        }
+        )
+    },
+    updateData(formName) {
+      this.$refs.temp.validate((valid) => {
+        if (valid) {
+          this.submitUpdate()
+        } else {
+          this.$message.error('Form Invalid!')
+          return false
+        }
+      })
     }
   }
+}
 </script>

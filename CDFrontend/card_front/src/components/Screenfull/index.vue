@@ -26,7 +26,7 @@ export default {
         this.$message({
           message: 'you browser can not work',
           type: 'warning'
-        });
+        })
         return false
       }
       screenfull.toggle()

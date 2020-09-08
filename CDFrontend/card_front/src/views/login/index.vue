@@ -11,9 +11,9 @@
           <svg-icon icon-class="user" />
         </span>
         <el-input
-          class="username-input"
           ref="username"
           v-model="loginForm.username"
+          class="username-input"
           placeholder="Username"
           name="username"
           type="text"
@@ -28,10 +28,10 @@
             <svg-icon icon-class="password" />
           </span>
           <el-input
-            class="password-input"
             :key="passwordType"
             ref="password"
             v-model="loginForm.password"
+            class="password-input"
             :type="passwordType"
             placeholder="Password"
             name="password"
@@ -81,7 +81,6 @@ import SocialSign from './components/SocialSignin'
 import axios from 'axios'
 import { removeToken } from '@/utils/auth'
 
-
 export default {
   name: 'Login',
   components: { SocialSign },
@@ -92,17 +91,17 @@ export default {
       } else {
         callback()
       }
-    };
+    }
     const validatePassword = (rule, value, callback) => {
-      const postData = new FormData();
-      postData.append('adminName', this.loginForm.username);
-      postData.append('password', this.loginForm.password);
+      const postData = new FormData()
+      postData.append('adminName', this.loginForm.username)
+      postData.append('password', this.loginForm.password)
       if (!validPassword(value)) {
         callback(new Error('Please enter Passwords that meet the standard.'))
       } else {
         callback()
       }
-    };
+    }
     return {
       loginForm: {
         username: '',
@@ -123,9 +122,9 @@ export default {
   watch: {
     $route: {
       handler: function(route) {
-        const query = route.query;
+        const query = route.query
         if (query) {
-          this.redirect = query.redirect;
+          this.redirect = query.redirect
           this.otherQuery = this.getOtherQuery(query)
         }
       },
@@ -146,7 +145,7 @@ export default {
   },
   methods: {
     checkCapslock(e) {
-      const { key } = e;
+      const { key } = e
       this.capsTooltip = key && key.length === 1 && (key >= 'A' && key <= 'Z')
     },
     showPwd() {
@@ -162,20 +161,20 @@ export default {
     handleLogin() {
       this.$refs.loginForm.validate(async valid => {
         if (valid) {
-          this.loading = true;
+          this.loading = true
           this.$store.dispatch('user/login', this.loginForm)
             .then(() => {
-              console.log("In handleLogin-then");
-              localStorage.setItem('AdminName', this.loginForm.username);
-              this.$router.push({ path: this.redirect || '/', query: this.otherQuery });
+              console.log('In handleLogin-then')
+              localStorage.setItem('AdminName', this.loginForm.username)
+              this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
               this.loading = false
             })
             .catch(() => {
-              console.log("In handleLogin-catch");
+              console.log('In handleLogin-catch')
               this.loading = false
             })
         } else {
-          console.log('Error submit!');
+          console.log('Error submit!')
           return false
         }
       })

@@ -2,7 +2,7 @@
   <el-form ref="postForm" :model="postForm" :rules="rules" class="form-container">
     <sticky :z-index="10" :class-name="'sub-navbar ' + postForm.status">
 
-      <el-button class="activityUpdatePublishButton" v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">
+      <el-button v-loading="loading" class="activityUpdatePublishButton" style="margin-left: 10px;" type="success" @click="submitForm">
         Publish
       </el-button>
       <el-button class="deleteOuterButton" type="danger" @click="deleteVisible = true">
@@ -69,235 +69,224 @@
 
       <span slot="footer" class="dialog-footer">
         <el-button class="cancelInnerButton" @click="deleteVisible = false">Cancel</el-button>
-        <el-button class="deleteInnerButton" v-if="confirmDelete === false" type="danger" disabled>Delete</el-button>
-        <el-button class="deleteInnerButton" v-else type="danger" @click="deleteData">Delete</el-button>
+        <el-button v-if="confirmDelete === false" class="deleteInnerButton" type="danger" disabled>Delete</el-button>
+        <el-button v-else class="deleteInnerButton" type="danger" @click="deleteData">Delete</el-button>
       </span>
     </el-dialog>
   </el-form>
 </template>
 
 <script>
-  import Tinymce from '@/components/Tinymce/index'
-  import MDinput from '@/components/MDinput/index'
-  import Sticky from '@/components/Sticky/index' // 粘性header组件
-  import Warning from './Warning'
-  import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from '../../views/example/components/Dropdown'
-  import axios from 'axios'
-  import moment from "moment";
-  import request from "@/utils/request"; // secondary package based on el-pagination
+import Tinymce from '@/components/Tinymce/index'
+import MDinput from '@/components/MDinput/index'
+import Sticky from '@/components/Sticky/index' // 粘性header组件
+import Warning from './Warning'
+import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from '../../views/example/components/Dropdown'
+import axios from 'axios'
+import moment from 'moment'
+import request from '@/utils/request' // secondary package based on el-pagination
 
-  const defaultForm = {
-    status: 'draft',
-    title: '', // 文章题目
-    content: '', // 文章内容
-    // content_short: '', // 文章摘要
-    // source_uri: '', // 文章外链
-    image_uri: '', // 文章图片
-    limit: false,
-    display_time: undefined, // 前台展示时间
-    id: undefined,
-    platforms: ['a-platform'],
-    comment_disabled: false
-    // importance: 0
-  };
+const defaultForm = {
+  status: 'draft',
+  title: '', // 文章题目
+  content: '', // 文章内容
+  // content_short: '', // 文章摘要
+  // source_uri: '', // 文章外链
+  image_uri: '', // 文章图片
+  limit: false,
+  display_time: undefined, // 前台展示时间
+  id: undefined,
+  platforms: ['a-platform'],
+  comment_disabled: false
+  // importance: 0
+}
 
-  export default {
-    name: 'ActivityUpdatePanel',
-    components: { Tinymce, MDinput, Sticky, Warning, CommentDropdown, PlatformDropdown, SourceUrlDropdown },
-    props: ['updateContent', 'listQuery'] ,
-    data() {
-      const validateRequire = (rule, value, callback) => {
-        if (value === '') {
-          this.$message({
-            message: rule.field + '为必传项',
-            type: 'error'
-          });
-          callback(new Error(rule.field + '为必传项'))
+export default {
+  name: 'ActivityUpdatePanel',
+  components: { Tinymce, MDinput, Sticky, Warning, CommentDropdown, PlatformDropdown, SourceUrlDropdown },
+  props: ['updateContent', 'listQuery'],
+  data() {
+    const validateRequire = (rule, value, callback) => {
+      if (value === '') {
+        this.$message({
+          message: rule.field + '为必传项',
+          type: 'error'
+        })
+        callback(new Error(rule.field + '为必传项'))
+      } else {
+        callback()
+      }
+    }
+
+    return {
+      deleteVisible: false,
+      confirmDelete: false,
+      confirmPassword: '',
+      limit: false,
+      postForm: Object.assign({}, defaultForm),
+      loading: false,
+      userListOptions: [],
+      rules: {
+        title: [{ validator: validateRequire }],
+        content: [{ validator: validateRequire }]
+      },
+      tempRoute: {},
+      displayTime: undefined
+    }
+  },
+  watch: {
+    updateContent: {
+      handler(newVal, oldVal) {
+        this.postForm.image_uri = newVal.activityImg
+        this.postForm.title = newVal.activityName
+        this.limit = newVal.type === 'true'
+        this.displayTime = newVal.start
+        if (newVal.activityDescription) { this.$refs['editor'].setContent(newVal.activityDescription) } else { this.$refs['editor'].setContent('') }
+      },
+      deep: true
+    },
+    deleteVisible() {
+      this.confirmDelete = false
+      this.confirmPassword = ''
+    } // untested
+  },
+  created() {
+    this.postForm.image_uri = this.updateContent.activityImg
+    this.postForm.title = this.updateContent.activityName
+    this.limit = this.updateContent.type === 'true'
+    this.displayTime = this.updateContent.start
+    this.postForm.content = this.updateContent.activityDescription
+
+    this.$nextTick(() => {
+      if (this.updateContent.activityDescription) {
+        console.log(this.updateContent.activityDescription)
+        this.$refs['editor'].setContent(this.updateContent.activityDescription)
+      } else { this.$refs['editor'].setContent('') }
+    })
+
+    this.tempRoute = Object.assign({}, this.$route)
+  },
+  methods: {
+    uploadCover() {
+      const _this = this
+      // 根据ref得到图片文件
+      var file = this.$refs.img
+      // 使用h5的读取文件api
+      var reader = new FileReader()
+      reader.readAsDataURL(file.files[0])
+      // 读取完成后触发
+      reader.onload = function() {
+        // 改变img的路径
+        _this.postForm.image_uri = this.result
+      }
+    },
+    confirmIdentity() {
+      const postData = new FormData()
+      const _this = this
+      postData.append('userName', localStorage.getItem('AdminName'))
+      postData.append('password', this.confirmPassword)
+
+      request.post('user/confirmDelete', postData).then(response => {
+        if (response.data) {
+          _this.confirmDelete = true
         } else {
-          callback()
+          this.$message.error('Identification failed!')
         }
-      };
+      })
+        .catch(error => {
+          this.$message.error('Identification failed!')
+        }
+        )
+    },
+    deleteData() {
+      const postData = new FormData()
+      const _this = this
+      postData.append('activityId', this.updateContent.activityId)
 
-      return {
-        deleteVisible: false,
-        confirmDelete: false,
-        confirmPassword: '',
-        limit: false,
-        postForm: Object.assign({}, defaultForm),
-        loading: false,
-        userListOptions: [],
-        rules: {
-          title: [{ validator: validateRequire }],
-          content: [{ validator: validateRequire }],
-        },
-        tempRoute: {},
-        displayTime: undefined,
+      request.post('activity/deleteActivity', postData).then(response => {
+        if (response.data) {
+          _this.deleteVisible = false
+          _this.$emit('getList', this.listQuery.page, this.listQuery.limit)
+        } else {
+          this.$message.error('Deleting Data failed!')
+        }
+      })
+        .catch(error => {
+          this.$message.error('Deleting Data failed!')
+        }
+        )
+    },
+    submitForm() {
+      const _this = this
+
+      if (this.postForm.title === undefined || this.postForm.content === undefined || this.postForm.title === '' || this.postForm.content === '') {
+        this.$message.error('Data Form Invalid!')
+        return false
       }
 
-    },
-    watch:{
-      updateContent:{
-        handler(newVal, oldVal)
-        {
-          this.postForm.image_uri = newVal.activityImg;
-          this.postForm.title = newVal.activityName;
-          this.limit = newVal.type === "true";
-          this.displayTime = newVal.start;
-          if(newVal.activityDescription)
-            this.$refs['editor'].setContent(newVal.activityDescription);
-          else
-            this.$refs['editor'].setContent('');
-        },
-        deep:true
-      },
-      deleteVisible() {
-        this.confirmDelete = false;
-        this.confirmPassword = '';
-      } // untested
-    },
-    created() {
-      this.postForm.image_uri = this.updateContent.activityImg;
-      this.postForm.title = this.updateContent.activityName;
-      this.limit = this.updateContent.type === "true";
-      this.displayTime = this.updateContent.start;
+      let start
 
-      this.$nextTick(() => {
-        if(this.updateContent.activityDescription)
-          this.$refs['editor'].setContent(this.updateContent.activityDescription);
-        else
-          this.$refs['editor'].setContent('');
-      });
+      if (this.limit === false) {
+        start = this.formatDate(new Date())
+      } else if (this.displayTime !== null && this.displayTime !== undefined) {
+        start = this.formatDate(this.displayTime)
+      } else {
+        start = this.delayDate(7)
+      }
 
-      this.tempRoute = Object.assign({}, this.$route)
-    },
-    methods: {
-      uploadCover() {
-        const _this = this;
-        // 根据ref得到图片文件
-        var file = this.$refs.img;
-        // 使用h5的读取文件api
-        var reader = new FileReader();
-        reader.readAsDataURL(file.files[0]);
-        // 读取完成后触发
-        reader.onload = function() {
-          // 改变img的路径
-          _this.postForm.image_uri = this.result;
-        }
-      },
-      confirmIdentity() {
-        let postData = new FormData();
-        let _this = this;
-        postData.append('userName', localStorage.getItem('AdminName'));
-        postData.append('password', this.confirmPassword);
-
-        request.post('user/confirmDelete', postData).then(response => {
-          if (response.data) {
-            _this.confirmDelete = true
-          } else {
-            this.$message.error('Identification failed!');
-          }
-        })
-          .catch(error =>
-            {
-              this.$message.error('Identification failed!');
-            }
-          );
-      },
-      deleteData() {
-        let postData = new FormData();
-        let _this = this;
-        postData.append('activityId', this.updateContent.activityId);
-
-        request.post('activity/deleteActivity', postData).then(response => {
-          if (response.data) {
-            _this.deleteVisible = false;
-            _this.$emit('getList', this.listQuery.page, this.listQuery.limit);
-          } else {
-            this.$message.error('Deleting Data failed!');
-          }
-        })
-          .catch(error =>
-            {
-              this.$message.error('Deleting Data failed!');
-            }
-          );
-      },
-      submitForm() {
-        let _this = this;
-
-        if(this.postForm.title === undefined || this.postForm.content === undefined || this.postForm.title === '' || this.postForm.content === '')
-        {
-          this.$message.error('Data From Invalid!');
-          return false;
-        }
-
-        let start;
-
-        if (this.limit === false) {
-          start = this.formatDate(new Date());
-        } else if (this.displayTime !== null && this.displayTime !== undefined ) {
-          start = this.formatDate(this.displayTime);
-        }else {
-          start = this.delayDate(7);
-        }
-
-        let postData = {
+      const postData = {
         activityId: this.updateContent.activityId,
         activityName: this.postForm.title,
-          type: this.limit === true ? "true" : "false",
-          start: start,
-          activityDetails: {
-            activityId: this.updateContent.activityId,
-            activityDescription: this.postForm.content,
-            activityImg: this.postForm.image_uri === undefined ? '' : this.postForm.image_uri
-          }
-        };
-
-        request.post('activity/updateActivity', postData).then(response => {
-          if (response.data) {
-            //
-            _this.$emit('getList', this.listQuery.page, this.listQuery.limit);
-          } else {
-            //
-            this.$message.error('Updating Data failed!');
-          }
-        })
-          .catch(error =>
-            {
-              this.$message.error('Updating Data failed!');
-            }
-          );
-      },
-      delayDate(days){
-        let newDate = new Date();
-        let showDate;
-        for (let i = 1; i <= days; i++) { //后7天
-          let date = newDate.getDate() < 10 ? '0' + newDate.getDate() : newDate.getDate();
-          let yue = (newDate.getMonth() + 1) < 10 ? '0' + (newDate.getMonth() + 1) : (newDate.getMonth() + 1);
-          showDate = newDate.getFullYear() + '-' + yue + '-' + date;
-          newDate.setDate(newDate.getDate() + 1);
+        type: this.limit === true ? 'true' : 'false',
+        start: start,
+        activityDetails: {
+          activityId: this.updateContent.activityId,
+          activityDescription: this.postForm.content,
+          activityImg: this.postForm.image_uri === undefined ? '' : this.postForm.image_uri
         }
-        return showDate + ' 00:00:00';
-      },
-      formatDate(date){
-        return moment(new Date(date)).format('YYYY-MM-DD HH:mm:ss');
-      },
+      }
 
+      request.post('activity/updateActivity', postData).then(response => {
+        if (response.data) {
+          //
+          _this.$emit('getList', this.listQuery.page, this.listQuery.limit)
+        } else {
+          //
+          this.$message.error('Updating Data failed!')
+        }
+      })
+        .catch(error => {
+          this.$message.error('Updating Data failed!')
+        }
+        )
+    },
+    delayDate(days) {
+      const newDate = new Date()
+      let showDate
+      for (let i = 1; i <= days; i++) { // 后7天
+        const date = newDate.getDate() < 10 ? '0' + newDate.getDate() : newDate.getDate()
+        const yue = (newDate.getMonth() + 1) < 10 ? '0' + (newDate.getMonth() + 1) : (newDate.getMonth() + 1)
+        showDate = newDate.getFullYear() + '-' + yue + '-' + date
+        newDate.setDate(newDate.getDate() + 1)
+      }
+      return showDate + ' 00:00:00'
+    },
+    formatDate(date) {
+      return moment(new Date(date)).format('YYYY-MM-DD HH:mm:ss')
+    },
 
-
-
-      setTagsViewTitle() {
-        const title = 'Edit Activity';
-        const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` });
-        this.$store.dispatch('tagsView/updateVisitedView', route)
-      },
-      setPageTitle() {
-        const title = 'Edit Activity';
-        document.title = `${title} - ${this.postForm.id}`
-      },
-
+    setTagsViewTitle() {
+      const title = 'Edit Activity'
+      const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` })
+      this.$store.dispatch('tagsView/updateVisitedView', route)
+    },
+    setPageTitle() {
+      const title = 'Edit Activity'
+      document.title = `${title} - ${this.postForm.id}`
     }
+
   }
+}
 </script>
 
 <style lang="scss" scoped>

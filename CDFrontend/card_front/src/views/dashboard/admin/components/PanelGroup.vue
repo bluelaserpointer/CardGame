@@ -59,14 +59,14 @@
 import CountTo from 'vue-count-to'
 
 export default {
-  props:{
-    currData:{
+  components: {
+    CountTo
+  },
+  props: {
+    currData: {
       type: Object,
       default: null
     }
-  },
-  components: {
-    CountTo
   },
   methods: {
     handleSetLineChartData(type) {

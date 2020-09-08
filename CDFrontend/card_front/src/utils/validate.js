@@ -2,7 +2,6 @@
  * Created by PanJiaChen on 16/11/18.
  */
 
-
 /**
  * @param {string} path
  * @returns {Boolean}
@@ -39,7 +38,7 @@ export function validPassword(str) {
  * @returns {Boolean}
  */
 export function validURL(url) {
-  const reg = /^(https?|ftp):\/\/([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(\/($|[a-zA-Z0-9.,?'\\+&%$#=~_-]+))*$/;
+  const reg = /^(https?|ftp):\/\/([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(\/($|[a-zA-Z0-9.,?'\\+&%$#=~_-]+))*$/
   return reg.test(url)
 }
 
@@ -48,7 +47,7 @@ export function validURL(url) {
  * @returns {Boolean}
  */
 export function validLowerCase(str) {
-  const reg = /^[a-z]+$/;
+  const reg = /^[a-z]+$/
   return reg.test(str)
 }
 
@@ -57,7 +56,7 @@ export function validLowerCase(str) {
  * @returns {Boolean}
  */
 export function validUpperCase(str) {
-  const reg = /^[A-Z]+$/;
+  const reg = /^[A-Z]+$/
   return reg.test(str)
 }
 
@@ -66,7 +65,7 @@ export function validUpperCase(str) {
  * @returns {Boolean}
  */
 export function validAlphabets(str) {
-  const reg = /^[A-Za-z]+$/;
+  const reg = /^[A-Za-z]+$/
   return reg.test(str)
 }
 
@@ -75,7 +74,7 @@ export function validAlphabets(str) {
  * @returns {Boolean}
  */
 export function validEmail(email) {
-  const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
   return reg.test(email)
 }
 

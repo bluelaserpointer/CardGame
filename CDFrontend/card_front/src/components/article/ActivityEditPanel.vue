@@ -4,12 +4,12 @@
       <!--        <CommentDropdown v-model = "postForm.comment_disabled" />-->
       <PlatformDropdown v-model="postForm.platforms" />
       <!--        <SourceUrlDropdown v-model = "postForm.source_uri" />-->
-      <el-button class="activityEditPublishButton" v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">
+      <el-button v-loading="loading" class="activityEditPublishButton" style="margin-left: 10px;" type="success" @click="submitForm">
         Publish
       </el-button>
-<!--      <el-button v-loading="loading" type="warning" @click="draftForm">-->
-<!--        Draft-->
-<!--      </el-button>-->
+      <!--      <el-button v-loading="loading" type="warning" @click="draftForm">-->
+      <!--        Draft-->
+      <!--      </el-button>-->
     </sticky>
     <div class="createPost-main-container" style="display:grid; grid-template-columns: 50% 50%; grid-template-rows: 30% 70%;">
       <el-row style="grid-row: 1 / span 1; grid-column: 1 / span 2">
@@ -24,11 +24,11 @@
           <div class="postInfo-container">
             <el-row>
               <el-col :span="8">
-<!--                <el-form-item label-width="60px" label="Author:" class="postInfo-container-item">-->
-<!--                  <el-select v-model="postForm.author" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="Search user">-->
-<!--                    <el-option v-for="(item,index) in userListOptions" :key="item + index" :label="item" :value="item" />-->
-<!--                  </el-select>-->
-<!--                </el-form-item>-->
+                <!--                <el-form-item label-width="60px" label="Author:" class="postInfo-container-item">-->
+                <!--                  <el-select v-model="postForm.author" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="Search user">-->
+                <!--                    <el-option v-for="(item,index) in userListOptions" :key="item + index" :label="item" :value="item" />-->
+                <!--                  </el-select>-->
+                <!--                </el-form-item>-->
                 <el-switch
                   v-model="limit"
                   active-color="#13ce66"
@@ -75,8 +75,8 @@ import { validURL } from '@/utils/validate'
 import Warning from './Warning'
 import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from '../../views/example/components/Dropdown'
 import axios from 'axios'
-import moment from "moment";
-import request from "@/utils/request"; // secondary package based on el-pagination
+import moment from 'moment'
+import request from '@/utils/request' // secondary package based on el-pagination
 
 const defaultForm = {
   status: 'draft',
@@ -91,7 +91,7 @@ const defaultForm = {
   platforms: ['a-platform'],
   comment_disabled: false
   // importance: 0
-};
+}
 
 export default {
   name: 'ActivityEditPanel',
@@ -108,12 +108,12 @@ export default {
         this.$message({
           message: rule.field + '为必传项',
           type: 'error'
-        });
+        })
         callback(new Error(rule.field + '为必传项'))
       } else {
         callback()
       }
-    };
+    }
     return {
       limit: false,
       postForm: Object.assign({}, defaultForm),
@@ -122,7 +122,7 @@ export default {
       rules: {
         // image_uri: [{ validator: validateRequire }],
         title: [{ validator: validateRequire }],
-        content: [{ validator: validateRequire }],
+        content: [{ validator: validateRequire }]
       },
       tempRoute: {},
       displayTime: undefined
@@ -136,94 +136,90 @@ export default {
     this.tempRoute = Object.assign({}, this.$route)
   },
   methods: {
-    delayDate(days){
-      let newDate = new Date();
-      let showDate;
-      for (let i = 1; i <= days; i++) { //后7天
-        let date = newDate.getDate() < 10 ? '0' + newDate.getDate() : newDate.getDate();
-        let yue = (newDate.getMonth() + 1) < 10 ? '0' + (newDate.getMonth() + 1) : (newDate.getMonth() + 1);
-        showDate = newDate.getFullYear() + '-' + yue + '-' + date;
-        newDate.setDate(newDate.getDate() + 1);
+    delayDate(days) {
+      const newDate = new Date()
+      let showDate
+      for (let i = 1; i <= days; i++) { // 后7天
+        const date = newDate.getDate() < 10 ? '0' + newDate.getDate() : newDate.getDate()
+        const yue = (newDate.getMonth() + 1) < 10 ? '0' + (newDate.getMonth() + 1) : (newDate.getMonth() + 1)
+        showDate = newDate.getFullYear() + '-' + yue + '-' + date
+        newDate.setDate(newDate.getDate() + 1)
       }
-      return showDate + ' 00:00:00';
+      return showDate + ' 00:00:00'
     },
-    formatDate(date){
-      return moment(new Date(date)).format('YYYY-MM-DD HH:mm:ss');
+    formatDate(date) {
+      return moment(new Date(date)).format('YYYY-MM-DD HH:mm:ss')
     },
-    resetArticle(){
-      this.postForm = Object.assign({}, defaultForm);
-      this.$refs.editor.setContent('');
-      this.displayTime = null;
-      this.limit = false;
+    resetArticle() {
+      this.postForm = Object.assign({}, defaultForm)
+      this.$refs.editor.setContent('')
+      this.displayTime = null
+      this.limit = false
     },
     submitForm() {
-      if(this.postForm.title === undefined || this.postForm.content === undefined || this.postForm.title === '' || this.postForm.content === '')
-      {
-        this.$message.error('Data From Invalid!');
-        return false;
+      if (this.postForm.title === undefined || this.postForm.content === undefined || this.postForm.title === '' || this.postForm.content === '') {
+        this.$message.error('Data Form Invalid!')
+        return false
       }
 
-      let start;
+      let start
 
       if (this.limit === false) {
-        start = this.formatDate(new Date());
-      } else if (this.displayTime !== null && this.displayTime !== undefined ) {
-        start = this.formatDate(this.displayTime);
-      }else {
-        start = this.delayDate(7);
+        start = this.formatDate(new Date())
+      } else if (this.displayTime !== null && this.displayTime !== undefined) {
+        start = this.formatDate(this.displayTime)
+      } else {
+        start = this.delayDate(7)
       }
 
-      console.log(start);
+      console.log(start)
 
-      let postData = {
+      const postData = {
         activityName: this.postForm.title,
-        type: this.limit === true ? "true" : "false",
+        type: this.limit === true ? 'true' : 'false',
         start: start,
         activityDetails: {
           activityDescription: this.postForm.content,
           activityImg: this.postForm.image_uri === undefined ? '' : this.postForm.image_uri
         }
-    };
-
+      }
 
       request.post('activity/addActivity', JSON.stringify(postData)).then(response => {
         if (response.data) {
           //
-          this.resetArticle();
+          this.resetArticle()
         } else {
-          this.$message.error('Publishing Activity failed!');
+          this.$message.error('Publishing Activity failed!')
         }
       })
-        .catch(error =>
-          {
-            this.$message.error('Publishing Activity failed!');
-          }
-        );
+        .catch(error => {
+          this.$message.error('Publishing Activity failed!')
+        }
+        )
     },
     uploadCover() {
-      const _this = this;
+      const _this = this
       // 根据ref得到图片文件
-      var file = this.$refs.img;
+      var file = this.$refs.img
       // 使用h5的读取文件api
-      var reader = new FileReader();
-      reader.readAsDataURL(file.files[0]);
+      var reader = new FileReader()
+      reader.readAsDataURL(file.files[0])
       // 读取完成后触发
       reader.onload = function() {
         // 改变img的路径
-        _this.postForm.image_uri = this.result;
+        _this.postForm.image_uri = this.result
       }
     },
 
-
     setTagsViewTitle() {
-      const title = 'Edit Activity';
-      const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` });
+      const title = 'Edit Activity'
+      const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` })
       this.$store.dispatch('tagsView/updateVisitedView', route)
     },
     setPageTitle() {
-      const title = 'Edit Activity';
+      const title = 'Edit Activity'
       document.title = `${title} - ${this.postForm.id}`
-    },
+    }
   }
 }
 </script>

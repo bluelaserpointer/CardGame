@@ -1,7 +1,7 @@
 <template>
   <el-form ref="postForm" :model="postForm" :rules="rules" class="form-container">
     <sticky :z-index="10" :class-name="'sub-navbar ' + postForm.status">
-      <el-button class="mailUpdatePublishButton" v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">
+      <el-button v-loading="loading" class="mailUpdatePublishButton" style="margin-left: 10px;" type="success" @click="submitForm">
         Publish
       </el-button>
       <el-button class="deleteOuterButton" type="danger" @click="deleteVisible = true">
@@ -47,209 +47,199 @@
       <el-button class="confirmInnerButton" @click="confirmIdentity">Confirm Identity</el-button>
 
       <span slot="footer" class="dialog-footer">
-          <el-button class="cancelInnerButton" @click="deleteVisible = false">Cancel</el-button>
-          <el-button class="deleteInnerButton" v-if="confirmDelete === false" type="danger" disabled>Delete</el-button>
-          <el-button class="deleteInnerButton" v-else type="danger" @click="deleteData">Delete</el-button>
-        </span>
+        <el-button class="cancelInnerButton" @click="deleteVisible = false">Cancel</el-button>
+        <el-button v-if="confirmDelete === false" class="deleteInnerButton" type="danger" disabled>Delete</el-button>
+        <el-button v-else class="deleteInnerButton" type="danger" @click="deleteData">Delete</el-button>
+      </span>
     </el-dialog>
   </el-form>
 </template>
 
 <script>
-  import Tinymce from '@/components/Tinymce/index'
-  import MDinput from '@/components/MDinput/index'
-  import Sticky from '@/components/Sticky/index' // 粘性header组件
-  import Warning from './Warning'
-  import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from '../../views/example/components/Dropdown'
-  import axios from 'axios'
-  import moment from "moment";
-  import request from "@/utils/request"; // secondary package based on el-pagination
+import Tinymce from '@/components/Tinymce/index'
+import MDinput from '@/components/MDinput/index'
+import Sticky from '@/components/Sticky/index' // 粘性header组件
+import Warning from './Warning'
+import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from '../../views/example/components/Dropdown'
+import axios from 'axios'
+import moment from 'moment'
+import request from '@/utils/request' // secondary package based on el-pagination
 
-  const defaultForm = {
-    status: 'draft',
-    title: '', // 文章题目
-    content: '', // 文章内容
-    // content_short: '', // 文章摘要
-    // source_uri: '', // 文章外链
-    image_uri: '', // 文章图片
-    id: undefined,
-    platforms: ['a-platform'],
-    comment_disabled: false
-    // importance: 0
-  };
+const defaultForm = {
+  status: 'draft',
+  title: '', // 文章题目
+  content: '', // 文章内容
+  // content_short: '', // 文章摘要
+  // source_uri: '', // 文章外链
+  image_uri: '', // 文章图片
+  id: undefined,
+  platforms: ['a-platform'],
+  comment_disabled: false
+  // importance: 0
+}
 
-  export default {
-    name: 'MailUpdatePanel',
-    components: { Tinymce, MDinput, Sticky, Warning, CommentDropdown, PlatformDropdown, SourceUrlDropdown },
-    props: {
-      isEdit: {
-        type: Boolean,
-        default: false
+export default {
+  name: 'MailUpdatePanel',
+  components: { Tinymce, MDinput, Sticky, Warning, CommentDropdown, PlatformDropdown, SourceUrlDropdown },
+  props: {
+    isEdit: {
+      type: Boolean,
+      default: false
+    },
+    updateContent: {
+      type: Object,
+      default: null
+    },
+    listQuery: {
+      type: Object,
+      default: null
+    }
+  },
+  data() {
+    const validateRequire = (rule, value, callback) => {
+      if (value === '') {
+        this.$message({
+          message: rule.field + '为必传项',
+          type: 'error'
+        })
+        callback(new Error(rule.field + '为必传项'))
+      } else {
+        callback()
+      }
+    }
+
+    return {
+      deleteVisible: false,
+      confirmDelete: false,
+      confirmPassword: '',
+      postForm: Object.assign({}, defaultForm),
+      loading: false,
+      userListOptions: [],
+      rules: {
+        title: [{ validator: validateRequire }],
+        content: [{ validator: validateRequire }]
       },
-      updateContent:{
-        type: Object,
-        default: null
+      tempRoute: {}
+    }
+  },
+  watch: {
+    updateContent: {
+      handler(newVal, oldVal) {
+        this.postForm.image_uri = newVal.mailImg
+        this.postForm.title = newVal.mailName
+        if (newVal.mailDescription) { this.$refs['editor'].setContent(newVal.mailDescription) } else { this.$refs['editor'].setContent('') }
       },
-      listQuery:{
-        type: Object,
-        default: null
+      deep: true
+    },
+    deleteVisible() {
+      this.confirmDelete = false
+      this.confirmPassword = ''
+    } // untested
+  },
+  created() {
+    // Why need to make a copy of this.$route here?
+    // Because if you enter this page and quickly switch tag, may be in the execution of the setTagsViewTitle function, this.$route is no longer pointing to the current page
+    // https://github.com/PanJiaChen/vue-element-admin/issues/1221
+
+    this.postForm.image_uri = this.updateContent.mailImg
+    this.postForm.title = this.updateContent.mailName
+    this.postForm.content = this.updateContent.mailDescription
+
+    this.$nextTick(() => {
+      if (this.updateContent.mailDescription) { this.$refs['editor'].setContent(this.updateContent.mailDescription) } else { this.$refs['editor'].setContent('') }
+    })
+
+    this.tempRoute = Object.assign({}, this.$route)
+  },
+  methods: {
+    uploadCover() {
+      const _this = this
+      // 根据ref得到图片文件
+      var file = this.$refs.img
+      // 使用h5的读取文件api
+      var reader = new FileReader()
+      reader.readAsDataURL(file.files[0])
+      // 读取完成后触发
+      reader.onload = function() {
+        // 改变img的路径
+        _this.postForm.image_uri = this.result
       }
     },
-    data() {
-      const validateRequire = (rule, value, callback) => {
-        if (value === '') {
-          this.$message({
-            message: rule.field + '为必传项',
-            type: 'error'
-          });
-          callback(new Error(rule.field + '为必传项'))
+    confirmIdentity() {
+      const postData = new FormData()
+      const _this = this
+      postData.append('userName', localStorage.getItem('AdminName'))
+      postData.append('password', this.confirmPassword)
+
+      request.post('user/confirmDelete', postData).then(response => {
+        if (response.data) {
+          _this.confirmDelete = true
         } else {
-          callback()
+          this.$message.error('Identification failed!')
         }
-      };
+      })
+        .catch(error => {
+          this.$message.error('Identification failed!')
+        }
+        )
+    },
+    deleteData() {
+      const postData = new FormData()
+      const _this = this
+      postData.append('mailId', this.updateContent.mailId)
 
-      return {
-        deleteVisible: false,
-        confirmDelete: false,
-        confirmPassword: '',
-        postForm: Object.assign({}, defaultForm),
-        loading: false,
-        userListOptions: [],
-        rules: {
-          title: [{ validator: validateRequire }],
-          content: [{ validator: validateRequire }],
-        },
-        tempRoute: {},
+      request.post('mail/deleteMail', postData).then(response => {
+        if (response.data) {
+          _this.deleteVisible = false
+          _this.$emit('getList', this.listQuery.page, this.listQuery.limit)
+        } else {
+          this.$message.error('Deleting Data failed!')
+        }
+      })
+        .catch(error => {
+          this.$message.error('Deleting Data failed!')
+        }
+        )
+    },
+    submitForm() {
+      const _this = this
+
+      if (this.postForm.title === undefined || this.postForm.content === undefined || this.postForm.title === '' || this.postForm.content === '') {
+        this.$message.error('Data Form Invalid!')
+        return false
       }
 
-    },
-    watch:{
-      updateContent:{
-        handler(newVal, oldVal)
-        {
-          this.postForm.image_uri = newVal.mailImg;
-          this.postForm.title = newVal.mailName;
-          if(newVal.mailDescription)
-            this.$refs['editor'].setContent(newVal.mailDescription);
-          else
-            this.$refs['editor'].setContent('');
-        },
-        deep:true
-      },
-      deleteVisible() {
-        this.confirmDelete = false;
-        this.confirmPassword = '';
-      } // untested
-    },
-    created() {
-      // Why need to make a copy of this.$route here?
-      // Because if you enter this page and quickly switch tag, may be in the execution of the setTagsViewTitle function, this.$route is no longer pointing to the current page
-      // https://github.com/PanJiaChen/vue-element-admin/issues/1221
-
-      this.postForm.image_uri = this.updateContent.mailImg;
-      this.postForm.title = this.updateContent.mailName;
-      this.$nextTick(() => {
-        if(this.updateContent.mailDescription)
-          this.$refs['editor'].setContent(this.updateContent.mailDescription);
-        else
-          this.$refs['editor'].setContent('');
-      });
-
-      this.tempRoute = Object.assign({}, this.$route)
-    },
-    methods: {
-      uploadCover() {
-        const _this = this;
-        // 根据ref得到图片文件
-        var file = this.$refs.img;
-        // 使用h5的读取文件api
-        var reader = new FileReader();
-        reader.readAsDataURL(file.files[0]);
-        // 读取完成后触发
-        reader.onload = function() {
-          // 改变img的路径
-          _this.postForm.image_uri = this.result;
-        }
-      },
-      confirmIdentity() {
-        let postData = new FormData();
-        let _this = this;
-        postData.append('userName', localStorage.getItem('AdminName'));
-        postData.append('password', this.confirmPassword);
-
-        request.post('user/confirmDelete', postData).then(response => {
-          if (response.data) {
-            _this.confirmDelete = true
-          } else {
-            this.$message.error('Identification failed!');
-          }
-        })
-          .catch(error =>
-            {
-              this.$message.error('Identification failed!');
-            }
-          );
-      },
-      deleteData() {
-        let postData = new FormData();
-        let _this = this;
-        postData.append('mailId', this.updateContent.mailId);
-
-        request.post('mail/deleteMail', postData).then(response => {
-          if (response.data) {
-            _this.deleteVisible = false;
-            _this.$emit('getList', this.listQuery.page, this.listQuery.limit);
-          } else {
-            this.$message.error('Deleting Data failed!');
-          }
-        })
-          .catch(error =>
-            {
-              this.$message.error('Deleting Data failed!');
-            }
-          );
-      },
-      submitForm() {
-        let _this = this;
-
-        if(this.postForm.title === undefined || this.postForm.content === undefined || this.postForm.title === '' || this.postForm.content === '')
-        {
-          this.$message.error('Data From Invalid!');
-          return false;
-        }
-
-        let postData = {
+      const postData = {
+        mailId: this.updateContent.mailId,
+        mailName: this.postForm.title,
+        mailDetails: {
           mailId: this.updateContent.mailId,
-          mailName: this.postForm.title,
-          mailDetails: {
-            mailId: this.updateContent.mailId,
-            mailDescription: this.postForm.content,
-            mailImg: this.postForm.image_uri === undefined ? '' : this.postForm.image_uri,
-          }
-        };
+          mailDescription: this.postForm.content,
+          mailImg: this.postForm.image_uri === undefined ? '' : this.postForm.image_uri
+        }
+      }
 
-        request.post('mail/updateMail', JSON.stringify(postData)).then(response => {
-          if (response.data) {
-            //
-            _this.$emit('getList', this.listQuery.page, this.listQuery.limit);
-          }else
-          {
-            this.$message.error('Fetching Data Failed!');
-          }
-        })
-      },
+      request.post('mail/updateMail', JSON.stringify(postData)).then(response => {
+        if (response.data) {
+          //
+          _this.$emit('getList', this.listQuery.page, this.listQuery.limit)
+        } else {
+          this.$message.error('Fetching Data Failed!')
+        }
+      })
+    },
 
-      setTagsViewTitle() {
-        const title = 'Edit Mail';
-        const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` });
-        this.$store.dispatch('tagsView/updateVisitedView', route)
-      },
-      setPageTitle() {
-        const title = 'Edit Mail';
-        document.title = `${title} - ${this.postForm.id}`
-      },
+    setTagsViewTitle() {
+      const title = 'Edit Mail'
+      const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` })
+      this.$store.dispatch('tagsView/updateVisitedView', route)
+    },
+    setPageTitle() {
+      const title = 'Edit Mail'
+      document.title = `${title} - ${this.postForm.id}`
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>

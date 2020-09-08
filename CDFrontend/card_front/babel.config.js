@@ -1,6 +1,7 @@
 module.exports = {
   presets: [
-    '@vue/cli-plugin-babel/preset',
+    // '@vue/cli-plugin-babel/preset',
+    '@vue/app'
   ],
   plugins: [
     ['babel-plugin-istanbul', {
@@ -9,6 +10,7 @@ module.exports = {
   ]
 };
 
+//
 // const isTest = String(process.env.NODE_ENV) === 'test';
 // const presetEnv = isTest
 //   ? ['@babel/preset-env', { modules: 'commonjs', targets: { node: 'current' } }]
@@ -19,5 +21,8 @@ module.exports = {
 //   plugins: [
 //     '@babel/plugin-transform-runtime',
 //     '@babel/plugin-syntax-dynamic-import',
+//     ['babel-plugin-istanbul', {
+//       extension: ['.js', '.vue']
+//     }]
 //   ],
 // };
