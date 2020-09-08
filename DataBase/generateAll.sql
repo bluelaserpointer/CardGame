@@ -1,3 +1,4 @@
+set @userAmountWhoOwnSomething = 50;
 call deleteAll();
 call generateUser();
 call generateCard();
