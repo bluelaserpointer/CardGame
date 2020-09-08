@@ -8,8 +8,10 @@ import com.example.accessingdatamysql.controller.MailController;
 import com.example.accessingdatamysql.entity.AuthRequest;
 import com.example.accessingdatamysql.entity.ListRequest;
 import com.example.accessingdatamysql.entity.Mail;
+import com.example.accessingdatamysql.entity.MailBox;
 import com.example.accessingdatamysql.entity.MailDetails;
 import com.example.accessingdatamysql.entity.User;
+import com.example.accessingdatamysql.service.MailBoxService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -51,6 +53,9 @@ public class MailControllerTest {
         private MockMvc mockMvc;
 
         private String TOKEN;
+
+        @Autowired
+        private MailBoxService mailBoxService;
         // @Autowired
         // private MailController mailController;
 
@@ -109,6 +114,8 @@ public class MailControllerTest {
                 Mail.setMailDetails(MailDetails);
 
                 String body = JSON.toJSONString(Mail);
+
+                mailBoxService.addNewMailBox(1);
 
                 // System.out.println(body);
 
@@ -246,7 +253,7 @@ public class MailControllerTest {
         @Test
         @Transactional
         @Rollback(value = true)
-        @DisplayName("File: ActivityController Method: ListPage")
+        @DisplayName("File: MailController Method: ListPage")
         public void ListPage() throws Exception {
                 String token = getTOKEN();
                 // Activity addedActivity = addActivityBeforeTest(token);
@@ -257,7 +264,38 @@ public class MailControllerTest {
 
                 String body = JSON.toJSONString(listRequest);
                 System.out.println(body);
-                MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/activity/List").content(body)
+                MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/mail/List").content(body)
+                                .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
+                                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
+                                .andReturn();
+                System.out.println(result.getResponse().getContentAsString());
+        }
+
+        @Test
+        @Transactional
+        @Rollback(value = true)
+        @DisplayName("File: mailController Method: sendMail")
+        public void sendMail() throws Exception {
+                String token = getTOKEN();
+                addMailBeforeTest(token);
+
+                MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/mail/sendMail?mailId=1&userId=1")
+                                .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
+                                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
+                                .andReturn();
+                System.out.println(result.getResponse().getContentAsString());
+        }
+
+        @Test
+        @Transactional
+        @Rollback(value = true)
+        @DisplayName("File: mailController Method: sendMailToAllUsers")
+        public void sendMailToAllUsers() throws Exception {
+                String token = getTOKEN();
+                Mail add = addMailBeforeTest(token);
+
+                MvcResult result = mockMvc.perform(MockMvcRequestBuilders
+                                .post("/mail/sendMailToAllUsers?mailId=" + add.getMailId())
                                 .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
                                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
                                 .andReturn();

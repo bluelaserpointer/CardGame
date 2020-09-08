@@ -35,26 +35,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.assertj.core.api.Assertions.assertThat;
 
+/*register 在调试中已经使用过了
+  logout, unitTest 不测试*/
+
 // @WebMvcTest(UserController.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 public class UserControllerTest extends UnitTestDemoApplicationTests {
-
-        // @Test
-        // public void contextLoads() {
-        // assertThat(userController).isNotNull();
-        // }
-
-        // private MockMvc mockMvc;
-
-        // @Autowired
-        // private UserController userController;
-
-        // @Before
-        // public void setUp() {
-        // mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
-        // }
 
         @Autowired
         private WebApplicationContext context;
@@ -287,6 +275,34 @@ public class UserControllerTest extends UnitTestDemoApplicationTests {
                                 .perform(get("/user/deleteAllUsers").contentType(MediaType.APPLICATION_JSON_VALUE)
                                                 .header("Authorization", token))
                                 .andExpect(status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
+                System.out.println(result.getResponse().getContentAsString());
+        }
+
+        @Test
+        @Transactional
+        @Rollback(value = true)
+        @DisplayName("File: UserController Method: getMailBox")
+        public void getUserMailBox() throws Exception {
+                String token = getTOKEN();
+                User addedUser = addUserBeforeTest(token);
+                MvcResult result = mockMvc.perform(get("/user/getMailBox?userId=" + addedUser.getUserId())
+                                .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
+                                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
+                                .andReturn();
+                System.out.println(result.getResponse().getContentAsString());
+        }
+
+        @Test
+        @Transactional
+        @Rollback(value = true)
+        @DisplayName("File: UserController Method: getUserByUserName")
+        public void getUserByUserName() throws Exception {
+                String token = getTOKEN();
+                User addedUser = addUserBeforeTest(token);
+                MvcResult result = mockMvc.perform(get("/user/getUserByUserName?userName=" + addedUser.getUserName())
+                                .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
+                                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
+                                .andReturn();
                 System.out.println(result.getResponse().getContentAsString());
         }
 

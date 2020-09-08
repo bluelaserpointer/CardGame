@@ -83,7 +83,7 @@ public class OwnItemController {
   // 获取某一用户的所有拥有道具关系
   @RequestMapping(value = "/getAllOwnItemsByUserId")
   @PreAuthorize("hasRole('ROLE_ADMIN') OR #userId.toString() == authentication.name")
-  public List<OwnItem> getAllOwnItemsByUserName(@RequestParam("userId") Integer userId) {
+  public List<OwnItem> getAllOwnItemsByUserId(@RequestParam("userId") Integer userId) {
     return OwnItemService.getAllOwnItemsByUserId(userId);
   }
 }

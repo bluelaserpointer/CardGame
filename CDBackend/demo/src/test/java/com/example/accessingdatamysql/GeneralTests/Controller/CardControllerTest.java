@@ -238,7 +238,7 @@ public class CardControllerTest {
         @Test
         @Transactional
         @Rollback(value = true)
-        @DisplayName("File: ActivityController Method: ListPage")
+        @DisplayName("File: cardController Method: ListPage")
         public void ListPage() throws Exception {
                 String token = getTOKEN();
                 // Activity addedActivity = addActivityBeforeTest(token);

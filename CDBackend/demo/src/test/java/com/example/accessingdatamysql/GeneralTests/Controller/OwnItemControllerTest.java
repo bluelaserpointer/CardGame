@@ -333,4 +333,20 @@ public class OwnItemControllerTest {
                 System.out.println(result.getResponse().getContentAsString());
         }
 
+        @Test
+        @Transactional
+        @Rollback(value = true)
+        @DisplayName("File: OwnItemController Method: getAllOwnItemsByUserId")
+        public void getAllOwnItemsByUserId() throws Exception {
+                String token = getTOKEN();
+                User addedUser = addUserBeforeTest(token);
+                // System.out.println(body);
+                MvcResult result = mockMvc.perform(MockMvcRequestBuilders
+                                .post("/ownItem/getAllOwnItemsByUserId?userId=" + addedUser.getUserId())
+                                .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
+                                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
+                                .andReturn();
+                System.out.println(result.getResponse().getContentAsString());
+        }
+
 }

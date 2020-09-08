@@ -1,6 +1,8 @@
 package com.example.accessingdatamysql.entity;
 
 import javax.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.*;
@@ -27,6 +29,7 @@ public class MailBox {
     // mailBoxid应该要等于userId（一对一关系，（不用自动生成的方法了））
     public MailBox(Integer mailBoxId) {
         this.mailBoxId = mailBoxId;
+        this.mailIds = new ArrayList<Integer>();
     }
 
     public Integer getMailBoxId() {

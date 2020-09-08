@@ -193,30 +193,30 @@ public class ActivityControllerTest {
 
         }
 
-        // @Test
-        // @Transactional
-        // @Rollback(value = true)
-        // @DisplayName("File: ActivityController Method: updateActivity")
-        // public void updateActivity() throws Exception {
-        //         String token = getTOKEN();
-        //         Activity addedActivity = addActivityBeforeTest(token);
-        //         Timestamp start = new Timestamp(System.currentTimeMillis());
-        //         Activity activity = new Activity("addNewActivity", "addNewActivity", start);
-        //         ActivityDetails activityDetails = new ActivityDetails();
-        //         activityDetails.setActivityDescription("addNewActivity");
-        //         activityDetails.setActivityImg("addNewActivity");
-        //         activity.setActivityDetails(activityDetails);
-        //         activity.setActivityId(addedActivity.getActivityId());
+        @Test
+        @Transactional
+        @Rollback(value = true)
+        @DisplayName("File: ActivityController Method: updateActivity")
+        public void updateActivity() throws Exception {
+                String token = getTOKEN();
+                Activity addedActivity = addActivityBeforeTest(token);
+                Timestamp start = new Timestamp(System.currentTimeMillis());
+                Activity activity = new Activity("addNewActivity", "addNewActivity", start);
+                ActivityDetails activityDetails = new ActivityDetails();
+                activityDetails.setActivityDescription("addNewActivity");
+                activityDetails.setActivityImg("addNewActivity");
+                activity.setActivityDetails(activityDetails);
+                activity.setActivityId(addedActivity.getActivityId());
 
-        //         String body = JSON.toJSONString(activity);
-        //         MvcResult result = mockMvc
-        //                         .perform(MockMvcRequestBuilders.post("/activity/updateActivity")
-        //                                         .contentType(MediaType.APPLICATION_JSON_VALUE).content(body)
-        //                                         .header("Authorization", token))
-        //                         .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
-        //                         .andReturn();
-        //         System.out.println(result.getResponse().getContentAsString());
-        // }
+                String body = JSON.toJSONString(activity);
+                MvcResult result = mockMvc
+                                .perform(MockMvcRequestBuilders.post("/activity/updateActivity")
+                                                .contentType(MediaType.APPLICATION_JSON_VALUE).content(body)
+                                                .header("Authorization", token))
+                                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
+                                .andReturn();
+                System.out.println(result.getResponse().getContentAsString());
+        }
 
         @Test
         @Transactional

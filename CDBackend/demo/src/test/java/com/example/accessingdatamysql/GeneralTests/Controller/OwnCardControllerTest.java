@@ -46,22 +46,6 @@ import java.sql.Timestamp;
 @AutoConfigureMockMvc
 public class OwnCardControllerTest {
 
-        // @Test
-        // @DisplayName("File: OwnCardController Method: contextLoads")
-        // public void contextLoads() {
-        // assertThat(ownCardController).isNotNull();
-        // }
-
-        // private MockMvc mockMvc;
-
-        // @Autowired
-        // private OwnCardController ownCardController;
-
-        // @Before
-        // public void setUp() {
-        // mockMvc = MockMvcBuilders.standaloneSetup(ownCardController).build();
-        // }
-
         @Autowired
         private WebApplicationContext context;
 
@@ -127,8 +111,8 @@ public class OwnCardControllerTest {
 
                 MvcResult result = mockMvc
                                 .perform(MockMvcRequestBuilders
-                                                .post("/ownCard/addOwnCard?userId=" + addedUser.getUserId()
-                                                                + "&cardId=" + addedCard.getCardId())
+                                                .post("/ownCard/addOwnCard?userId=" + addedUser.getUserId() + "&cardId="
+                                                                + addedCard.getCardId())
                                                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                                                 .header("Authorization", token))
                                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
@@ -204,17 +188,6 @@ public class OwnCardControllerTest {
                 System.out.println(result.getResponse().getContentAsString());
         }
 
-        // @Test
-        // @Transactional
-        // @Rollback(value = true)
-        // @DisplayName("File: OwnCardController Method: addNewOwnCard")
-        // public void ownAnotherCard() throws Exception {
-        // MvcResult result = mockMvc
-        // .perform(get("/ownCard/addOwnCard?userId=12&cardId=10").contentType(MediaType.APPLICATION_JSON_VALUE))
-        // .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
-        // System.out.println(result.getResponse().getContentAsString());
-        // }
-
         @Test
         @Transactional
         @Rollback(value = true)
@@ -227,8 +200,8 @@ public class OwnCardControllerTest {
 
                 MvcResult result = mockMvc
                                 .perform(MockMvcRequestBuilders
-                                                .post("/ownCard/addOwnCard?userId=" + addedUser.getUserId()
-                                                                + "&cardId=" + addedCard.getCardId())
+                                                .post("/ownCard/addOwnCard?userId=" + addedUser.getUserId() + "&cardId="
+                                                                + addedCard.getCardId())
                                                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                                                 .header("Authorization", token))
                                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
@@ -268,43 +241,14 @@ public class OwnCardControllerTest {
                 String token = getTOKEN();
                 OwnCard OwnCard = addOwnCardBeforeTest(token);
                 MvcResult result = mockMvc
-                                .perform(get("/ownCard/addExp?userId=" + OwnCard.getUserId() + "&cardId=" + OwnCard.getCardId()
-                                                + "&exp=1").contentType(MediaType.APPLICATION_JSON_VALUE)
+                                .perform(get("/ownCard/addExp?userId=" + OwnCard.getUserId() + "&cardId="
+                                                + OwnCard.getCardId() + "&exp=1")
+                                                                .contentType(MediaType.APPLICATION_JSON_VALUE)
                                                                 .header("Authorization", token))
                                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
                                 .andReturn();
                 System.out.println(result.getResponse().getContentAsString());
         }
-
-        // @Test
-        // @Transactional
-        // @Rollback(value = true)
-        // @DisplayName("File: OwnCardController Method: cardLevelUp")
-        // public void cardLevelUp() throws Exception {
-        // String token = getTOKEN();
-        // OwnCard addedOwnCard = addOwnCardBeforeTest();
-        // MvcResult result = mockMvc
-        // .perform(get("/ownCard/cardLevelUp?userId=" + addedOwnCard.getUserId()+
-        // "&cardId=" + addedOwnCard.getCardId()
-        // ).contentType(MediaType.APPLICATION_JSON_VALUE)
-        // .header("Authorization", token))
-        // .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
-        // System.out.println(result.getResponse().getContentAsString());
-        // }
-
-        // @Test
-        // @Transactional
-        // @Rollback(value = true)
-        // @DisplayName("File: OwnCardController Method: ownAnotherCard")
-        // public void ownAnotherCard() throws Exception {
-        // MvcResult result = mockMvc
-        // .perform(get("/ownCard/ownAnotherCard?userId=12&cardId=10")
-        // .contentType(MediaType.APPLICATION_JSON_VALUE))
-        //
-        // .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
-        // .andReturn();
-        // System.out.println(result.getResponse().getContentAsString());
-        // }
 
         @Test
         @Transactional
@@ -328,10 +272,9 @@ public class OwnCardControllerTest {
                 String token = getTOKEN();
                 OwnCard addedOwnCard = addOwnCardBeforeTest(token);
                 MvcResult result = mockMvc
-                                .perform(get("/ownCard/getAllOwnCardsByUserId?userId="
-                                                + addedOwnCard.getUserId())
-                                                                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                                                                .header("Authorization", token))
+                                .perform(get("/ownCard/getAllOwnCardsByUserId?userId=" + addedOwnCard.getUserId())
+                                                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                                                .header("Authorization", token))
                                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
                                 .andReturn();
                 System.out.println(result.getResponse().getContentAsString());
@@ -400,6 +343,28 @@ public class OwnCardControllerTest {
                 System.out.println(body);
                 MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/ownCard/List").content(body)
                                 .contentType(MediaType.APPLICATION_JSON_VALUE).header("Authorization", token))
+                                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
+                                .andReturn();
+                System.out.println(result.getResponse().getContentAsString());
+        }
+
+        @Test
+        @Transactional
+        @Rollback(value = true)
+        @DisplayName("File: OwnCardController Method: updateOwnredistributeUpgradesCard")
+        public void redistributeUpgrades() throws Exception {
+                String token = getTOKEN();
+                OwnCard addedOwnCard = addOwnCardBeforeTest(token);
+
+                Timestamp start = new Timestamp(System.currentTimeMillis());
+                addedOwnCard.setAccquireDate(start);
+
+                String body = JSON.toJSONString(addedOwnCard);
+                System.out.println(body);
+                MvcResult result = mockMvc
+                                .perform(get("/ownCard/redistributeUpgrades")
+                                                .contentType(MediaType.APPLICATION_JSON_VALUE).content(body)
+                                                .header("Authorization", token))
                                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print())
                                 .andReturn();
                 System.out.println(result.getResponse().getContentAsString());
