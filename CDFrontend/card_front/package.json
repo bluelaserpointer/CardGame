@@ -38,7 +38,7 @@
     "jest-config": "latest",
     "js-cookie": "2.2.0",
     "jsonlint": "1.6.3",
-    "jszip": "3.2.1",
+    "jszip": "3.8.0",
     "moment": "^2.27.0",
     "normalize.css": "7.0.0",
     "nprogress": "0.2.0",
